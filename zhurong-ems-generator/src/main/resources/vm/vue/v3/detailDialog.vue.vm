@@ -1,0 +1,275 @@
+<template>
+	<div class="app-container">
+	  #set($detailDialogWidth="800px")
+#if($genTableExtendInfo.detailDialogWidth)
+#set($detailDialogWidth=$genTableExtendInfo.detailDialogWidth)
+#end
+#set($detailDialogHeight="")
+#if($genTableExtendInfo.detailDialogHeight)
+#set($detailDialogHeight=$genTableExtendInfo.detailDialogHeight)
+#end
+#set($detailDialogSpan="24")
+#if($genTableExtendInfo.detailDialogSpan)
+#set($detailDialogSpan=$genTableExtendInfo.detailDialogSpan)
+#end
+		<!--查看${functionName}详细对话框 -->
+		<el-dialog class="ruoyi_dialog" :title="pageData.title" v-model="pageData.open" width="${detailDialogWidth}" style="height: ${detailDialogHeight}" append-to-body>
+			<el-form :inline="true" ref="detailFormRef" :model="pageData.detailForm" label-width="150px" style="padding-right: 30px">
+#foreach($column in $columns)
+#set($field=$column.javaField)
+#if($column.detail)
+###if(!$column.pk)
+###if($column.insert && !$column.pk)
+#if(($column.usableColumn) || (!$column.superColumn))
+#set($comment=$column.columnComment)
+#set($dictType=$column.dictType)
+#set($maxlength=0)
+#if($column.columnType.indexOf('(')!=-1 && $column.columnType.indexOf(')')!=-1)
+#set($arr1=$column.columnType.split('[(]'))
+#set($arr2=$arr1[1].split('[)]'))
+#set($dbColLength=$arr2[0])
+#if($arr2[0].indexOf(',')!=-1)
+##bigdecimal(10,2)格式处理
+#set($arr3=$arr2[0].split('[,]'))
+#set($maxlength=$arr3[0])
+#else
+#set($maxlength_text=$arr2[0]/2)
+#end
+#else
+#set($maxlength_text=100)
+#end
+#set($isDetailShow="false")
+#if( $column.detail)
+#set($isDetailShow="true")
+#end
+#set($formItemWith="width: 90%;")
+#if(${addDialogSpan} == "12")
+#set($formItemWith="width: 45%;")
+#end
+##${column.columnName}
+##${isDetailShow}
+#if($column.columnName.indexOf("ben_di_yin_pin") != -1)
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="width: 90%;">
+					   	<!-- 判断音频是否存在 -->
+					   	<template v-if="pageData.detailForm.${field}">
+							<vue-audio ref="${field}" style="margin-left:0px" :audio-source="pageData.detailForm.${field}"></vue-audio>
+##						<vue-audio ref="${field}" style="margin-left:0px" :audio-source="vueAppBaseApi+pageData.detailForm.${field}"></vue-audio>
+							<!--<mini-audio style="margin-left:0px" audio-source="vueAppBaseApi+pageData.detailForm.${field}"></mini-audio>-->
+						</template>
+						<template v-else>
+							无音频
+						</template>
+					</el-form-item>
+#elseif($column.columnName.indexOf("yin_pin") != -1)
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="width: 90%;">
+					   	<!-- 判断音频是否存在 -->
+					   	<template v-if="pageData.detailForm.${field}">
+							<vue-audio ref="${field}" style="margin-left:0px" :audio-source="pageData.detailForm.${field}"></vue-audio>
+##						<vue-audio ref="${field}" style="margin-left:0px" :audio-source="vueAppBaseApi+pageData.detailForm.${field}"></vue-audio>
+							<!--<mini-audio style="margin-left:0px" audio-source="vueAppBaseApi+pageData.detailForm.${field}"></mini-audio>-->
+						</template>
+						<template v-else>
+							无音频
+						</template>
+					</el-form-item>
+#elseif($column.htmlType == "imageUpload")
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="width: 90%;">
+						<image-preview
+							v-for="(image, index) in pageData.detailForm.${field} ?  pageData.detailForm.${field}.split(',') : []"
+							:key="index" :src="image" :width="50" :height="50" style="margin-right: 10px;"/>
+##							:key="index" :src="vueAppBaseApi + image" :width="50" :height="50" />
+					</el-form-item>
+#elseif($column.htmlType == "fileUpload")
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="width: 90%;">
+						<div v-for="(file, index) in pageData.detailForm.${field} ?  pageData.detailForm.${field}.split(',') : []" :key="index">
+							<el-link type="primary" :href="file" download>{{ file.split('/').pop() }}</el-link>
+##							<el-link type="primary" :href="vueAppBaseApi + file" download>{{ file.split('/').pop() }}</el-link>
+						</div>
+					</el-form-item>
+#elseif($column.htmlType == "editor")
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" style="width: 90%;">
+						<editor v-model="pageData.detailForm.${field}" :min-height="192"/>
+					</el-form-item>
+#elseif($column.htmlType == "input"  || $column.htmlType == "input-tag")
+#if($dbColLength >= 300)
+					<el-form-item v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="width: 90%;">
+#else
+					<el-form-item v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="${formItemWith}">
+#end
+#if($column.htmlType == "input")
+						<div>{{ pageData.detailForm.${field} }}</div>
+#end
+#if($column.htmlType == "input-tag")
+    					<el-tag type="primary" v-for="(item, index) in pageData.detailForm.${field} ?  pageData.detailForm.${field}.split(',') : []"
+							style="margin-right: 5px">{{item}}</el-tag>
+#end
+					</el-form-item>
+####字段显示为下拉框，但是不是字符串类型，不能直接通过sql转码后返回text，否则报错类型不匹配
+####后台通过添加扩展字段进行了处理
+#elseif(($column.htmlType == "select" ))
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="${formItemWith}">
+						<div>{{ pageData.detailForm.${field}Extend }}</div>
+					  	<!-- <dict-tag :options="${dictType}" :value="pageData.detailForm.${field}" :show-css="false"/> -->
+					</el-form-item>
+#elseif(($column.htmlType == "selectSelfDefine"))
+					<el-form-item  v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="${formItemWith}">
+##						<div>{{ pageData.detailForm.${field}Extend }}</div>
+					  	<dict-tag :options="${dictType}" :value="pageData.detailForm.${field}" :show-css="false"/>
+					</el-form-item>
+#elseif($column.htmlType == "datetime")
+					<el-form-item v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="${formItemWith}">
+#set($commomStr='$common')
+						<div>{{${commomStr}.formatDateTime(pageData.detailForm.${field})}}
+						</div>
+					</el-form-item>
+#else
+#if($dbColLength >= 300)
+					<el-form-item v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="${formItemWith}">
+#else
+					<el-form-item v-if="${isDetailShow}" label="${comment}：" prop="${field}" style="${formItemWith}">
+#end
+						<div>{{ pageData.detailForm.${field} }}</div>
+					</el-form-item>
+#end
+#end
+#end
+#end
+#if($table.sub)
+				<el-divider content-position="center">${subTable.functionName}信息</el-divider>
+				<el-row :gutter="10" class="mb8">
+					<el-col :span="1.5">
+						<el-button type="primary" icon="Plus" size="mini" @click="handleAdd${subClassName}">添加</el-button>
+					</el-col>
+					<el-col :span="1.5">
+						<el-button type="danger" icon="Delete" size="mini" @click="handleDelete${subClassName}">删除</el-button>
+					</el-col>
+				</el-row>
+				<el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" ref="${subclassName}">
+					<el-table-column type="selection" width="50" align="center"/>
+					<el-table-column label="序号" align="center" prop="index" width="50"/>
+#foreach($column in $subTable.columns)
+#set($javaField=$column.javaField)
+#set($comment=$column.columnComment)
+#if($column.pk || $javaField == ${subTableFkclassName})
+#elseif($column.list && $column.htmlType == "input")
+					<el-table-column label="$comment" prop="${javaField}" width="150">
+						<template slot-scope="scope">
+							<el-input v-model="scope.row.$javaField" placeholder="请输入$comment"/>
+						</template>
+					</el-table-column>
+#elseif($column.list && $column.htmlType == "date")
+					<el-table-column label="$comment" prop="${javaField}" width="240">
+						<template slot-scope="scope">
+							<el-date-picker clearable v-model="scope.row.$javaField"
+							                type="date" value-format="YYYY-MM-DD" placeholder="请选择"/>
+						</template>
+					</el-table-column>
+#elseif($column.list && $column.htmlType == "datetime")
+					<el-table-column label="$comment" prop="${javaField}" width="240">
+						<template slot-scope="scope">
+							<el-date-picker clearable v-model="scope.row.$javaField"
+							                type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择"/>
+						</template>
+					</el-table-column>
+#elseif($column.list && (($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio") && "" != $column.dictType)
+					<el-table-column label="$comment" prop="${javaField}" width="150">
+						<template slot-scope="scope">
+							<el-select clearable v-model="scope.row.$javaField" placeholder="请选择">
+								<el-option
+									v-for="dict in dict.type.$column.dictType"
+									:key="dict.value"
+									:label="dict.label"
+									:value="dict.value"
+								></el-option>
+							</el-select>
+						</template>
+					</el-table-column>
+#elseif($column.list && (($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio") && "" == $column.dictType)
+					<el-table-column label="$comment" prop="${javaField}" width="150">
+						<template slot-scope="scope">
+							<el-select clearable v-model="scope.row.$javaField" placeholder="请选择">
+								<el-option label="请选择字典生成" value=""/>
+							</el-select>
+						</template>
+					</el-table-column>
+#end
+#end
+				</el-table>
+#end
+			</el-form>
+			<template #footer>
+      			<div class="dialog-footer">
+					<el-button @click="cancel">关 闭</el-button>
+				</div>
+			</template>
+		</el-dialog>
+	</div>
+</template>
+
+<script setup name="detailDialog">
+import { defineProps, reactive } from 'vue';
+import moment from 'moment';
+import { getToken } from "@/utils/auth";
+import ${businessName} from "@/api/${moduleName}/${businessName}";
+
+const { proxy } = getCurrentInstance();
+#if(${dicts} != '')
+#set($dictsNoSymbol=$dicts.replace("'", ""))
+const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
+#end
+
+const pageData = reactive({
+  open: false,
+  title: "",
+  vueAppBaseApi:  import.meta.env.VITE_APP_BASE_API,
+  detailForm: {}
+});
+
+/** 打开详细窗口 */
+function open${BusinessName}DetailDialog(row) {
+  ${businessName}.selectDetailByPk${BusinessName}(row.id).then(response => {
+    pageData.detailForm = response.data;
+#foreach ($column in $columns)
+#if($column.htmlType == "checkbox")
+    pageData.detailForm.$column.javaField = pageData.detailForm.${column.javaField}.split(",");
+#end
+#end
+#if($table.sub)
+    ${subclassName}List.value = response.data.${subclassName}List;
+#end
+    pageData.open = true;
+    pageData.title = "查看${functionName}";
+  });
+}
+
+// 关闭按钮
+function cancel() {
+  pageData.open = false;
+#foreach($column in $columns)
+#set($field=$column.javaField)
+#if(!$column.pk)
+###if($column.insert && !$column.pk)
+#if(($column.usableColumn) || (!$column.superColumn))
+#if($column.columnName.indexOf("ben_di_yin_pin") != -1)
+			 // 停止音频播放
+			if (proxy.$refs.${field}) {
+				proxy.$refs.${field}.stop();
+			}
+#elseif($column.columnName.indexOf("yin_pin") != -1)
+			 // 停止音频播放
+			if (proxy.$refs.${field}) {
+				proxy.$refs.${field}.stop();
+			}
+#end
+#end
+#end
+#end
+}
+
+// 使用 defineExpose 暴露方法
+defineExpose({
+  open${BusinessName}DetailDialog
+});
+</script>
+<style>
+</style>

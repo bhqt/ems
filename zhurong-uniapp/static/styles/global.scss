@@ -1,0 +1,175 @@
+/**
+ * 通用全局css样式布局处理
+ */
+
+/** 基础通用 **/
+page {
+  background: $page-color-white;
+}
+
+.a_container {
+  padding-top: 30rpx;
+  background: $page-color-white;
+}
+
+.a_query_form {
+  padding-left: 10rpx !important;
+  padding-right: 10rpx !important;
+  box-sizing: border-box;
+  width: 100%;
+}
+.a_query_form_item {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+
+  box-sizing: border-box;
+  width: 100%;
+}
+.a_query_form_item_datetime_between {
+}
+.a_query_form_item_number_between {
+}
+.a_query_form_select {
+  flex: 1;
+  width: 100%;
+  padding-right: 10rpx !important;
+  box-sizing: border-box;
+}
+
+
+.a_button {
+  width: 60%;
+  //  上下外边距：0 表示上下外边距为 0，即元素上下方向紧贴其他内容。
+  //左右外边距：auto 表示浏览器自动计算左右外边距，使元素水平居中
+  margin: 15px auto;
+}
+
+.a_detail_text {
+    flex: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: 60rpx;
+  //font-size: $font-base;
+  //color: $font-color-base;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.a_add_form {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.a_add_form_item {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+    padding-right: 10px;
+}
+.a_add_form_item_datetime_between {
+}
+.a_add_form_item_number_between {
+}
+.a_add_form_select {
+}
+
+
+	.a_swiper {
+		width: 100%;
+		//height: 350upx;
+	    padding: 0 28upx;
+        //border-radius: 10upx;
+
+		.a_swiper_item {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+            //border-radius: 10upx;
+
+            .a_image_wrapper {
+              width: 100%;
+              height: 100%;
+            }
+		}
+	}
+
+	/* 图片载入替代方案 */
+	.a_image_wrapper {
+		font-size: 0;
+		background: #f3f3f3;
+		//border-radius: 10upx;
+
+		image {
+			width: 100%;
+			height: 100%;
+			transition: .6s;
+			opacity: 0;
+
+			&.loaded {
+				opacity: 1;
+			}
+		}
+	}
+
+
+
+	/* 公共图标样式 */
+	.icon-common {
+		width: 30rpx;
+		height: 30rpx;
+		margin-right: 10px;
+	}
+	.icon-big {
+		width: 60rpx;
+		height: 60rpx;
+		margin-right: 10px;
+	}
+
+    /* 左右内缩20px的横线 */
+.indent-line {
+  width: calc(100% - 20px); /* 总宽度 = 父容器宽度 - 左右内缩之和 */
+  height: 1px;
+  background-color: #eee;
+  margin: 10px auto; /* 水平居中 */
+}
+
+.global-loading-text {
+    margin-top: 20rpx;
+    font-size: 38rpx;
+    color: #666;
+}
+
+
+/* 微信小程序表单内容区域样式重写 - 针对微信小程序的特殊处理 */
+.uni-forms-item__content {
+  padding-right: 30rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 确保微信小程序中内部组件也能正确显示右侧边距 */
+.uni-forms-item__content > uni-data-picker,
+.uni-forms-item__content > uni-easyinput {
+  width: 100% !important;
+  padding-right: 10rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 修复微信小程序中uni-data-select组件宽度问题 */
+.uni-stat__select {
+  width: 100% !important;
+  flex: 1 !important;
+}
+
+.uni-stat-box {
+  width: 100% !important;
+  flex: 1 !important;
+}
+
+.uni-select {
+  width: 100% !important;
+  flex: 1 !important;
+}
+
+.uni-select__input-box {
+  width: auto !important;
+  flex: 1 !important;
+}

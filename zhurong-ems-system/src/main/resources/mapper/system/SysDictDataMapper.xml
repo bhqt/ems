@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysDictDataMapper">
+
+    <resultMap type="SysDictData" id="SysDictDataResult">
+        <id property="dictCode" column="dict_code"/>
+        <result property="dictSort" column="dict_sort"/>
+        <result property="dictLabel" column="dict_label"/>
+        <result property="dictValue" column="dict_value"/>
+        <result property="dictType" column="dict_type"/>
+        <result property="cssClass" column="css_class"/>
+        <result property="listClass" column="list_class"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+    <select id="selectDictValueByDictTypeAndDictLabel" resultType="String">
+        select dict_value
+        from sys_dict_data
+        where dict_type = #{dictType}
+          and dict_label = #{dictLabel}
+    </select>
+    <select id="selectAllDictLableStrByDictType" resultType="String">
+        SELECT GROUP_CONCAT(t.dict_label SEPARATOR ',')
+        FROM sys_dict_data t
+        WHERE t.dict_type = #{dictType}
+        group by t.dict_type
+    </select>
+    <select id="selectMaxDictSortByDictType" resultType="int">
+        SELECT IF(max(t.dict_sort), max(t.dict_sort), 0)
+        FROM sys_dict_data t
+        WHERE t.dict_type = #{dictType}
+    </select>
+</mapper>

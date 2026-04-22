@@ -1,0 +1,239 @@
+<template>
+	<view class="a_container">
+		<uni-forms class="a_query_form" :model="pageData.queryParams" ref="queryFormRef"
+		           label-position="left" label-width="100px" label-align="right">
+#foreach($column in $columns)
+#if($column.isAppQuery=="1")
+#set($dictType=$column.dictType)
+#set($AttrName=$column.attrName)
+#set($comment=$column.columnComment)
+#if($column.columnName == "dept_id")
+			<uni-forms-item class="a_query_form_item" label="${comment}" name="${column.javaField}">
+			  	<uni-data-picker class="a_query_form_select" v-model="pageData.queryParams.${column.javaField}" :localdata="pageData.dictData.${dictType}" placeholder="请选择" clearable>
+				</uni-data-picker>
+			</uni-forms-item>
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf(
+	"_3") != -1 ))
+	##  级联下拉框，2级或者3级
+			<uni-forms-item class="a_query_form_item" label="${comment}" name="${column.javaField}">
+				<uni-data-picker class="a_query_form_select" v-model="pageData.queryParams.${column.javaField}" :localdata="pageData.dictData.${dictType}" placeholder="请选择" clearable>
+				</uni-data-picker>
+			</uni-forms-item>
+#elseif($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+			<uni-forms-item class="a_query_form_item" label="${comment}" name="${column.javaField}">
+				<uni-data-picker class="a_query_form_select" v-model="pageData.queryParams.${column.javaField}" :localdata="pageData.dictData.${dictType}" placeholder="请选择" clearable>
+				</uni-data-picker>
+			</uni-forms-item>
+#elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}" name="${column.javaField}">
+				<uni-datetime-picker v-model="pageData.queryParams.${column.javaField}" type="datetime" return-type="string" placeholder="请选择" clearable/>
+			</uni-forms-item>
+#elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+			<uni-forms-item class="a_query_form_item_datetime_between" label="${comment}">
+				<uni-datetime-picker v-model="pageData.dateRange${AttrName}" type="datetimerange" start-placeholder="开始日期" end-placeholder="结束日期" return-type="string" rangeSeparator="-" clearable/>
+			</uni-forms-item>
+#elseif($column.htmlType == "date" && $column.queryType != "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}" name="${column.javaField}">
+				<uni-datetime-picker v-model="pageData.queryParams.${column.javaField}" type="date" return-type="string" clearable placeholder="请选择"/>
+			</uni-forms-item>
+#elseif($column.htmlType == "date" && $column.queryType == "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}">
+				<uni-datetime-picker clearable start-placeholder="开始日期" end-placeholder="结束日期"
+				                     v-model="pageData.dateRange${AttrName}" type="daterange" return-type="string" rangeSeparator="-"/>
+			</uni-forms-item>
+#elseif(($column.javaType == "Integer" || $column.javaType == "Long" || $column.javaType == "Double" || $column.javaType == "BigDecimal") && $column.queryType == "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}">
+				<uni-number-box class="a_query_form_item_number_between" clearable placeholder=">="
+				                v-model="pageData.queryParams.params.begin${AttrName}"/>
+				&nbsp;~&nbsp;
+				<uni-number-box class="a_query_form_item_number_between" clearable placeholder="<="
+				                v-model="pageData.queryParams.params.end${AttrName}"/>
+			</uni-forms-item>
+#elseif($column.htmlType == "input"  || $column.htmlType == "input-tag")
+			<uni-forms-item class="a_query_form_item" label="${comment}" name="${column.javaField}">
+				<uni-easyinput v-model="pageData.queryParams.${column.javaField}" placeholder="请输入${comment}" clearable/>
+			</uni-forms-item>
+#end
+#end
+#end
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("handleQuery") == -1)
+#set($isShowButton="false")
+#end
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("resetQuery") == -1)
+#set($isShowButton="false")
+#end
+		</uni-forms>
+		<view class="a_button">
+			<button type="primary" @click="handleQuery">查询</button>
+		</view>
+
+	  <view class="list">
+			<!-- 基于 uni-list 的页面布局 -->
+			<uni-list>
+				<!-- 所有字段 #foreach($column in $columns)
+#if($column.list) $column.javaField,  #end
+#end -->
+				<!-- direction 属性决定列表的排版方向 row,column -->
+				<!-- to 属性携带参数跳转详情页面，当前只为参考 :to="'/pages/news/newsDetail?id='+item.id" -->
+			  	<!-- thumbSize 可选值，lg:大图; medium:一般; sm:小图; -->
+			  	<uni-list-item v-for="item in pageData.${businessName}List" :key="item.id"
+#set($noteExpr = "")
+#set($thumbExpr = "/static/biaoshi.svg")
+#foreach($column in $columns)
+  #if($column.isAppList == "2")
+    #set($curFiled =$column.javaField)
+    #if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+      #set($curFiled ="${column.javaField}Extend")
+    #end
+    #if($noteExpr != "")
+      #set($noteExpr =  ${noteExpr} + " +' \n '+"  )
+    #end
+    #set($noteExpr = "${noteExpr}item.${curFiled}.toString()")
+  #end
+#end
+#foreach($column in $columns)
+#if($column.isAppList!="0")
+#set($curFiled =$column.javaField)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+#set($curFiled ="${column.javaField}Extend")
+#end
+#if($column.isAppList== "1")
+								   :title="item.${curFiled}.toString()"
+#elseif($column.isAppList== "3")
+								   :rightText="item.${curFiled}.toString()"
+#else
+#end
+#end
+###if($column.htmlType == "imageUpload")
+###set($thumbExpr = ${column.javaField}+".split(',')[0]")
+###end
+#end
+								   :note="${noteExpr}"
+								   thumb="$thumbExpr" thumb-size="medium"
+								   showArrow link="navigateTo" :to="'./${businessName}Detail?id='+item.id">
+				</uni-list-item>
+			</uni-list>
+			<!-- 通过 loadMore 组件实现上拉加载效果，如需自定义显示内容，可参考：https://ext.dcloud.net.cn/plugin?id=29 -->
+			<!--  <uni-load-more :status="loadMoreStatus" /> -->
+		</view>
+	</view>
+</template>
+
+<script>
+import config from '@/config'
+import {mapState} from 'vuex';
+import {getDictData} from '@/utils/dict'
+import ${businessName} from '@/api/autoee/${businessName}';
+
+export default {
+	data() {
+		return {
+			// 所有需要响应式的参数都要初始化，否则Vue 无法追踪这个属性的变化
+			pageData: {
+				imageBaseUrl: config.baseUrl,
+				userId: this.$store.getters.userId,
+			  	${businessName}List: [],
+				queryParams: {
+#foreach($column in $columns)
+#if($column.query)
+					${column.javaField}: "",
+#end
+#end
+				  	params: []
+				},
+#foreach ($column in $columns)
+#if($column.query && ($column.htmlType == "date" || $column.htmlType == "datetime") && $column.queryType == "BETWEEN")
+#set($AttrName=$column.attrName)
+				dateRange${AttrName}: [],
+#end
+#end
+				dictData: {
+#foreach($column in $columns)
+#if($column.query)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+					$column.dictType: [],
+#end
+#end
+#end
+				}
+			}
+		}
+	},
+	async onLoad(options) {
+	  	console.log('页面参数:', options)
+    	this.initData()
+	  	this.loadData();
+	},
+	onShow() {
+		console.log('页面显示')
+		// this.loadData();
+    },
+	mounted(){
+
+	},
+	computed: {
+		...mapState(['user'])
+	},
+	methods: {
+		async initData() {
+		 	try {
+#foreach($column in $columns)
+#if($column.query)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+				this.pageData.dictData.$column.dictType = await getDictData('$column.dictType')
+#end
+#end
+#end
+#foreach ($column in $columns)
+#if($column.query && ($column.htmlType == "date" || $column.htmlType == "datetime") && $column.queryType == "BETWEEN")
+#set($AttrName=$column.attrName)
+				// 初始化 dateRange${AttrName}
+#if($genTableExtendInfo.queryDateRange && $genTableExtendInfo.queryDateRange != "")
+				this.pageData.dateRange${AttrName} = [];
+#else
+				this.pageData.dateRange${AttrName} = [];
+#end
+#end
+#end
+
+			} catch (error) {
+				console.error('获取字典失败:', error)
+			}
+		},
+	  	//请求数据
+		loadData(){
+#foreach ($column in $columns)
+#set($AttrName=$column.attrName)
+#if($column.query && ($column.htmlType == "date" || $column.htmlType == "datetime") && $column.queryType == "BETWEEN")
+  			if (this.pageData.dateRange${AttrName} && this.pageData.dateRange${AttrName}.length > 0) {
+  				this.pageData.queryParams.params["begin${AttrName}"] = this.pageData.dateRange${AttrName}[0];
+  				this.pageData.queryParams.params["end${AttrName}"] = this.pageData.dateRange${AttrName}[1];
+  			} else {
+  				this.pageData.queryParams.params["begin${AttrName}"] = null;
+  				this.pageData.queryParams.params["end${AttrName}"] = null;
+  			}
+#end
+#end
+			let data = this.pageData.queryParams
+			data.limitTopN = 200
+        	${businessName}.selectDetailListByLike${ClassName}(data).then(res => {
+           	 	// console.log("getAddressByCurrentUser-res=", res)
+            	let list = res.rows;
+            	this.pageData.${businessName}List = list;
+        	})
+	    },
+		//查询
+		handleQuery()
+		{
+			 this.loadData()
+		},
+	}
+}
+</script>
+
+// style中样式放入单独文件中，避免格式化代码后导致样式失效问题
+<style lang="scss">
+//@import '@/static/styles/autoee/${businessName}/${businessName}List.scss';
+</style>

@@ -1,0 +1,535 @@
+{
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/login",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-bottom"
+        }
+      }
+    },
+    {
+      "path": "pages/register",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom",
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-bottom"
+        }
+      }
+    },
+    {
+      "path": "pages/mine/mine",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/find/find",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/system/system",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/message/message",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/index/indexPageSwiperDetail",
+      "style": {
+        "navigationBarTitleText": "详情",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/userinfo/userinfo",
+      "style": {
+        "navigationBarTitleText": "修改资料"
+      }
+    },
+    {
+      "path": "pages/userinfo/updateUserInfo",
+      "style": {
+        "navigationBarTitleText": "修改资料"
+      }
+    },
+    {
+      "path": "pages/newsManage/newsDetail",
+      "style": {
+        "navigationBarTitleText": "详情"
+      }
+    },
+    {
+      "path": "pages/iotAlarmData/iotAlarmDataDetail",
+      "style": {
+        "navigationBarTitleText": "报警详情"
+      }
+    },
+    {
+      "path": "pages/test/sysSvgImage",
+      "style": {
+        "navigationBarTitleText": "系统图标浏览",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/iotAlarmData/iotAlarmDataList",
+      "style": {
+        "navigationBarTitleText": "报警信息"
+      }
+    },
+    {
+      "path": "pages/iotDevice/iotDeviceDetail",
+      "style": {
+        "navigationBarTitleText": "设备详情"
+      }
+    },
+    {
+      "path": "pages/iotDevice/iotDeviceList",
+      "style": {
+        "navigationBarTitleText": "设备管理"
+      }
+    },
+    {
+      "path": "pages/iotDeviceData/iotDeviceDataDetail",
+      "style": {
+        "navigationBarTitleText": "设备数据详情"
+      }
+    },
+    {
+      "path": "pages/iotDeviceData/iotDeviceDataList",
+      "style": {
+        "navigationBarTitleText": "设备数据"
+      }
+    },
+    {
+      "path": "pages/iotArea/iotAreaDetail",
+      "style": {
+        "navigationBarTitleText": "区域详情"
+      }
+    },
+    {
+      "path": "pages/iotArea/iotAreaList",
+      "style": {
+        "navigationBarTitleText": "区域管理"
+      }
+    },
+    {
+      "path": "pages/test/commSvgImage",
+      "style": {
+        "navigationBarTitleText": "图标查找"
+      }
+    },
+    {
+      "path": "pages/patrolTask/todayPatrolTasks",
+      "style": {
+        "navigationBarTitleText": "今日巡更任务"
+      }
+    },
+    {
+      "path": "pages/patrolTask/patrolCheckin",
+      "style": {
+        "navigationBarTitleText": "巡更打卡"
+      }
+    },
+    {
+      "path": "pages/patrolAlarm/patrolAlarmDetail",
+      "style": {
+        "navigationBarTitleText": "报警详情"
+      }
+    },
+    {
+      "path": "pages/patrolAlarm/patrolAlarmDeal",
+      "style": {
+        "navigationBarTitleText": "报警处理"
+      }
+    },
+    {
+      "path": "pages/maintainOrder/maintainOrderDetail",
+      "style": {
+        "navigationBarTitleText": "工单详情"
+      }
+    },
+    {
+      "path": "pages/maintainOrder/maintainOrderDeal",
+      "style": {
+        "navigationBarTitleText": "工单处理"
+      }
+    },
+    {
+      "path": "pages/maintainOrder/maintainOrderAdd",
+      "style": {
+        "navigationBarTitleText": "工单处理"
+      }
+    },
+    {
+      "path": "pages/maintainOrder/maintainOrderList",
+      "style": {
+        "navigationBarTitleText": "工单信息",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/patrolAlarm/patrolAlarmList",
+      "style": {
+        "navigationBarTitleText": "巡更报警",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/patrolRecord/patrolRecordList",
+      "style": {
+        "navigationBarTitleText": "巡更记录",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/patrolRecord/patrolRecordDetail",
+      "style": {
+        "navigationBarTitleText": "巡更记录详情"
+      }
+    },
+    {
+      "path": "pages/patrolTask/patrolTaskList",
+      "style": {
+        "navigationBarTitleText": "巡更任务",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/patrolPlan/patrolPlanList",
+      "style": {
+        "navigationBarTitleText": "巡更计划",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/patrolPlan/patrolPlanDetail",
+      "style": {
+        "navigationBarTitleText": "巡更计划详情"
+      }
+    },
+    {
+      "path": "pages/set/set",
+      "style": {
+        "navigationBarTitleText": "设置",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/test/sysSvgImage",
+      "style": {
+        "navigationBarTitleText": "系统图标浏览",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+  "path": "pages/goodsInfo/goodsInfoDetail",
+  "style": {
+    "navigationBarTitleText": "物品信息管理详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsInfo/goodsInfoList",
+  "style": {
+    "navigationBarTitleText": "物品信息管理列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsInfo/goodsInfoAdd",
+  "style": {
+    "navigationBarTitleText": "添加物品信息管理",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/goodsInventory/goodsInventoryDetail",
+  "style": {
+    "navigationBarTitleText": "物品库存详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsInventory/goodsInventoryList",
+  "style": {
+    "navigationBarTitleText": "物品库存列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsInventory/goodsInventoryAdd",
+  "style": {
+    "navigationBarTitleText": "添加物品库存",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/goodsStockIn/goodsStockInDetail",
+  "style": {
+    "navigationBarTitleText": "物品入库记录详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsStockIn/goodsStockInList",
+  "style": {
+    "navigationBarTitleText": "物品入库记录列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsStockIn/goodsStockInAdd",
+  "style": {
+    "navigationBarTitleText": "添加物品入库记录",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/goodsStockOut/goodsStockOutDetail",
+  "style": {
+    "navigationBarTitleText": "物品出库记录详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsStockOut/goodsStockOutList",
+  "style": {
+    "navigationBarTitleText": "物品出库记录列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/goodsStockOut/goodsStockOutAdd",
+  "style": {
+    "navigationBarTitleText": "添加物品出库记录",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/contractInfo/contractInfoDetail",
+  "style": {
+    "navigationBarTitleText": "合同信息管理详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/contractInfo/contractInfoList",
+  "style": {
+    "navigationBarTitleText": "合同信息管理列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/contractInfo/contractInfoAdd",
+  "style": {
+    "navigationBarTitleText": "添加合同信息管理",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/dangerGoodsInfo/dangerGoodsInfoDetail",
+  "style": {
+    "navigationBarTitleText": "危化品信息管理详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsInfo/dangerGoodsInfoList",
+  "style": {
+    "navigationBarTitleText": "危化品信息管理列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsInfo/dangerGoodsInfoAdd",
+  "style": {
+    "navigationBarTitleText": "添加危化品信息管理",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/dangerGoodsInventory/dangerGoodsInventoryDetail",
+  "style": {
+    "navigationBarTitleText": "危化品库存详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsInventory/dangerGoodsInventoryList",
+  "style": {
+    "navigationBarTitleText": "危化品库存列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsInventory/dangerGoodsInventoryAdd",
+  "style": {
+    "navigationBarTitleText": "添加危化品库存",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/dangerGoodsStockIn/dangerGoodsStockInDetail",
+  "style": {
+    "navigationBarTitleText": "危化品入库记录详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsStockIn/dangerGoodsStockInList",
+  "style": {
+    "navigationBarTitleText": "危化品入库记录列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsStockIn/dangerGoodsStockInAdd",
+  "style": {
+    "navigationBarTitleText": "添加危化品入库记录",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/dangerGoodsStockOut/dangerGoodsStockOutDetail",
+  "style": {
+    "navigationBarTitleText": "危化品出库记录详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsStockOut/dangerGoodsStockOutList",
+  "style": {
+    "navigationBarTitleText": "危化品出库记录列表",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/dangerGoodsStockOut/dangerGoodsStockOutAdd",
+  "style": {
+    "navigationBarTitleText": "添加危化品出库记录",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/patrolPlan/patrolPlanAdd",
+  "style": {
+    "navigationBarTitleText": "添加巡更计划",
+    "navigationStyle": "default"
+  }
+},
+    {
+  "path": "pages/patrolTask/patrolTaskDetail",
+  "style": {
+    "navigationBarTitleText": "巡更任务详情",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  }
+},
+    {
+  "path": "pages/patrolTask/patrolTaskAdd",
+  "style": {
+    "navigationBarTitleText": "添加巡更任务",
+    "navigationStyle": "default"
+  }
+}
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#666666",
+    "selectedColor": "#333333",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/index/index",
+        "iconPath": "static/index.png",
+        "selectedIconPath": "static/index_select.png"
+      },
+      //      {
+      //				"text": "巡更",
+      ////				"text": "应用",
+      //				"pagePath": "pages/patrolTask/patrolTaskList",
+      ////				"pagePath": "pages/system/system",
+      //				"iconPath": "static/system.png",
+      //				"selectedIconPath": "static/system_select.png"
+      //			},
+      //		{
+      //			"text": "消息",
+      //			"pagePath": "pages/message/message",
+      //			"iconPath": "static/message.png",
+      //			"selectedIconPath": "static/message_select.png"
+      //		}	,
+
+      //      {
+      //				"text": "工单",
+      ////				"text": "发现",
+      //				"pagePath": "pages/maintainOrder/maintainOrderList",
+      ////				"pagePath": "pages/find/find",
+      //				"iconPath": "static/find.png",
+      //				"selectedIconPath": "static/find_select.png"
+      //			},
+      {
+        "text": "我的",
+        "pagePath": "pages/mine/mine",
+        "iconPath": "static/my.png",
+        "selectedIconPath": "static/my_select.png"
+      }
+    ]
+  },
+  "uniIdRouter": {}
+}

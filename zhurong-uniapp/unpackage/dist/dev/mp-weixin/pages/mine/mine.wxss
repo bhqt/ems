@@ -1,0 +1,163 @@
+
+page {
+		background-color: #FFFFFF;
+}
+.a1 {
+		padding-left: 35rpx;
+}
+.a2 {
+		background-image: linear-gradient(#CEF7E3, #FFFFFF);
+		height: 150rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: 35rpx;
+		padding-right: 35rpx;
+}
+.a3 {
+		width: 50rpx;
+		height: 50rpx;
+}
+.a4 {
+		font-size: 34rpx;
+		font-weight: 700;
+}
+.a5 {
+		display: flex;
+		flex-direction: column;
+}
+.a6 {
+		font-size: 40rpx;
+		font-weight: 700;
+}
+.a7 {
+		font-size: 24rpx;
+		color: darkgray;
+		margin-top: 10rpx;
+}
+.avatar-wrapper {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 20rpx;
+}
+.avatar-container .image-show-list-item {
+			height: 200rpx;
+			width: 200rpx;
+			border-radius: 100%;
+			object-fit: contain;
+			background-color: #f5f5f5;
+			transition: -webkit-transform 0.2s ease;
+			transition: transform 0.2s ease;
+			transition: transform 0.2s ease, -webkit-transform 0.2s ease;
+}
+.avatar-container .image-show-list {
+				margin: 0;
+				padding: 0;
+}
+.avatar-container {
+		position: relative;
+}
+.avatar-container:active .image-show-list-item {
+		-webkit-transform: scale(1.05);
+		        transform: scale(1.05);
+}
+.avatar-edit-btn {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 0;
+		padding: 10rpx 20rpx;
+		background-color: #f5f5f5;
+		border-radius: 20rpx;
+		touch-action: manipulation;
+}
+.avatar-edit-btn:active {
+		background-color: #e6e6e6;
+}
+.edit-text {
+		font-size: 22rpx;
+		color: #333;
+		margin-top: 5rpx;
+}
+.avatar-upload-icon {
+		width: 50rpx;
+		height: 50rpx;
+		fill: white;
+}
+.a8 {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		margin-top: 40rpx;
+		padding-left: 20rpx;
+		padding-right: 20rpx;
+}
+.a9 {
+		height: 160rpx;
+		width: 320rpx;
+		border-radius: 30rpx;
+}
+.b3 {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		padding-left: 50rpx;
+		padding-right: 50rpx;
+		padding-top: 50rpx;
+}
+.b4 {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+}
+.b5 {
+		width: 80rpx;
+		height: 80rpx;
+		margin-right: 15rpx;
+}
+.b6 {
+		display: flex;
+		flex-direction: column;
+}
+.b7 {
+		font-size: 28rpx;
+}
+.b8 {
+		font-size: 22rpx;
+		color: darkgray;
+}
+.b9 {
+		font-size: 22rpx;
+		color: darkgray;
+}
+.b1 {
+		font-size: 32rpx;
+		padding-left: 35rpx;
+		padding-top: 60rpx;
+		font-weight: 600;
+		color: #333;
+}
+.d3 {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+}
+.d4 {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 25%;
+		margin-top: 30rpx;
+}
+.d5 {
+		height: 60rpx;
+		width: 60rpx;
+}
+.d6 {
+		font-size: 22rpx;
+		margin-top: 15rpx;
+}
+

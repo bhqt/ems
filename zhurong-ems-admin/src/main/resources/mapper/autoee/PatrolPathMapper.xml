@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.patrolPath.mapper.PatrolPathMapper">
+
+    <resultMap type="PatrolPath" id="PatrolPathResult">
+        <result property="id"    column="id"    />
+        <result property="routeCode"    column="route_code"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="patrolRouteStatus"    column="patrol_route_status"    />
+        <result property="patrolRouteStatusExtend"    column="patrol_route_status_extend"    />
+        <result property="pointList"    column="point_list"    />
+        <result property="pointListExtend"    column="point_list_extend"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectPatrolPathVo">
+        select
+			t.id,
+			t.route_code,
+			t.route_name,
+			t.patrol_route_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_route_status' and dict_data.dict_value = patrol_route_status) as patrol_route_status_extend,
+			t.point_list,
+	       (SELECT self_dict.point_name FROM  a_patrol_point self_dict  where self_dict.id  = t.point_list) as point_list_extend,
+			t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_by,
+			t.create_time,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_patrol_path t
+    </sql>
+
+	<sql id="selectPatrolPathDetailVo">
+        select
+            t.id,
+            t.route_code,
+            t.route_name,
+			t.patrol_route_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_route_status' and dict_data.dict_value = patrol_route_status) as patrol_route_status_extend,
+			t.point_list,
+	       (SELECT self_dict.point_name FROM  a_patrol_point self_dict  where self_dict.id  = t.point_list) as point_list_extend,
+            t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_by,
+            t.create_time,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_patrol_path t
+    </sql>
+
+	    <select id="selectDataByPkPatrolPath" parameterType="Long" resultMap="PatrolPathResult">
+        <include refid="selectPatrolPathVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="routeCode != null  and routeCode != ''"> and route_code like concat('%', #{routeCode}, '%')</if>
+            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="patrolRouteStatus != null  and patrolRouteStatus != ''"> and patrol_route_status = #{patrolRouteStatus}</if>
+			 <if test="params.patrolRouteStatusInValueArr!= null ">
+            	and patrol_route_status in
+                <foreach item="patrolRouteStatus" collection="params.patrolRouteStatusInValueArr" open="(" separator="," close=")">
+                    #{patrolRouteStatus}
+                </foreach>
+        	</if>
+            <if test="pointList != null  and pointList != ''"> and point_list = #{pointList}</if>
+			 <if test="params.pointListInValueArr!= null ">
+            	and point_list in
+                <foreach item="pointList" collection="params.pointListInValueArr" open="(" separator="," close=")">
+                    #{pointList}
+                </foreach>
+        	</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikePatrolPath" parameterType="PatrolPath" resultMap="PatrolPathResult">
+        <include refid="selectPatrolPathVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.patrolPath.mapper.PatrolPathMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikePatrolPath" parameterType="PatrolPath" resultType="int">
+        select count(*) from a_patrol_path t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.patrolPath.mapper.PatrolPathMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="routeCode != null  and routeCode != ''"> and route_code = #{routeCode}</if>
+            <if test="routeName != null  and routeName != ''"> and route_name = #{routeName}</if>
+            <if test="patrolRouteStatus != null  and patrolRouteStatus != ''"> and patrol_route_status = #{patrolRouteStatus}</if>
+            <if test="pointList != null  and pointList != ''"> and point_list = #{pointList}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqPatrolPath" parameterType="PatrolPath" resultMap="PatrolPathResult">
+        <include refid="selectPatrolPathVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqPatrolPath" parameterType="PatrolPath" resultType="int">
+        select count(*) from a_patrol_path t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkPatrolPath" parameterType="Long" resultMap="PatrolPathResult">
+        <include refid="selectPatrolPathDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikePatrolPath" parameterType="PatrolPath" resultMap="PatrolPathResult">
+        <include refid="selectPatrolPathDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.patrolPath.mapper.PatrolPathMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqPatrolPath" parameterType="PatrolPath" resultMap="PatrolPathResult">
+        <include refid="selectPatrolPathDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertPatrolPath" parameterType="PatrolPath" useGeneratedKeys="true" keyProperty="id">
+        insert into a_patrol_path
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">route_code,</if>
+            <if test="routeName != null and routeName != ''">route_name,</if>
+            <if test="patrolRouteStatus != null and patrolRouteStatus != ''">patrol_route_status,</if>
+            <if test="pointList != null and pointList != ''">point_list,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">#{routeCode},</if>
+            <if test="routeName != null and routeName != ''">#{routeName},</if>
+            <if test="patrolRouteStatus != null and patrolRouteStatus != ''">#{patrolRouteStatus},</if>
+            <if test="pointList != null and pointList != ''">#{pointList},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByPatrolPath">
+        INSERT INTO a_patrol_path
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            route_code,
+            route_name,
+            patrol_route_status,
+            point_list,
+            remark,
+            user_id,
+            dept_id,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.routeCode},
+			#{item.routeName},
+			#{item.patrolRouteStatus},
+			#{item.pointList},
+			#{item.remark},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		route_code = VALUES(route_code),
+       		route_name = VALUES(route_name),
+       		patrol_route_status = VALUES(patrol_route_status),
+       		point_list = VALUES(point_list),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByPatrolPath" parameterType="PatrolPath">
+        update a_patrol_path
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">route_code = #{routeCode},</if>
+            <if test="routeName != null and routeName != ''">route_name = #{routeName},</if>
+            <if test="patrolRouteStatus != null and patrolRouteStatus != ''">patrol_route_status = #{patrolRouteStatus},</if>
+            <if test="pointList != null and pointList != ''">point_list = #{pointList},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByPatrolPath" parameterType="PatrolPath">
+        update a_patrol_path
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">route_code = #{routeCode},</if>
+            <if test="routeName != null and routeName != ''">route_name = #{routeName},</if>
+            <if test="patrolRouteStatus != null and patrolRouteStatus != ''">patrol_route_status = #{patrolRouteStatus},</if>
+            <if test="pointList != null and pointList != ''">point_list = #{pointList},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePatrolPathById" parameterType="PatrolPath">
+		delete from a_patrol_path where id = #{id}
+    </delete>
+
+    <delete id="deletePatrolPathByIds" parameterType="PatrolPath">
+        delete from a_patrol_path where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePatrolPathByEqPatrolPath" parameterType="PatrolPath">
+        delete from a_patrol_path
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deletePatrolPathAllData">
+        delete from a_patrol_path
+    </delete>
+
+
+</mapper>

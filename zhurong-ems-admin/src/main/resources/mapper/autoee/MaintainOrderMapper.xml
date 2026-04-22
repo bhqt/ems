@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.maintainOrder.mapper.MaintainOrderMapper">
+
+    <resultMap type="MaintainOrder" id="MaintainOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="description"    column="description"    />
+        <result property="orderFaultType"    column="order_fault_type"    />
+        <result property="orderFaultTypeExtend"    column="order_fault_type_extend"    />
+        <result property="orderPriority"    column="order_priority"    />
+        <result property="orderPriorityExtend"    column="order_priority_extend"    />
+        <result property="repairOrderStatus"    column="repair_order_status"    />
+        <result property="repairOrderStatusExtend"    column="repair_order_status_extend"    />
+        <result property="location"    column="location"    />
+        <result property="reporterId"    column="reporter_id"    />
+        <result property="reporterIdExtend"    column="reporter_id_extend"    />
+        <result property="reporterContact"    column="reporter_contact"    />
+        <result property="reportTime"    column="report_time"    />
+        <result property="assigneeId"    column="assignee_id"    />
+        <result property="assigneeIdExtend"    column="assignee_id_extend"    />
+        <result property="repairResult"    column="repair_result"    />
+        <result property="repairImages"    column="repair_images"    />
+        <result property="completionTime"    column="completion_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectMaintainOrderVo">
+        select
+			t.id,
+			t.order_no,
+			t.description,
+			t.order_fault_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='order_fault_type' and dict_data.dict_value = order_fault_type) as order_fault_type_extend,
+			t.order_priority,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='order_priority' and dict_data.dict_value = order_priority) as order_priority_extend,
+			t.repair_order_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='repair_order_status' and dict_data.dict_value = repair_order_status) as repair_order_status_extend,
+			t.location,
+			t.reporter_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.reporter_id) as reporter_id_extend,
+			t.reporter_contact,
+			t.report_time,
+			t.assignee_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.assignee_id) as assignee_id_extend,
+			t.repair_result,
+			t.repair_images,
+			t.completion_time,
+			t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_time,
+			t.create_by,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_maintain_order t
+    </sql>
+
+	<sql id="selectMaintainOrderDetailVo">
+        select
+            t.id,
+            t.order_no,
+            t.description,
+			t.order_fault_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='order_fault_type' and dict_data.dict_value = order_fault_type) as order_fault_type_extend,
+			t.order_priority,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='order_priority' and dict_data.dict_value = order_priority) as order_priority_extend,
+			t.repair_order_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='repair_order_status' and dict_data.dict_value = repair_order_status) as repair_order_status_extend,
+            t.location,
+			t.reporter_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.reporter_id) as reporter_id_extend,
+            t.reporter_contact,
+            t.report_time,
+			t.assignee_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.assignee_id) as assignee_id_extend,
+            t.repair_result,
+            t.repair_images,
+            t.completion_time,
+            t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_time,
+            t.create_by,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_maintain_order t
+    </sql>
+
+	    <select id="selectDataByPkMaintainOrder" parameterType="Long" resultMap="MaintainOrderResult">
+        <include refid="selectMaintainOrderVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no like concat('%', #{orderNo}, '%')</if>
+            <if test="description != null  and description != ''"> and description like concat('%', #{description}, '%')</if>
+            <if test="orderFaultType != null  and orderFaultType != ''"> and order_fault_type = #{orderFaultType}</if>
+			 <if test="params.orderFaultTypeInValueArr!= null ">
+            	and order_fault_type in
+                <foreach item="orderFaultType" collection="params.orderFaultTypeInValueArr" open="(" separator="," close=")">
+                    #{orderFaultType}
+                </foreach>
+        	</if>
+            <if test="orderPriority != null  and orderPriority != ''"> and order_priority = #{orderPriority}</if>
+			 <if test="params.orderPriorityInValueArr!= null ">
+            	and order_priority in
+                <foreach item="orderPriority" collection="params.orderPriorityInValueArr" open="(" separator="," close=")">
+                    #{orderPriority}
+                </foreach>
+        	</if>
+            <if test="repairOrderStatus != null  and repairOrderStatus != ''"> and repair_order_status = #{repairOrderStatus}</if>
+			 <if test="params.repairOrderStatusInValueArr!= null ">
+            	and repair_order_status in
+                <foreach item="repairOrderStatus" collection="params.repairOrderStatusInValueArr" open="(" separator="," close=")">
+                    #{repairOrderStatus}
+                </foreach>
+        	</if>
+            <if test="location != null  and location != ''"> and location like concat('%', #{location}, '%')</if>
+            <if test="reporterId != null "> and reporter_id = #{reporterId}</if>
+			 <if test="params.reporterIdInValueArr!= null ">
+            	and reporter_id in
+                <foreach item="reporterId" collection="params.reporterIdInValueArr" open="(" separator="," close=")">
+                    #{reporterId}
+                </foreach>
+        	</if>
+            <if test="reporterContact != null  and reporterContact != ''"> and reporter_contact like concat('%', #{reporterContact}, '%')</if>
+            <if test="reportTime != null "> and report_time = #{reportTime} </if>
+            <if test="params.beginReportTime != null and params.beginReportTime != ''"> and report_time &gt;= #{params.beginReportTime} </if>
+            <if test="params.endReportTime != null and params.endReportTime != ''"> and report_time &lt;= #{params.endReportTime}</if>
+            <if test="assigneeId != null "> and assignee_id = #{assigneeId}</if>
+			 <if test="params.assigneeIdInValueArr!= null ">
+            	and assignee_id in
+                <foreach item="assigneeId" collection="params.assigneeIdInValueArr" open="(" separator="," close=")">
+                    #{assigneeId}
+                </foreach>
+        	</if>
+            <if test="repairResult != null  and repairResult != ''"> and repair_result like concat('%', #{repairResult}, '%')</if>
+            <if test="repairImages != null  and repairImages != ''"> and repair_images = #{repairImages}</if>
+            <if test="completionTime != null "> and completion_time = #{completionTime} </if>
+            <if test="params.beginCompletionTime != null and params.beginCompletionTime != ''"> and completion_time &gt;= #{params.beginCompletionTime} </if>
+            <if test="params.endCompletionTime != null and params.endCompletionTime != ''"> and completion_time &lt;= #{params.endCompletionTime}</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikeMaintainOrder" parameterType="MaintainOrder" resultMap="MaintainOrderResult">
+        <include refid="selectMaintainOrderVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.maintainOrder.mapper.MaintainOrderMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikeMaintainOrder" parameterType="MaintainOrder" resultType="int">
+        select count(*) from a_maintain_order t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.maintainOrder.mapper.MaintainOrderMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="orderFaultType != null  and orderFaultType != ''"> and order_fault_type = #{orderFaultType}</if>
+            <if test="orderPriority != null  and orderPriority != ''"> and order_priority = #{orderPriority}</if>
+            <if test="repairOrderStatus != null  and repairOrderStatus != ''"> and repair_order_status = #{repairOrderStatus}</if>
+            <if test="location != null  and location != ''"> and location = #{location}</if>
+            <if test="reporterId != null "> and reporter_id = #{reporterId}</if>
+            <if test="reporterContact != null  and reporterContact != ''"> and reporter_contact = #{reporterContact}</if>
+            <if test="reportTime != null "> and report_time = #{reportTime}</if>
+            <if test="assigneeId != null "> and assignee_id = #{assigneeId}</if>
+            <if test="repairResult != null  and repairResult != ''"> and repair_result = #{repairResult}</if>
+            <if test="repairImages != null  and repairImages != ''"> and repair_images = #{repairImages}</if>
+            <if test="completionTime != null "> and completion_time = #{completionTime}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqMaintainOrder" parameterType="MaintainOrder" resultMap="MaintainOrderResult">
+        <include refid="selectMaintainOrderVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqMaintainOrder" parameterType="MaintainOrder" resultType="int">
+        select count(*) from a_maintain_order t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkMaintainOrder" parameterType="Long" resultMap="MaintainOrderResult">
+        <include refid="selectMaintainOrderDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikeMaintainOrder" parameterType="MaintainOrder" resultMap="MaintainOrderResult">
+        <include refid="selectMaintainOrderDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.maintainOrder.mapper.MaintainOrderMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqMaintainOrder" parameterType="MaintainOrder" resultMap="MaintainOrderResult">
+        <include refid="selectMaintainOrderDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertMaintainOrder" parameterType="MaintainOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into a_maintain_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="orderFaultType != null and orderFaultType != ''">order_fault_type,</if>
+            <if test="orderPriority != null and orderPriority != ''">order_priority,</if>
+            <if test="repairOrderStatus != null and repairOrderStatus != ''">repair_order_status,</if>
+            <if test="location != null">location,</if>
+            <if test="reporterId != null">reporter_id,</if>
+            <if test="reporterContact != null">reporter_contact,</if>
+            <if test="reportTime != null">report_time,</if>
+            <if test="assigneeId != null">assignee_id,</if>
+            <if test="repairResult != null">repair_result,</if>
+            <if test="repairImages != null">repair_images,</if>
+            <if test="completionTime != null">completion_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            create_time,
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">#{orderNo},</if>
+            <if test="description != null and description != ''">#{description},</if>
+            <if test="orderFaultType != null and orderFaultType != ''">#{orderFaultType},</if>
+            <if test="orderPriority != null and orderPriority != ''">#{orderPriority},</if>
+            <if test="repairOrderStatus != null and repairOrderStatus != ''">#{repairOrderStatus},</if>
+            <if test="location != null">#{location},</if>
+            <if test="reporterId != null">#{reporterId},</if>
+            <if test="reporterContact != null">#{reporterContact},</if>
+            <if test="reportTime != null">#{reportTime},</if>
+            <if test="assigneeId != null">#{assigneeId},</if>
+            <if test="repairResult != null">#{repairResult},</if>
+            <if test="repairImages != null">#{repairImages},</if>
+            <if test="completionTime != null">#{completionTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByMaintainOrder">
+        INSERT INTO a_maintain_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            order_no,
+            description,
+            order_fault_type,
+            order_priority,
+            repair_order_status,
+            location,
+            reporter_id,
+            reporter_contact,
+            report_time,
+            assignee_id,
+            repair_result,
+            repair_images,
+            completion_time,
+            remark,
+            user_id,
+            dept_id,
+            create_time,
+            create_by,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.orderNo},
+			#{item.description},
+			#{item.orderFaultType},
+			#{item.orderPriority},
+			#{item.repairOrderStatus},
+			#{item.location},
+			#{item.reporterId},
+			#{item.reporterContact},
+			#{item.reportTime},
+			#{item.assigneeId},
+			#{item.repairResult},
+			#{item.repairImages},
+			#{item.completionTime},
+			#{item.remark},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createTime},
+			#{item.createBy},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		order_no = VALUES(order_no),
+       		description = VALUES(description),
+       		order_fault_type = VALUES(order_fault_type),
+       		order_priority = VALUES(order_priority),
+       		repair_order_status = VALUES(repair_order_status),
+       		location = VALUES(location),
+       		reporter_id = VALUES(reporter_id),
+       		reporter_contact = VALUES(reporter_contact),
+       		report_time = VALUES(report_time),
+       		assignee_id = VALUES(assignee_id),
+       		repair_result = VALUES(repair_result),
+       		repair_images = VALUES(repair_images),
+       		completion_time = VALUES(completion_time),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByMaintainOrder" parameterType="MaintainOrder">
+        update a_maintain_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="orderFaultType != null and orderFaultType != ''">order_fault_type = #{orderFaultType},</if>
+            <if test="orderPriority != null and orderPriority != ''">order_priority = #{orderPriority},</if>
+            <if test="repairOrderStatus != null and repairOrderStatus != ''">repair_order_status = #{repairOrderStatus},</if>
+            <if test="location != null">location = #{location},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            reporter_id = #{reporterId},
+            <if test="reporterContact != null">reporter_contact = #{reporterContact},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            report_time = #{reportTime},
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            assignee_id = #{assigneeId},
+            <if test="repairResult != null">repair_result = #{repairResult},</if>
+            <if test="repairImages != null">repair_images = #{repairImages},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            completion_time = #{completionTime},
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByMaintainOrder" parameterType="MaintainOrder">
+        update a_maintain_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null and orderNo != ''">order_no = #{orderNo},</if>
+            <if test="description != null and description != ''">description = #{description},</if>
+            <if test="orderFaultType != null and orderFaultType != ''">order_fault_type = #{orderFaultType},</if>
+            <if test="orderPriority != null and orderPriority != ''">order_priority = #{orderPriority},</if>
+            <if test="repairOrderStatus != null and repairOrderStatus != ''">repair_order_status = #{repairOrderStatus},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="reporterId != null">reporter_id = #{reporterId},</if>
+            <if test="reporterContact != null">reporter_contact = #{reporterContact},</if>
+            <if test="reportTime != null">report_time = #{reportTime},</if>
+            <if test="assigneeId != null">assignee_id = #{assigneeId},</if>
+            <if test="repairResult != null">repair_result = #{repairResult},</if>
+            <if test="repairImages != null">repair_images = #{repairImages},</if>
+            <if test="completionTime != null">completion_time = #{completionTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMaintainOrderById" parameterType="MaintainOrder">
+		delete from a_maintain_order where id = #{id}
+    </delete>
+
+    <delete id="deleteMaintainOrderByIds" parameterType="MaintainOrder">
+        delete from a_maintain_order where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteMaintainOrderByEqMaintainOrder" parameterType="MaintainOrder">
+        delete from a_maintain_order
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deleteMaintainOrderAllData">
+        delete from a_maintain_order
+    </delete>
+
+
+</mapper>

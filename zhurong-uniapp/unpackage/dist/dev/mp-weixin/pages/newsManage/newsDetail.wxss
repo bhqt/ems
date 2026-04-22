@@ -1,0 +1,27 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+/* 标题简介 */
+.introduce-section {
+  background: #fff;
+  padding: 20 upx 30 upx;
+}
+.introduce-section .title {
+  font-size: 32 upx;
+  color: #303133;
+  height: 50 upx;
+  line-height: 50 upx;
+}
+.introduce-section .price-box {
+  display: flex;
+  align-items: baseline;
+  height: 64 upx;
+  padding: 10 upx 0;
+  font-size: 26 upx;
+  color: #fa436a;
+}
+

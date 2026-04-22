@@ -1,0 +1,329 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+.uni-flex, .uni-flex-row, .uni-list-box, .uni-media-box, .uni-footer, .uni-flex-column, .uni-content {
+  display: flex;
+}
+.uni-flex-row, .uni-list-box, .uni-media-box, .uni-footer {
+  flex-direction: row;
+  box-sizing: border-box;
+}
+.uni-flex-column, .uni-content {
+  flex-direction: column;
+}
+.uni-color-gary {
+  color: #3b4144;
+}
+/* 标题 */
+.uni-title {
+  display: flex;
+  margin-bottom: 16rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #3b4144;
+}
+.uni-title-sub {
+  display: flex;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #3b4144;
+}
+/* 描述 额外文本 */
+.uni-note {
+  margin-top: 10px;
+  color: #999;
+  font-size: 24rpx;
+}
+/* 列表内容 */
+.uni-list-box {
+  flex: 1;
+  margin-top: 10px;
+}
+/* 略缩图 */
+.uni-thumb {
+  flex-shrink: 0;
+  margin-right: 20rpx;
+  width: 125px;
+  height: 75px;
+  border-radius: 12rpx;
+  overflow: hidden;
+  border: 1px #f5f5f5 solid;
+}
+.uni-thumb image {
+  width: 100%;
+  height: 100%;
+}
+.uni-media-box {
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+.uni-media-box .uni-thumb {
+  margin: 0;
+  margin-left: 4px;
+  flex-shrink: 1;
+  width: 33%;
+  border-radius: 0;
+}
+.uni-media-box .uni-thumb:first-child {
+  margin: 0;
+}
+/* 内容 */
+.uni-content {
+  justify-content: space-between;
+}
+/* 列表footer */
+.uni-footer {
+  justify-content: space-between;
+  margin-top: 24rpx;
+}
+.uni-footer-text {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 5px;
+}
+/* 标签 */
+.uni-tag {
+  flex-shrink: 0;
+  padding: 0 5px;
+  border: 1px #c8c7cc solid;
+  margin-right: 10px;
+  border-radius: 6rpx;
+  background: #f8f8f8;
+  color: #333;
+  font-size: 24rpx;
+}
+/* 链接 */
+.uni-link {
+  margin-left: 10px;
+  color: #333;
+  text-decoration: underline;
+}
+view,
+scroll-view,
+swiper,
+swiper-item,
+cover-view,
+cover-image,
+icon,
+text,
+rich-text,
+progress,
+button,
+checkbox,
+form,
+input,
+label,
+radio,
+slider,
+switch,
+textarea,
+navigator,
+audio,
+camera,
+image,
+video {
+  box-sizing: border-box;
+}
+/* 骨架屏替代方案 */
+.Skeleton {
+  background: #f3f3f3;
+  padding: 20rpx 0;
+  border-radius: 8rpx;
+}
+.clamp {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+.common-hover {
+  background: #f5f5f5;
+}
+/*边框*/
+.b-b:after,
+.b-t:after {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  height: 0;
+  content: '';
+  -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+  border-bottom: 1px solid #E4E7ED;
+}
+.b-b:after {
+  bottom: 0;
+}
+.b-t:after {
+  top: 0;
+}
+/* button样式改写 */
+uni-button,
+button {
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 34rpx;
+  font-weight: normal;
+}
+uni-button.no-border:before, uni-button.no-border:after, button.no-border:before, button.no-border:after {
+  border: 0;
+}
+uni-button[type=default],
+button[type=default] {
+  color: #303133;
+}
+/* input 样式 */
+.input-placeholder {
+  color: #999999;
+}
+.placeholder {
+  color: #999999;
+}
+
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+/**
+ * 通用全局css样式布局处理
+ */
+/** 基础通用 **/
+page {
+  background: #FFFFFF;
+}
+.a_container {
+  padding-top: 30rpx;
+  background: #FFFFFF;
+}
+.a_query_form {
+  padding-left: 10rpx !important;
+  padding-right: 10rpx !important;
+  box-sizing: border-box;
+  width: 100%;
+}
+.a_query_form_item {
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+  box-sizing: border-box;
+  width: 100%;
+}
+.a_query_form_select {
+  flex: 1;
+  width: 100%;
+  padding-right: 10rpx !important;
+  box-sizing: border-box;
+}
+.a_button {
+  width: 60%;
+  margin: 15px auto;
+}
+.a_detail_text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-height: 60rpx;
+  word-break: break-all;
+  line-height: 1.5;
+}
+.a_add_form {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.a_add_form_item {
+  display: flex;
+  align-items: center;
+  /* 垂直居中 */
+  padding-right: 10px;
+}
+.a_swiper {
+  width: 100%;
+  padding: 0 28rpx;
+}
+.a_swiper .a_swiper_item {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.a_swiper .a_swiper_item .a_image_wrapper {
+  width: 100%;
+  height: 100%;
+}
+/* 图片载入替代方案 */
+.a_image_wrapper {
+  font-size: 0;
+  background: #f3f3f3;
+}
+.a_image_wrapper image {
+  width: 100%;
+  height: 100%;
+  transition: .6s;
+  opacity: 0;
+}
+.a_image_wrapper image.loaded {
+  opacity: 1;
+}
+/* 公共图标样式 */
+.icon-common {
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 10px;
+}
+.icon-big {
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 10px;
+}
+/* 左右内缩20px的横线 */
+.indent-line {
+  width: calc(100% - 20px);
+  /* 总宽度 = 父容器宽度 - 左右内缩之和 */
+  height: 1px;
+  background-color: #eee;
+  margin: 10px auto;
+  /* 水平居中 */
+}
+.global-loading-text {
+  margin-top: 20rpx;
+  font-size: 38rpx;
+  color: #666;
+}
+/* 微信小程序表单内容区域样式重写 - 针对微信小程序的特殊处理 */
+.uni-forms-item__content {
+  padding-right: 30rpx !important;
+  box-sizing: border-box !important;
+}
+/* 确保微信小程序中内部组件也能正确显示右侧边距 */
+.uni-forms-item__content > uni-data-picker,
+.uni-forms-item__content > uni-easyinput {
+  width: 100% !important;
+  padding-right: 10rpx !important;
+  box-sizing: border-box !important;
+}
+/* 修复微信小程序中uni-data-select组件宽度问题 */
+.uni-stat__select {
+  width: 100% !important;
+  flex: 1 !important;
+}
+.uni-stat-box {
+  width: 100% !important;
+  flex: 1 !important;
+}
+.uni-select {
+  width: 100% !important;
+  flex: 1 !important;
+}
+.uni-select__input-box {
+  width: auto !important;
+  flex: 1 !important;
+}
+

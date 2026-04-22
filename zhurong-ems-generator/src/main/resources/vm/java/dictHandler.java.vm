@@ -1,0 +1,119 @@
+package ${packageName}.service.impl;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.ruoyi.handler.dictData.DictDataHandler;
+import org.springframework.stereotype.Component;
+import com.ruoyi.common.core.domain.entity.SysDictData;
+
+import ${packageName}.${businessName}.domain.${ClassName};
+import ${packageName}.${businessName}.service.I${ClassName}Service;
+
+
+/**
+ * ${functionName}字典处理类
+ *
+ * @author AutoEE亿达科技有限公司 版权所有 Spring全栈工程师
+ *
+ */
+@Component
+public class ${ClassName}DictHandler implements DictDataHandler
+{
+	private static final Logger logger = LoggerFactory.getLogger(${ClassName}DictHandler.class);
+
+	private final I${ClassName}Service ${className}Service;
+	private static final String dictType = "${tableName}";
+
+
+	// 构造函数注入
+	public ${ClassName}DictHandler(I${ClassName}Service ${className}Service) {
+		this.${className}Service = ${className}Service;
+	}
+
+	@Override
+	public boolean supports(String dictType) {
+		return this.dictType.equals(dictType);
+	}
+
+#set($dictValueStr = $selfDefinedDictCode)  ## 取配置文件中配置的字段
+#set($dictLabelStr = $selfDefinedDictLable)  ## 取配置文件中配置的字段
+
+#if($dictValueStr=="")
+#set($dictValueStr = "Id")  ## 默认值Id
+#foreach ($column in $columns)
+#if($column.columnName.indexOf("_code")!=-1)
+#set($dictValueStr =${column.attrName})
+#break ## 找到匹配项后立即退出循环
+#end
+#end
+#end
+#if($dictLabelStr=="")
+#set($dictLabelStr = $columns.get(1).attrName)  ## 默认值第二个列
+#foreach ($column in $columns)
+#if($column.columnName.endsWith("_name"))
+#set($dictLabelStr =${column.attrName})
+#break ## 找到匹配项后立即退出循环
+#end
+#end
+#end
+
+	@Override
+	public List<SysDictData> handleGetDictData(Object params) {
+		List<SysDictData> resList = new ArrayList<SysDictData>();
+        ${ClassName} queryData = JSONUtil.toBean(JSONUtil.toJsonStr(params), ${ClassName}.class);
+		List<${ClassName}> queryList = ${className}Service.selectDataListByEq${ClassName}(queryData);
+		for (int i = 0; i < queryList.size(); i++) {
+			SysDictData data = new SysDictData();
+			data.setDictType(this.dictType);
+			// 默认代码值取id
+			// 如果存在_code的列，则字典value取该字段
+			data.setDictValue(queryList.get(i).get${dictValueStr}() + "");
+			// 如果存在_name的列，则字典lable取该字段，否则默认取第二列
+			data.setDictLabel(queryList.get(i).get${dictLabelStr}() + "");
+#if($selfDefinedDictParentDictValue!="")
+			// 设置父级字典id
+			data.setParentDictValue(queryList.get(i).get${selfDefinedDictParentDictValue}() + "");
+#end
+			data.setDictSort((long) (i + 1));
+			data.setStatus("0");
+			resList.add(data);
+		}
+		return resList;
+	}
+
+	@Override
+	public HashMap<String, String> handleGetLableValueMap(Object params) {
+        ${ClassName} queryData = JSONUtil.toBean(JSONUtil.toJsonStr(params), ${ClassName}.class);
+		HashMap<String, String> map = new HashMap<>();
+		List<${ClassName}> list = ${className}Service.selectDataListByEq${ClassName}(queryData);
+		for (${ClassName} data : list) {
+			map.put(data.get${dictLabelStr}()+"", data.get${dictValueStr}()+"");
+		}
+		return map;
+	}
+
+	@Override
+	public String handleGetDictAllLableStr(Object params) {
+		StringBuilder res = new StringBuilder();
+        ${ClassName} queryData = JSONUtil.toBean(JSONUtil.toJsonStr(params), ${ClassName}.class);
+		List<${ClassName}> queryList = ${className}Service.selectDataListByEq${ClassName}(queryData);
+
+		if (!queryList.isEmpty()) {
+			for (${ClassName} data : queryList) {
+				res.append(data.get${dictLabelStr}()).append(",");
+			}
+			// 去掉最后一个逗号（如果字符串非空）
+			if (res.length() > 0) {
+				res.deleteCharAt(res.length() - 1);
+			}
+		}
+
+		return res.toString();
+	}
+
+
+
+}

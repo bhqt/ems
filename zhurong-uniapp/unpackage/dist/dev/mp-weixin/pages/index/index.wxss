@@ -1,0 +1,550 @@
+.a1 {
+	padding-left: 35rpx;
+}
+.a2 {
+	font-size: 18px;
+	font-weight: 700;
+}
+.a3 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 30rpx;
+}
+.a4 {
+	height: 300rpx;
+	width: 92%;
+	border-radius: 30rpx;
+}
+.a5 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	font-size: 22rpx;
+
+	color: #666666;
+	padding-top: 30rpx;
+}
+.a6 {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.a7 {
+	height: 70rpx;
+	width: 70rpx;
+	margin-bottom: 15rpx;
+}
+.a8 {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-top: 40rpx;
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+}
+.a9 {
+	height: 160rpx;
+	width: 320rpx;
+	border-radius: 30rpx;
+}
+.b1 {
+	padding: 50rpx 30rpx 10rpx 30rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+.b2 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	font-weight: 600;
+	font-size: 28rpx;
+	color: #666666;
+}
+.b3 {
+	height: 50rpx;
+	width: 50rpx;
+	margin-right: 20rpx;
+}
+.b4 {
+	font-size: 24rpx;
+	color: darkgrey;
+}
+.b5 {
+	display: flex;
+	flex-direction: column;
+	padding-left: 30rpx;
+	margin-top: 30rpx;
+}
+.b6 {
+	font-size: 18px;
+	font-weight: 600;
+}
+.b7 {
+	font-size: 20rpx;
+	color: darkgray;
+	margin-top: 10rpx;
+	letter-spacing: 1rpx;
+}
+.b8 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: 70rpx;
+	padding-left: 30rpx;
+	padding-right: 30rpx;
+	margin-bottom: 30rpx;
+}
+.b9 {
+	display: flex;
+	flex-direction: column;
+	border-radius: 30rpx;
+	padding-top: 30rpx;
+	align-items: center;
+	height: 300rpx;
+	width: 220rpx;
+	box-shadow: 0px -5px 10px 0px #F3F2F8,
+		-6px 0px 6px 0px #F3F2F8,
+		6px 0px 6px 0px #F3F2F8,
+		0px 5px 19px 0px #F3F2F8;
+}
+.c1 {
+	width: 70rpx;
+	height: 70rpx;
+}
+.c2 {
+	font-size: 26rpx;
+	margin-top: 10rpx;
+}
+.c3 {
+	font-size: 18rpx;
+	color: darkgray;
+}
+.c4 {
+	font-size: 20rpx;
+	color: #666666;
+	margin-top: 20rpx;
+}
+.c5 {
+	height: 50rpx;
+	width: 50rpx;
+	margin-top: 30rpx;
+}
+.c6 {
+	height: 870rpx;
+}
+.c7 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding-left: 35rpx;
+	padding-right: 35rpx;
+	margin-top: 50rpx;
+}
+.c8 {
+	height: 110rpx;
+	display: flex;
+	flex-direction: column;
+	width: 76%;
+	padding-right: 30rpx;
+}
+.c9 {
+	font-size: 14px;
+	font-weight: 500;
+	height: 90rpx;
+}
+.d1 {
+	font-size: 20rpx;
+	color: #999;
+	height: 20rpx;
+}
+.d2 {
+	height: 110rpx;
+	width: 110rpx;
+}
+
+/* hx-navbar样式优化 */
+.a1 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.a2 {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #333;
+}
+
+/* 导航菜单样式 */
+.nav-menu {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 20rpx;
+	background: #fff;
+	margin: 20rpx;
+	border-radius: 16rpx;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+.nav-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 25%;
+	padding: 24rpx 0;
+}
+.nav-item ._i {
+	margin-bottom: 12rpx;
+}
+.nav-item text {
+	font-size: 24rpx;
+	color: #666;
+}
+.nav-item-active {
+	background-color: #f0f9ff;
+}
+
+/* 轮播图样式优化 */
+.a_swiper {
+	padding: 20rpx;
+}
+.a_swiper .swiper {
+	border-radius: 16rpx;
+	overflow: hidden;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+.a_image_wrapper {
+	width: 100%;
+	height: 300rpx;
+	overflow: hidden;
+}
+.a_image_wrapper .loaded {
+	width: 100%;
+	height: 100%;
+	transition: -webkit-transform 0.3s ease;
+	transition: transform 0.3s ease;
+	transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+.a_image_wrapper:active .loaded {
+	-webkit-transform: scale(1.05);
+	        transform: scale(1.05);
+}
+
+/* 通知区域样式优化 */
+.b1 {
+	background: #fff;
+	margin: 0 20rpx 20rpx;
+	padding: 24rpx;
+	border-radius: 16rpx;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+.b2 {
+	flex: 1;
+	overflow: hidden;
+}
+.b3 {
+	width: 40rpx;
+	height: 40rpx;
+	color: #ff7a45;
+}
+.b4 {
+	font-size: 24rpx;
+	color: #999;
+}
+
+/* Tab内容区域样式优化 */
+.c6 {
+	margin: 0 20rpx 20rpx;
+	background: #fff;
+	border-radius: 16rpx;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+}
+
+/* 报警信息列表样式优化 */
+.uni-list {
+	padding: 0;
+}
+.uni-list-item {
+	margin: 0 20rpx;
+	padding: 20rpx 0;
+	border-bottom: 1rpx solid #f5f5f5;
+}
+.uni-list-item:last-child {
+	border-bottom: none;
+}
+
+/* 全局加载蒙层 */
+.global-loading-mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(255, 255, 255, 0.8);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+}
+
+/* 计划列表样式 */
+.plan-list {
+	margin: 15 rpx;
+	border-radius: 12 rpx;
+	background-color: #fff;
+	box-shadow: 0 2 rpx 10 rpx rgba(0, 0, 0, 0.05);
+}
+.plan-card {
+	padding: 20 rpx;
+}
+.plan-content {
+	flex: 1;
+	/* 让内容区域占据左侧空间 */
+}
+.plan-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 15 rpx;
+}
+.plan-name {
+	font-size: 32 rpx;
+	font-weight: 500;
+	color: #333;
+}
+.plan-tag {
+	padding: 4 rpx 16 rpx;
+	border-radius: 20 rpx;
+	font-size: 24 rpx;
+}
+.tag-unstarted {
+	background-color: #f5f5f5;
+	color: #666;
+}
+.tag-unfinished {
+	background-color: #fff2e8;
+	color: #fa8c16;
+}
+.plan-details {
+	display: flex;
+	flex-direction: column;
+	gap: 12 rpx;
+}
+.plan-info {
+	display: flex;
+	align-items: center;
+	font-size: 28 rpx;
+	color: #666;
+}
+.info-icon {
+	margin-right: 12 rpx;
+	width: 24 rpx;
+	height: 24 rpx;
+}
+.highlight {
+	color: #1890ff;
+	font-weight: 500;
+}
+
+/* 右侧按钮样式 */
+.btn-execute {
+	background-color: #1890ff;
+	color: #fff;
+	border-radius: 30 rpx;
+	padding: 8 rpx 20 rpx;
+	font-size: 26 rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-left: 10 rpx;
+}
+.btn-icon {
+	margin-right: 8 rpx;
+}
+
+/* 巡更计划模块主样式 */
+.patrol-plan-section {
+	padding: 20rpx;
+	margin: 0 20rpx 20rpx;
+	background: #fff;
+	border-radius: 16rpx;
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 模块标题样式 */
+.plan-section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 16rpx;
+}
+
+/* 标题左侧区域（图标和文字） */
+.plan-section-header-left {
+	display: flex;
+	align-items: center;
+}
+
+/* 标题图标样式 */
+.plan-section-header ._i {
+	font-size: 28rpx;
+	color: #1890ff;
+	margin-right: 10rpx;
+}
+.header-title {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #333;
+}
+
+/* 查看全部按钮样式 */
+.header-more {
+	font-size: 24rpx;
+	color: rgba(9, 37, 194, 0.9);
+	padding: 4rpx 12rpx;
+	transition: all 0.3s ease;
+}
+.header-more:active {
+	color: #1890ff;
+}
+
+/* 加载状态样式 */
+.plan-loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 40rpx 0;
+	color: #999;
+}
+.loading-text {
+	font-size: 22rpx;
+	margin-top: 16rpx;
+}
+
+/* 有计划卡片样式 */
+.plan-card {
+	width: 100%;
+	overflow: hidden;
+	transition: all 0.3s ease;
+}
+.plan-card:active {
+	background-color: #f8f8f8;
+}
+.plan-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16rpx 0;
+}
+.plan-name {
+	font-size: 28rpx;
+	font-weight: 500;
+	color: #333;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.plan-tag {
+	padding: 4rpx 16rpx;
+	border-radius: 20rpx;
+	font-size: 20rpx;
+}
+.tag-unstarted {
+	background: #e6f7ff;
+	color: #1890ff;
+}
+.tag-unfinished {
+	background: #fff7e6;
+	color: #fa8c16;
+}
+
+/* 卡片内容样式 */
+.plan-details {
+	padding: 12rpx 0;
+}
+.plan-info-item {
+	display: flex;
+	align-items: center;
+	margin-bottom: 16rpx;
+}
+.plan-info-item:last-child {
+	margin-bottom: 0;
+}
+
+/* 信息项图标样式 */
+.info-icon {
+	font-size: 24rpx;
+	color: #666;
+	margin-right: 12 rpx;
+}
+.highlight-icon {
+	color: #1890ff;
+}
+.info-text {
+	color: #666;
+	font-size: 24rpx;
+	flex: 1;
+}
+.highlight {
+	color: #1890ff;
+	font-weight: 500;
+}
+
+/* 打卡按钮样式 */
+.plan-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 8rpx 0;
+}
+.btn-checkin {
+	background: linear-gradient(90deg, #1890ff 0%, #40a9ff 100%);
+	color: #fff;
+	font-size: 26rpx;
+	padding: 16rpx 56rpx;
+	border-radius: 32rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.3s ease;
+}
+.btn-checkin:active {
+	-webkit-transform: scale(0.95);
+	        transform: scale(0.95);
+	opacity: 0.9;
+}
+.btn-icon {
+	font-size: 24rpx;
+	margin-right: 10rpx;
+}
+.btn-text {
+	font-weight: 500;
+}
+
+/* 无计划状态样式 */
+.plan-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 60rpx 0;
+	color: #999;
+	min-height: 300rpx;
+}
+.empty-icon {
+	font-size: 120rpx;
+	color: #ddd;
+	margin-bottom: 24rpx;
+}
+.empty-title {
+	font-size: 26rpx;
+	margin-bottom: 12rpx;
+	color: #666;
+}
+

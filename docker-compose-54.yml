@@ -1,0 +1,252 @@
+# =============================================
+# Deep-EMS 部署配置 (192.168.8.54 服务器)
+# 复用已有的 MySQL (legal-mysql) 和 Redis (shared-redis)
+# 新增 RabbitMQ、Backend、Frontend、XXL-Job、Monitor
+# =============================================
+
+services:
+
+  # ========== RabbitMQ 消息队列（新增）==========
+
+  zhurong-ems-rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: zhurong-ems-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      TZ: Asia/Shanghai
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - zhurong-ems-rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - legal-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========== EMQ X MQTT Broker（新增）==========
+
+  zhurong-ems-emqx:
+    image: emqx/emqx:5.3.2
+    container_name: zhurong-ems-emqx
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      EMQX_NAME: emqx
+      EMQX_HOST: 127.0.0.1
+      EMQX_Dashboard__default_username: admin
+      EMQX_Dashboard__default_password: public
+      EMQX MQTT__DEFAULT__LISTENER: 1883
+      EMQX MQTT__DEFAULT__MAX_PACKET_SIZE: 1MB
+      EMQX MQTT__DEFAULT__MAX_CLIENTID_LEN: 128
+      EMQX MQTT__DEFAULT__MAX_KEEPALIVE: 360
+      EMQX MQTT__DEFAULT__KEEPALIVE_BACKOFF: 0.75
+    ports:
+      - "1883:1883"     # MQTT 协议端口
+      - "8883:8883"     # MQTT/SSL 端口
+      - "18083:18083"   # Dashboard HTTP API 端口
+      - "8081:8081"     # WebSocket 端口
+      - "8083:8083"     # WebSocket/SSL 端口
+    volumes:
+      - zhurong-ems-emqx-data:/opt/emqx/data
+      - zhurong-ems-emqx-log:/opt/emqx/log
+      - zhurong-ems-emqx-plugins:/opt/emqx/plugins
+    networks:
+      - legal-network
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========== TDengine 时序数据库（可选，按需部署）==========
+
+  # ================================
+  # TDengine 时序数据库
+  # ================================
+  zhurong-ems-tdengine:
+    image: tdengine/tdengine:3.2.0.0
+    container_name: zhurong-ems-tdengine
+    restart: unless-stopped
+    environment:
+      TAOS_FQDN: zhurong-ems-tdengine
+      TAOS_USER: root
+      TAOS_PASS: difyai123456
+      TZ: Asia/Shanghai
+    ports:
+      - "6030:6030"
+      - "6041:6041"
+    volumes:
+      - zhurong-ems-tdengine-data:/var/lib/taos
+      - zhurong-ems-tdengine-log:/var/log/taos
+      - ./docker/tdengine/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: "sleep 15 && taos -u root -p xx -f /docker-entrypoint-initdb.d/init.sql && /usr/bin/taosd"
+    networks:
+      - legal-network
+    healthcheck:
+      test: ["CMD", "taos", "-s", "show databases"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+
+ 
+
+  # ========== 后端服务 ==========
+
+  zhurong-ems-backend:
+    image: zhurong-ems/backend:latest
+    container_name: zhurong-ems-backend
+    restart: unless-stopped
+    ports:
+      - "1088:8088"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      # 复用服务器已有的 MySQL (legal-mysql:3306)
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: jdbc:mysql://legal-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME: root
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD: root
+      # 复用服务器已有的 Redis (shared-redis:6379)
+      SPRING_REDIS_HOST: shared-redis
+      SPRING_REDIS_PORT: 6379
+      SPRING_REDIS_PASSWORD: difyai123456
+      SPRING_REDIS_DATABASE: 13
+      # RabbitMQ (新增)
+      SPRING_RABBITMQ_HOST: zhurong-ems-rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      # MQTT EMQ X 配置（新增）
+      MQTT_HOST: tcp://zhurong-ems-emqx:1883
+      MQTT_PORT: 1883
+      MQTT_USERNAME: admin
+      MQTT_PASSWORD: public
+      MQTT_CLIENT_ID: zhurong-ems-server-${HOSTNAME:-default}
+      MQTT_TIMEOUT: 120
+      MQTT_KEEPALIVE: 360
+      # TDengine 时序数据库（可选，按需启用）
+      # 与服务器 .env 中 Redis 密码保持一致：difyyai123456
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED: "false"
+      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_URL: jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy?user=root&password=difyyai123456&timezone=Asia/Shanghai
+      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_USERNAME: root
+      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_PASSWORD: difyai123456
+      # JVM 参数
+      JAVA_OPTS: -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.ClassLoader=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED
+      TZ: Asia/Shanghai
+    volumes:
+      - zhurong-ems-backend-logs:/zhurong-ems/server/logs
+      - zhurong-ems-backend-temp:/zhurong-ems/server/temp
+    networks:
+      - legal-network
+    depends_on:
+      zhurong-ems-rabbitmq:
+        condition: service_healthy
+      zhurong-ems-emqx:
+        condition: service_healthy
+      zhurong-ems-tdengine:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8088/autoee-iot-ems/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ========== 前端服务 ==========
+
+  zhurong-ems-frontend:
+    image: zhurong-admin-ui:latest
+    container_name: zhurong-ems-frontend
+    restart: unless-stopped
+    ports:
+      - "3080:80"
+    volumes:
+      - zhurong-ems-frontend-logs:/var/log/nginx
+    networks:
+      - legal-network
+    depends_on:
+      - zhurong-ems-backend
+
+  # ========== XXL-Job 调度中心 ==========
+
+  zhurong-ems-xxl-job:
+    image: zhurong-ems/xxl-job:4.6.0
+    container_name: zhurong-ems-xxl-job
+    restart: unless-stopped
+    ports:
+      - "9110:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://legal-mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_PROFILES_ACTIVE: admin
+      TZ: Asia/Shanghai
+    volumes:
+      - zhurong-ems-xxljob-logs:/zhurong-ems/xxljob/logs
+    networks:
+      - legal-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/xxl-job-admin || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # ========== Spring Boot Admin 监控 ==========
+
+  zhurong-ems-monitor:
+    image: zhurong-ems/monitor:4.6.0
+    container_name: zhurong-ems-monitor
+    restart: unless-stopped
+    ports:
+      - "8690:9090"
+    environment:
+      SPRING_PROFILES_ACTIVE: admin
+      SPRING_BOOT_ADMIN_ADMIN_USERNAME: admin
+      SPRING_BOOT_ADMIN_ADMIN_PASSWORD: zhurong123
+      TZ: Asia/Shanghai
+    volumes:
+      - zhurong-ems-monitor-logs:/cp-portal/monitor/logs
+    networks:
+      - legal-network
+
+# ================================
+# 数据卷
+# ================================
+volumes:
+  zhurong-ems-emqx-data:
+    driver: local
+  zhurong-ems-emqx-log:
+    driver: local
+  zhurong-ems-emqx-plugins:
+    driver: local
+  zhurong-ems-rabbitmq-data:
+    driver: local
+  zhurong-ems-backend-logs:
+    driver: local
+  zhurong-ems-backend-temp:
+    driver: local
+  zhurong-ems-frontend-logs:
+    driver: local
+  zhurong-ems-xxljob-logs:
+    driver: local
+  zhurong-ems-monitor-logs:
+    driver: local
+  zhurong-ems-tdengine-data:
+    driver: local
+  zhurong-ems-tdengine-log:
+    driver: local
+
+# ================================
+# 网络 - 复用服务器已有的网络
+# ================================
+networks:
+  legal-network:
+    external: true
+    name: legal-network

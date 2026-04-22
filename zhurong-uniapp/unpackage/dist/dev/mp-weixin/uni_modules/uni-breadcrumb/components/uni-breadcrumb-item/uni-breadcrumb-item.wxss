@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+.uni-breadcrumb-item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.uni-breadcrumb-item--slot {
+  color: #6a6a6a;
+  padding: 0 10px;
+}
+.uni-breadcrumb-item--slot-link {
+  color: #3a3a3a;
+  font-weight: bold;
+  cursor: pointer;
+}
+.uni-breadcrumb-item--slot-link:hover {
+  color: #2979ff;
+}
+.uni-breadcrumb-item--separator {
+  font-size: 12px;
+  color: #6a6a6a;
+}
+.uni-breadcrumb-item:first-child .uni-breadcrumb-item--slot {
+  padding-left: 0;
+}
+.uni-breadcrumb-item:last-child .uni-breadcrumb-item--separator {
+  display: none;
+}
+

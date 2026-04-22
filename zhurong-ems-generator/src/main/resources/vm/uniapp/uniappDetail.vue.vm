@@ -1,0 +1,155 @@
+<template>
+	<view class="a_container">
+		<uni-forms class="a_query_form" :model="pageData.detailData" ref="detailFormRef"
+		           label-position="left" label-width="100px" label-align="right" border>
+#foreach($column in $columns)
+#if($column.isAppDetail=="1")
+#set($dictType=$column.dictType)
+#set($AttrName=$column.attrName)
+#set($comment=$column.columnComment)
+#if($column.columnName == "dept_id")
+			<uni-forms-item class="a_query_form_item" label="${comment}：" name="${column.javaField}">
+			 	 <text class="a_detail_text">{{pageData.detailData.${column.javaField}Extend}}</text>
+			</uni-forms-item>
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf(
+	"_3") != -1 ))
+	##  级联下拉框，2级或者3级
+			<uni-forms-item class="a_query_form_item" label="${comment}：" name="${column.javaField}">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}Extend}}</text>
+			</uni-forms-item>
+#elseif($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+			<uni-forms-item class="a_query_form_item" label="${comment}：" name="${column.javaField}">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}Extend}}</text>
+			</uni-forms-item>
+#elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}：" name="${column.javaField}">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}}}</text>
+			</uni-forms-item>
+#elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}：">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}}}</text>
+			</uni-forms-item>
+#elseif($column.htmlType == "date" && $column.queryType != "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}：" name="${column.javaField}">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}}}</text>
+			</uni-forms-item>
+#elseif($column.htmlType == "date" && $column.queryType == "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}：">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}}}</text>
+			</uni-forms-item>
+#elseif(($column.javaType == "Integer" || $column.javaType == "Long" || $column.javaType == "Double" || $column.javaType == "BigDecimal") && $column.queryType == "BETWEEN")
+			<uni-forms-item class="a_query_form_item" label="${comment}：">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}}}</text>
+			</uni-forms-item>
+#elseif($column.htmlType == "imageUpload")
+			<uni-forms-item class="a_query_form_item" label="${comment}：">
+				<image v-for="(image, index) in pageData.detailData.${column.javaField} ?  pageData.detailData.${column.javaField}.split(',') : []"
+##					:key="index" :src="image" :width="50" :height="50" style="margin-right: 10px;"/>
+					:key="index" :src="pageData.imageBaseUrl + image"  style="width: 50px; height: 50px;" />
+			</uni-forms-item>
+#elseif($column.htmlType == "fileUpload")
+			<uni-forms-item class="a_query_form_item" label="${comment}：">
+			  	<div v-for="(file, index) in pageData.detailData.${column.javaField} ?  pageData.detailData.${column.javaField}.split(',') : []" :key="index">
+					<el-link type="primary" :href="file" download>{{ file.split('/').pop() }}</el-link>
+##					<el-link type="primary" :href="vueAppBaseApi + file" download>{{ file.split('/').pop() }}</el-link>
+				</div>
+			</uni-forms-item>
+#elseif($column.htmlType == "editor")
+			<uni-forms-item class="a_query_form_item" label="${comment}：">
+			  	<editor v-model="pageData.detailData.${column.javaField}" :min-height="192"/>
+			</uni-forms-item>
+#else
+###elseif($column.htmlType == "input"  || $column.htmlType == "input-tag")
+			<uni-forms-item class="a_query_form_item" label="${comment}：" name="${column.javaField}">
+				<text class="a_detail_text">{{pageData.detailData.${column.javaField}}}</text>
+			</uni-forms-item>
+#end
+#end
+#end
+		</uni-forms>
+	</view>
+</template>
+
+<script>
+import config from '@/config'
+import {mapState} from 'vuex';
+import {getDictData} from '@/utils/dict'
+import ${businessName} from '@/api/autoee/${businessName}';
+
+export default {
+	data() {
+		return {
+			// 所有需要响应式的参数都要初始化，否则Vue 无法追踪这个属性的变化
+			pageData: {
+				imageBaseUrl: config.baseUrl,
+				userId: this.$store.getters.userId,
+			  	${businessName}List: [],
+				detailData: {
+#foreach($column in $columns)
+#if($column.isAppDetail=="1")
+					${column.javaField}: "",
+					${column.javaField}Extend: "",
+#end
+#end
+				},
+				dictData: {
+#foreach($column in $columns)
+#if($column.query)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+					// $column.dictType: [],
+#end
+#end
+#end
+				}
+			}
+		}
+	},
+	async onLoad(options) {
+	  	console.log('页面参数:', options)
+	  	let id = options.id;
+    	this.initData(id)
+	  	this.loadData(id);
+	},
+	onShow() {
+		console.log('页面显示')
+    },
+	mounted(){
+
+	},
+	computed: {
+		...mapState(['user'])
+	},
+	methods: {
+		async initData(id) {
+		 	try {
+#foreach($column in $columns)
+#if($column.query)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+				// this.pageData.dictData.$column.dictType = await getDictData('$column.dictType')
+#end
+#end
+#end
+			} catch (error) {
+				console.error('获取字典失败:', error)
+			}
+		},
+	  	//请求数据
+		loadData(id){
+        	${businessName}.selectDetailByPk${ClassName}(id).then(res => {
+           	 	// console.log("getAddressByCurrentUser-res=", res)
+           	 	this.pageData.detailData= res.data;
+        	})
+	    },
+		//查询
+		handleQuery()
+		{
+			 this.loadData()
+		},
+	}
+}
+</script>
+
+// style中样式放入单独文件中，避免格式化代码后导致样式失效问题
+<style lang="scss">
+//@import '@/static/styles/autoee/${businessName}/${businessName}Detail.scss';
+</style>

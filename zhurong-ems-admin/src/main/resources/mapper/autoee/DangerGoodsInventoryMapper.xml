@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.dangerGoodsInventory.mapper.DangerGoodsInventoryMapper">
+
+    <resultMap type="DangerGoodsInventory" id="DangerGoodsInventoryResult">
+        <result property="id"    column="id"    />
+        <result property="dangerGoodsId"    column="danger_goods_id"    />
+        <result property="dangerGoodsIdExtend"    column="danger_goods_id_extend"    />
+        <result property="dangerGoodsType"    column="danger_goods_type"    />
+        <result property="dangerGoodsTypeExtend"    column="danger_goods_type_extend"    />
+        <result property="specification"    column="specification"    />
+        <result property="currentStock"    column="current_stock"    />
+        <result property="goodsUnit"    column="goods_unit"    />
+        <result property="goodsUnitExtend"    column="goods_unit_extend"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectDangerGoodsInventoryVo">
+        select
+			t.id,
+			t.danger_goods_id,
+	       (SELECT self_dict.danger_goods_name FROM  a_danger_goods_info self_dict  where self_dict.id  = t.danger_goods_id) as danger_goods_id_extend,
+			t.danger_goods_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='danger_goods_type' and dict_data.dict_value = danger_goods_type) as danger_goods_type_extend,
+			t.specification,
+			t.current_stock,
+			t.goods_unit,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='goods_unit' and dict_data.dict_value = goods_unit) as goods_unit_extend,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_time,
+			t.create_by,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_danger_goods_inventory t
+    </sql>
+
+	<sql id="selectDangerGoodsInventoryDetailVo">
+        select
+            t.id,
+			t.danger_goods_id,
+	       (SELECT self_dict.danger_goods_name FROM  a_danger_goods_info self_dict  where self_dict.id  = t.danger_goods_id) as danger_goods_id_extend,
+			t.danger_goods_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='danger_goods_type' and dict_data.dict_value = danger_goods_type) as danger_goods_type_extend,
+            t.specification,
+            t.current_stock,
+			t.goods_unit,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='goods_unit' and dict_data.dict_value = goods_unit) as goods_unit_extend,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_time,
+            t.create_by,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_danger_goods_inventory t
+    </sql>
+
+	    <select id="selectDataByPkDangerGoodsInventory" parameterType="Long" resultMap="DangerGoodsInventoryResult">
+        <include refid="selectDangerGoodsInventoryVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="dangerGoodsId != null "> and danger_goods_id = #{dangerGoodsId}</if>
+			 <if test="params.dangerGoodsIdInValueArr!= null ">
+            	and danger_goods_id in
+                <foreach item="dangerGoodsId" collection="params.dangerGoodsIdInValueArr" open="(" separator="," close=")">
+                    #{dangerGoodsId}
+                </foreach>
+        	</if>
+            <if test="dangerGoodsType != null  and dangerGoodsType != ''"> and danger_goods_type = #{dangerGoodsType}</if>
+			 <if test="params.dangerGoodsTypeInValueArr!= null ">
+            	and danger_goods_type in
+                <foreach item="dangerGoodsType" collection="params.dangerGoodsTypeInValueArr" open="(" separator="," close=")">
+                    #{dangerGoodsType}
+                </foreach>
+        	</if>
+            <if test="specification != null  and specification != ''"> and specification like concat('%', #{specification}, '%')</if>
+            <if test="currentStock != null "> and current_stock = #{currentStock} </if>
+            <if test="params.beginCurrentStock != null and params.beginCurrentStock != ''"> and current_stock &gt;= #{params.beginCurrentStock} </if>
+            <if test="params.endCurrentStock != null and params.endCurrentStock != ''"> and current_stock &lt;= #{params.endCurrentStock}</if>
+            <if test="goodsUnit != null  and goodsUnit != ''"> and goods_unit = #{goodsUnit}</if>
+			 <if test="params.goodsUnitInValueArr!= null ">
+            	and goods_unit in
+                <foreach item="goodsUnit" collection="params.goodsUnitInValueArr" open="(" separator="," close=")">
+                    #{goodsUnit}
+                </foreach>
+        	</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikeDangerGoodsInventory" parameterType="DangerGoodsInventory" resultMap="DangerGoodsInventoryResult">
+        <include refid="selectDangerGoodsInventoryVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.dangerGoodsInventory.mapper.DangerGoodsInventoryMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikeDangerGoodsInventory" parameterType="DangerGoodsInventory" resultType="int">
+        select count(*) from a_danger_goods_inventory t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.dangerGoodsInventory.mapper.DangerGoodsInventoryMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="dangerGoodsId != null "> and danger_goods_id = #{dangerGoodsId}</if>
+            <if test="dangerGoodsType != null  and dangerGoodsType != ''"> and danger_goods_type = #{dangerGoodsType}</if>
+            <if test="specification != null  and specification != ''"> and specification = #{specification}</if>
+            <if test="currentStock != null "> and current_stock = #{currentStock}</if>
+            <if test="goodsUnit != null  and goodsUnit != ''"> and goods_unit = #{goodsUnit}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqDangerGoodsInventory" parameterType="DangerGoodsInventory" resultMap="DangerGoodsInventoryResult">
+        <include refid="selectDangerGoodsInventoryVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqDangerGoodsInventory" parameterType="DangerGoodsInventory" resultType="int">
+        select count(*) from a_danger_goods_inventory t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkDangerGoodsInventory" parameterType="Long" resultMap="DangerGoodsInventoryResult">
+        <include refid="selectDangerGoodsInventoryDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikeDangerGoodsInventory" parameterType="DangerGoodsInventory" resultMap="DangerGoodsInventoryResult">
+        <include refid="selectDangerGoodsInventoryDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.dangerGoodsInventory.mapper.DangerGoodsInventoryMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqDangerGoodsInventory" parameterType="DangerGoodsInventory" resultMap="DangerGoodsInventoryResult">
+        <include refid="selectDangerGoodsInventoryDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertDangerGoodsInventory" parameterType="DangerGoodsInventory" useGeneratedKeys="true" keyProperty="id">
+        insert into a_danger_goods_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dangerGoodsId != null">danger_goods_id,</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">danger_goods_type,</if>
+            <if test="specification != null and specification != ''">specification,</if>
+            <if test="currentStock != null">current_stock,</if>
+            <if test="goodsUnit != null and goodsUnit != ''">goods_unit,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            create_time,
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dangerGoodsId != null">#{dangerGoodsId},</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">#{dangerGoodsType},</if>
+            <if test="specification != null and specification != ''">#{specification},</if>
+            <if test="currentStock != null">#{currentStock},</if>
+            <if test="goodsUnit != null and goodsUnit != ''">#{goodsUnit},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByDangerGoodsInventory">
+        INSERT INTO a_danger_goods_inventory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            danger_goods_id,
+            danger_goods_type,
+            specification,
+            current_stock,
+            goods_unit,
+            user_id,
+            dept_id,
+            create_time,
+            create_by,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.dangerGoodsId},
+			#{item.dangerGoodsType},
+			#{item.specification},
+			#{item.currentStock},
+			#{item.goodsUnit},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createTime},
+			#{item.createBy},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		danger_goods_id = VALUES(danger_goods_id),
+       		danger_goods_type = VALUES(danger_goods_type),
+       		specification = VALUES(specification),
+       		current_stock = VALUES(current_stock),
+       		goods_unit = VALUES(goods_unit),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByDangerGoodsInventory" parameterType="DangerGoodsInventory">
+        update a_danger_goods_inventory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dangerGoodsId != null">danger_goods_id = #{dangerGoodsId},</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">danger_goods_type = #{dangerGoodsType},</if>
+            <if test="specification != null and specification != ''">specification = #{specification},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            current_stock = #{currentStock},
+            <if test="goodsUnit != null and goodsUnit != ''">goods_unit = #{goodsUnit},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByDangerGoodsInventory" parameterType="DangerGoodsInventory">
+        update a_danger_goods_inventory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dangerGoodsId != null">danger_goods_id = #{dangerGoodsId},</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">danger_goods_type = #{dangerGoodsType},</if>
+            <if test="specification != null and specification != ''">specification = #{specification},</if>
+            <if test="currentStock != null">current_stock = #{currentStock},</if>
+            <if test="goodsUnit != null and goodsUnit != ''">goods_unit = #{goodsUnit},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDangerGoodsInventoryById" parameterType="DangerGoodsInventory">
+		delete from a_danger_goods_inventory where id = #{id}
+    </delete>
+
+    <delete id="deleteDangerGoodsInventoryByIds" parameterType="DangerGoodsInventory">
+        delete from a_danger_goods_inventory where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteDangerGoodsInventoryByEqDangerGoodsInventory" parameterType="DangerGoodsInventory">
+        delete from a_danger_goods_inventory
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deleteDangerGoodsInventoryAllData">
+        delete from a_danger_goods_inventory
+    </delete>
+
+
+</mapper>

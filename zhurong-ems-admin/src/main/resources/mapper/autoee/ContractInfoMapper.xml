@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.contractInfo.mapper.ContractInfoMapper">
+
+    <resultMap type="ContractInfo" id="ContractInfoResult">
+        <result property="id"    column="id"    />
+        <result property="contractNoNew"    column="contract_no_new"    />
+        <result property="contractNoOld"    column="contract_no_old"    />
+        <result property="belongCustomer"    column="belong_customer"    />
+        <result property="customerContact"    column="customer_contact"    />
+        <result property="contractType"    column="contract_type"    />
+        <result property="contractTypeExtend"    column="contract_type_extend"    />
+        <result property="contractSubtype"    column="contract_subtype"    />
+        <result property="contractSubtypeExtend"    column="contract_subtype_extend"    />
+        <result property="signCompany"    column="sign_company"    />
+        <result property="salesmanId"    column="salesman_id"    />
+        <result property="techSupport"    column="tech_support"    />
+        <result property="quoteNo"    column="quote_no"    />
+        <result property="contractTotal"    column="contract_total"    />
+        <result property="receivedAmount"    column="received_amount"    />
+        <result property="signDate"    column="sign_date"    />
+        <result property="attachmentFiles"    column="attachment_files"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectContractInfoVo">
+        select
+			t.id,
+			t.contract_no_new,
+			t.contract_no_old,
+			t.belong_customer,
+			t.customer_contact,
+			t.contract_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='contract_type' and dict_data.dict_value = contract_type) as contract_type_extend,
+			t.contract_subtype,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='contract_subtype' and dict_data.dict_value = contract_subtype) as contract_subtype_extend,
+			t.sign_company,
+			t.salesman_id,
+			t.tech_support,
+			t.quote_no,
+			t.contract_total,
+			t.received_amount,
+			t.sign_date,
+			t.attachment_files,
+			t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_time,
+			t.create_by,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_contract_info t
+    </sql>
+
+	<sql id="selectContractInfoDetailVo">
+        select
+            t.id,
+            t.contract_no_new,
+            t.contract_no_old,
+            t.belong_customer,
+            t.customer_contact,
+			t.contract_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='contract_type' and dict_data.dict_value = contract_type) as contract_type_extend,
+			t.contract_subtype,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='contract_subtype' and dict_data.dict_value = contract_subtype) as contract_subtype_extend,
+            t.sign_company,
+            t.salesman_id,
+            t.tech_support,
+            t.quote_no,
+            t.contract_total,
+            t.received_amount,
+            t.sign_date,
+            t.attachment_files,
+            t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_time,
+            t.create_by,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_contract_info t
+    </sql>
+
+	    <select id="selectDataByPkContractInfo" parameterType="Long" resultMap="ContractInfoResult">
+        <include refid="selectContractInfoVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="contractNoNew != null  and contractNoNew != ''"> and contract_no_new like concat('%', #{contractNoNew}, '%')</if>
+            <if test="contractNoOld != null  and contractNoOld != ''"> and contract_no_old like concat('%', #{contractNoOld}, '%')</if>
+            <if test="belongCustomer != null  and belongCustomer != ''"> and belong_customer like concat('%', #{belongCustomer}, '%')</if>
+            <if test="customerContact != null  and customerContact != ''"> and customer_contact like concat('%', #{customerContact}, '%')</if>
+            <if test="contractType != null  and contractType != ''"> and contract_type = #{contractType}</if>
+			 <if test="params.contractTypeInValueArr!= null ">
+            	and contract_type in
+                <foreach item="contractType" collection="params.contractTypeInValueArr" open="(" separator="," close=")">
+                    #{contractType}
+                </foreach>
+        	</if>
+            <if test="contractSubtype != null  and contractSubtype != ''"> and contract_subtype = #{contractSubtype}</if>
+			 <if test="params.contractSubtypeInValueArr!= null ">
+            	and contract_subtype in
+                <foreach item="contractSubtype" collection="params.contractSubtypeInValueArr" open="(" separator="," close=")">
+                    #{contractSubtype}
+                </foreach>
+        	</if>
+            <if test="signCompany != null  and signCompany != ''"> and sign_company like concat('%', #{signCompany}, '%')</if>
+            <if test="salesmanId != null  and salesmanId != ''"> and salesman_id like concat('%', #{salesmanId}, '%')</if>
+            <if test="techSupport != null  and techSupport != ''"> and tech_support like concat('%', #{techSupport}, '%')</if>
+            <if test="quoteNo != null  and quoteNo != ''"> and quote_no like concat('%', #{quoteNo}, '%')</if>
+            <if test="contractTotal != null  and contractTotal != ''"> and contract_total like concat('%', #{contractTotal}, '%')</if>
+            <if test="receivedAmount != null  and receivedAmount != ''"> and received_amount like concat('%', #{receivedAmount}, '%')</if>
+            <if test="signDate != null "> and DATE(sign_date) = DATE(#{signDate}) </if>
+            <if test="params.beginSignDate != null and params.beginSignDate != ''"> and sign_date &gt;= #{params.beginSignDate} </if>
+            <if test="params.endSignDate != null and params.endSignDate != ''"> and sign_date &lt;= #{params.endSignDate}</if>
+            <if test="attachmentFiles != null  and attachmentFiles != ''"> and attachment_files = #{attachmentFiles}</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikeContractInfo" parameterType="ContractInfo" resultMap="ContractInfoResult">
+        <include refid="selectContractInfoVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.contractInfo.mapper.ContractInfoMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikeContractInfo" parameterType="ContractInfo" resultType="int">
+        select count(*) from a_contract_info t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.contractInfo.mapper.ContractInfoMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="contractNoNew != null  and contractNoNew != ''"> and contract_no_new = #{contractNoNew}</if>
+            <if test="contractNoOld != null  and contractNoOld != ''"> and contract_no_old = #{contractNoOld}</if>
+            <if test="belongCustomer != null  and belongCustomer != ''"> and belong_customer = #{belongCustomer}</if>
+            <if test="customerContact != null  and customerContact != ''"> and customer_contact = #{customerContact}</if>
+            <if test="contractType != null  and contractType != ''"> and contract_type = #{contractType}</if>
+            <if test="contractSubtype != null  and contractSubtype != ''"> and contract_subtype = #{contractSubtype}</if>
+            <if test="signCompany != null  and signCompany != ''"> and sign_company = #{signCompany}</if>
+            <if test="salesmanId != null  and salesmanId != ''"> and salesman_id = #{salesmanId}</if>
+            <if test="techSupport != null  and techSupport != ''"> and tech_support = #{techSupport}</if>
+            <if test="quoteNo != null  and quoteNo != ''"> and quote_no = #{quoteNo}</if>
+            <if test="contractTotal != null  and contractTotal != ''"> and contract_total = #{contractTotal}</if>
+            <if test="receivedAmount != null  and receivedAmount != ''"> and received_amount = #{receivedAmount}</if>
+            <if test="signDate != null "> and DATE(sign_date) = DATE(#{signDate}) </if>
+            <if test="attachmentFiles != null  and attachmentFiles != ''"> and attachment_files = #{attachmentFiles}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqContractInfo" parameterType="ContractInfo" resultMap="ContractInfoResult">
+        <include refid="selectContractInfoVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqContractInfo" parameterType="ContractInfo" resultType="int">
+        select count(*) from a_contract_info t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkContractInfo" parameterType="Long" resultMap="ContractInfoResult">
+        <include refid="selectContractInfoDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikeContractInfo" parameterType="ContractInfo" resultMap="ContractInfoResult">
+        <include refid="selectContractInfoDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.contractInfo.mapper.ContractInfoMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqContractInfo" parameterType="ContractInfo" resultMap="ContractInfoResult">
+        <include refid="selectContractInfoDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertContractInfo" parameterType="ContractInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into a_contract_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="contractNoNew != null and contractNoNew != ''">contract_no_new,</if>
+            <if test="contractNoOld != null">contract_no_old,</if>
+            <if test="belongCustomer != null and belongCustomer != ''">belong_customer,</if>
+            <if test="customerContact != null and customerContact != ''">customer_contact,</if>
+            <if test="contractType != null and contractType != ''">contract_type,</if>
+            <if test="contractSubtype != null">contract_subtype,</if>
+            <if test="signCompany != null">sign_company,</if>
+            <if test="salesmanId != null">salesman_id,</if>
+            <if test="techSupport != null">tech_support,</if>
+            <if test="quoteNo != null">quote_no,</if>
+            <if test="contractTotal != null">contract_total,</if>
+            <if test="receivedAmount != null">received_amount,</if>
+            <if test="signDate != null">sign_date,</if>
+            <if test="attachmentFiles != null">attachment_files,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            create_time,
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="contractNoNew != null and contractNoNew != ''">#{contractNoNew},</if>
+            <if test="contractNoOld != null">#{contractNoOld},</if>
+            <if test="belongCustomer != null and belongCustomer != ''">#{belongCustomer},</if>
+            <if test="customerContact != null and customerContact != ''">#{customerContact},</if>
+            <if test="contractType != null and contractType != ''">#{contractType},</if>
+            <if test="contractSubtype != null">#{contractSubtype},</if>
+            <if test="signCompany != null">#{signCompany},</if>
+            <if test="salesmanId != null">#{salesmanId},</if>
+            <if test="techSupport != null">#{techSupport},</if>
+            <if test="quoteNo != null">#{quoteNo},</if>
+            <if test="contractTotal != null">#{contractTotal},</if>
+            <if test="receivedAmount != null">#{receivedAmount},</if>
+            <if test="signDate != null">#{signDate},</if>
+            <if test="attachmentFiles != null">#{attachmentFiles},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByContractInfo">
+        INSERT INTO a_contract_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            contract_no_new,
+            contract_no_old,
+            belong_customer,
+            customer_contact,
+            contract_type,
+            contract_subtype,
+            sign_company,
+            salesman_id,
+            tech_support,
+            quote_no,
+            contract_total,
+            received_amount,
+            sign_date,
+            attachment_files,
+            remark,
+            user_id,
+            dept_id,
+            create_time,
+            create_by,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.contractNoNew},
+			#{item.contractNoOld},
+			#{item.belongCustomer},
+			#{item.customerContact},
+			#{item.contractType},
+			#{item.contractSubtype},
+			#{item.signCompany},
+			#{item.salesmanId},
+			#{item.techSupport},
+			#{item.quoteNo},
+			#{item.contractTotal},
+			#{item.receivedAmount},
+			#{item.signDate},
+			#{item.attachmentFiles},
+			#{item.remark},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createTime},
+			#{item.createBy},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		contract_no_new = VALUES(contract_no_new),
+       		contract_no_old = VALUES(contract_no_old),
+       		belong_customer = VALUES(belong_customer),
+       		customer_contact = VALUES(customer_contact),
+       		contract_type = VALUES(contract_type),
+       		contract_subtype = VALUES(contract_subtype),
+       		sign_company = VALUES(sign_company),
+       		salesman_id = VALUES(salesman_id),
+       		tech_support = VALUES(tech_support),
+       		quote_no = VALUES(quote_no),
+       		contract_total = VALUES(contract_total),
+       		received_amount = VALUES(received_amount),
+       		sign_date = VALUES(sign_date),
+       		attachment_files = VALUES(attachment_files),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByContractInfo" parameterType="ContractInfo">
+        update a_contract_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contractNoNew != null and contractNoNew != ''">contract_no_new = #{contractNoNew},</if>
+            <if test="contractNoOld != null">contract_no_old = #{contractNoOld},</if>
+            <if test="belongCustomer != null and belongCustomer != ''">belong_customer = #{belongCustomer},</if>
+            <if test="customerContact != null and customerContact != ''">customer_contact = #{customerContact},</if>
+            <if test="contractType != null and contractType != ''">contract_type = #{contractType},</if>
+            <if test="contractSubtype != null">contract_subtype = #{contractSubtype},</if>
+            <if test="signCompany != null">sign_company = #{signCompany},</if>
+            <if test="salesmanId != null">salesman_id = #{salesmanId},</if>
+            <if test="techSupport != null">tech_support = #{techSupport},</if>
+            <if test="quoteNo != null">quote_no = #{quoteNo},</if>
+            <if test="contractTotal != null">contract_total = #{contractTotal},</if>
+            <if test="receivedAmount != null">received_amount = #{receivedAmount},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            sign_date = #{signDate},
+            <if test="attachmentFiles != null">attachment_files = #{attachmentFiles},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByContractInfo" parameterType="ContractInfo">
+        update a_contract_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="contractNoNew != null and contractNoNew != ''">contract_no_new = #{contractNoNew},</if>
+            <if test="contractNoOld != null">contract_no_old = #{contractNoOld},</if>
+            <if test="belongCustomer != null and belongCustomer != ''">belong_customer = #{belongCustomer},</if>
+            <if test="customerContact != null and customerContact != ''">customer_contact = #{customerContact},</if>
+            <if test="contractType != null and contractType != ''">contract_type = #{contractType},</if>
+            <if test="contractSubtype != null">contract_subtype = #{contractSubtype},</if>
+            <if test="signCompany != null">sign_company = #{signCompany},</if>
+            <if test="salesmanId != null">salesman_id = #{salesmanId},</if>
+            <if test="techSupport != null">tech_support = #{techSupport},</if>
+            <if test="quoteNo != null">quote_no = #{quoteNo},</if>
+            <if test="contractTotal != null">contract_total = #{contractTotal},</if>
+            <if test="receivedAmount != null">received_amount = #{receivedAmount},</if>
+            <if test="signDate != null">sign_date = #{signDate},</if>
+            <if test="attachmentFiles != null">attachment_files = #{attachmentFiles},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteContractInfoById" parameterType="ContractInfo">
+		delete from a_contract_info where id = #{id}
+    </delete>
+
+    <delete id="deleteContractInfoByIds" parameterType="ContractInfo">
+        delete from a_contract_info where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteContractInfoByEqContractInfo" parameterType="ContractInfo">
+        delete from a_contract_info
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deleteContractInfoAllData">
+        delete from a_contract_info
+    </delete>
+
+
+</mapper>

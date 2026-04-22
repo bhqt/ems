@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.patrolAlarm.mapper.PatrolAlarmMapperExtend">
+
+	<!-- 关键修复：添加注释（非空白内容），确保片段被MyBatis识别 -->
+    <sql id="selectDataListByLikeExtendCondition">
+		<!-- 扩展查询条件：暂无额外条件 [关键修复：添加注释（非空白内容），确保片段被MyBatis识别]-->
+    </sql>
+    <sql id="selectCountByLikeExtendCondition">
+		<!-- 扩展查询条件：暂无额外条件 [关键修复：添加注释（非空白内容），确保片段被MyBatis识别]-->
+    </sql>
+    <sql id="selectDetailListByLikeExtendCondition">
+		<!-- 扩展查询条件：暂无额外条件 [关键修复：添加注释（非空白内容），确保片段被MyBatis识别]-->
+    </sql>
+
+</mapper>

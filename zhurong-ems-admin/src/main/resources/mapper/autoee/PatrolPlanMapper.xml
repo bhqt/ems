@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.patrolPlan.mapper.PatrolPlanMapper">
+
+    <resultMap type="PatrolPlan" id="PatrolPlanResult">
+        <result property="id"    column="id"    />
+        <result property="patrolPlanName"    column="patrol_plan_name"    />
+        <result property="patrolPathId"    column="patrol_path_id"    />
+        <result property="patrolPathIdExtend"    column="patrol_path_id_extend"    />
+        <result property="patrolUserId"    column="patrol_user_id"    />
+        <result property="patrolUserIdExtend"    column="patrol_user_id_extend"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="patrolCycleType"    column="patrol_cycle_type"    />
+        <result property="patrolCycleTypeExtend"    column="patrol_cycle_type_extend"    />
+        <result property="patrolCycleValue"    column="patrol_cycle_value"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="patrolPlanStatus"    column="patrol_plan_status"    />
+        <result property="patrolPlanStatusExtend"    column="patrol_plan_status_extend"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectPatrolPlanVo">
+        select
+			t.id,
+			t.patrol_plan_name,
+			t.patrol_path_id,
+	       (SELECT self_dict.route_name FROM  a_patrol_path self_dict  where self_dict.id  = t.patrol_path_id) as patrol_path_id_extend,
+			t.patrol_user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.patrol_user_id) as patrol_user_id_extend,
+			t.start_time,
+			t.end_time,
+			t.patrol_cycle_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_cycle_type' and dict_data.dict_value = patrol_cycle_type) as patrol_cycle_type_extend,
+			t.patrol_cycle_value,
+			t.start_date,
+			t.end_date,
+			t.patrol_plan_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_plan_status' and dict_data.dict_value = patrol_plan_status) as patrol_plan_status_extend,
+			t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_by,
+			t.create_time,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_patrol_plan t
+    </sql>
+
+	<sql id="selectPatrolPlanDetailVo">
+        select
+            t.id,
+            t.patrol_plan_name,
+			t.patrol_path_id,
+	       (SELECT self_dict.route_name FROM  a_patrol_path self_dict  where self_dict.id  = t.patrol_path_id) as patrol_path_id_extend,
+			t.patrol_user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.patrol_user_id) as patrol_user_id_extend,
+            t.start_time,
+            t.end_time,
+			t.patrol_cycle_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_cycle_type' and dict_data.dict_value = patrol_cycle_type) as patrol_cycle_type_extend,
+            t.patrol_cycle_value,
+            t.start_date,
+            t.end_date,
+			t.patrol_plan_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_plan_status' and dict_data.dict_value = patrol_plan_status) as patrol_plan_status_extend,
+            t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_by,
+            t.create_time,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_patrol_plan t
+    </sql>
+
+	    <select id="selectDataByPkPatrolPlan" parameterType="Long" resultMap="PatrolPlanResult">
+        <include refid="selectPatrolPlanVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="patrolPlanName != null  and patrolPlanName != ''"> and patrol_plan_name like concat('%', #{patrolPlanName}, '%')</if>
+            <if test="patrolPathId != null "> and patrol_path_id = #{patrolPathId}</if>
+			 <if test="params.patrolPathIdInValueArr!= null ">
+            	and patrol_path_id in
+                <foreach item="patrolPathId" collection="params.patrolPathIdInValueArr" open="(" separator="," close=")">
+                    #{patrolPathId}
+                </foreach>
+        	</if>
+            <if test="patrolUserId != null "> and patrol_user_id = #{patrolUserId}</if>
+			 <if test="params.patrolUserIdInValueArr!= null ">
+            	and patrol_user_id in
+                <foreach item="patrolUserId" collection="params.patrolUserIdInValueArr" open="(" separator="," close=")">
+                    #{patrolUserId}
+                </foreach>
+        	</if>
+            <if test="startTime != null "> and start_time = #{startTime} </if>
+            <if test="params.beginStartTime != null and params.beginStartTime != ''"> and start_time &gt;= #{params.beginStartTime} </if>
+            <if test="params.endStartTime != null and params.endStartTime != ''"> and start_time &lt;= #{params.endStartTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime} </if>
+            <if test="params.beginEndTime != null and params.beginEndTime != ''"> and end_time &gt;= #{params.beginEndTime} </if>
+            <if test="params.endEndTime != null and params.endEndTime != ''"> and end_time &lt;= #{params.endEndTime}</if>
+            <if test="patrolCycleType != null  and patrolCycleType != ''"> and patrol_cycle_type = #{patrolCycleType}</if>
+			 <if test="params.patrolCycleTypeInValueArr!= null ">
+            	and patrol_cycle_type in
+                <foreach item="patrolCycleType" collection="params.patrolCycleTypeInValueArr" open="(" separator="," close=")">
+                    #{patrolCycleType}
+                </foreach>
+        	</if>
+            <if test="patrolCycleValue != null  and patrolCycleValue != ''"> and patrol_cycle_value = #{patrolCycleValue}</if>
+            <if test="startDate != null "> and DATE(start_date) = DATE(#{startDate}) </if>
+            <if test="params.beginStartDate != null and params.beginStartDate != ''"> and start_date &gt;= #{params.beginStartDate} </if>
+            <if test="params.endStartDate != null and params.endStartDate != ''"> and start_date &lt;= #{params.endStartDate}</if>
+            <if test="endDate != null "> and DATE(end_date) = DATE(#{endDate}) </if>
+            <if test="params.beginEndDate != null and params.beginEndDate != ''"> and end_date &gt;= #{params.beginEndDate} </if>
+            <if test="params.endEndDate != null and params.endEndDate != ''"> and end_date &lt;= #{params.endEndDate}</if>
+            <if test="patrolPlanStatus != null  and patrolPlanStatus != ''"> and patrol_plan_status = #{patrolPlanStatus}</if>
+			 <if test="params.patrolPlanStatusInValueArr!= null ">
+            	and patrol_plan_status in
+                <foreach item="patrolPlanStatus" collection="params.patrolPlanStatusInValueArr" open="(" separator="," close=")">
+                    #{patrolPlanStatus}
+                </foreach>
+        	</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikePatrolPlan" parameterType="PatrolPlan" resultMap="PatrolPlanResult">
+        <include refid="selectPatrolPlanVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.patrolPlan.mapper.PatrolPlanMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikePatrolPlan" parameterType="PatrolPlan" resultType="int">
+        select count(*) from a_patrol_plan t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.patrolPlan.mapper.PatrolPlanMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="patrolPlanName != null  and patrolPlanName != ''"> and patrol_plan_name = #{patrolPlanName}</if>
+            <if test="patrolPathId != null "> and patrol_path_id = #{patrolPathId}</if>
+            <if test="patrolUserId != null "> and patrol_user_id = #{patrolUserId}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="patrolCycleType != null  and patrolCycleType != ''"> and patrol_cycle_type = #{patrolCycleType}</if>
+            <if test="patrolCycleValue != null  and patrolCycleValue != ''"> and patrol_cycle_value = #{patrolCycleValue}</if>
+            <if test="startDate != null "> and DATE(start_date) = DATE(#{startDate}) </if>
+            <if test="endDate != null "> and DATE(end_date) = DATE(#{endDate}) </if>
+            <if test="patrolPlanStatus != null  and patrolPlanStatus != ''"> and patrol_plan_status = #{patrolPlanStatus}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqPatrolPlan" parameterType="PatrolPlan" resultMap="PatrolPlanResult">
+        <include refid="selectPatrolPlanVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqPatrolPlan" parameterType="PatrolPlan" resultType="int">
+        select count(*) from a_patrol_plan t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkPatrolPlan" parameterType="Long" resultMap="PatrolPlanResult">
+        <include refid="selectPatrolPlanDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikePatrolPlan" parameterType="PatrolPlan" resultMap="PatrolPlanResult">
+        <include refid="selectPatrolPlanDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.patrolPlan.mapper.PatrolPlanMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqPatrolPlan" parameterType="PatrolPlan" resultMap="PatrolPlanResult">
+        <include refid="selectPatrolPlanDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertPatrolPlan" parameterType="PatrolPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into a_patrol_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="patrolPlanName != null and patrolPlanName != ''">patrol_plan_name,</if>
+            <if test="patrolPathId != null">patrol_path_id,</if>
+            <if test="patrolUserId != null">patrol_user_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="patrolCycleType != null and patrolCycleType != ''">patrol_cycle_type,</if>
+            <if test="patrolCycleValue != null">patrol_cycle_value,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="endDate != null">end_date,</if>
+            <if test="patrolPlanStatus != null and patrolPlanStatus != ''">patrol_plan_status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="patrolPlanName != null and patrolPlanName != ''">#{patrolPlanName},</if>
+            <if test="patrolPathId != null">#{patrolPathId},</if>
+            <if test="patrolUserId != null">#{patrolUserId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="patrolCycleType != null and patrolCycleType != ''">#{patrolCycleType},</if>
+            <if test="patrolCycleValue != null">#{patrolCycleValue},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="endDate != null">#{endDate},</if>
+            <if test="patrolPlanStatus != null and patrolPlanStatus != ''">#{patrolPlanStatus},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByPatrolPlan">
+        INSERT INTO a_patrol_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            patrol_plan_name,
+            patrol_path_id,
+            patrol_user_id,
+            start_time,
+            end_time,
+            patrol_cycle_type,
+            patrol_cycle_value,
+            start_date,
+            end_date,
+            patrol_plan_status,
+            remark,
+            user_id,
+            dept_id,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.patrolPlanName},
+			#{item.patrolPathId},
+			#{item.patrolUserId},
+			#{item.startTime},
+			#{item.endTime},
+			#{item.patrolCycleType},
+			#{item.patrolCycleValue},
+			#{item.startDate},
+			#{item.endDate},
+			#{item.patrolPlanStatus},
+			#{item.remark},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		patrol_plan_name = VALUES(patrol_plan_name),
+       		patrol_path_id = VALUES(patrol_path_id),
+       		patrol_user_id = VALUES(patrol_user_id),
+       		start_time = VALUES(start_time),
+       		end_time = VALUES(end_time),
+       		patrol_cycle_type = VALUES(patrol_cycle_type),
+       		patrol_cycle_value = VALUES(patrol_cycle_value),
+       		start_date = VALUES(start_date),
+       		end_date = VALUES(end_date),
+       		patrol_plan_status = VALUES(patrol_plan_status),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByPatrolPlan" parameterType="PatrolPlan">
+        update a_patrol_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="patrolPlanName != null and patrolPlanName != ''">patrol_plan_name = #{patrolPlanName},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            patrol_path_id = #{patrolPathId},
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            patrol_user_id = #{patrolUserId},
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="patrolCycleType != null and patrolCycleType != ''">patrol_cycle_type = #{patrolCycleType},</if>
+            <if test="patrolCycleValue != null">patrol_cycle_value = #{patrolCycleValue},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            start_date = #{startDate},
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            end_date = #{endDate},
+            <if test="patrolPlanStatus != null and patrolPlanStatus != ''">patrol_plan_status = #{patrolPlanStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByPatrolPlan" parameterType="PatrolPlan">
+        update a_patrol_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="patrolPlanName != null and patrolPlanName != ''">patrol_plan_name = #{patrolPlanName},</if>
+            <if test="patrolPathId != null">patrol_path_id = #{patrolPathId},</if>
+            <if test="patrolUserId != null">patrol_user_id = #{patrolUserId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="patrolCycleType != null and patrolCycleType != ''">patrol_cycle_type = #{patrolCycleType},</if>
+            <if test="patrolCycleValue != null">patrol_cycle_value = #{patrolCycleValue},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="endDate != null">end_date = #{endDate},</if>
+            <if test="patrolPlanStatus != null and patrolPlanStatus != ''">patrol_plan_status = #{patrolPlanStatus},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePatrolPlanById" parameterType="PatrolPlan">
+		delete from a_patrol_plan where id = #{id}
+    </delete>
+
+    <delete id="deletePatrolPlanByIds" parameterType="PatrolPlan">
+        delete from a_patrol_plan where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePatrolPlanByEqPatrolPlan" parameterType="PatrolPlan">
+        delete from a_patrol_plan
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deletePatrolPlanAllData">
+        delete from a_patrol_plan
+    </delete>
+
+
+</mapper>

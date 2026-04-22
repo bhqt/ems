@@ -1,0 +1,761 @@
+<template>
+	<div class="app-container">
+		<el-form class="a_query_form" :model="pageData.queryParams" ref="queryFormRef" v-show="pageData.showSearchTool" label-width="100px" size="default" :inline="true">
+#foreach($column in $columns)
+#if($column.query)
+#set($dictType=$column.dictType)
+#set($AttrName=$column.attrName)
+#set($comment=$column.columnComment)
+#if($column.columnName == "dept_id")
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+              <el-tree-select v-model="pageData.queryParams.${column.javaField}" :data="deptOptions" :props="{ value: 'id', label: 'label', children: 'children' }"
+							  value-key="id" placeholder="请选择" :indent="6" check-strictly :default-expand-all="true" clearable/>
+			</el-form-item>
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf("_3") != -1 ))
+##  级联下拉框，2级或者3级
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+				<el-select class="a_query_form_select" v-model="pageData.queryParams.${column.javaField}" placeholder="请选择" clearable>
+					<el-option v-for="dict in ${dictType}_options"
+						:key="dict.value" :label="dict.label" :value="dict.value" />
+				</el-select>
+			</el-form-item>
+#elseif($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+				<el-select class="a_query_form_select" v-model="pageData.queryParams.${column.javaField}" placeholder="请选择" clearable>
+					<el-option v-for="dict in pageData.dicts.${dictType}"
+						:key="dict.value" :label="dict.label" :value="dict.value" />
+				</el-select>
+			</el-form-item>
+#elseif($column.htmlType == "datetime" && $column.queryType != "BETWEEN")
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+				<el-date-picker v-model="pageData.queryParams.${column.javaField}" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" unlink-panels
+								style="width: 240px" placeholder="请选择" clearable/>
+			</el-form-item>
+#elseif($column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+			<el-form-item class="a_query_form_item_datetime_between" label="${comment}">
+				<el-date-picker v-model="dateRange${AttrName}" type="datetimerange" unlink-panels  :shortcuts="$common.dateTimeShortcuts()"
+								style="width: 360px" start-placeholder="开始日期" end-placeholder="结束日期" value-format="YYYY-MM-DD HH:mm:ss" range-separator="-" clearable/>
+  			</el-form-item>
+#elseif($column.htmlType == "date" && $column.queryType != "BETWEEN")
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+				<el-date-picker v-model="pageData.queryParams.${column.javaField}" type="date" value-format="YYYY-MM-DD" unlink-panels
+								clearable placeholder="请选择"/>
+			</el-form-item>
+#elseif($column.htmlType == "date" && $column.queryType == "BETWEEN")
+			<el-form-item class="a_query_form_item" label="${comment}">
+				<el-date-picker clearable start-placeholder="开始日期" end-placeholder="结束日期" unlink-panels  :shortcuts="$common.dateShortcuts()"
+					v-model="dateRange${AttrName}" type="daterange" value-format="YYYY-MM-DD" range-separator="-"/>
+			</el-form-item>
+#elseif($column.htmlType == "timePicker" && $column.queryType != "BETWEEN")
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+				<el-time-picker v-model="pageData.queryParams.${column.javaField}" value-format="HH:mm:ss" unlink-panels clearable placeholder="请选择"/>
+			</el-form-item>
+#elseif($column.htmlType == "timePicker" && $column.queryType == "BETWEEN")
+			<el-form-item class="a_query_form_item" label="${comment}">
+				<el-time-picker is-range clearable start-placeholder="开始时间" end-placeholder="结束时间" unlink-panels
+					v-model="dateRange${AttrName}" value-format="HH:mm:ss" range-separator="-"/>
+			</el-form-item>
+#elseif(($column.javaType == "Integer" || $column.javaType == "Long" || $column.javaType == "Double" || $column.javaType == "BigDecimal") && $column.queryType == "BETWEEN")
+			<el-form-item class="a_query_form_item" label="${comment}">
+			  	<el-input-number class="a_query_form_item_number_between" clearable placeholder=">=" controls-position="right"
+						  v-model="pageData.queryParams.params.begin${AttrName}" @keyup.enter.native="handleQuery"/>
+					&nbsp;~&nbsp;
+			  	<el-input-number class="a_query_form_item_number_between" clearable placeholder="<=" controls-position="right"
+						  v-model="pageData.queryParams.params.end${AttrName}" @keyup.enter.native="handleQuery"/>
+			</el-form-item>
+#elseif($column.htmlType == "input"  || $column.htmlType == "input-tag")
+			<el-form-item class="a_query_form_item" label="${comment}" prop="${column.javaField}">
+				<el-input clearable placeholder="请输入${comment}"
+					v-model="pageData.queryParams.${column.javaField}" @keyup.enter.native="handleQuery"/>
+			</el-form-item>
+#end
+#end
+#end
+			<!--
+			<el-form-item class="a_query_form_item">
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("handleQuery") == -1)
+#set($isShowButton="false")
+#end
+			  <el-button v-if="${isShowButton}" type="primary" icon="Search" size="small" @click="handleQuery">过滤</el-button>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("resetQuery") == -1)
+#set($isShowButton="false")
+#end
+			  <el-button v-if="${isShowButton}" icon="Refresh" size="small" @click="resetQuery">重置</el-button>
+			</el-form-item>
+			-->
+		</el-form>
+
+		<el-row :gutter="10" class="mb8">
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("add") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="primary" plain icon="Plus" size="small"
+					@click="handleAdd" v-hasPermi="['${moduleName}:${businessName}:add']"
+				>新增
+				</el-button>
+			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("update") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="success" plain icon="Edit" size="small"
+					:disabled="pageData.singleSelected" @click="handleUpdate" v-hasPermi="['${moduleName}:${businessName}:edit']"
+				>编辑
+				</el-button>
+			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("submitTableEdit") == -1)
+#set($isShowButton="false")
+#end
+##			<el-col v-if="${isShowButton}" :span="1.5">
+##				<el-button type="warning" plain icon="el-icon-s-promotion" size="small"
+##					:disabled="!checkTableDataHasChanged" @click="submitTableEdit" v-hasPermi="['${moduleName}:${businessName}:edit']"
+##				>提交列表编辑
+##				</el-button>
+##			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("delete") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="danger" plain icon="Delete" size="small"
+					:disabled="pageData.multipleSelected" @click="handleDelete" v-hasPermi="['${moduleName}:${businessName}:remove']"
+				>删除
+				</el-button>
+			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("deleteAllData") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="danger" plain icon="Delete" size="small"  @click="handleDeleteAllData" v-hasPermi="['${moduleName}:${businessName}:remove']"
+				>清空
+				</el-button>
+			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("handleImport") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="info" plain icon="Upload" size="small"
+					@click="handleImport" v-hasPermi="['${moduleName}:${businessName}:import']"
+				>导入
+				</el-button>
+			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("handleExport") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="warning" plain icon="Download"  size="small"
+					@click="handleExport" v-hasPermi="['${moduleName}:${businessName}:export']"
+				>导出
+				</el-button>
+			</el-col>
+#foreach ($pageButton in $genTableExtendInfo.addPageButtons)
+  			<el-col v-if="true" :span="1.5">
+				<el-button type="primary" plain icon="Aim"  size="small"
+					@click="${pageButton.functionName}" v-hasPermi="['${moduleName}:${businessName}:edit']"
+				>${pageButton.title}
+				</el-button>
+			</el-col>
+#end
+  			<el-col  :span="0.5">
+				<el-divider direction="vertical" />
+  			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("resetQuery") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				 <el-button v-if="${isShowButton}" icon="Refresh" size="small" @click="resetQuery">重置</el-button>
+			</el-col>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("handleQuery") == -1)
+#set($isShowButton="false")
+#end
+			<el-col v-if="${isShowButton}" :span="1.5">
+				<el-button type="primary" icon="Search" size="small" @click="handleQuery">过滤</el-button>
+			</el-col>
+			<right-toolbar v-model:showSearch="pageData.showSearchTool" @queryTable="getList()"></right-toolbar>
+		</el-row>
+#set($needGridBorder = "false")
+#if($extendInfo && $extendInfo.indexOf("needGridBorder") != -1)
+#set($needGridBorder = "true")
+#end
+#set($needGridShowSummary = "false")
+#if($extendInfo && $extendInfo.indexOf("needGridShowSummary") != -1)
+#set($needGridShowSummary = "true")
+#end
+		<!-- 列表多选 -->
+		<el-table :border="${needGridBorder}" ref="mainTable" tooltip-effect="light" :row-class-name="rowClassName" v-loading="pageData.loadingListData" :data="pageData.${businessName}List" @selection-change="handleSelectionChange"
+		          :default-sort="pageData.defaultSort" @sort-change="handleSortChange" :show-summary="${needGridShowSummary}" :summary-method="tableSummaryMethod">
+			<el-table-column type="selection" width="55" align="center"/>
+			<!-- 列表单选 -->
+			<!-- <el-table v-loading="pageData.loadingListData" :data="pageData.${businessName}List" highlight-current-row @current-change="handleSelectionChange"> -->
+#foreach($column in $columns)
+#set($javaField=$column.javaField)
+#set($comment=$column.columnComment)
+#if($column.list)
+#set($showCol="v-if=""true""")
+#else
+#set($showCol="v-if=""false""")
+#end
+#if($column.pk && !$column.list)
+			<!-- <el-table-column label="${comment}" align="center" prop="${javaField}" /> -->
+#elseif($column.pk && $column.list)
+			<el-table-column label="${comment}" align="center" prop="${javaField}" />
+#elseif($column.htmlType == "datetime")
+#if($column.javaField=="updateTime")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" sortable="custom" :sort-orders="['descending', 'ascending']">
+#else
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" sortable="custom" :sort-orders="['descending', 'ascending']">
+#end
+				<template #default="scope">
+					<span>{{ parseTime(scope.row.${javaField}, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
+				</template>
+			</el-table-column>
+#elseif($column.htmlType == "date")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" sortable="custom" :sort-orders="['descending', 'ascending']">
+				<template #default="scope">
+					<span>{{ parseTime(scope.row.${javaField}, '{y}-{m}-{d}') }}</span>
+				</template>
+			</el-table-column>
+#elseif($column.htmlType == "imageUpload")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" width="100">
+				<template #default="scope">
+##					<image-preview :src="scope.row.${javaField}" :width="50" :height="50"/>
+					<image-preview
+						v-for="(image, index) in  scope.row.${javaField} ?  scope.row.${javaField}.split(',') : []"
+						:key="index"
+						:src="image"
+##						:src="vueAppBaseApi + image"
+						:width="50"
+						:height="50"
+					/>
+				</template>
+			</el-table-column>
+#elseif($column.htmlType == "input-tag")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" width="100">
+				<template #default="scope">
+				  <el-tag type="primary" v-for="(item, index) in  scope.row.${javaField} ?  scope.row.${javaField}.split(',') : []"
+				  		style="margin-bottom: 5px">{{item}}</el-tag>
+				</template>
+			</el-table-column>
+#elseif($column.htmlType == "fileUpload")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" width="100">
+				<template #default="scope">
+ 					<div v-for="(file, index) in scope.row.${javaField} ?  scope.row.${javaField}.split(',') : []" :key="index">
+						<!-- 提取文件名 -->
+						<el-link type="primary" :href="file" :download="file.split('/').pop()"  target="_blank">{{ file.split('/').pop() }}</el-link>
+##						<el-link type="primary" :href="vueAppBaseApi + file" target="_blank">{{ file.split('/').pop() }}</el-link>
+					</div>
+				</template>
+			</el-table-column>
+#elseif($column.htmlType == "selectSelfDefine" || $column.htmlType == "checkbox" || $column.htmlType == "select")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" sortable="custom" :sort-orders="['descending', 'ascending']">
+				<template #default="scope">
+#if($column.htmlType == "checkbox")
+					<dict-tag :options="pageData.dicts.${column.dictType}" :value="scope.row.${javaField} ? scope.row.${javaField}.split(',') : []"/>
+#elseif($column.htmlType == "selectSelfDefine")
+					<dict-tag :options="pageData.dicts.${column.dictType}" :value="scope.row.${javaField}" />
+#else
+					<dict-tag :options="pageData.dicts.${column.dictType}" :value="scope.row.${javaField}"/>
+#end
+				</template>
+			</el-table-column>
+#elseif($column.htmlType == "textarea")
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+#elseif($column.columnType == "blob"  )
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+#elseif("" != $javaField)
+			<el-table-column $showCol label="${comment}" align="center" prop="${javaField}" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+#end
+#end
+			<el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+				<template #default="scope">
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("gridUpdate") == -1)
+#set($isShowButton="false")
+#end
+					<el-button v-if="${isShowButton}" size="small" link icon="Edit" type="primary"
+							   @click="handleUpdate(scope.row)" v-hasPermi="['${moduleName}:${businessName}:edit']"
+					>编辑
+					</el-button>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("gridDetail") == -1)
+#set($isShowButton="false")
+#end
+					<el-button v-if="${isShowButton}" size="small" link icon="ZoomIn" type="info"
+							   @click="handleShowDetail(scope.row)" v-hasPermi="['${moduleName}:${businessName}:list']"
+					>查看
+					</el-button>
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("gridDelete") == -1)
+#set($isShowButton="false")
+#end
+					<el-button v-if="${isShowButton}" size="small" link icon="Delete" type="danger"
+							   @click="handleDelete(scope.row)" v-hasPermi="['${moduleName}:${businessName}:remove']"
+					>删除
+					</el-button>
+#foreach($gridButton in $gridButtonList)
+					<el-button size="small" link icon="Aim"  type="primary"
+								@click="${gridButton.functionName}(scope.row)" v-hasPermi="['${moduleName}:${businessName}:edit']"
+					>${gridButton.title}
+					</el-button>
+#end
+				</template>
+			</el-table-column>
+		</el-table>
+	  	<!--	翻页工具条 -->
+		<pagination
+			v-show="pageData.listTotal>0"
+			:total="pageData.listTotal"
+         	v-model:page="pageData.queryParams.pageNum"
+         	v-model:limit="pageData.queryParams.pageSize"
+			@pagination="getList()"
+		/>
+		<addUpdateDialog ref="addUpdateDialogRef" @addUpdateSubmitCallback="getList('addUpdate')"/>
+		<detailDialog ref="detailDialogRef" />
+		<importDialog ref="importDialogRef" @importSubmitCallback="getList('import')"/>
+#foreach ($pageButton in $genTableExtendInfo.addPageButtons)
+#if($pageButton.openDialog=="1")
+		<${pageButton.functionName}Dialog ref="${pageButton.functionName}DialogRef" />
+#end
+#end
+#foreach($gridButton in $gridButtonList)
+#if($gridButton.openDialog=="1")
+		<${gridButton.functionName}Dialog ref="${gridButton.functionName}DialogRef" />
+#end
+#end
+	</div>
+</template>
+
+<script setup name="${BusinessName}">
+import moment from 'moment';
+import { getToken } from "@/utils/auth";
+
+import ${businessName} from "@/api/${moduleName}/${businessName}";
+import ${businessName}Extend from "@/api/${moduleName}/${businessName}Extend";
+
+import addUpdateDialog from './addUpdateDialog.vue';
+import detailDialog from './detailDialog.vue';
+import importDialog from './importDialog.vue';
+#foreach($gridButton in $gridButtonList)
+#if($gridButton.openDialog=="1")
+import ${gridButton.functionName}Dialog from './${gridButton.functionName}Dialog.vue';
+#end
+#end
+
+// 获取组件实例
+const instance = getCurrentInstance();
+const { proxy } = getCurrentInstance();
+
+// 获取当前日期
+const today = new Date();
+#if($genTableExtendInfo.queryDateRange && $genTableExtendInfo.queryDateRange != "")
+// 设置开始日期
+const beginDate = moment(today).add(-${genTableExtendInfo.queryDateRange}, 'hours').format('YYYY-MM-DD');
+// 设置开始时间
+const beginTime = moment(today).add(-${genTableExtendInfo.queryDateRange}, 'hours').format('YYYY-MM-DD 00:00:00');
+#else
+// 设置开始日期 默认30天
+const beginDate = moment(today).add(-30, 'days').format('YYYY-MM-DD');
+// 设置开始时间 默认30天
+const beginTime = moment(today).add(-30, 'days').format('YYYY-MM-DD 00:00:00');
+#end
+// 设置结束日期-今天
+const endDate = moment(today).add(0, 'days').format('YYYY-MM-DD');
+const endTime = moment(today).add(0, 'days').format('YYYY-MM-DD 23:59:59');
+#foreach ($column in $columns)
+#if($column.query && $column.htmlType == "date" && $column.queryType == "BETWEEN")
+#set($AttrName=$column.attrName)
+// 初始化 dateRange${AttrName}
+#if($genTableExtendInfo.queryDateRange && $genTableExtendInfo.queryDateRange != "")
+const dateRange${AttrName} = ref([beginTime, endTime]);
+#else
+const dateRange${AttrName} = ref([]);
+#end
+#end
+#if($column.query && $column.htmlType == "datetime" && $column.queryType == "BETWEEN")
+#set($AttrName=$column.attrName)
+// 初始化 dateRange${AttrName}
+#if($genTableExtendInfo.queryDateRange && $genTableExtendInfo.queryDateRange != "")
+const dateRange${AttrName} = ref([beginTime, endTime]);
+#else
+const dateRange${AttrName} = ref([]);
+#end
+#end
+#end
+
+const pageData = reactive({
+  dicts: {
+#if(${dicts} != '')
+#set($dictsNoSymbol=$dicts.replace("'", ""))
+#set($dictNames=$dictsNoSymbol.split(","))
+#foreach($name in $dictNames)
+      $!{name.trim()}: [],
+#end
+#end
+  },
+  ${businessName}List: [],
+#if($table.sub)
+  ${subclassName}List: [],
+#end
+  loadingListData: true,
+  showSearchTool: true,
+  selectedIds: [],
+  singleSelected: true,
+  multipleSelected: true,
+  listTotal: 0,
+  queryParams: {
+    pageNum: 1,
+    pageSize: 10,
+#foreach ($column in $columns)
+#if($column.query)
+    $column.javaField: null,
+#end
+#end
+    params: {
+#foreach ($column in $columns)
+#if($column.query && $column.queryType == "BETWEEN")
+#set($AttrName=$column.attrName)
+    begin$AttrName: null,
+    end$AttrName: null,
+#end
+#end
+    }
+  },
+  // 默认排序
+#if($genTableExtendInfo.tableDefaultOrderByStr)
+  defaultSort: {prop: '${genTableExtendInfo.tableDefaultOrderByStr}', order: 'descending'},
+#else
+  defaultSort: {prop: 'updateTime', order: 'descending'},
+#end
+  rules: {
+    #foreach ($column in $columns)
+#if($column.required)
+#set($parentheseIndex=$column.columnComment.indexOf("（"))
+#if($parentheseIndex != -1)
+#set($comment=$column.columnComment.substring(0, $parentheseIndex))
+#else
+#set($comment=$column.columnComment)
+#end
+    $column.javaField: [
+      { required: true, message: "$comment不能为空", trigger: #if($column.htmlType == "select" || $column.htmlType == "radio")"change"#else"blur"#end }
+    ]#if($foreach.count != $columns.size()),#end
+#end
+#end
+  }
+});
+
+#foreach($column in $columns)
+#set($dictType=$column.dictType)
+#if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 ))
+##  级联下拉框，2级
+#set($index=$column.javaField.indexOf("2"))
+#set($prefix=$column.javaField.substring(0, $index))
+// 监听第1级选择的变化
+watch(() => pageData.queryParams.${prefix}1, (newVal) => {
+  pageData.queryParams.${prefix}2 = ''; // 清空下一级选择
+  pageData.queryParams.${prefix}3 = '';
+  if (newVal) {
+    // 过滤第2级字典数组
+    // 查询后端自定义级联转码时，返回对应的parentDictValue，通过parentDictValue过滤下级下拉框
+	const filteredOptions = pageData.dicts.${column.dictType}.filter(item => {
+		// console.log("item", item)
+		// console.log("newVal", newVal)
+	   // 关键修改：先检查 parentDictValue 是否存在
+      return item.parentDictValue != null &&
+             item.parentDictValue.toString() === newVal.toString();
+	 });
+     ${dictType}_options.value = filteredOptions;  } else {
+    // 当 newVal 不存在时
+    ${dictType}_options.value = [];
+  }
+});
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_3") != -1 ))
+##  级联下拉框，3级
+#set($index=$column.javaField.indexOf("3"))
+#set($prefix=$column.javaField.substring(0, $index))
+// 监听第2级选择的变化
+watch(() => pageData.queryParams.${prefix}2, (newVal) => {
+  pageData.queryParams.${prefix}3 = ''; // 清空下一级选择
+  if (newVal) {
+    // 过滤第3级字典数组
+    // 查询后端自定义级联转码时，返回对应的parentDictValue，通过parentDictValue过滤下级下拉框
+	const filteredOptions = pageData.dicts.${column.dictType}.value.filter(item => {
+		// console.log("item", item)
+		// console.log("newVal", newVal)
+		return item.parentDictValue.toString() === newVal.toString()
+	 });
+     ${dictType}_options.value = filteredOptions;  } else {
+    // 当 newVal 不存在时
+    ${dictType}_options.value = [];
+  }
+});
+#end
+#end
+
+/** 查询${functionName}列表 */
+function getList(operateFlag) {
+  //  主页增删改、导入、其他方法处理成功扩展方法
+  ${businessName}Extend.indexOperateSuccessExtend(instance, operateFlag)
+  pageData.loadingListData = true;
+#foreach ($column in $columns)
+#set($AttrName=$column.attrName)
+#if($column.query && ($column.htmlType == "date" || $column.htmlType == "datetime") && $column.queryType == "BETWEEN")
+  if (dateRange${AttrName}.value !== null && dateRange${AttrName}.value !== '') {
+  	pageData.queryParams.params["begin${AttrName}"] = dateRange${AttrName}.value[0];
+  	pageData.queryParams.params["end${AttrName}"] = dateRange${AttrName}.value[1];
+  } else {
+  	pageData.queryParams.params["begin${AttrName}"] = null;
+  	pageData.queryParams.params["end${AttrName}"] = null;
+  }
+#end
+#end
+  ${businessName}.selectPageList${ClassName}(pageData.queryParams).then(response => {
+    pageData.${businessName}List = response.rows;
+    pageData.listTotal = response.total;
+    pageData.loadingListData = false;
+  });
+}
+
+/** 排序触发事件 */
+function handleSortChange(column, prop, order) {
+	pageData.queryParams.orderByColumn = column.prop;
+	pageData.queryParams.isAsc = column.order;
+	getList();
+}
+
+/** 搜索按钮操作 */
+function handleQuery() {
+  pageData.queryParams.pageNum = 1;
+  // 从新设置列表显示的默认排序字段并进行查询，该字段(updateTime)必须在列表中存在，否则sort方法不执行，需要使用下面的selectPageList方法
+  proxy.#[[$]]#refs.mainTable.sort(pageData.defaultSort.prop, pageData.defaultSort.order)
+  // 上面的sort方法就会进行查询，不需要下面的查询，否则查询执行两次
+  // this.selectPageList${ClassName}();
+}
+
+/** 重置按钮操作 */
+function resetQuery() {
+#foreach ($column in $columns)
+#set($AttrName=$column.attrName)
+#if($column.query && ($column.htmlType == "datetime") && $column.queryType == "BETWEEN")
+  dateRange${AttrName}.value = [beginTime, endTime];
+#end
+#if($column.query && ($column.htmlType == "date") && $column.queryType == "BETWEEN")
+  dateRange${AttrName}.value = [beginDate, endDate];
+#end
+#end
+  proxy.resetForm("queryFormRef");
+  handleQuery();
+}
+
+// 多选框选中数据
+function handleSelectionChange(selection) {
+  pageData.selectedIds = selection.map(item => item.${pkColumn.javaField});
+  pageData.singleSelected = selection.length != 1;
+  pageData.multipleSelected = !selection.length;
+}
+
+/** 新增按钮操作 */
+async function handleAdd() {
+  // 先获取最新字典数据
+  const dicts = await fetchDicts();
+  if (dicts) {
+  	proxy.#[[$]]#refs.addUpdateDialogRef.open${BusinessName}AddDialog(pageData.queryParams, dicts);
+  }
+}
+
+/** 修改按钮操作 */
+async function handleUpdate(row) {
+  // 先获取最新字典数据
+  const dicts = await fetchDicts();
+  if (dicts) {
+  	const id = row.${pkColumn.javaField} || pageData.selectedIds
+ 	proxy.#[[$]]#refs.addUpdateDialogRef.open${BusinessName}UpdateDialog(id, dicts);
+  }
+}
+
+/** 删除按钮操作 */
+function handleDelete(row) {
+  const idsArr = row.${pkColumn.javaField} || pageData.selectedIds;
+  proxy.#[[$modal]]#.confirm('确认删除当前选中的记录吗？').then(function() {
+    return ${businessName}.delete${BusinessName}ByIds(idsArr);
+  }).then(() => {
+    getList("delete");
+    proxy.#[[$modal]]#.msgSuccess("删除成功");
+  }).catch(() => {});
+}
+
+/** 清空全部数据按钮操作 */
+function handleDeleteAllData(row) {
+  // 第一次确认对话框
+  proxy.#[[$]]#modal.confirm('警告：此操作将清空全部数据！\n清空后不可恢复！\n确定要继续吗？')
+    .then(() => {
+      // 第二次确认对话框，要求用户输入确认文本
+      return proxy.#[[$]]#modal.prompt('请输入"确认清空"以继续操作：', {
+        inputPlaceholder: '确认删除',
+        confirmButtonText: '确认',
+        cancelButtonText: '取消'
+      });
+    })
+    .then(({ value }) => {
+      // 验证用户输入
+      if (value.trim() === '确认清空') {
+        // 执行删除操作
+        return ${businessName}.delete${BusinessName}AllData();
+      } else {
+        throw new Error('确认文本不正确，操作已取消');
+      }
+    })
+    .then(() => {
+      getList("delete");
+      proxy.#[[$]]#modal.msgSuccess("清空全部数据成功");
+    })
+    .catch((error) => {
+      if (error === 'cancel') {
+        proxy.#[[$]]#modal.msgInfo("清空全部数据操作已取消");
+      } else {
+        proxy.#[[$]]#modal.msgError(error.message || "清空全部数据操作失败");
+      }
+    });
+}
+
+/** 查看按钮操作 */
+function handleShowDetail(row) {
+	proxy.#[[$]]#refs.detailDialogRef.open${BusinessName}DetailDialog(row);
+}
+
+/** 导入按钮操作 */
+function handleImport() {
+	proxy.#[[$]]#refs.importDialogRef.open${BusinessName}ImportDialog(pageData.queryParams);
+}
+
+/** 导出按钮操作 */
+function handleExport() {
+  proxy.#[[$]]#modal.confirm('确认导出当前查询条件下的所有记录吗？').then(() => {
+#foreach ($column in $columns)
+#set($AttrName=$column.attrName)
+#if($column.query && ($column.htmlType == "date" || $column.htmlType == "datetime") && $column.queryType == "BETWEEN")
+    if (dateRange${AttrName}.value !== null && dateRange${AttrName}.value !== '') {
+    	pageData.queryParams.params["begin${AttrName}"] = dateRange${AttrName}.value[0];
+    	pageData.queryParams.params["end${AttrName}"] = dateRange${AttrName}.value[1];
+    } else {
+    	pageData.queryParams.params["begin${AttrName}"] = null;
+    	pageData.queryParams.params["end${AttrName}"] = null;
+    }
+#end
+#end
+  	let fileExt = moment().format('YYYYMMDD_HHmmss');
+  	return proxy.download('${moduleName}/${businessName}/export${ClassName}', {...pageData.queryParams},
+  		`${functionName}_导出_${fileExt}.xlsx`)
+  }).catch((error) => {
+  	console.error("导出失败：", error);
+  });
+}
+
+#foreach($column in $columns)
+#if($column.query)
+#if($column.columnName == "dept_id")
+import { deptTreeSelect } from "@/api/system/user";
+const deptOptions = ref(undefined);
+/** 查询部门下拉树结构 */
+function getDeptTree() {
+  deptTreeSelect().then(response => {
+	deptOptions.value = response.data;
+  });
+};
+getDeptTree();
+
+#end
+#end
+#end
+#foreach ($pageButton in $genTableExtendInfo.addPageButtons)
+// ${pageButton.title}按钮
+function ${pageButton.functionName}() {
+	const ids = pageData.selectedIds;
+	${businessName}Extend.${pageButton.functionName}Function(instance, ids)
+}
+
+#end
+#foreach($gridButton in $gridButtonList)
+// ${gridButton.title}
+function ${gridButton.functionName}(row) {
+	${businessName}Extend.${gridButton.functionName}Function(instance, row)
+}
+
+#end
+function tableSummaryMethod(param) {
+	return ${businessName}Extend.tableSummaryMethodExtend(instance, param);
+}
+
+function rowClassName({row, rowIndex}) {
+  // console.log("row.lockType=", row.lockType)
+  // const res = row.lockType === '3' ? 'lockedCss' : ''
+  // console.log("res=", res)
+  // return res;
+  return '';
+}
+
+#foreach($column in $columns)
+#set($dictType=$column.dictType)
+#if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf("_3") != -1 ))
+##  级联下拉框，2级或者3级
+// 初始化-级联转码-字典数组-在字典数据获取到后再进行赋值
+const ${dictType}_options = ref([]);
+#end
+#end
+
+// 获取最新字典数据
+async function fetchDicts() {
+  try {
+#if(${dicts} != '')
+#set($dictsNoSymbol=$dicts.replace("'", ""))
+	const dicts = await proxy.useDict(${dicts});
+    // 直接赋值完整的字典对象
+    pageData.dicts = dicts;
+#end
+
+	// 初始化-级联转码-字典数组-在字典数据获取到后再进行赋值
+#foreach($column in $columns)
+#set($dictType=$column.dictType)
+#if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf("_3") != -1 ))
+  	${dictType}_options.value = [...pageData.dicts.${dictType}];
+#end
+#end
+    return pageData.dicts;
+  } catch (error) {
+    console.error('获取字典数据失败:', error);
+    proxy.$modal.msgError('获取数据失败，请刷新页面');
+    return null;
+  }
+}
+
+onMounted(async () => {
+  // 初始化获取一次字典数据
+  await fetchDicts();
+  // 加载列表数据
+  getList();
+#if($extendInfo && $extendInfo.indexOf("needChildPageDeal") != -1)
+  const pId = proxy.$route.params && proxy.$route.params.id;
+  console.log("跳转传入的pId=", pId)
+  if (pId) {
+  	pageData.queryParams.realMainId = pId
+  }
+#end
+  // mounted扩展方法
+  ${businessName}Extend.indexMountedStartExtend(instance);
+});
+
+// 在 <script setup> 中，需要主动暴露方法才能被外部访问
+defineExpose({
+  getList      // 暴露列表刷新方法
+});
+</script>

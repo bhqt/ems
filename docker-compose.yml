@@ -1,0 +1,188 @@
+# =============================================
+# 能源管理系统（zhurong-ems）中间件服务配置
+# 包含 MySQL、Redis、RabbitMQ、EMQ X、TDengine
+# =============================================
+
+services:
+  # MySQL 数据库服务
+  zhurong-ems-mysql:
+    image: mysql:8.0.35
+    container_name: zhurong-ems-mysql
+    restart: unless-stopped
+    environment:
+      # MySQL 根用户密码
+      MYSQL_ROOT_PASSWORD: 123456
+      # 字符集配置
+      MYSQL_DATABASE: autoee_ems
+      TZ: Asia/Shanghai
+    ports:
+      # 暴露MySQL端口，格式：主机端口:容器端口
+      - "3306:3306"
+    volumes:
+      # 数据持久化目录
+      - zhurong-ems-mysql-data:/var/lib/mysql
+      # 配置文件（可选）
+      - ./docker/mysql/conf:/etc/mysql/conf.d
+      # SQL初始化脚本（可选）
+      - ./数据库脚本:/docker-entrypoint-initdb.d
+    command:
+      # 设置默认字符集和排序规则
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-authentication-plugin=mysql_native_password
+      - --max_connections=1000
+      - --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    networks:
+      - zhurong-ems-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis 缓存服务
+  zhurong-ems-redis:
+    image: redis:7.2.3-alpine
+    container_name: zhurong-ems-redis
+    restart: unless-stopped
+    ports:
+      # 暴露Redis端口
+      - "6379:6379"
+    volumes:
+      # 数据持久化目录
+      - zhurong-ems-redis-data:/data
+      # Redis配置文件（可选）
+      - ./docker/redis/redis.conf:/etc/redis/redis.conf
+    command:
+      # 使用配置文件启动（如果配置文件存在）
+      - redis-server
+      - /etc/redis/redis.conf
+      # 或者直接使用命令参数（如果不需要配置文件）
+      # - redis-server
+      # - --appendonly yes
+      # - --requirepass ""
+    networks:
+      - zhurong-ems-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # RabbitMQ 消息队列服务
+  zhurong-ems-rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: zhurong-ems-rabbitmq
+    restart: unless-stopped
+    environment:
+      # RabbitMQ默认用户名和密码（生产环境请修改）
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      TZ: Asia/Shanghai
+    ports:
+      # AMQP协议端口
+      - "5672:5672"
+      # 管理界面端口
+      - "15672:15672"
+    volumes:
+      # 数据持久化目录
+      - zhurong-ems-rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - zhurong-ems-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========== EMQ X MQTT Broker（新增）==========
+
+  zhurong-ems-emqx:
+    image: emqx/emqx:5.3.2
+    container_name: zhurong-ems-emqx
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      EMQX_NAME: emqx
+      EMQX_HOST: 127.0.0.1
+      EMQX_Dashboard__default_username: admin
+      EMQX_Dashboard__default_password: public
+      EMQX MQTT__DEFAULT__LISTENER: 1883
+      EMQX MQTT__DEFAULT__MAX_PACKET_SIZE: 1MB
+      EMQX MQTT__DEFAULT__MAX_CLIENTID_LEN: 128
+      EMQX MQTT__DEFAULT__MAX_KEEPALIVE: 360
+      EMQX MQTT__DEFAULT__KEEPALIVE_BACKOFF: 0.75
+    ports:
+      - "1883:1883"     # MQTT 协议端口
+      - "8883:8883"     # MQTT/SSL 端口
+      - "18083:18083"   # Dashboard HTTP API 端口
+      - "8081:8081"     # WebSocket 端口
+      - "8083:8083"     # WebSocket/SSL 端口
+    volumes:
+      - zhurong-ems-emqx-data:/opt/emqx/data
+      - zhurong-ems-emqx-log:/opt/emqx/log
+      - zhurong-ems-emqx-plugins:/opt/emqx/plugins
+    networks:
+      - zhurong-ems-network
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ========== TDengine 时序数据库（可选，按需部署）==========
+
+  zhurong-ems-tdengine:
+    image: tdengine/tdengine:3.2.0.0
+    container_name: zhurong-ems-tdengine
+    restart: unless-stopped
+    environment:
+      TAOS_FQDN: zhurong-ems-tdengine
+      TAOS_USER: root
+      TAOS_PASS: difyai123456
+      TZ: Asia/Shanghai
+    ports:
+      - "6030:6030"   # TDengine 原生客户端连接端口
+      - "6041:6041"   # RESTful API 端口
+    volumes:
+      - zhurong-ems-tdengine-data:/var/lib/taos
+      - zhurong-ems-tdengine-log:/var/log/taos
+      - ./docker/tdengine/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: >
+      sh -c "sleep 15 && taos -s 'source /docker-entrypoint-initdb.d/init.sql' && /usr/bin/taosd"
+    networks:
+      - zhurong-ems-network
+    healthcheck:
+      test: ["CMD", "taos", "-c", "show databases"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  # MySQL数据卷
+  zhurong-ems-mysql-data:
+    driver: local
+  # Redis数据卷
+  zhurong-ems-redis-data:
+    driver: local
+  # RabbitMQ数据卷
+  zhurong-ems-rabbitmq-data:
+    driver: local
+  # EMQX数据卷（新增）
+  zhurong-ems-emqx-data:
+    driver: local
+  zhurong-ems-emqx-log:
+    driver: local
+  zhurong-ems-emqx-plugins:
+    driver: local
+  # TDengine数据卷（新增）
+  zhurong-ems-tdengine-data:
+    driver: local
+  zhurong-ems-tdengine-log:
+    driver: local
+
+networks:
+  # 创建专用网络，所有中间件服务在同一网络中，可通过服务名互相访问
+  zhurong-ems-network:
+    driver: bridge
+

@@ -1,0 +1,519 @@
+package ${packageName}.service.impl;
+
+import java.util.*;
+
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import com.ruoyi.common.utils.RedisCacheUtils;
+import com.ruoyi.system.service.ISysDictDataService;
+import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.service.ISysDeptService;
+
+import com.ruoyi.common.core.domain.AjaxResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.service.CommonService;
+#if($table.tree)
+import com.ruoyi.common.core.domain.Ztree;
+#end
+#foreach ($column in $columns)
+#if($column.javaField == 'createTime' || $column.javaField == 'updateTime')
+import com.ruoyi.common.utils.DateUtils;
+#break
+#end
+#end
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+#if($table.sub)
+import com.ruoyi.common.utils.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
+import ${packageName}.${businessName}.domain.${subClassName};
+#end
+import ${packageName}.${businessName}.mapper.${ClassName}Mapper;
+import ${packageName}.${businessName}.mapper.${ClassName}MapperExtend;
+import ${packageName}.${businessName}.domain.${ClassName};
+import ${packageName}.${businessName}.service.I${ClassName}Service;
+import com.ruoyi.common.core.text.Convert;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * ${functionName}Service业务层处理
+ *
+ * @author AutoEE亿达科技有限公司 版权所有 Spring全栈工程师
+ */
+@Service
+public class ${ClassName}ServiceExtend {
+	private static final Logger logger = LoggerFactory.getLogger(${ClassName}ServiceExtend.class);
+	@Autowired
+	private ${ClassName}Mapper ${className}Mapper;
+	@Autowired
+	private ${ClassName}MapperExtend ${className}MapperExtend;
+	@Autowired
+	private ISysDictDataService iSysDictDataService;
+	@Autowired
+	private ISysUserService iSysUserService;
+	@Autowired
+	private ISysDeptService iSysDeptService;
+
+	/**
+ 	* 项目启动时，初始化参数到缓存
+	 */
+	@PostConstruct
+	public void init() {
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+		List<${ClassName}> ${className}List = ${className}Mapper.selectDetailListByLike${ClassName}(new ${ClassName}());
+		for (${ClassName} ${className} : ${className}List) {
+			// 将时间转换为毫秒级时间戳（作为分数）
+			double score = ${className}.getUpdateTime().getTime();
+			RedisCacheUtils.addToSortedSet("DataCache_ZSet_${className}", JSONUtil.toJsonStr(${className}), score);
+		}
+#end
+	}
+
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+	/**
+     * 通过缓存查询全部数据
+     *
+     * @return ${functionName}集合
+     */
+    public List<${ClassName}> selectAllDataByCache()
+	{
+		List<${ClassName}> list = RedisCacheUtils.getSortedSetDescAll("DataCache_ZSet_${className}", ${ClassName}.class);
+        return list;
+    }
+
+	/**
+     * 通过缓存查询分页数据
+     *
+     * @return ${functionName}集合
+     */
+    public List<${ClassName}> selectPageDataByCache( long pageNum, long pageSize)
+	{
+		List<${ClassName}> list = RedisCacheUtils.getSortedSetRevRange("DataCache_ZSet_${className}", pageNum, pageSize, ${ClassName}.class);
+        return list;
+    }
+#end
+
+
+  /**
+     * 通过唯一字段查询${functionName}一条详细信息
+     */
+#if($extendInfo && $extendInfo.indexOf("needDealSalveDB") != -1)
+	@DataSource(value = DataSourceType.SLAVE)
+#end
+    public ${ClassName} selectOneDataByCache(${ClassName} ${className})
+    {
+		${ClassName} ${className}R = new ${ClassName}();
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+		${className}R = RedisCacheUtils.getMapValue("DataCache_Map_${className}", String.valueOf(${className}.getId()), ${ClassName}.class);
+#end
+	    if (null != ${className}R) {
+			return ${className}R;
+	    } else {
+			List<${ClassName}> ${className}List = ${className}Mapper.selectDetailListByLike${ClassName}(new ${ClassName}());
+			if (${className}List.size() == 1) {
+				${className}R = ${className}List.get(0);
+				RedisCacheUtils.setMapValue("DataCache_Map_${className}", String.valueOf(${className}.getId()), JSONUtil.toJsonStr(${className}R));
+				return ${className}R;
+			} else {
+				throw new ServiceException("查询信息结果不唯一！");
+			}
+	    }
+    }
+
+	/**
+	 * 查询列表Start扩展
+	 */
+	public void selectListStartExtend(${ClassName} ${className}) {
+
+	}
+
+	/**
+	 * 查询列表End扩展
+	 */
+	public void selectListEndExtend(${ClassName} ${className}, List<${ClassName}> list) {
+
+	}
+
+	/**
+	 * 查询详细列表Start扩展
+	 */
+	public void selectDetailListStartExtend(${ClassName} ${className}) {
+
+	}
+
+	/**
+	 * 查询详细列表End扩展
+	 */
+	public void selectDetailListEndExtend(${ClassName} ${className}, List<${ClassName}> list) {
+		changSelfDefineDict(${className}, list);
+	}
+
+	/**
+	 * 查询详细列表Start扩展
+	 */
+	public void selectDetailListByEq${ClassName}StartExtend(${ClassName} ${className}) {
+
+	}
+
+	/**
+	 * 查询详细列表End扩展
+	 */
+	public void selectDetailListByEq${ClassName}EndExtend(${ClassName} ${className}, List<${ClassName}> list) {
+		changSelfDefineDict(${className}, list);
+	}
+
+	/**
+	 * 查询明细End扩展
+	 */
+	public void selectDetailByPk${BusinessName}EndExtend(${ClassName} ${className}) {
+		List<${ClassName}> list = new ArrayList();
+		list.add(${className});
+		changSelfDefineDict(${className}, list);
+		${className} =list.get(0);
+	}
+
+	/**
+	 * 查询导出列表Start扩展
+	 */
+	public void selectExportDetailListStartExtend(${ClassName} ${className}) {
+
+	}
+
+	/**
+	 * 查询导出列表End扩展
+	 */
+	public void selectExportDetailListEndExtend(${ClassName} ${className}, List<${ClassName}> list) {
+		changSelfDefineDict(${className}, list);
+	}
+
+	/**
+	 * 处理不能通过sql进行转码的下拉框
+	 */
+	public void changSelfDefineDict(${ClassName} ${className}, List<${ClassName}> list) {
+	#foreach ($column in $columns)
+	#if(($column.htmlType == "select" && $column.javaType != "String") || $column.htmlType == "selectSelfDefine")
+		//HashMap<String, String> ${column.javaField}Map = ${column.javaField}Map(${className});
+	#end
+	#end
+		//list.forEach(e -> {
+	#foreach ($column in $columns)
+	#if(($column.htmlType == "select" && $column.javaType != "String") || $column.htmlType == "selectSelfDefine")
+	#set($AttrName=$column.attrName)
+		//e.set${AttrName}Extend(${column.javaField}Map.get(e.get${AttrName}() + ""));
+	#end
+	#end
+		//});
+	}
+###foreach ($column in $columns)
+###if(($column.htmlType == "select" && $column.javaType != "String") || $column.htmlType == "selectSelfDefine")
+###set($AttrName=$column.attrName)
+##	private HashMap<String, String> ${column.javaField}Map(${ClassName} ${className}) {
+##		HashMap<String, String> ${column.javaField}Map = new HashMap<>();
+##		// Long status = customerPhone.getStatus();
+##		// CustomerPhoneManage customerPhoneManage = new CustomerPhoneManage();
+##		// customerPhoneManage.setId(status);
+##		// List<CustomerPhoneManage> customerPhoneManages = customerPhoneManageMapper.selectDataListByEqCustomerPhoneManage(customerPhoneManage);
+##		// customerPhoneManages.forEach(item -> {
+##		// 	statusMap.put(item.getId() + "", item.getCustomerName());
+##		// });
+##		return ${column.javaField}Map;
+##	}
+###end
+###end
+
+	/**
+	 * 校验数据唯一性
+	 */
+	public void checkDataUnique(${ClassName} ${className}, String flag) {
+	${ClassName} q${ClassName} = new ${ClassName}();
+	#set($isUniqueExist=false)
+	#foreach($column in $columns)
+	#####通过isUnique字段进行重复数据校验
+	#if($column.edit && !$column.superColumn && !$column.pk && $column.isUnique == "1")
+	#set($isUniqueExist=true)
+	#set($AttrName=$column.attrName)
+	#set($field=$column.javaField)
+	########检查日期类型
+	#if($column.columnType == "date")
+		q${ClassName}.set$AttrName(${className}.get$AttrName());
+	########检查日期时间类型
+	#elseif($column.columnType == "datetime")
+		q${ClassName}.set$AttrName(${className}.get$AttrName());
+	########检查下拉框类型的录入值
+	#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine") )
+		q${ClassName}.set$AttrName(${className}.get$AttrName());
+	#else
+		q${ClassName}.set$AttrName(${className}.get$AttrName());
+	#end
+	#end
+	#end
+
+	#if($isUniqueExist)
+		List<${ClassName}> list = ${className}Mapper.selectDataListByEq${ClassName}(q${ClassName});
+		if (("insert".equals(flag) && list.size() > 0) || "update".equals(flag) && list.size() > 0 && !list.get(0).getId().equals(${className}.getId())){
+		String msg = "";
+	#foreach($column in $columns)
+	#####通过isUnique字段进行重复数据校验；拼接提示信息
+	#if($column.edit && !$column.superColumn && !$column.pk && $column.isUnique == "1")
+	#set($AttrName=$column.attrName)
+	#set($field=$column.javaField)
+	########检查日期类型
+	#if($column.columnType == "date")
+		msg += "${column.columnComment}[" + DateUtil.formatDate(${className}.get$AttrName())+"]，";
+	########检查日期时间类型
+	#elseif($column.columnType == "datetime")
+		msg += "${column.columnComment}[" + DateUtil.formatDateTime(${className}.get$AttrName())+"]，";
+	########检查下拉框类型的录入值
+	#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine") )
+		String $field = ${className}.get${AttrName}();
+		if (StrUtil.isNotBlank($field)) {
+			String dictLabel = iSysDictDataService.selectDictLabel("$column.dictType", $field);
+			if (StrUtil.isNotBlank(dictLabel)) {
+			$field =dictLabel;
+			}
+		}
+		msg += "${column.columnComment}[" + $field +"]，";
+	#else
+		msg += "${column.columnComment}[" + ${className}.get$AttrName() + "]，";
+	#end
+	#end
+	#end
+		msg += "在系统中已经存在！请直接在系统中进行维护。";
+		logger.error("【失败】-" + msg);
+		throw new ServiceException(msg);
+	}
+	#end
+	}
+
+	/**
+	 * 新增Start扩展
+	 */
+	public void insertStartExtend(${ClassName} ${className}) {
+		checkDataUnique(${className}, "insert");
+	}
+
+	/**
+	 * 新增End扩展
+	 */
+	public void insertEndExtend(${ClassName} ${className}, int rows) {
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+		// 将时间转换为毫秒级时间戳（作为分数）
+		double score = ${className}.getUpdateTime().getTime();
+		RedisCacheUtils.addToSortedSet("DataCache_ZSet_${className}", JSONUtil.toJsonStr(${className}), score);
+		// RedisCacheUtils.setMapValue("DataCache_Map_${className}", String.valueOf(${className}.getId()), JSONUtil.toJsonStr(${className}));
+#end
+
+	}
+
+	/**
+	 * 修改Start扩展
+	 */
+	public void updateStartExtend(${ClassName} ${className},${ClassName} old${ClassName}) {
+		checkDataUnique(${className}, "update");
+	}
+
+	/**
+	 * 修改End扩展
+	 */
+	public void updateEndExtend(${ClassName} ${className}, ${ClassName} old${ClassName}, int rows) {
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+		RedisCacheUtils.removeFromSortedSet("DataCache_ZSet_${className}", JSONUtil.toJsonStr(old${ClassName}));
+		${ClassName} new${ClassName} = ${className}Mapper.selectDataByPk${ClassName}(old${ClassName}.getId());
+		// 将时间转换为毫秒级时间戳（作为分数）
+		double score = new${ClassName}.getUpdateTime().getTime();
+		RedisCacheUtils.addToSortedSet("DataCache_ZSet_${className}", JSONUtil.toJsonStr(new${ClassName}), score);
+		// RedisCacheUtils.deleteMapValue("DataCache_Map_${className}", String.valueOf(new${className}.getId()));
+		// RedisCacheUtils.setMapValue("DataCache_Map_${className}", String.valueOf(${className}.getId()), JSONUtil.toJsonStr(${className}));
+#end
+
+	}
+
+	/**
+	 * 批量删除Start扩展
+	 */
+	public void deleteByIdsStartExtend(${ClassName} ${className}) {
+		for (String id : ${className}.getIds()){
+			//${ClassName} t${ClassName} = ${className}Mapper.selectDataByPk${ClassName}(id);
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+			${ClassName} t${ClassName} = ${className}Mapper.selectDataByPk${ClassName}(id);
+			RedisCacheUtils.removeFromSortedSet("DataCache_ZSet_${className}", JSONUtil.toJsonStr(t${ClassName}));
+			RedisCacheUtils.deleteMapValue("DataCache_Map_${className}", String.valueOf(id));
+#end
+		}
+	}
+
+	/**
+	 * 批量删除End扩展
+	 */
+	public void deleteByIdsEndExtend(${ClassName} ${className}, int rows) {
+
+	}
+
+	/**
+	 * 批量删除ByEq${ClassName}Start扩展
+	 */
+	public void deleteByEq${ClassName}StartExtend(${ClassName} ${className}) {
+#if($extendInfo && $extendInfo.indexOf("needRedisCache") != -1)
+			${ClassName} t${ClassName} = ${className}Mapper.selectDataByPk${ClassName}(${className}.getId());
+			RedisCacheUtils.removeFromSortedSet("DataCache_ZSet_${className}", JSONUtil.toJsonStr(t${ClassName}));
+			## RedisCacheUtils.deleteMapValue("DataCache_Map_${className}", String.valueOf(id));
+#end
+	}
+
+	/**
+	 * 批量删除ByEq${ClassName}End扩展
+	 */
+	public void deleteByEq${ClassName}EndExtend(${ClassName} ${className}, int rows) {
+
+	}
+
+#if($table.sub)
+	/**
+	* 新增子表信息扩展
+	*/
+	public void insertSubStartExtend(${ClassName} ${className}) {
+
+	}
+
+	/**
+	* 新增子表信息扩展
+	*/
+	public void insertSubDataExtend(${ClassName} ${className}, ${subClassName} ${subclassName}) {
+
+	}
+
+	/**
+	* 新增子表信息扩展
+	*/
+	public void insertSubEndExtend(${ClassName} ${className}, List<${subClassName}> list) {
+
+	}
+#end
+
+	/**
+     * 导出前校验扩展
+     */
+	public void exportDataCheckExtend(${ClassName} ${className}) {
+		int count = ${className}Mapper.selectCountByLike${ClassName}(${className});
+		// 导出数据超过5万条，报错提示，各模块可以根据需要进行设置
+		int limitCount = 50000;
+		if (count > limitCount) {
+			throw new ServiceException("当前导出的数据超过" + limitCount + "条！请修改查询条件后进行查询，确认数据条数不大于" + limitCount + "条后，再进行导出。");
+		}
+	}
+
+	/**
+     * 导出数据预处理扩展
+     */
+	public void exportDataDealExtend(${ClassName} ${className}, List<${ClassName}> list) {
+
+	}
+
+	/**
+	 * 导入开始扩展
+	 */
+	public void importDataStartExtend(List<${ClassName}> dataList, ${ClassName} p${ClassName}, String operName, Date operDate) {
+		dataList.forEach(data -> {
+			data.setCreateTime(operDate);
+			data.setCreateBy(operName);
+			data.setUpdateTime(operDate);
+			data.setUpdateBy(operName);
+		#if($genTableExtendInfo.dataScopeUserAlias && $genTableExtendInfo.dataScopeUserAlias != "")
+			data.setUserId(p${ClassName}.getUserId());
+		#end
+		#if($genTableExtendInfo.dataScopeDeptAlias && $genTableExtendInfo.dataScopeDeptAlias != "")
+			data.setDeptId(p${ClassName}.getDeptId());
+		#end
+		});
+	}
+
+	/**
+	 * 导入校验数据扩展
+	 */
+	public String importDataCheckExtend(boolean isUpdateSupport, ${ClassName} p${ClassName}, ${ClassName} ${className}, String operName) {
+		String checkMsg = "";
+		if (isUpdateSupport) {
+
+		} else {
+			//  如果当前不进行更新数据，当前数据不存在，则直接新增
+			try {
+				checkDataUnique(${className}, "insert");
+			} catch (Exception e) {
+				checkMsg = e.getMessage();
+			}
+		}
+
+	## // 通过当前数据查询是否已经存在对应的数据(没有传入id时也可以进行处理，通过精确查询进行数据获取)
+	## List<${ClassName}> resList = ${className}Mapper.selectDataListByEq${ClassName}(${className});
+	## // 如果当前选中可以更新数据
+	## if (isUpdateSupport) {
+	##      if (resList.size() > 1) {
+	## 	    checkMsg = "通过当前数据查询已有数据进行更新时，查询到的数据条数为" + resList.size() + "条，不能进行更新操作！";
+	##     }
+	## } else {
+	##     //  如果当前不进行更新数据，当前数据不存在，则直接新增
+	##     if (resList.size() > 0) {
+	## 	    checkMsg = "当前数据已经存在！";
+	##     }
+	## }
+		return checkMsg;
+	}
+
+	/**
+	 * 导入完成扩展
+	 */
+	public void importDataEndExtend(List<${ClassName}> dataList, ${ClassName} p${ClassName}, String operName, int successNum) {
+
+	}
+
+	/**
+	 * 检查是否可以修改
+	 */
+	public void checkEditExtend(${ClassName} p${ClassName}) {
+		//        if(p${ClassName}.getXXX().equals("")) {
+		//            throw new ServiceException("当前选中数据不可修改！");
+		//        }
+	}
+
+#foreach ($pageButton in $genTableExtendInfo.addPageButtons)
+	/**
+	 * ${pageButton.title}
+	 */
+	public AjaxResult ${pageButton.functionName}StartExtend(${ClassName} ${className}) {
+		logger.info("[获取]-id=[{}]", ${className}.getId());
+		logger.info("[获取]-ids=[{}]", ${className}.getIds());
+		logger.info("[获取]-params=[{}]", ${className}.getParams());
+		AjaxResult ajaxResult = AjaxResult.success();
+		return ajaxResult;
+	}
+
+	/**
+	 * ${pageButton.title}
+	 */
+	public AjaxResult ${pageButton.functionName}EndExtend(${ClassName} ${className}) {
+		AjaxResult ajaxResult = AjaxResult.success();
+		return ajaxResult;
+	}
+#end
+
+#foreach ($gridButton in $genTableExtendInfo.gridButton)
+	/**
+	 * ${gridButton.title}
+	 */
+	public AjaxResult ${gridButton.functionName}StartExtend(${ClassName} ${className}) {
+		AjaxResult ajaxResult = AjaxResult.success();
+		return ajaxResult;
+	}
+
+	/**
+	 * ${gridButton.title}
+	 */
+	public AjaxResult ${gridButton.functionName}EndExtend(${ClassName} ${className}) {
+		AjaxResult ajaxResult = AjaxResult.success();
+		return ajaxResult;
+	}
+#end
+}

@@ -1,0 +1,157 @@
+<template>
+	<div class="app-container">
+		<!-- 导入对话框 -->
+		<el-dialog :title="pageData.title" v-model="pageData.open" width="400px" append-to-body>
+			<el-row style="padding-bottom: 10px">
+				<el-text type="warning" size="small">仅允许导入xls、xlsx格式文件。</el-text>
+				<el-button text type="primary" size="small" @click="importTemplate">下载模板</el-button>
+			</el-row>
+			<el-row style="padding-bottom: 0px">
+				<el-checkbox v-model="pageData.importData.updateSupport">
+					<el-text type="danger" size="small">直接更新已经存在的数据</el-text>
+				</el-checkbox>
+			</el-row>
+			<el-upload
+				ref="importRef"
+				:limit="1"
+				accept=".xlsx, .xls"
+				:headers="pageData.importData.headers"
+				:action="pageData.importData.url + '?updateSupport=' + pageData.importData.updateSupport + pageData.importData.actionUrlExtend"
+				:disabled="pageData.importData.isImporting"
+				:on-progress="handleFileUploadProgress"
+				:on-success="handleFileSuccess"
+				:on-change="handleFileChange"
+				:auto-upload="false"
+				drag
+			>
+				<i class="el-icon-upload"></i>
+				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+				<div class="el-upload__tip text-center" slot="tip">
+					<!--					<div class="el-upload__tip" slot="tip">-->
+					<!--						<el-checkbox v-model="pageData.importData.updateSupport"/>-->
+					<!--						是否更新已经存在的用户数据-->
+					<!--					</div>-->
+				</div>
+			</el-upload>
+			<template #footer>
+				<div class="dialog-footer">
+					<el-button type="primary" :loading="pageData.loadingImportData" :disabled="pageData.loadingImportData" @click="submitFileForm">确 定</el-button>
+					<el-button @click="pageData.open = false">取 消</el-button>
+				</div>
+			</template>
+		</el-dialog>
+	</div>
+</template>
+
+<script setup name="importDialog">
+    import { defineProps, reactive } from 'vue';
+	import {getToken} from "@/utils/auth";
+	import ${businessName} from "@/api/${moduleName}/${businessName}";
+	import ${businessName}Extend from "@/api/${moduleName}/${businessName}Extend";
+	import moment from 'moment';
+
+	const {proxy} = getCurrentInstance();
+  #if(${dicts} != '')
+  #set($dictsNoSymbol=$dicts.replace("'", ""))
+	// const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
+  #end
+
+	const pageData = reactive({
+	    open: false,
+	    loadingImportData: false,
+        title: "",
+        vueAppBaseApi:  import.meta.env.VITE_APP_BASE_API,
+		// 导入参数
+		importData: {
+			// 是否显示弹出层
+			open: false,
+			// 弹出层标题
+			title: "",
+			// 是否禁用上传
+			isImporting: false,
+			// 是否更新已经存在的数据
+			updateSupport: true,
+			// 设置上传的请求头部
+			headers: {Authorization: "Bearer " + getToken()},
+			// 上传的地址
+			url: import.meta.env.VITE_APP_BASE_API + "/${moduleName}/${businessName}/import${ClassName}Data",
+			// 上传的地址
+			actionUrlExtend: ""
+		}
+	});
+
+	/** 导入按钮操作 */
+	function open${BusinessName}ImportDialog(parentQueryParams) {
+#if($extendInfo && $extendInfo.indexOf("needChildPageDeal") != -1)
+           let realMainId = parentQueryParams.realMainId;
+           console.log("parentQueryParams.realMainId=", realMainId)
+           if (realMainId) {
+			   pageData.importData.actionUrlExtend = "&realMainId=" + realMainId
+           } else {
+           	 vm.$modal.msgWarning("请先选择客户！");
+           	 return false;
+           }
+#end
+		if (${businessName}Extend.openImportDialogExtend(proxy, parentQueryParams)) {
+			pageData.title = "导入数据";
+			pageData.open = true;
+		}
+	}
+
+	/** 下载模板操作 */
+	function importTemplate() {
+		let fileExt = moment().format('YYYYMMDD_HHmmss');
+		proxy.download('${moduleName}/${businessName}/downLoadImportTemplate${ClassName}', {},
+			`${functionName}_导入模版_${fileExt}.xlsx`)
+	}
+
+	// 选择的文件变化事件
+	function handleFileChange(file, fileList) {
+		pageData.importData.fileSelected = fileList.length > 0; // 更新文件选中状态
+	}
+
+	// 文件上传中处理
+	function handleFileUploadProgress(event, file, fileList) {
+		pageData.importData.isImporting = true;
+	}
+
+	// 文件上传成功处理
+	function handleFileSuccess(response, file, fileList) {
+		open.value = false;
+		pageData.loadingImportData = false;
+		pageData.importData.isImporting = false;
+		proxy.$refs.importRef.clearFiles();
+		proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>",
+			"导入结果",
+			{
+				dangerouslyUseHTMLString: true,
+				customClass: 'importAlertClass'
+			}
+		).then(() => {
+			// 调用父页面刷新列表方法
+			proxy.$emit("importSubmitCallback");
+		}).catch(() => {});
+	}
+
+	// 提交上传文件
+	function submitFileForm() {
+		if (pageData.importData.fileSelected) {
+			pageData.loadingImportData = true;
+			proxy.$refs.importRef.submit();
+		} else {
+			proxy.$modal.msgWarning("请先选择导入的文件！");
+		}
+	}
+
+	onMounted(() => {
+		// mounted扩展方法
+		${businessName}Extend.importMountedStartExtend(this);
+	});
+
+	// 使用 defineExpose 暴露方法
+	defineExpose({
+		open${BusinessName}ImportDialog
+	});
+</script>
+<style>
+</style>

@@ -1,0 +1,315 @@
+<template>
+  <div class="app-container">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="90px">
+      <el-form-item label="告警级别" prop="alertLevel">
+        <el-select v-model="queryParams.alertLevel" placeholder="请选择告警级别" clearable style="width: 120px">
+          <el-option label="信息" value="INFO" />
+          <el-option label="警告" value="WARN" />
+          <el-option label="错误" value="ERROR" />
+          <el-option label="严重" value="CRITICAL" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="告警类型" prop="alertType">
+        <el-select v-model="queryParams.alertType" placeholder="请选择告警类型" clearable style="width: 150px">
+          <el-option label="系统集成" value="SYSTEM_INTEGRATION" />
+          <el-option label="系统健康" value="SYSTEM_HEALTH" />
+          <el-option label="数据同步" value="DATA_SYNC" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="关联系统" prop="relatedSystem">
+        <el-select v-model="queryParams.relatedSystem" placeholder="请选择关联系统" clearable style="width: 120px">
+          <el-option label="MES" value="MES" />
+          <el-option label="ERP" value="ERP" />
+          <el-option label="环保系统" value="ENV" />
+          <el-option label="消防系统" value="FIRE" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable style="width: 120px">
+          <el-option label="未处理" :value="1" />
+          <el-option label="已处理" :value="2" />
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
+
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-check"
+          size="mini"
+          :disabled="multiple"
+          @click="handleBatchHandle"
+        >批量处理</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+        >批量删除</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="info"
+          plain
+          icon="el-icon-view"
+          size="mini"
+          @click="handleHealthCheck"
+        >健康检查</el-button>
+      </el-col>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+    </el-row>
+
+    <el-table v-loading="loading" :data="alertList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="告警级别" align="center" prop="alertLevel" width="100">
+        <template slot-scope="scope">
+          <el-tag :type="getAlertLevelTag(scope.row.alertLevel)">
+            {{ getAlertLevelName(scope.row.alertLevel) }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="告警类型" align="center" prop="alertType" width="120">
+        <template slot-scope="scope">
+          <el-tag type="info">{{ getAlertTypeName(scope.row.alertType) }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="告警标题" align="center" prop="alertTitle" :show-overflow-tooltip="true" />
+      <el-table-column label="关联系统" align="center" prop="relatedSystem" width="100" />
+      <el-table-column label="状态" align="center" prop="status" width="80">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status === 1 ? 'warning' : 'success'">
+            {{ scope.row.status === 1 ? '未处理' : '已处理' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="handleView(scope.row)"
+          >查看</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-check"
+            v-if="scope.row.status === 1"
+            @click="handleHandle(scope.row)"
+          >处理</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="handleDelete(scope.row)"
+          >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
+
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+      <el-form ref="form" :model="form" label-width="100px">
+        <el-form-item label="告警级别">
+          <el-tag :type="getAlertLevelTag(form.alertLevel)">{{ getAlertLevelName(form.alertLevel) }}</el-tag>
+        </el-form-item>
+        <el-form-item label="告警类型">
+          <el-tag type="info">{{ getAlertTypeName(form.alertType) }}</el-tag>
+        </el-form-item>
+        <el-form-item label="告警标题">
+          <el-input v-model="form.alertTitle" disabled />
+        </el-form-item>
+        <el-form-item label="告警内容">
+          <el-input v-model="form.alertContent" type="textarea" :rows="4" disabled />
+        </el-form-item>
+        <el-form-item label="关联系统">
+          <el-input v-model="form.relatedSystem" disabled />
+        </el-form-item>
+        <el-form-item label="关联任务ID">
+          <el-input v-model="form.relatedTaskId" disabled />
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-input v-model="parseTime(form.createTime)" disabled />
+        </el-form-item>
+        <el-form-item label="处理状态" v-if="form.status === 2">
+          <el-tag type="success">已处理</el-tag>
+        </el-form-item>
+        <el-form-item label="处理人" v-if="form.status === 2">
+          <el-input v-model="form.handler" disabled />
+        </el-form-item>
+        <el-form-item label="处理时间" v-if="form.status === 2">
+          <el-input v-model="parseTime(form.handleTime)" disabled />
+        </el-form-item>
+        <el-form-item label="处理结果" v-if="form.status === 2">
+          <el-input v-model="form.handleResult" type="textarea" :rows="3" disabled />
+        </el-form-item>
+        <el-form-item label="处理结果" v-if="form.status === 1">
+          <el-input v-model="form.handleResult" type="textarea" placeholder="请输入处理结果" :rows="3" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button v-if="form.status === 1" type="primary" @click="submitHandle">处理</el-button>
+        <el-button @click="cancel">关闭</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { listMonitorAlert, getMonitorAlert, handleMonitorAlert, delMonitorAlert, checkSystemHealth } from '@/api/system/monitor/alert'
+
+export default {
+  name: 'MonitorAlert',
+  data() {
+    return {
+      loading: true,
+      ids: [],
+      single: true,
+      multiple: true,
+      showSearch: true,
+      total: 0,
+      alertList: [],
+      title: '',
+      open: false,
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        alertLevel: undefined,
+        alertType: undefined,
+        relatedSystem: undefined,
+        status: undefined
+      },
+      form: {}
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.loading = true
+      listMonitorAlert(this.queryParams).then(response => {
+        this.alertList = response.data
+        this.total = this.alertList.length
+        this.loading = false
+      })
+    },
+    handleQuery() {
+      this.queryParams.pageNum = 1
+      this.getList()
+    },
+    resetQuery() {
+      this.resetForm('queryForm')
+      this.handleQuery()
+    },
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      this.single = selection.length !== 1
+      this.multiple = !selection.length
+    },
+    handleView(row) {
+      this.form = { ...row }
+      this.title = '查看告警详情'
+      this.open = true
+    },
+    handleHandle(row) {
+      this.form = { ...row }
+      this.form.handleResult = ''
+      this.title = '处理告警'
+      this.open = true
+    },
+    handleBatchHandle() {
+      this.$confirm('确认要批量处理选中的告警吗?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 这里可以实现批量处理逻辑
+        this.$message.success('批量处理成功')
+        this.getList()
+      })
+    },
+    handleDelete(row) {
+      const ids = row.id || this.ids
+      this.$confirm('是否确认删除选中的告警?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return delMonitorAlert(ids)
+      }).then(() => {
+        this.getList()
+        this.$message.success('删除成功')
+      })
+    },
+    handleHealthCheck() {
+      checkSystemHealth().then(response => {
+        this.$message.success(response.data)
+      })
+    },
+    submitHandle() {
+      if (!this.form.handleResult) {
+        this.$message.warning('请输入处理结果')
+        return
+      }
+      handleMonitorAlert(this.form.id, this.form.handleResult).then(response => {
+        this.$message.success('处理成功')
+        this.open = false
+        this.getList()
+      })
+    },
+    cancel() {
+      this.open = false
+      this.form = {}
+    },
+    getAlertLevelTag(level) {
+      const tagMap = {
+        'INFO': 'info',
+        'WARN': 'warning',
+        'ERROR': 'danger',
+        'CRITICAL': 'danger'
+      }
+      return tagMap[level] || 'info'
+    },
+    getAlertLevelName(level) {
+      const nameMap = {
+        'INFO': '信息',
+        'WARN': '警告',
+        'ERROR': '错误',
+        'CRITICAL': '严重'
+      }
+      return nameMap[level] || level
+    },
+    getAlertTypeName(type) {
+      const nameMap = {
+        'SYSTEM_INTEGRATION': '系统集成',
+        'SYSTEM_HEALTH': '系统健康',
+        'DATA_SYNC': '数据同步'
+      }
+      return nameMap[type] || type
+    }
+  }
+}
+</script>

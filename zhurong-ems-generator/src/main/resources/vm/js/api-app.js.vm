@@ -1,0 +1,131 @@
+import request from '@/utils/request'
+
+// 提供一个默认导出的对象，它包含了所有的API方法
+// 这样在别处可以直接整体引入import ${businessName} from './autoee/${businessName}';
+export default {
+  selectPageList${ClassName},
+  selectDataListByLike${ClassName},
+  selectDataListByEq${ClassName},
+  selectDetailListByLike${ClassName},
+  selectDetailListByEq${ClassName},
+  selectDataByPk${ClassName},
+  selectDetailByPk${ClassName},
+  add${ClassName},
+  updateNullValueBy${ClassName},
+  updateNotNullValueBy${ClassName},
+  submitTableEdit${BusinessName},
+  delete${BusinessName}ByIds,
+  delete${BusinessName}OneByOne,
+};
+
+// 查询${functionName}分页列表
+export function selectPageList${ClassName}(query) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectPageList${ClassName}',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询${functionName}数据列表，不分页
+export function selectDataListByLike${ClassName}(query) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectDataListByLike${ClassName}',
+    method: 'get',
+    params: query
+  })
+}
+
+// 精确查询${functionName}数据列表，不分页
+export function selectDataListByEq${ClassName}(query) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectDataListByEq${ClassName}',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询${functionName}详细列表，不分页
+export function selectDetailListByLike${ClassName}(query) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectDetailListByLike${ClassName}',
+    method: 'get',
+    params: query
+  })
+}
+
+// 精确查询${functionName}详细列表，不分页
+export function selectDetailListByEq${ClassName}(query) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectDetailListByEq${ClassName}',
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询${functionName}数据信息
+export function selectDataByPk${BusinessName}(${pkColumn.javaField}) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectDataByPk${BusinessName}/' + ${pkColumn.javaField},
+    method: 'get'
+  })
+}
+// 查询${functionName}详细信息，已转码
+export function selectDetailByPk${BusinessName}(${pkColumn.javaField}) {
+  return request({
+    url: '/${moduleName}/${businessName}/selectDetailByPk${BusinessName}/' + ${pkColumn.javaField},
+    method: 'get'
+  })
+}
+
+// 新增${functionName}
+export function add${BusinessName}(data) {
+  return request({
+    url: '/${moduleName}/${businessName}',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改${functionName}：只能用于前端form表单的更新操作，清空的字段回写为null
+export function updateNullValueBy${ClassName}(data) {
+  return request({
+    url: '/${moduleName}/${businessName}/updateNullValueBy${ClassName}',
+    method: 'put',
+    data: data
+  })
+}
+
+// 更新设置值的字段，未设置值的字段不进行更新
+export function updateNotNullValueBy${ClassName}(data) {
+  return request({
+    url: '/${moduleName}/${businessName}/updateNotNullValueBy${ClassName}',
+    method: 'put',
+    data: data
+  })
+}
+
+// 提交列表编辑
+export function submitTableEdit${BusinessName}(data) {
+  return request({
+    url: '/${moduleName}/${businessName}/submitTableEdit${BusinessName}',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除${functionName}
+export function delete${BusinessName}ByIds(${pkColumn.javaField}) {
+	return request({
+		url: '/${moduleName}/${businessName}/delete${ClassName}ByIds/' + ${pkColumn.javaField},
+		method: 'delete'
+	})
+}
+
+// 删除${functionName}
+export function delete${BusinessName}OneByOne(${pkColumn.javaField}) {
+  return request({
+    url: '/${moduleName}/${businessName}/delete${ClassName}OneByOne/' + ${pkColumn.javaField},
+    method: 'delete'
+  })
+}

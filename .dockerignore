@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# 文档和文档目录
+*.md
+docs/
+MQTT参考文档/
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# 构建输出
+target/
+*.log
+
+# Node modules (前端)
+zhurong-admin-ui/node_modules/
+zhurong-admin-ui/dist/
+
+# 临时文件
+*.tmp
+*.bak
+*.swp
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+
+# 测试文件
+**/test/
+**/tests/

@@ -1,0 +1,75 @@
+# 多阶段构建：构建阶段
+# 使用 Maven 镜像进行编译打包
+FROM maven:3.9-eclipse-temurin-17 AS build
+
+# 配置阿里云 Maven 镜像加速
+RUN sed -i 's/repo.maven.apache.org/maven.aliyun.com/g' $MAVEN_HOME/conf/settings.xml || true
+
+# 设置工作目录
+WORKDIR /build
+
+# 复制 pom.xml 文件（利用Docker缓存机制）
+COPY pom.xml .
+COPY zhurong-ems-admin/pom.xml ./zhurong-ems-admin/
+COPY zhurong-ems-framework/pom.xml ./zhurong-ems-framework/
+COPY zhurong-ems-system/pom.xml ./zhurong-ems-system/
+COPY zhurong-ems-common/pom.xml ./zhurong-ems-common/
+COPY zhurong-ems-job/pom.xml ./zhurong-ems-job/
+COPY zhurong-ems-oss/pom.xml ./zhurong-ems-oss/
+COPY zhurong-ems-sms/pom.xml ./zhurong-ems-sms/
+COPY zhurong-ems-extend/pom.xml ./zhurong-ems-extend/
+# 复制 zhurong-ems-extend 子模块的 pom.xml（因为父pom声明了这些子模块）
+COPY zhurong-ems-extend/zhurong-ems-monitor-admin/pom.xml ./zhurong-ems-extend/zhurong-ems-monitor-admin/
+COPY zhurong-ems-extend/zhurong-ems-xxl-job-admin/pom.xml ./zhurong-ems-extend/zhurong-ems-xxl-job-admin/
+
+# 注意：不能在这里执行 dependency:go-offline，因为内部模块依赖还未构建
+# 直接复制源码后一起构建，Maven会自动处理依赖关系
+
+# 复制源码
+COPY . .
+
+# 构建应用（跳过测试以加快构建速度，生产环境建议运行测试）
+# Maven会先构建依赖的模块，然后再构建主应用
+RUN mvn clean package -DskipTests -B
+
+# 运行阶段
+# 使用 OpenJDK 17 运行时镜像
+FROM eclipse-temurin:17-jre-alpine AS runtime
+
+# 维护者信息
+LABEL maintainer="cp_energy"
+
+# 安装必要的工具（可选，用于调试）
+RUN apk add --no-cache \
+    curl \
+    tzdata \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && apk del tzdata
+
+# 创建应用目录
+RUN mkdir -p /zhurong-ems/server/logs \
+    /zhurong-ems/server/temp \
+    /zhurong-ems/skywalking/agent
+
+# 设置工作目录
+WORKDIR /zhurong-ems/server
+
+# 从构建阶段复制jar文件
+COPY --from=build /build/zhurong-ems-admin/target/zhurong-ems-admin.jar ./app.jar
+
+# 设置环境变量
+ENV SERVER_PORT=8088 \
+    JAVA_OPTS="-Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED"
+
+# 暴露端口（根据application.yml配置，端口为8088）
+EXPOSE ${SERVER_PORT}
+
+# 健康检查（如果actuator端点可用）
+# HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
+#     CMD curl -f http://localhost:${SERVER_PORT}/autoee-iot-ems/actuator/health || exit 1
+
+# 启动应用
+# 注意：端口可通过环境变量 SERVER_PORT 覆盖，默认使用application.yml中的配置
+# 添加启动延迟，确保MySQL等服务完全就绪（可选，如果健康检查足够可以移除）
+ENTRYPOINT ["sh", "-c", "sleep 5 && java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar"]

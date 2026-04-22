@@ -1,0 +1,52 @@
+在 uni-app 中，easycom 是一种自动组件引入机制，开启后无需手动注册组件（包括全局注册和局部注册），框架会自动扫描并引入符合规范的组件。以下是正确配置和使用 easycom 模式的方法：
+1. 基本配置（默认已开启）
+uni-app 的 easycom 模式默认是开启的，无需额外配置即可使用。其默认规则是：自动扫描项目中 components 目录下的组件，只要组件目录结构符合规范（组件文件名与目录名一致），即可直接在页面中使用，无需手动导入和注册。
+例如，组件目录结构如下时：
+plaintext
+components/
+  └─ image-show-list/       // 组件目录名
+     └─ image-show-list.vue // 组件文件名（与目录名一致）
+在页面中可直接使用，无需任何导入：
+vue
+<template>
+  <image-show-list /> <!-- 直接使用 -->
+</template>
+2. 自定义 easycom 规则（如需修改默认行为）
+如果需要自定义组件扫描路径或规则，可在项目根目录的 pages.json 中配置 easycom 节点。
+示例配置：
+json
+// pages.json
+{
+  "easycom": {
+    // 自定义组件匹配规则（支持通配符 *）
+    "autoscan": true, // 是否自动扫描组件（默认 true）
+    "custom": {
+      // 规则："组件标签名": "组件路径"
+      // 示例1：匹配 components 下所有符合规范的组件
+      "^uni-(.*)": "@/components/uni-$1/uni-$1.vue",
+
+      // 示例2：匹配自定义组件（如 image-show-list）
+      "^image-(.*)": "@/components/image-$1/image-$1.vue",
+
+      // 示例3：扫描其他目录（如 my-components）
+      "^my-(.*)": "@/my-components/my-$1/my-$1.vue"
+    }
+  },
+  "pages": [/* 页面配置 */]
+}
+配置说明：
+autoscan: true：开启自动扫描（必须开启，否则自定义规则无效）。
+custom：自定义匹配规则，键为组件标签名的正则表达式，值为组件路径（支持 @ 别名，指向项目根目录）。
+组件路径需遵循 目录名/文件名.vue，且文件名与目录名保持一致（否则无法匹配）。
+3. 注意事项
+组件命名规范组件目录名和文件名必须一致（如 image-show-list 目录对应 image-show-list.vue），否则 easycom 无法识别。
+排除不需要自动引入的组件若某些组件不想被 easycom 自动引入，可在组件目录下创建 ignore.json 文件：
+json
+// components/xxx/ignore.json
+{
+  "ignore": true
+}
+HBuilderX 相关若使用 HBuilderX 开发，修改 pages.json 后建议重新编译项目（ctrl+r 或 cmd+r），确保配置生效。
+多端兼容性easycom 模式在 H5、微信小程序、App 等多端均有效，无需针对小程序单独调整，解决了全局注册在小程序中失效的问题。
+优先级局部注册（页面内 components 节点）的优先级高于 easycom，若同时存在，会优先使用局部注册的组件。
+通过以上配置，easycom 会自动处理组件的引入和注册，无需在 main.js 中全局注册，也无需在页面中手动导入，尤其适合在小程序端使用，避免了全局注册失效的问题。

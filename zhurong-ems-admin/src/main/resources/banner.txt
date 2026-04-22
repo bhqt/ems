@@ -1,0 +1,2 @@
+Application Version: ${zhurong-ems.version}
+Spring Boot Version: ${spring-boot.version}

@@ -1,0 +1,130 @@
+
+permission.js
+	该文件设置了页面跳转的拦截器，监控所有页面跳转，判断是否已经登录，没有登录，则转到登录页面
+	可以设置不登录也可以访问的白名单
+	同时，后端的配置文件application.yml中，添加对应的后端免认证接口anonUrls参数的配置
+
+App.vue
+	this.checkLogin()
+		H5页面启动后是否进行登录校验，默认不校验
+
+
+前端请求后端接口：
+	register(data).then(res => {
+		// 返回code==0或200时的处理
+		console.log("res=", res)
+		// this.$api.msg('注册成功!请进行登陆。');
+		uni.showModal({
+			title: '注册完成',
+			content: '注册成功!请进行登陆。',
+			showCancel: false, // 不显示取消按钮
+			success: (res) => { // 使用箭头函数来绑定 this 关键字的值
+				this.$tab.reLaunch('/pages/login')
+			}
+		});
+	}).catch(error => {
+		//  返回code!=0和200，或出现错误时的处理
+		uni.showModal({
+			title: '注册失败',
+			content: error.message,
+			showCancel: false, // 不显示取消按钮
+		});
+	})
+
+解构赋值语法
+	// 使用了解构赋值语法，将 error 对象中的 message 属性提取出来并赋值给了一个名为 message 的变量。
+	let { message } = error
+	具体来说，这行代码等价于以下两行代码：
+	// 方法一：使用点号访问属性
+	let message = error.message;
+	// 方法二：使用对象解构赋值语法
+	let { message } = error;
+	在 JavaScript 中，对象解构赋值语法可以帮助我们快速地从对象中提取需要的属性或方法，然后将它们赋值给变量。
+	这种语法非常方便，尤其是在处理大型对象或多层嵌套的对象时，可以减少不必要的代码量。
+
+
+前端向后端传递参数方式和后端接收方式
+	第一种：/delete/{id}
+		 前端传参：get、restful；后端接参：@GetMapping、@PathVariable
+	第二种：/delete?id=11
+		 前端传参：get、params；后端接参：@GetMapping、@RequestParam
+	第三种：{id:1}
+		 前端传参：post、data；后端接参：@PostMapping、@RequestBody
+		 @RequestBody注解只能接收json对象的字符串，不能接收Json对象。如果前端传入的是Json对象，需要使用JSON.stringify(data)的方式将对象变成字符串，同时ajax请求也要指定dataType: “json”,contentType:“application/json”
+		 前端传递json格式的参数{id:1}，后端方法 (@RequestBody String id)接收时，直接接收的整个json字符串，导致获取不到都应的参数值
+		 public AjaxResult remove( @RequestBody String id)
+		 可以修改为如下，通过map接收
+		 public AjaxResult remove( @RequestBody Map<String,String> param)
+			param.get("id")获取
+
+ 弹窗：
+	确认弹窗：
+		this.$modal.confirm('您确认当前订单已完成收货？').then(() => {
+
+		})
+
+		this.$modal.confirmOnlyOk('您确认当前订单已完成收货？').then(() => {
+
+		})
+	提示信息：
+		showToast("确认收货成功")
+	弹出提示：
+		this.$modal.msgSuccess("修改成功");
+		this.$modal.msgError("请输入您的账号")
+
+	确认提示：
+		this.$modal.confirm('是否确认删除？').then(() => {
+		this.$modal.confirmOnlyOk('您确认当前订单已完成收货？').then(() => {
+
+
+页面跳转：
+	uni.redirectTo({
+		url: '/pages/order/review?productId='+item.id+'&productJson=' + item.productJosn
+	})
+
+	传递对象
+	uni.navigateTo({
+		url: `/pages/order/createOrder?data=${JSON.stringify({
+			goodsData: this.cartList, total: this.product.productPrice
+		})}`
+	})
+
+    uni.navigateTo({
+		url: `/pages/order/reviewList?productName=`+this.product.productName+`&productMainImage=`+this.product.productMainImage
+			+`&productReviewListRes=${JSON.stringify( this.productReviewListRes )}`
+	})
+	接收页面需要使用：
+	this.productReviewListRes= JSON.parse(option.productReviewListRes);
+
+	返回上一个页面：
+	uni.navigateBack()
+
+	<view
+		v-for="(item, index) in goodsList" :key="index"
+		class="floor-item"
+		@click="navToDetailPage(item)"
+	>
+
+页面通讯：$emit、$on、$off常用于跨页面、跨组件通讯
+	https://uniapp.dcloud.net.cn/api/window/communication.html
+	★★支付成功后，返回首页时刷新首页的商品信息，显示最新的销量
+	paySuccess.vue
+		paySuccess() {
+			console.log("支付成功，触发paySuccess事件")
+			uni.$emit('paySuccess', {
+				paySuccess: 1
+			})
+		}
+
+	index.vue
+		onShow() {
+			uni.$on('paySuccess', this.reloadData)
+		},
+		methods: {
+			reloadData(e) {
+				console.log("支付成功后。首页刷新商品信息，显示最新的销量，传入参数paySuccess="+e.paySuccess)
+				this.pageNum = 0
+				this.productList = []
+				this.loadMoreData();
+			},
+		}

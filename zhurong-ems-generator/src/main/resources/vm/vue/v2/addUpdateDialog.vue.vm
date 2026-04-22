@@ -1,0 +1,530 @@
+<template>
+	<div class="app-container">
+#set($addDialogWidth="700px")
+#if($genTableExtendInfo.addDialogWidth)
+#set($addDialogWidth=$genTableExtendInfo.addDialogWidth)
+#end
+#set($addDialogHeight="")
+#if($genTableExtendInfo.addDialogHeight)
+#set($addDialogHeight="height: ${genTableExtendInfo.addDialogHeight}")
+#end
+#set($addDialogSpan="24")
+#if($genTableExtendInfo.addDialogSpan)
+#set($addDialogSpan=$genTableExtendInfo.addDialogSpan)
+#end
+		<!-- 新增或修改${functionName}对话框 -->
+		<el-dialog class="ruoyi_dialog" :title="pageData.title"  v-model="pageData.open" width="${addDialogWidth}" style="$addDialogHeight" append-to-body>
+			<el-form :inline="true" ref="addUpdateFormRef" :model="pageData.addUpdateForm" :rules="pageData.addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
+			<!-- 使用v-show，所有字段都在页面存在，避免有字段不存在时为null，将数据库字段回写为null -->
+#foreach($column in $columns)
+#set($field=$column.javaField)
+###if(true)
+## 只有id字段不显示出来
+#if( !$column.pk || $field!="id")
+###if(($column.insert || $column.edit)&& !$column.pk)
+#if(($column.usableColumn) || (!$column.superColumn))
+#set($comment=$column.columnComment)
+#set($dictType=$column.dictType)
+#set($maxlength=0)
+#if($column.columnType.indexOf('(')!=-1 && $column.columnType.indexOf(')')!=-1)
+#set($arr1=$column.columnType.split('[(]'))
+#set($arr2=$arr1[1].split('[)]'))
+#set($dbColLength=$arr2[0])
+#if($arr2[0].indexOf(',')!=-1)
+##bigdecimal(10,2)格式处理
+#set($arr3=$arr2[0].split('[,]'))
+#set($maxlength=$arr3[0])
+#else
+#set($maxlength_text=$arr2[0]/2)
+#end
+#else
+#set($maxlength_text=100)
+#end
+#if($column.insert && $column.edit)
+#set($addOrUpdate="v-show=""true""")
+#elseif($column.insert )
+#### 使用v-show，所有字段都在页面存在，避免有字段不存在时为null，将数据库字段回写为null
+#set($addOrUpdate="v-show=""pageData.addOrUpdate=='add'""")
+#elseif( $column.edit)
+#set($addOrUpdate="v-show=""pageData.addOrUpdate=='update'""")
+#else
+#set($addOrUpdate="v-show=""false""")
+#end
+#set($formItemWith="width: 90%;")
+#if(${addDialogSpan} == "12")
+#set($formItemWith="width: 45%;")
+#end
+#if($column.htmlType == "input" || $column.htmlType == "input-tag" )
+#if($dbColLength >= 300 || ${addDialogSpan} == "24")
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="width: 90%;">
+#else
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="width: 45%;">
+#end
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+						<el-input v-model="pageData.addUpdateForm.${field}" placeholder="请输入整数" type="number" step="1" clearable/>
+#elseif($column.javaType == "BigDecimal")
+						<el-input v-model="pageData.addUpdateForm.${field}" placeholder="请输入数字，可包含两位小数" type="number" step="0.1" clearable/>
+#else
+#if($column.htmlType == "input" )
+						<el-input v-model="pageData.addUpdateForm.${field}" placeholder="请输入${comment}" maxlength="${maxlength_text}" show-word-limit clearable/>
+#end
+#if($column.htmlType == "input-tag" )
+						<el-input-tag v-model="pageData.addUpdateForm.${field}InputTagArr" placeholder="请点击回车键完成一个标签输入" tag-type="primary" maxlength="${maxlength_text}" show-word-limit clearable/>
+						<el-input v-show="false" v-model="pageData.addUpdateForm.${field}" placeholder="请输入${comment}" maxlength="${maxlength_text}" show-word-limit clearable/>
+#end
+#end
+					</el-form-item>
+#elseif($column.htmlType == "imageUpload")
+#set($limit="")
+#if($column.columnName.indexOf("images") == -1)
+#set($limit=":limit=""1""")
+#end
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="width: 90%;">
+						<image-upload v-model="pageData.addUpdateForm.${field}" ${limit}/>
+					</el-form-item>
+#elseif($column.htmlType == "fileUpload")
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="width: 90%;">
+						<file-upload v-model="pageData.addUpdateForm.${field}"/>
+					</el-form-item>
+#elseif($column.htmlType == "editor")
+					<el-form-item $addOrUpdate label="${comment}" style="width: 90%;">
+						<editor v-model="pageData.addUpdateForm.${field}" :min-height="192"/>
+					</el-form-item>
+#elseif($column.htmlType == "textarea")
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="width: 90%;">
+						<el-input v-model="pageData.addUpdateForm.${field}" type="textarea" :rows="3" placeholder="请输入内容" maxlength="${maxlength_text}" show-word-limit/>
+					</el-form-item>
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf("_3") != -1 ))
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-select clearable v-model="pageData.addUpdateForm.${field}" placeholder="请选择" style="width: 100%">
+							<el-option
+								v-for="dict in ${dictType}_options"
+								:key="dict.value"
+								:label="dict.label"
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+								:value="parseInt(dict.value)"
+#else
+								:value="dict.value"
+#end
+							></el-option>
+						</el-select>
+					</el-form-item>
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine"))
+#if($column.columnName == "dept_id")
+#if($column.insert && $column.edit)
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+							<el-tree-select v-model="pageData.addUpdateForm.deptId" :data="pageData.deptTreeFilterData" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择部门/群组"
+							                check-strictly :default-expand-all="true" clearable/>
+					</el-form-item>
+#end
+#else
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-select clearable v-model="pageData.addUpdateForm.${field}" placeholder="请选择" style="width: 100%">
+							<el-option
+								v-for="dict in pageData.dicts.${dictType}"
+								:key="dict.value"
+								:label="dict.label"
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+								:value="parseInt(dict.value)"
+#else
+								:value="dict.value"
+#end
+							></el-option>
+						</el-select>
+					</el-form-item>
+#end
+#elseif($column.htmlType == "checkbox" && "" != $dictType)
+##				<el-col :span="${addDialogSpan}">
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-checkbox-group v-model="pageData.addUpdateForm.${field}">
+							<el-checkbox
+								v-for="dict in dicts.${dictType}"
+								:key="dict.value"
+								:label="dict.value">
+								{{ dict.label }}
+							</el-checkbox>
+						</el-checkbox-group>
+					</el-form-item>
+##				</el-col>
+#elseif($column.htmlType == "radio" && "" != $dictType)
+##				<el-col :span="${addDialogSpan}">
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-radio-group v-model="pageData.addUpdateForm.${field}">
+							<el-radio
+								v-for="dict in dicts.${dictType}"
+								:key="dict.value"
+#if($column.javaType== "Integer" || $column.javaType == "Long")
+								:label="parseInt(dict.value)"
+#else
+								:label="dict.value"
+#end
+							>{{ dict.label }}</el-radio>
+						</el-radio-group>
+					</el-form-item>
+##				</el-col>
+#elseif($column.htmlType == "date")
+##				<el-col :span="${addDialogSpan}">
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-date-picker v-model="pageData.addUpdateForm.${field}" type="date" value-format="YYYY-MM-DD" placeholder="请选择" clearable style="width: 100%"/>
+					</el-form-item>
+##				</el-col>
+#elseif($column.htmlType == "datetime")
+##				<el-col :span="${addDialogSpan}">
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-date-picker v-model="pageData.addUpdateForm.${field}" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择" clearable style="width: 100%"/>
+					</el-form-item>
+##				</el-col>
+#elseif($column.htmlType == "timePicker")
+##				<el-col :span="${addDialogSpan}">
+					<el-form-item $addOrUpdate label="${comment}" prop="${field}" style="${formItemWith}">
+						<el-time-picker v-model="pageData.addUpdateForm.${field}" value-format="HH:mm:ss" placeholder="请选择" clearable style="width: 100%"/>
+					</el-form-item>
+##				</el-col>
+#end
+#end
+#end
+#end
+#if($table.sub)
+				<el-divider content-position="center">${subTable.functionName}信息</el-divider>
+				<el-row :gutter="10" class="mb8">
+					<el-col :span="1.5">
+						<el-button type="primary" icon="Plus" size="mini" @click="handleAdd${subClassName}">添加</el-button>
+					</el-col>
+					<el-col :span="1.5">
+						<el-button type="danger" icon="Delete" size="mini" @click="handleDelete${subClassName}">删除</el-button>
+					</el-col>
+				</el-row>
+				<el-table :data="${subclassName}List" :row-class-name="row${subClassName}Index" @selection-change="handle${subClassName}SelectionChange" ref="${subclassName}">
+					<el-table-column type="selection" width="50" align="center"/>
+					<el-table-column label="序号" align="center" prop="index" width="50"/>
+#foreach($column in $subTable.columns)
+#set($javaField=$column.javaField)
+#set($comment=$column.columnComment)
+#if($column.pk || $javaField == ${subTableFkclassName})
+#elseif($column.list && $column.htmlType == "input")
+					<el-table-column label="$comment" prop="${javaField}" width="150">
+						<template slot-scope="scope">
+							<el-input v-model="scope.row.$javaField" placeholder="请输入$comment"/>
+						</template>
+					</el-table-column>
+#elseif($column.list && $column.htmlType == "datetime")
+					<el-table-column label="$comment" prop="${javaField}" width="240">
+						<template slot-scope="scope">
+							<el-date-picker clearable v-model="scope.row.$javaField" type="date" value-format="YYYY-MM-DD" placeholder="请选择"/>
+						</template>
+					</el-table-column>
+#elseif($column.list && (($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio") && "" != $column.dictType)
+					<el-table-column label="$comment" prop="${javaField}" width="150">
+						<template slot-scope="scope">
+#if($column.columnName == "dept_id")
+							<el-tree-select v-model="pageData.addUpdateForm.deptId" :data="pageData.deptTreeFilterData" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择部门/群组"
+							                check-strictly :default-expand-all="true" clearable/>
+#else
+							<el-select clearable v-model="scope.row.$javaField" placeholder="请选择">
+								<el-option
+									v-for="dict in pageData.dicts.$column.dictType"
+									:key="dict.value"
+									:label="dict.label"
+									:value="dict.value"
+								></el-option>
+							</el-select>
+#end
+						</template>
+					</el-table-column>
+#elseif($column.list && (($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio") && "" == $column.dictType)
+					<el-table-column label="$comment" prop="${javaField}" width="150">
+						<template slot-scope="scope">
+							<el-select clearable v-model="scope.row.$javaField" placeholder="请选择">
+								<el-option label="请选择字典生成" value=""/>
+							</el-select>
+						</template>
+					</el-table-column>
+#end
+#end
+				</el-table>
+#end
+			</el-form>
+			<template #footer>
+      			<div class="dialog-footer">
+					<el-button type="primary" @click="submitForm">确 定</el-button>
+					<el-button @click="cancel">取 消</el-button>
+				</div>
+			</template>
+		</el-dialog>
+	</div>
+</template>
+
+<script setup name="addUpdateDialog">
+import moment from 'moment';
+import { defineProps, reactive } from 'vue';
+import { getToken } from "@/utils/auth";
+import { getDeptTreeFilterData } from "@/api/system/dept.js";
+import  ${businessName} from "@/api/${moduleName}/${businessName}";
+import  ${businessName}Extend  from "@/api/${moduleName}/${businessName}Extend";
+#foreach($gridButton in $gridButtonList)
+#if($gridButton.openDialog=="1")
+import ${gridButton.functionName}Dialog from './${gridButton.functionName}Dialog.vue';
+#end
+#end
+
+const { proxy } = getCurrentInstance();
+#if(${dicts} != '')
+#set($dictsNoSymbol=$dicts.replace("'", ""))
+// const { ${dictsNoSymbol} } = proxy.useDict(${dicts});
+#end
+#foreach($column in $columns)
+#set($dictType=$column.dictType)
+#if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf("_3") != -1 ))
+##  级联下拉框，2级或者3级
+// 初始化-级联转码-字典数组
+const ${dictType}_options = ref([]);
+#end
+#end
+
+const pageData = reactive({
+  dicts: {},
+  deptTreeFilterData: null,
+  open: false,
+  title: "",
+  loading: false,
+  vueAppBaseApi: import.meta.env.VITE_APP_BASE_API,
+  addOrUpdate: "",
+  addUpdateForm: {},
+  addUpdateFormRules: {
+#foreach ($column in $columns)
+#if(${pkColumn.javaField}!= $column.javaField)
+				// ${column.columnComment}
+				$column.javaField: [
+#if($column.required)
+#set($comment=$column.columnComment)
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+					{ required: true, message: "$comment不能为空并且为整数", trigger: #if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio")"change"#else"blur"#end },
+#elseif($column.javaType == "BigDecimal")
+					{ required: true, message: "$comment不能为空并且为数字", trigger: #if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio")"change"#else"blur"#end },
+#else
+					{ required: true, message: "$comment不能为空", trigger: #if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio")"change"#else"blur"#end },
+#end
+#end
+#if($column.htmlType == "input")
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+#if($column.columnName.indexOf("bi_li") != -1)
+					{validator: proxy.$validateRules.validatePositiveInteger_0_100, trigger: ["blur", "change"]},
+#else
+					{validator: proxy.$validateRules.validatePositiveInteger, trigger: ["blur", "change"]},
+#end
+#elseif($column.javaType == "BigDecimal")
+					{validator: proxy.$validateRules.validateNumberInRange, trigger: ["blur", "change"]},
+#else
+#if($column.extend7)
+     				{validator: proxy.$validateRules.${column.extend7}, trigger: ["blur", "change"]},
+#end
+#end
+#end
+				]#if($foreach.count != $columns.size()),#end
+#end
+#end
+  }
+});
+
+#foreach($column in $columns)
+#set($dictType=$column.dictType)
+#if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 ))
+##  级联下拉框，2级
+#set($index=$column.javaField.indexOf("2"))
+#set($prefix=$column.javaField.substring(0, $index))
+// 监听第1级选择的变化
+watch(() => pageData.addUpdateForm.${prefix}1, (newVal) => {
+  if (newVal) {
+	 const ${prefix}2_old = pageData.addUpdateForm.${prefix}2;
+     // 过滤第2级字典数组
+	if (pageData.dicts && pageData.dicts.${dictType}) {
+		const filteredOptions = pageData.dicts.${dictType}.filter(item => {
+			// console.log("item", item)
+			// console.log("newVal", newVal)
+			return item.parentDictValue.toString() === newVal.toString()
+		});
+     	${dictType}_options.value = filteredOptions;
+		// 如果之前的 ${prefix}2 在新的选项中，则恢复其值 - 避免修改页面赋值后不能正确显示出来
+		if (${prefix}2_old && filteredOptions.some(option => option.value.toString() === ${prefix}2_old.toString())) {
+		  pageData.addUpdateForm.${prefix}2 = ${prefix}2_old;
+		}else{
+			  if (pageData.addUpdateForm.${prefix}2){
+				 pageData.addUpdateForm.${prefix}2 = ''; // 清空下一级选择
+			  }
+		}
+	} else {
+	  	// 处理数据未加载的情况
+	  	${dictType}_options.value = [];
+	}
+  } else {
+    // 当 newVal 不存在时
+    ${dictType}_options.value = [];
+  }
+});
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_3") != -1 ))
+##  级联下拉框，3级
+#set($index=$column.javaField.indexOf("3"))
+#set($prefix=$column.javaField.substring(0, $index))
+// 监听第2级选择的变化
+watch(() => pageData.addUpdateForm.${prefix}2, (newVal) => {
+  if (newVal) {
+	const ${prefix}3_old = pageData.addUpdateForm.${prefix}3;
+    // 过滤第3级字典数组
+    // 查询后端自定义级联转码时，返回对应的parentDictValue，通过parentDictValue过滤下级下拉框
+	const filteredOptions = pageData.dicts.${dictType}.value.filter(item => {
+		// console.log("item", item)
+		// console.log("newVal", newVal)
+		return item.parentDictValue.toString() === newVal.toString()
+	 });
+     ${dictType}_options.value = filteredOptions;
+	// 如果之前的 ${prefix}3 在新的选项中，则恢复其值 - 避免修改页面赋值后不能正确显示出来
+      if (${prefix}3_old && filteredOptions.some(option => option.value.toString() === ${prefix}3_old.toString())) {
+        pageData.addUpdateForm.${prefix}3 = ${prefix}3_old;
+      }else{
+		  if(pageData.addUpdateForm.${prefix}3){
+			pageData.addUpdateForm.${prefix}3 = ''; // 清空下一级选择
+		  }
+      }
+  } else {
+    // 当 newVal 不存在时
+    ${dictType}_options.value = [];
+  }
+});
+#end
+#end
+
+// 取消按钮
+function cancel() {
+  pageData.open = false;
+  reset();
+}
+
+// 表单重置
+function reset() {
+  pageData.addUpdateForm = {
+#foreach ($column in $columns)
+#if($column.htmlType == "checkbox")
+    $column.javaField: []#if($foreach.count != $columns.size()),#end
+#else
+    $column.javaField: null#if($foreach.count != $columns.size()),#end
+#end
+#end
+  };
+#if($table.sub)
+  ${subclassName}List.value = [];
+#end
+  proxy.resetForm("addUpdateFormRef");
+}
+
+/** 打开新增窗口 */
+function open${BusinessName}AddDialog(parentQueryParams, dicts) {
+  pageData.dicts = dicts
+  reset();
+  pageData.title = "添加${functionName}";
+  pageData.addOrUpdate = "add";
+#if($extendInfo && $extendInfo.indexOf("needChildPageDeal") != -1)
+  console.log("parentQueryParams.realMainId=", parentQueryParams.realMainId)
+  if (parentQueryParams.realMainId) {
+    pageData.addUpdateForm.realMainId = Number(parentQueryParams.realMainId);
+  }
+#end
+  ${businessName}Extend.openAddDialogExtend(proxy, parentQueryParams);
+  pageData.open = true;
+}
+
+/** 打开修改窗口 */
+function open${BusinessName}UpdateDialog(${pkColumn.javaField}, dicts) {
+ pageData.dicts = dicts
+  reset();
+  ${businessName}.selectDataByPk${BusinessName}(${pkColumn.javaField}).then(response => {
+    pageData.addUpdateForm = response.data;
+#foreach ($column in $columns)
+#if($column.htmlType == "input-tag" )
+  	pageData.addUpdateForm.${column.javaField}InputTagArr = []
+  	if (pageData.addUpdateForm.$column.javaField){
+  	  	pageData.addUpdateForm.${column.javaField}InputTagArr = pageData.addUpdateForm.${column.javaField}.split(',').map(tag => tag.trim()); // 移除可能存在的多余空格
+  	}
+#end
+#if($column.htmlType == "checkbox")
+    pageData.addUpdateForm.$column.javaField = pageData.addUpdateForm.${column.javaField}.split(",");
+#end
+#end
+#if($table.sub)
+    ${subclassName}List.value = response.data.${subclassName}List;
+#end
+    pageData.title = "修改${functionName}";
+  	pageData.addOrUpdate = "update";
+    pageData.open = true;
+  });
+}
+
+#foreach ($column in $columns)
+#if($column.htmlType == "input-tag" )
+// 监听 ${column.javaField}InputTagArr 的变化，以便从数组转回字符串
+watch(() => pageData.addUpdateForm.${column.javaField}InputTagArr, (newVal) => {
+  // 如果 newVal 是一个数组，则将其连接成字符串，使用逗号作为分隔符
+  if (Array.isArray(newVal)) {
+    pageData.addUpdateForm.$column.javaField = newVal.join(','); // 明确指定分隔符
+  } else {
+    pageData.addUpdateForm.$column.javaField = '';
+  }
+}, { immediate: true }); // 根据需求选择是否需要立即执行
+#end
+#end
+
+/** 提交按钮 */
+function submitForm() {
+  proxy.#[[$]]#refs["addUpdateFormRef"].validate(valid => {
+    if (valid) {
+#foreach ($column in $columns)
+#if($column.htmlType == "checkbox")
+      pageData.addUpdateForm.$column.javaField = pageData.addUpdateForm.${column.javaField}.join(",");
+#end
+#end
+#if($table.sub)
+      pageData.addUpdateForm.${subclassName}List = ${subclassName}List.value;
+#end
+      if (pageData.addUpdateForm.${pkColumn.javaField} != null) {
+		// 修改${functionName}：只能用于前端form表单的更新操作，清空的字段回写为null
+        ${businessName}.updateNullValueBy${ClassName}(pageData.addUpdateForm).then(response => {
+          proxy.#[[$modal]]#.msgSuccess("修改成功");
+          pageData.open = false;
+          // 调用父页面刷新列表方法
+          proxy.$emit("addUpdateSubmitCallback");
+        });
+      } else {
+        ${businessName}.add${BusinessName}(pageData.addUpdateForm).then(response => {
+          proxy.#[[$modal]]#.msgSuccess("新增成功");
+          pageData.open = false;
+          proxy.$emit("addUpdateSubmitCallback");
+        });
+      }
+    }
+  });
+}
+
+// 生命周期钩子
+onMounted(async () => {
+  // mounted扩展方法
+  ${businessName}Extend.addUpdateMountedStartExtend(proxy);
+#foreach($column in $columns)
+#if($column.insert && $column.edit)
+#if($column.columnName == "dept_id")
+    try {
+        pageData.deptTreeFilterData = await getDeptTreeFilterData();
+    } catch (error) {
+        console.error('初始化部门数据失败:', error);
+    }
+#end
+#end
+#end
+});
+
+// 使用 defineExpose 暴露方法
+defineExpose({
+  open${BusinessName}AddDialog,
+  open${BusinessName}UpdateDialog
+});
+</script>
+<style>
+</style>

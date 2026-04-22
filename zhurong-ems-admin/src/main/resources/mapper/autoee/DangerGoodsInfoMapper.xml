@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.dangerGoodsInfo.mapper.DangerGoodsInfoMapper">
+
+    <resultMap type="DangerGoodsInfo" id="DangerGoodsInfoResult">
+        <result property="id"    column="id"    />
+        <result property="dangerGoodsName"    column="danger_goods_name"    />
+        <result property="dangerGoodsType"    column="danger_goods_type"    />
+        <result property="dangerGoodsTypeExtend"    column="danger_goods_type_extend"    />
+        <result property="dangerGoodsStatus"    column="danger_goods_status"    />
+        <result property="dangerGoodsStatusExtend"    column="danger_goods_status_extend"    />
+        <result property="specification"    column="specification"    />
+        <result property="goodsUnit"    column="goods_unit"    />
+        <result property="goodsUnitExtend"    column="goods_unit_extend"    />
+        <result property="storageLocation"    column="storage_location"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectDangerGoodsInfoVo">
+        select
+			t.id,
+			t.danger_goods_name,
+			t.danger_goods_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='danger_goods_type' and dict_data.dict_value = danger_goods_type) as danger_goods_type_extend,
+			t.danger_goods_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='danger_goods_status' and dict_data.dict_value = danger_goods_status) as danger_goods_status_extend,
+			t.specification,
+			t.goods_unit,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='goods_unit' and dict_data.dict_value = goods_unit) as goods_unit_extend,
+			t.storage_location,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_time,
+			t.create_by,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_danger_goods_info t
+    </sql>
+
+	<sql id="selectDangerGoodsInfoDetailVo">
+        select
+            t.id,
+            t.danger_goods_name,
+			t.danger_goods_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='danger_goods_type' and dict_data.dict_value = danger_goods_type) as danger_goods_type_extend,
+			t.danger_goods_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='danger_goods_status' and dict_data.dict_value = danger_goods_status) as danger_goods_status_extend,
+            t.specification,
+			t.goods_unit,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='goods_unit' and dict_data.dict_value = goods_unit) as goods_unit_extend,
+            t.storage_location,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_time,
+            t.create_by,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_danger_goods_info t
+    </sql>
+
+	    <select id="selectDataByPkDangerGoodsInfo" parameterType="Long" resultMap="DangerGoodsInfoResult">
+        <include refid="selectDangerGoodsInfoVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="dangerGoodsName != null  and dangerGoodsName != ''"> and danger_goods_name like concat('%', #{dangerGoodsName}, '%')</if>
+            <if test="dangerGoodsType != null  and dangerGoodsType != ''"> and danger_goods_type = #{dangerGoodsType}</if>
+			 <if test="params.dangerGoodsTypeInValueArr!= null ">
+            	and danger_goods_type in
+                <foreach item="dangerGoodsType" collection="params.dangerGoodsTypeInValueArr" open="(" separator="," close=")">
+                    #{dangerGoodsType}
+                </foreach>
+        	</if>
+            <if test="dangerGoodsStatus != null  and dangerGoodsStatus != ''"> and danger_goods_status = #{dangerGoodsStatus}</if>
+			 <if test="params.dangerGoodsStatusInValueArr!= null ">
+            	and danger_goods_status in
+                <foreach item="dangerGoodsStatus" collection="params.dangerGoodsStatusInValueArr" open="(" separator="," close=")">
+                    #{dangerGoodsStatus}
+                </foreach>
+        	</if>
+            <if test="specification != null  and specification != ''"> and specification like concat('%', #{specification}, '%')</if>
+            <if test="goodsUnit != null  and goodsUnit != ''"> and goods_unit = #{goodsUnit}</if>
+			 <if test="params.goodsUnitInValueArr!= null ">
+            	and goods_unit in
+                <foreach item="goodsUnit" collection="params.goodsUnitInValueArr" open="(" separator="," close=")">
+                    #{goodsUnit}
+                </foreach>
+        	</if>
+            <if test="storageLocation != null  and storageLocation != ''"> and storage_location like concat('%', #{storageLocation}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikeDangerGoodsInfo" parameterType="DangerGoodsInfo" resultMap="DangerGoodsInfoResult">
+        <include refid="selectDangerGoodsInfoVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.dangerGoodsInfo.mapper.DangerGoodsInfoMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikeDangerGoodsInfo" parameterType="DangerGoodsInfo" resultType="int">
+        select count(*) from a_danger_goods_info t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.dangerGoodsInfo.mapper.DangerGoodsInfoMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="dangerGoodsName != null  and dangerGoodsName != ''"> and danger_goods_name = #{dangerGoodsName}</if>
+            <if test="dangerGoodsType != null  and dangerGoodsType != ''"> and danger_goods_type = #{dangerGoodsType}</if>
+            <if test="dangerGoodsStatus != null  and dangerGoodsStatus != ''"> and danger_goods_status = #{dangerGoodsStatus}</if>
+            <if test="specification != null  and specification != ''"> and specification = #{specification}</if>
+            <if test="goodsUnit != null  and goodsUnit != ''"> and goods_unit = #{goodsUnit}</if>
+            <if test="storageLocation != null  and storageLocation != ''"> and storage_location = #{storageLocation}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqDangerGoodsInfo" parameterType="DangerGoodsInfo" resultMap="DangerGoodsInfoResult">
+        <include refid="selectDangerGoodsInfoVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqDangerGoodsInfo" parameterType="DangerGoodsInfo" resultType="int">
+        select count(*) from a_danger_goods_info t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkDangerGoodsInfo" parameterType="Long" resultMap="DangerGoodsInfoResult">
+        <include refid="selectDangerGoodsInfoDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikeDangerGoodsInfo" parameterType="DangerGoodsInfo" resultMap="DangerGoodsInfoResult">
+        <include refid="selectDangerGoodsInfoDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.dangerGoodsInfo.mapper.DangerGoodsInfoMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqDangerGoodsInfo" parameterType="DangerGoodsInfo" resultMap="DangerGoodsInfoResult">
+        <include refid="selectDangerGoodsInfoDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertDangerGoodsInfo" parameterType="DangerGoodsInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into a_danger_goods_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dangerGoodsName != null and dangerGoodsName != ''">danger_goods_name,</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">danger_goods_type,</if>
+            <if test="dangerGoodsStatus != null and dangerGoodsStatus != ''">danger_goods_status,</if>
+            <if test="specification != null and specification != ''">specification,</if>
+            <if test="goodsUnit != null and goodsUnit != ''">goods_unit,</if>
+            <if test="storageLocation != null">storage_location,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            create_time,
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dangerGoodsName != null and dangerGoodsName != ''">#{dangerGoodsName},</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">#{dangerGoodsType},</if>
+            <if test="dangerGoodsStatus != null and dangerGoodsStatus != ''">#{dangerGoodsStatus},</if>
+            <if test="specification != null and specification != ''">#{specification},</if>
+            <if test="goodsUnit != null and goodsUnit != ''">#{goodsUnit},</if>
+            <if test="storageLocation != null">#{storageLocation},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByDangerGoodsInfo">
+        INSERT INTO a_danger_goods_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            danger_goods_name,
+            danger_goods_type,
+            danger_goods_status,
+            specification,
+            goods_unit,
+            storage_location,
+            user_id,
+            dept_id,
+            create_time,
+            create_by,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.dangerGoodsName},
+			#{item.dangerGoodsType},
+			#{item.dangerGoodsStatus},
+			#{item.specification},
+			#{item.goodsUnit},
+			#{item.storageLocation},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createTime},
+			#{item.createBy},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		danger_goods_name = VALUES(danger_goods_name),
+       		danger_goods_type = VALUES(danger_goods_type),
+       		danger_goods_status = VALUES(danger_goods_status),
+       		specification = VALUES(specification),
+       		goods_unit = VALUES(goods_unit),
+       		storage_location = VALUES(storage_location),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByDangerGoodsInfo" parameterType="DangerGoodsInfo">
+        update a_danger_goods_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dangerGoodsName != null and dangerGoodsName != ''">danger_goods_name = #{dangerGoodsName},</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">danger_goods_type = #{dangerGoodsType},</if>
+            <if test="dangerGoodsStatus != null and dangerGoodsStatus != ''">danger_goods_status = #{dangerGoodsStatus},</if>
+            <if test="specification != null and specification != ''">specification = #{specification},</if>
+            <if test="goodsUnit != null and goodsUnit != ''">goods_unit = #{goodsUnit},</if>
+            <if test="storageLocation != null">storage_location = #{storageLocation},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByDangerGoodsInfo" parameterType="DangerGoodsInfo">
+        update a_danger_goods_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dangerGoodsName != null and dangerGoodsName != ''">danger_goods_name = #{dangerGoodsName},</if>
+            <if test="dangerGoodsType != null and dangerGoodsType != ''">danger_goods_type = #{dangerGoodsType},</if>
+            <if test="dangerGoodsStatus != null and dangerGoodsStatus != ''">danger_goods_status = #{dangerGoodsStatus},</if>
+            <if test="specification != null and specification != ''">specification = #{specification},</if>
+            <if test="goodsUnit != null and goodsUnit != ''">goods_unit = #{goodsUnit},</if>
+            <if test="storageLocation != null">storage_location = #{storageLocation},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDangerGoodsInfoById" parameterType="DangerGoodsInfo">
+		delete from a_danger_goods_info where id = #{id}
+    </delete>
+
+    <delete id="deleteDangerGoodsInfoByIds" parameterType="DangerGoodsInfo">
+        delete from a_danger_goods_info where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteDangerGoodsInfoByEqDangerGoodsInfo" parameterType="DangerGoodsInfo">
+        delete from a_danger_goods_info
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deleteDangerGoodsInfoAllData">
+        delete from a_danger_goods_info
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false,
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "hx-navbar": "/uni_modules/hx-navbar/components/hx-navbar/hx-navbar",
+    "image-show-list": "/components/image-show-list/image-show-list",
+    "icon-common": "/components/icon-comm/icon-comm"
+  }
+}

@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.autoee.patrolAlarm.mapper.PatrolAlarmMapper">
+
+    <resultMap type="PatrolAlarm" id="PatrolAlarmResult">
+        <result property="id"    column="id"    />
+        <result property="alarmNo"    column="alarm_no"    />
+        <result property="patrolPlanId"    column="patrol_plan_id"    />
+        <result property="patrolPlanIdExtend"    column="patrol_plan_id_extend"    />
+        <result property="patrolTaskId"    column="patrol_task_id"    />
+        <result property="patrolTaskIdExtend"    column="patrol_task_id_extend"    />
+        <result property="patrolUserId"    column="patrol_user_id"    />
+        <result property="patrolUserIdExtend"    column="patrol_user_id_extend"    />
+        <result property="patrolAlarmType"    column="patrol_alarm_type"    />
+        <result property="patrolAlarmTypeExtend"    column="patrol_alarm_type_extend"    />
+        <result property="patrolAlarmTime"    column="patrol_alarm_time"    />
+        <result property="patrolAlarmContent"    column="patrol_alarm_content"    />
+        <result property="patrolAlarmStatus"    column="patrol_alarm_status"    />
+        <result property="patrolAlarmStatusExtend"    column="patrol_alarm_status_extend"    />
+        <result property="handleUserId"    column="handle_user_id"    />
+        <result property="handleUserIdExtend"    column="handle_user_id_extend"    />
+        <result property="handleTime"    column="handle_time"    />
+        <result property="handleDesc"    column="handle_desc"    />
+        <result property="remark"    column="remark"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userIdExtend"    column="user_id_extend"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptIdExtend"    column="dept_id_extend"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="delBy"    column="del_by"    />
+        <result property="delTime"    column="del_time"    />
+    </resultMap>
+
+    <sql id="selectPatrolAlarmVo">
+        select
+			t.id,
+			t.alarm_no,
+			t.patrol_plan_id,
+	       (SELECT self_dict.patrol_plan_name FROM  a_patrol_plan self_dict  where self_dict.id  = t.patrol_plan_id) as patrol_plan_id_extend,
+			t.patrol_task_id,
+	       (SELECT self_dict.patrol_task_name FROM  a_patrol_task self_dict  where self_dict.id  = t.patrol_task_id) as patrol_task_id_extend,
+			t.patrol_user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.patrol_user_id) as patrol_user_id_extend,
+			t.patrol_alarm_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_alarm_type' and dict_data.dict_value = patrol_alarm_type) as patrol_alarm_type_extend,
+			t.patrol_alarm_time,
+			t.patrol_alarm_content,
+			t.patrol_alarm_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_alarm_status' and dict_data.dict_value = patrol_alarm_status) as patrol_alarm_status_extend,
+			t.handle_user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.handle_user_id) as handle_user_id_extend,
+			t.handle_time,
+			t.handle_desc,
+			t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+			t.create_by,
+			t.create_time,
+			t.update_by,
+			t.update_time,
+			t.del_flag,
+			t.del_by,
+			t.del_time,
+			1 as thelastcol
+		from a_patrol_alarm t
+    </sql>
+
+	<sql id="selectPatrolAlarmDetailVo">
+        select
+            t.id,
+            t.alarm_no,
+			t.patrol_plan_id,
+	       (SELECT self_dict.patrol_plan_name FROM  a_patrol_plan self_dict  where self_dict.id  = t.patrol_plan_id) as patrol_plan_id_extend,
+			t.patrol_task_id,
+	       (SELECT self_dict.patrol_task_name FROM  a_patrol_task self_dict  where self_dict.id  = t.patrol_task_id) as patrol_task_id_extend,
+			t.patrol_user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.patrol_user_id) as patrol_user_id_extend,
+			t.patrol_alarm_type,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_alarm_type' and dict_data.dict_value = patrol_alarm_type) as patrol_alarm_type_extend,
+            t.patrol_alarm_time,
+            t.patrol_alarm_content,
+			t.patrol_alarm_status,
+           (SELECT dict_data.dict_label FROM  sys_dict_data dict_data  where dict_data.dict_type='patrol_alarm_status' and dict_data.dict_value = patrol_alarm_status) as patrol_alarm_status_extend,
+			t.handle_user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.handle_user_id) as handle_user_id_extend,
+            t.handle_time,
+            t.handle_desc,
+            t.remark,
+			t.user_id,
+	       (SELECT self_dict.nick_name FROM  sys_user self_dict  where self_dict.user_id  = t.user_id) as user_id_extend,
+			t.dept_id,
+	       (SELECT self_dict.dept_name FROM  sys_dept self_dict  where self_dict.dept_id  = t.dept_id) as dept_id_extend,
+            t.create_by,
+            t.create_time,
+            t.update_by,
+            t.update_time,
+            t.del_flag,
+            t.del_by,
+            t.del_time,
+			1 as thelastcol
+		from	a_patrol_alarm t
+    </sql>
+
+	    <select id="selectDataByPkPatrolAlarm" parameterType="Long" resultMap="PatrolAlarmResult">
+        <include refid="selectPatrolAlarmVo"/>
+        where
+			id = #{id}
+    </select>
+
+
+
+	<sql id="queryLikeWhereSql">
+            <if test="id != null "> and id = #{id} </if>
+            <if test="params.beginId != null and params.beginId != ''"> and id &gt;= #{params.beginId} </if>
+            <if test="params.endId != null and params.endId != ''"> and id &lt;= #{params.endId}</if>
+            <if test="alarmNo != null  and alarmNo != ''"> and alarm_no like concat('%', #{alarmNo}, '%')</if>
+            <if test="patrolPlanId != null "> and patrol_plan_id = #{patrolPlanId}</if>
+			 <if test="params.patrolPlanIdInValueArr!= null ">
+            	and patrol_plan_id in
+                <foreach item="patrolPlanId" collection="params.patrolPlanIdInValueArr" open="(" separator="," close=")">
+                    #{patrolPlanId}
+                </foreach>
+        	</if>
+            <if test="patrolTaskId != null "> and patrol_task_id = #{patrolTaskId}</if>
+			 <if test="params.patrolTaskIdInValueArr!= null ">
+            	and patrol_task_id in
+                <foreach item="patrolTaskId" collection="params.patrolTaskIdInValueArr" open="(" separator="," close=")">
+                    #{patrolTaskId}
+                </foreach>
+        	</if>
+            <if test="patrolUserId != null "> and patrol_user_id = #{patrolUserId}</if>
+			 <if test="params.patrolUserIdInValueArr!= null ">
+            	and patrol_user_id in
+                <foreach item="patrolUserId" collection="params.patrolUserIdInValueArr" open="(" separator="," close=")">
+                    #{patrolUserId}
+                </foreach>
+        	</if>
+            <if test="patrolAlarmType != null  and patrolAlarmType != ''"> and patrol_alarm_type = #{patrolAlarmType}</if>
+			 <if test="params.patrolAlarmTypeInValueArr!= null ">
+            	and patrol_alarm_type in
+                <foreach item="patrolAlarmType" collection="params.patrolAlarmTypeInValueArr" open="(" separator="," close=")">
+                    #{patrolAlarmType}
+                </foreach>
+        	</if>
+            <if test="patrolAlarmTime != null "> and patrol_alarm_time = #{patrolAlarmTime} </if>
+            <if test="params.beginPatrolAlarmTime != null and params.beginPatrolAlarmTime != ''"> and patrol_alarm_time &gt;= #{params.beginPatrolAlarmTime} </if>
+            <if test="params.endPatrolAlarmTime != null and params.endPatrolAlarmTime != ''"> and patrol_alarm_time &lt;= #{params.endPatrolAlarmTime}</if>
+            <if test="patrolAlarmContent != null  and patrolAlarmContent != ''"> and patrol_alarm_content = #{patrolAlarmContent}</if>
+            <if test="patrolAlarmStatus != null  and patrolAlarmStatus != ''"> and patrol_alarm_status = #{patrolAlarmStatus}</if>
+			 <if test="params.patrolAlarmStatusInValueArr!= null ">
+            	and patrol_alarm_status in
+                <foreach item="patrolAlarmStatus" collection="params.patrolAlarmStatusInValueArr" open="(" separator="," close=")">
+                    #{patrolAlarmStatus}
+                </foreach>
+        	</if>
+            <if test="handleUserId != null "> and handle_user_id = #{handleUserId}</if>
+			 <if test="params.handleUserIdInValueArr!= null ">
+            	and handle_user_id in
+                <foreach item="handleUserId" collection="params.handleUserIdInValueArr" open="(" separator="," close=")">
+                    #{handleUserId}
+                </foreach>
+        	</if>
+            <if test="handleTime != null "> and handle_time = #{handleTime} </if>
+            <if test="params.beginHandleTime != null and params.beginHandleTime != ''"> and handle_time &gt;= #{params.beginHandleTime} </if>
+            <if test="params.endHandleTime != null and params.endHandleTime != ''"> and handle_time &lt;= #{params.endHandleTime}</if>
+            <if test="handleDesc != null  and handleDesc != ''"> and handle_desc like concat('%', #{handleDesc}, '%')</if>
+            <if test="remark != null  and remark != ''"> and remark like concat('%', #{remark}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+			 <if test="params.userIdInValueArr!= null ">
+            	and user_id in
+                <foreach item="userId" collection="params.userIdInValueArr" open="(" separator="," close=")">
+                    #{userId}
+                </foreach>
+        	</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+			 <if test="params.deptIdInValueArr!= null ">
+            	and dept_id in
+                <foreach item="deptId" collection="params.deptIdInValueArr" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+        	</if>
+            <if test="createBy != null  and createBy != ''"> and create_by like concat('%', #{createBy}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime} </if>
+            <if test="params.beginCreateTime != null and params.beginCreateTime != ''"> and create_time &gt;= #{params.beginCreateTime} </if>
+            <if test="params.endCreateTime != null and params.endCreateTime != ''"> and create_time &lt;= #{params.endCreateTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by like concat('%', #{updateBy}, '%')</if>
+            <if test="updateTime != null "> and update_time = #{updateTime} </if>
+            <if test="params.beginUpdateTime != null and params.beginUpdateTime != ''"> and update_time &gt;= #{params.beginUpdateTime} </if>
+            <if test="params.endUpdateTime != null and params.endUpdateTime != ''"> and update_time &lt;= #{params.endUpdateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag like concat('%', #{delFlag}, '%')</if>
+            <if test="delBy != null  and delBy != ''"> and del_by like concat('%', #{delBy}, '%')</if>
+            <if test="delTime != null "> and del_time = #{delTime} </if>
+            <if test="params.beginDelTime != null and params.beginDelTime != ''"> and del_time &gt;= #{params.beginDelTime} </if>
+            <if test="params.endDelTime != null and params.endDelTime != ''"> and del_time &lt;= #{params.endDelTime}</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByLikePatrolAlarm" parameterType="PatrolAlarm" resultMap="PatrolAlarmResult">
+        <include refid="selectPatrolAlarmVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.patrolAlarm.mapper.PatrolAlarmMapperExtend.selectDataListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<select id="selectCountByLikePatrolAlarm" parameterType="PatrolAlarm" resultType="int">
+        select count(*) from a_patrol_alarm t
+        <where>
+ 			<include refid="queryLikeWhereSql"/>
+
+			<include refid="com.ruoyi.autoee.patrolAlarm.mapper.PatrolAlarmMapperExtend.selectCountByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+	<sql id="queryEqWhereSql">
+            <if test="id != null "> and id = #{id}</if>
+            <if test="alarmNo != null  and alarmNo != ''"> and alarm_no = #{alarmNo}</if>
+            <if test="patrolPlanId != null "> and patrol_plan_id = #{patrolPlanId}</if>
+            <if test="patrolTaskId != null "> and patrol_task_id = #{patrolTaskId}</if>
+            <if test="patrolUserId != null "> and patrol_user_id = #{patrolUserId}</if>
+            <if test="patrolAlarmType != null  and patrolAlarmType != ''"> and patrol_alarm_type = #{patrolAlarmType}</if>
+            <if test="patrolAlarmTime != null "> and patrol_alarm_time = #{patrolAlarmTime}</if>
+            <if test="patrolAlarmContent != null  and patrolAlarmContent != ''"> and patrol_alarm_content = #{patrolAlarmContent}</if>
+            <if test="patrolAlarmStatus != null  and patrolAlarmStatus != ''"> and patrol_alarm_status = #{patrolAlarmStatus}</if>
+            <if test="handleUserId != null "> and handle_user_id = #{handleUserId}</if>
+            <if test="handleTime != null "> and handle_time = #{handleTime}</if>
+            <if test="handleDesc != null  and handleDesc != ''"> and handle_desc = #{handleDesc}</if>
+            <if test="remark != null  and remark != ''"> and remark = #{remark}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="createBy != null  and createBy != ''"> and create_by = #{createBy}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and update_by = #{updateBy}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="delFlag != null  and delFlag != ''"> and del_flag = #{delFlag}</if>
+            <if test="delBy != null  and delBy != ''"> and del_by = #{delBy}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+			 <if test="params.beginCreateTime!= null and params.beginCreateTime != '' ">
+            	and create_time &gt; #{params.beginCreateTime}
+        	</if>
+			 <if test="params.endCreateTime!= null and params.endCreateTime != '' ">
+            	and create_time &lt; #{params.endCreateTime}
+        	</if>
+			 <if test="params.beginUpdateTime!= null and params.beginUpdateTime != '' ">
+            	and update_time &gt; #{params.beginUpdateTime}
+        	</if>
+			 <if test="params.endUpdateTime!= null and params.endUpdateTime != '' ">
+            	and update_time &lt; #{params.endUpdateTime}
+        	</if>
+			<if test="whereSql != null  and whereSql != ''"> ${whereSql}</if>
+			<!-- 数据范围过滤 -->
+			${params.dataScope}
+    </sql>
+
+    <select id="selectDataListByEqPatrolAlarm" parameterType="PatrolAlarm" resultMap="PatrolAlarmResult">
+        <include refid="selectPatrolAlarmVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''"> order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectCountByEqPatrolAlarm" parameterType="PatrolAlarm" resultType="int">
+        select count(*) from a_patrol_alarm t
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </select>
+
+	<select id="selectDetailByPkPatrolAlarm" parameterType="Long" resultMap="PatrolAlarmResult">
+        <include refid="selectPatrolAlarmDetailVo"/>
+        where
+			t.id = #{id}
+    </select>
+
+    <select id="selectDetailListByLikePatrolAlarm" parameterType="PatrolAlarm" resultMap="PatrolAlarmResult">
+        <include refid="selectPatrolAlarmDetailVo"/>
+        <where>
+			<include refid="queryLikeWhereSql"/>
+			<include refid="com.ruoyi.autoee.patrolAlarm.mapper.PatrolAlarmMapperExtend.selectDetailListByLikeExtendCondition"/> <!-- 引用 MapperExtend.xml 中的 SQL -->
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+    <select id="selectDetailListByEqPatrolAlarm" parameterType="PatrolAlarm" resultMap="PatrolAlarmResult">
+        <include refid="selectPatrolAlarmDetailVo"/>
+        <where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+
+		<if test="orderByParamStr != null  and orderByParamStr != ''">  ${orderByParamStr} </if>
+        <if test="orderByParamStr == null  or orderByParamStr == ''">  order by t.update_time desc, t.id desc </if>
+        <if test="limitTopN != null and limitTopN != '' "> limit ${limitTopN}</if>
+    </select>
+
+
+    <insert id="insertPatrolAlarm" parameterType="PatrolAlarm" useGeneratedKeys="true" keyProperty="id">
+        insert into a_patrol_alarm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="alarmNo != null and alarmNo != ''">alarm_no,</if>
+            <if test="patrolPlanId != null">patrol_plan_id,</if>
+            <if test="patrolTaskId != null">patrol_task_id,</if>
+            <if test="patrolUserId != null">patrol_user_id,</if>
+            <if test="patrolAlarmType != null and patrolAlarmType != ''">patrol_alarm_type,</if>
+            <if test="patrolAlarmTime != null">patrol_alarm_time,</if>
+            <if test="patrolAlarmContent != null and patrolAlarmContent != ''">patrol_alarm_content,</if>
+            <if test="patrolAlarmStatus != null and patrolAlarmStatus != ''">patrol_alarm_status,</if>
+            <if test="handleUserId != null">handle_user_id,</if>
+            <if test="handleTime != null">handle_time,</if>
+            <if test="handleDesc != null">handle_desc,</if>
+            <if test="remark != null">remark,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="createBy != null">create_by,</if>
+            create_time,
+            <if test="updateBy != null">update_by,</if>
+            update_time,
+            <if test="delFlag != null">del_flag,</if>
+            <if test="delBy != null">del_by,</if>
+            <if test="delTime != null">del_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="alarmNo != null and alarmNo != ''">#{alarmNo},</if>
+            <if test="patrolPlanId != null">#{patrolPlanId},</if>
+            <if test="patrolTaskId != null">#{patrolTaskId},</if>
+            <if test="patrolUserId != null">#{patrolUserId},</if>
+            <if test="patrolAlarmType != null and patrolAlarmType != ''">#{patrolAlarmType},</if>
+            <if test="patrolAlarmTime != null">#{patrolAlarmTime},</if>
+            <if test="patrolAlarmContent != null and patrolAlarmContent != ''">#{patrolAlarmContent},</if>
+            <if test="patrolAlarmStatus != null and patrolAlarmStatus != ''">#{patrolAlarmStatus},</if>
+            <if test="handleUserId != null">#{handleUserId},</if>
+            <if test="handleTime != null">#{handleTime},</if>
+            <if test="handleDesc != null">#{handleDesc},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="createBy != null">#{createBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="updateBy != null">#{updateBy},</if>
+			<if test="createTime != null">#{createTime},</if>
+            <if test="createTime == null">sysdate(),</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="delBy != null">#{delBy},</if>
+            <if test="delTime != null">#{delTime},</if>
+         </trim>
+    </insert>
+
+	<!-- 批量插入修改 - 通过多个字段组成联合唯一索引 -->
+    <insert id="batchInsertOrUpdateByPatrolAlarm">
+        INSERT INTO a_patrol_alarm
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            alarm_no,
+            patrol_plan_id,
+            patrol_task_id,
+            patrol_user_id,
+            patrol_alarm_type,
+            patrol_alarm_time,
+            patrol_alarm_content,
+            patrol_alarm_status,
+            handle_user_id,
+            handle_time,
+            handle_desc,
+            remark,
+            user_id,
+            dept_id,
+            create_by,
+            create_time,
+            update_by,
+            update_time,
+            del_flag,
+            del_by,
+            del_time,
+         </trim>
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{item.alarmNo},
+			#{item.patrolPlanId},
+			#{item.patrolTaskId},
+			#{item.patrolUserId},
+			#{item.patrolAlarmType},
+			#{item.patrolAlarmTime},
+			#{item.patrolAlarmContent},
+			#{item.patrolAlarmStatus},
+			#{item.handleUserId},
+			#{item.handleTime},
+			#{item.handleDesc},
+			#{item.remark},
+			#{item.userId},
+			#{item.deptId},
+			#{item.createBy},
+			#{item.createTime},
+			#{item.updateBy},
+			#{item.updateTime},
+			'0',
+			#{item.delBy},
+			#{item.delTime},
+			</trim>
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+			update_time=VALUES(update_time),
+			update_by=VALUES(update_by),
+  		<trim   suffixOverrides=",">
+       		alarm_no = VALUES(alarm_no),
+       		patrol_plan_id = VALUES(patrol_plan_id),
+       		patrol_task_id = VALUES(patrol_task_id),
+       		patrol_user_id = VALUES(patrol_user_id),
+       		patrol_alarm_type = VALUES(patrol_alarm_type),
+       		patrol_alarm_time = VALUES(patrol_alarm_time),
+       		patrol_alarm_content = VALUES(patrol_alarm_content),
+       		patrol_alarm_status = VALUES(patrol_alarm_status),
+       		handle_user_id = VALUES(handle_user_id),
+       		handle_time = VALUES(handle_time),
+       		handle_desc = VALUES(handle_desc),
+       		user_id = VALUES(user_id),
+       		dept_id = VALUES(dept_id),
+  		</trim>
+    </insert>
+
+    <update id="updateNullValueByPatrolAlarm" parameterType="PatrolAlarm">
+        update a_patrol_alarm
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmNo != null and alarmNo != ''">alarm_no = #{alarmNo},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            patrol_plan_id = #{patrolPlanId},
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            patrol_task_id = #{patrolTaskId},
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            patrol_user_id = #{patrolUserId},
+            <if test="patrolAlarmType != null and patrolAlarmType != ''">patrol_alarm_type = #{patrolAlarmType},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            patrol_alarm_time = #{patrolAlarmTime},
+            <if test="patrolAlarmContent != null and patrolAlarmContent != ''">patrol_alarm_content = #{patrolAlarmContent},</if>
+            <if test="patrolAlarmStatus != null and patrolAlarmStatus != ''">patrol_alarm_status = #{patrolAlarmStatus},</if>
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            handle_user_id = #{handleUserId},
+			<!-- 如果可修改字段类型为Date、Integer、BigDecimal、Long，前端可以清空输入变为null，数据库需要对应回写为null -->
+            handle_time = #{handleTime},
+            <if test="handleDesc != null">handle_desc = #{handleDesc},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNotNullValueByPatrolAlarm" parameterType="PatrolAlarm">
+        update a_patrol_alarm
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmNo != null and alarmNo != ''">alarm_no = #{alarmNo},</if>
+            <if test="patrolPlanId != null">patrol_plan_id = #{patrolPlanId},</if>
+            <if test="patrolTaskId != null">patrol_task_id = #{patrolTaskId},</if>
+            <if test="patrolUserId != null">patrol_user_id = #{patrolUserId},</if>
+            <if test="patrolAlarmType != null and patrolAlarmType != ''">patrol_alarm_type = #{patrolAlarmType},</if>
+            <if test="patrolAlarmTime != null">patrol_alarm_time = #{patrolAlarmTime},</if>
+            <if test="patrolAlarmContent != null and patrolAlarmContent != ''">patrol_alarm_content = #{patrolAlarmContent},</if>
+            <if test="patrolAlarmStatus != null and patrolAlarmStatus != ''">patrol_alarm_status = #{patrolAlarmStatus},</if>
+            <if test="handleUserId != null">handle_user_id = #{handleUserId},</if>
+            <if test="handleTime != null">handle_time = #{handleTime},</if>
+            <if test="handleDesc != null">handle_desc = #{handleDesc},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+			update_time = sysdate(),
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="delBy != null">del_by = #{delBy},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePatrolAlarmById" parameterType="PatrolAlarm">
+		delete from a_patrol_alarm where id = #{id}
+    </delete>
+
+    <delete id="deletePatrolAlarmByIds" parameterType="PatrolAlarm">
+        delete from a_patrol_alarm where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deletePatrolAlarmByEqPatrolAlarm" parameterType="PatrolAlarm">
+        delete from a_patrol_alarm
+		<where>
+			<include refid="queryEqWhereSql"/>
+        </where>
+    </delete>
+
+    <delete id="deletePatrolAlarmAllData">
+        delete from a_patrol_alarm
+    </delete>
+
+
+</mapper>

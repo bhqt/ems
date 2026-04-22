@@ -1,0 +1,7 @@
+{
+  "name": "extendFunctions",
+  "dependencies": {},
+  "extensions": {
+    "uni-cloud-verify": {}
+  }
+}

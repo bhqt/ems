@@ -1,0 +1,253 @@
+<template>
+	<view class="a_container">
+		<uni-forms class="a_add_form" :model="pageData.addUpdateForm" ref="addUpdateFormRef" :rules="pageData.addUpdateFormRules"
+		           label-position="left" label-width="100px" label-align="right">
+#foreach($column in $columns)
+#set($field=$column.javaField)
+## 只有id字段不显示出来
+#if( !$column.pk || $field!="id")
+###if(($column.insert || $column.edit)&& !$column.pk)
+#if(($column.usableColumn) || (!$column.superColumn))
+#set($comment=$column.columnComment)
+#set($dictType=$column.dictType)
+#set($maxlength=0)
+#if($column.columnType.indexOf('(')!=-1 && $column.columnType.indexOf(')')!=-1)
+#set($arr1=$column.columnType.split('[(]'))
+#set($arr2=$arr1[1].split('[)]'))
+#set($dbColLength=$arr2[0])
+#if($arr2[0].indexOf(',')!=-1)
+##bigdecimal(10,2)格式处理
+#set($arr3=$arr2[0].split('[,]'))
+#set($maxlength=$arr3[0])
+#else
+#set($maxlength_text=$arr2[0]/2)
+#end
+#else
+#set($maxlength_text=100)
+#end
+#if($column.insert && $column.edit)
+#set($addOrUpdate="v-show=""true""")
+#elseif($column.insert )
+#### 使用v-show，所有字段都在页面存在，避免有字段不存在时为null，将数据库字段回写为null
+#set($addOrUpdate="v-show=""pageData.addOrUpdate=='add'""")
+#elseif( $column.edit)
+#set($addOrUpdate="v-show=""pageData.addOrUpdate=='update'""")
+#else
+#set($addOrUpdate="v-show=""false""")
+#end
+#set($formItemWith="width: 90%;")
+#if(${addDialogSpan} == "12")
+#set($formItemWith="width: 45%;")
+#end
+#if($column.columnName == "dept_id")
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+			  	<uni-data-picker class="a_add_form_select" v-model="pageData.addUpdateForm.${column.javaField}" :localdata="pageData.dictData.${dictType}" placeholder="请选择" clearable>
+				</uni-data-picker>
+			</uni-forms-item>
+#elseif(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio") && ($column.columnName.indexOf("_2") != -1 || $column.columnName.indexOf(
+	"_3") != -1 ))
+	##  级联下拉框，2级或者3级
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+				<uni-data-picker class="a_add_form_select" v-model="pageData.addUpdateForm.${column.javaField}" :localdata="pageData.dictData.${dictType}" placeholder="请选择" clearable>
+				</uni-data-picker>
+			</uni-forms-item>
+#elseif($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+				<uni-data-picker class="a_add_form_select" v-model="pageData.addUpdateForm.${column.javaField}" :localdata="pageData.dictData.${dictType}" placeholder="请选择" clearable>
+				</uni-data-picker>
+			</uni-forms-item>
+#elseif($column.htmlType == "datetime")
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+				<uni-datetime-picker v-model="pageData.addUpdateForm.${column.javaField}" type="datetime" return-type="string" placeholder="请选择" clearable/>
+			</uni-forms-item>
+#elseif($column.htmlType == "date")
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+				<uni-datetime-picker v-model="pageData.addUpdateForm.${column.javaField}" type="date" return-type="string" clearable placeholder="请选择"/>
+			</uni-forms-item>
+#elseif(($column.javaType == "Integer" || $column.javaType == "Long" || $column.javaType == "Double" || $column.javaType == "BigDecimal") && $column.queryType == "BETWEEN")
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}">
+				<uni-easyinput type="number" v-model="pageData.addUpdateForm.${column.javaField}" clearable placeholder="请输入${comment}" />
+			</uni-forms-item>
+#elseif($column.htmlType == "input"  || $column.htmlType == "input-tag")
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+				<uni-easyinput v-model="pageData.addUpdateForm.${column.javaField}" placeholder="请输入${comment}" clearable/>
+			</uni-forms-item>
+#elseif($column.htmlType == "textarea" )
+			<uni-forms-item $addOrUpdate class="a_add_form_item" label="${comment}" name="${column.javaField}">
+				<uni-easyinput type="textarea" v-model="pageData.addUpdateForm.${column.javaField}" placeholder="请输入${comment}" clearable/>
+			</uni-forms-item>
+#end
+#end
+#end
+#end
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("handleQuery") == -1)
+#set($isShowButton="false")
+#end
+#set($isShowButton="true")
+#if($showButtons && $showButtons.indexOf("resetQuery") == -1)
+#set($isShowButton="false")
+#end
+		</uni-forms>
+		<view class="a_button">
+			<button type="primary" @click="submitForm">提交</button>
+		</view>
+
+	</view>
+</template>
+
+<script>
+import config from '@/config'
+import {mapState} from 'vuex';
+import {getDictData} from '@/utils/dict'
+import ${businessName} from '@/api/autoee/${businessName}';
+
+export default {
+	data() {
+		return {
+			// 所有需要响应式的参数都要初始化，否则Vue 无法追踪这个属性的变化
+			pageData: {
+				imageBaseUrl: config.baseUrl,
+				userId: this.$store.getters.userId,
+				addUpdateForm: {
+#foreach($column in $columns)
+#if($column.insert || $column.edit)
+					${column.javaField}: "",
+#end
+#end
+				},
+                open: false,
+                title: "",
+                loading: false,
+                vueAppBaseApi: process.env.VUE_APP_BASE_API,
+                addOrUpdate: "add",
+                addUpdateFormRules: {
+#foreach ($column in $columns)
+#if(${pkColumn.javaField}!= $column.javaField)
+				// ${column.columnComment}
+				$column.javaField: {
+					rules: [
+#if($column.required)
+#set($comment=$column.columnComment)
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+					{ required: true, errorMessage: "$comment不能为空并且为整数", trigger: #if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio")"change"#else"blur"#end },
+#elseif($column.javaType == "BigDecimal")
+					{ required: true, errorMessage: "$comment不能为空并且为数字", trigger: #if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio")"change"#else"blur"#end },
+#else
+					{ required: true, errorMessage: "$comment不能为空", trigger: #if(($column.htmlType == "select" || $column.htmlType == "selectSelfDefine")  || $column.htmlType == "radio")"change"#else"blur"#end },
+#end
+#end
+#if($column.htmlType == "input")
+#if($column.javaType == "Integer" || $column.javaType == "Long")
+#if($column.columnName.indexOf("bi_li") != -1)
+					{validateFunction: proxy.$validateRules.validatePositiveInteger_0_100, trigger: ["blur", "change"]},
+#else
+					{validateFunction: proxy.$validateRules.validatePositiveInteger, trigger: ["blur", "change"]},
+#end
+#elseif($column.javaType == "BigDecimal")
+					{validateFunction: proxy.$validateRules.validateNumberInRange, trigger: ["blur", "change"]},
+#else
+#if($column.extend7)
+     				{validateFunction: proxy.$validateRules.${column.extend7}, trigger: ["blur", "change"]},
+#end
+#end
+#end
+				]
+				}#if($foreach.count != $columns.size()),#end
+#end
+#end
+                },
+				dictData: {
+#foreach($column in $columns)
+#if($column.query)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+					$column.dictType: [],
+#end
+#end
+#end
+				}
+			}
+		}
+	},
+	onReady() {
+		// 需要在onReady中设置规则
+		// this.#[[$]]#refs.addUpdateForm.setRules(this.pageData.addUpdateFormRules)
+	},
+  	onLoad(options) {
+	  	console.log('页面参数:', options)
+    	this.initData()
+	    let title = "新增${functionName}"
+	    if (options.id){
+			title = "修改${functionName}"
+			this.pageData.addOrUpdate = "update"
+	  		this.loadData(options.id);
+		}
+		uni.setNavigationBarTitle({
+			title
+		})
+	},
+	onShow() {
+		console.log('页面显示')
+    },
+	mounted(){
+
+	},
+	computed: {
+		...mapState(['user'])
+	},
+	methods: {
+		async initData() {
+		 	try {
+#foreach($column in $columns)
+#if($column.query)
+#if($column.htmlType == "select" || $column.htmlType == "selectSelfDefine" || $column.htmlType == "radio")
+				this.pageData.dictData.$column.dictType = await getDictData('$column.dictType')
+#end
+#end
+#end
+			} catch (error) {
+				console.error('获取字典失败:', error)
+			}
+		},
+	  	//请求数据
+		loadData(id){
+			let data = this.pageData.addUpdateForm
+        	${businessName}.selectDetailByPk${ClassName}(id).then(res => {
+            	this.pageData.addUpdateForm= res.data;
+        	})
+	    },
+		/** 提交按钮 */
+		submitForm() {
+			uni.showLoading()
+			this.#[[$]]#refs.addUpdateFormRef.validate().then(res => {
+     			if (this.pageData.addUpdateForm.id != null) {
+					// 修改${functionName}：只能用于前端form表单的更新操作，清空的字段回写为null
+     			  ${businessName}.updateNullValueBy${ClassName}(this.pageData.addUpdateForm).then(response => {
+     			    	// this.#[[$]]#api.msg(`修改成功`);
+						this.#[[$]]#modal.alertCallback(`修改成功`, () => {
+							uni.navigateBack()
+							// this.$tab.reLaunch('/pages/index/index');
+						});
+     			  });
+     			} else {
+     			  ${businessName}.add${BusinessName}(pageData.addUpdateForm).then(response => {
+     			    	// this.#[[$]]#api.msg(`新增成功`);
+						this.#[[$]]#modal.alertCallback(`新增成功`, () => {
+							uni.navigateBack()
+							// this.$tab.reLaunch('/pages/index/index');
+						});
+     			  });
+     			}
+			}).catch(err => {
+				uni.hideLoading()
+				console.log('表单错误信息：', err);
+			})
+		}
+	}
+}
+</script>
+
+// style中样式放入单独文件中，避免格式化代码后导致样式失效问题
+<style lang="scss">
+//@import '@/static/styles/autoee/${businessName}/${businessName}Add.scss';
+</style>

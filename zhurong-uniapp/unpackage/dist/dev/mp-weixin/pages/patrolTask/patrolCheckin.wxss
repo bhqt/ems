@@ -1,0 +1,291 @@
+
+.a_container.data-v-04622ac8 {
+  padding: 30rpx;
+  box-sizing: border-box;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 加载状态 */
+.loading-container.data-v-04622ac8 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.loading-text.data-v-04622ac8 {
+  margin-top: 20rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 任务详情 */
+.task-detail.data-v-04622ac8 {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 任务标题和状态 */
+.task-header.data-v-04622ac8 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+.task-title.data-v-04622ac8 {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+.task-tag.data-v-04622ac8 {
+  padding: 8rpx 20rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+}
+.tag-unstarted.data-v-04622ac8 {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+.tag-unfinished.data-v-04622ac8 {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+.tag-finished.data-v-04622ac8 {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+.tag-overdue.data-v-04622ac8 {
+  background-color: #fff1f0;
+  color: #ff4d4f;
+}
+
+/* 任务详情列表 */
+.task-info.data-v-04622ac8 {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  margin-bottom: 30rpx;
+}
+.info-item.data-v-04622ac8 {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+.info-icon.data-v-04622ac8 {
+  font-size: 30rpx;
+  color: #999;
+}
+.highlight-icon.data-v-04622ac8 {
+  color: #1890ff;
+}
+.info-label.data-v-04622ac8 {
+  font-size: 28rpx;
+  color: #666;
+  min-width: 140rpx;
+}
+.info-value.data-v-04622ac8 {
+  font-size: 28rpx;
+  color: #333;
+  flex: 1;
+}
+.highlight.data-v-04622ac8 {
+  color: #1890ff;
+  font-weight: bold;
+}
+
+/* 当前点位信息 */
+.current-point-section.data-v-04622ac8 {
+  margin: 30rpx 0;
+  padding: 20rpx;
+  background-color: #e6f7ff;
+  border-radius: 12rpx;
+}
+.current-point-info.data-v-04622ac8 {
+  padding: 20rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  border-left: 6rpx solid #1890ff;
+}
+.point-name.data-v-04622ac8 {
+  display: block;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+.point-location.data-v-04622ac8 {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+.point-status.data-v-04622ac8 {
+  font-size: 24rpx;
+  padding: 4rpx 16rpx;
+  border-radius: 12rpx;
+}
+.point-status.finished.data-v-04622ac8 {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+.point-status.pending.data-v-04622ac8 {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+
+/* 点位列表 */
+.point-list-section.data-v-04622ac8 {
+  margin: 30rpx 0;
+}
+.section-title.data-v-04622ac8 {
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+.point-list.data-v-04622ac8 {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+.point-item.data-v-04622ac8 {
+  padding: 20rpx;
+  background-color: #fafafa;
+  border-radius: 10rpx;
+  border-left: 4rpx solid #d9d9d9;
+}
+.point-item.current.data-v-04622ac8 {
+  background-color: #e6f7ff;
+  border-left-color: #1890ff;
+}
+.point-item.finished.data-v-04622ac8 {
+  background-color: #f6ffed;
+  border-left-color: #52c41a;
+}
+.point-item-header.data-v-04622ac8 {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+  margin-bottom: 10rpx;
+}
+.point-order.data-v-04622ac8 {
+  width: 40rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  background-color: #999;
+  color: #fff;
+  font-size: 24rpx;
+  border-radius: 50%;
+}
+.point-item.current .point-order.data-v-04622ac8 {
+  background-color: #1890ff;
+}
+.point-item.finished .point-order.data-v-04622ac8 {
+  background-color: #52c41a;
+}
+.point-item-name.data-v-04622ac8 {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+}
+.finished-icon.data-v-04622ac8 {
+  font-size: 30rpx;
+  color: #52c41a;
+}
+.point-item-location.data-v-04622ac8 {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+.point-finish-time.data-v-04622ac8 {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 打卡按钮 */
+.checkin-action.data-v-04622ac8 {
+  margin-top: 30rpx;
+  display: flex;
+  justify-content: center;
+}
+.btn-checkin.data-v-04622ac8 {
+  width: 100%;
+  height: 90rpx;
+  line-height: 90rpx;
+  background-color: #1890ff;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 45rpx;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+}
+.btn-checkin.data-v-04622ac8:disabled {
+  background-color: #d9d9d9;
+  color: #fff;
+}
+
+/* 打卡成功状态 */
+.checked-in-success.data-v-04622ac8 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx 0;
+}
+.already-checked-in.data-v-04622ac8 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx 0;
+}
+.success-icon.data-v-04622ac8 {
+  font-size: 60rpx;
+  color: #52c41a;
+  margin-bottom: 15rpx;
+}
+.success-text.data-v-04622ac8 {
+  font-size: 32rpx;
+  color: #52c41a;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+.checkin-time.data-v-04622ac8 {
+  font-size: 26rpx;
+  color: #999;
+}
+
+/* 无数据状态 */
+.no-data.data-v-04622ac8 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.no-data .icon.data-v-04622ac8 {
+  font-size: 80rpx;
+  color: #d9d9d9;
+  margin-bottom: 20rpx;
+}
+.no-data .text.data-v-04622ac8 {
+  font-size: 28rpx;
+  color: #999;
+}
+

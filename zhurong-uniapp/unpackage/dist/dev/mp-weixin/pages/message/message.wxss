@@ -1,0 +1,46 @@
+
+page {
+	background-color: #FFFFFF;
+}
+.a1 {
+	padding-left: 35rpx;
+}
+.a2 {
+	font-size: 18px;
+	font-weight: 700;
+}
+.a3 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	padding-left: 50rpx;
+	padding-right: 50rpx;
+	padding-top: 50rpx;
+}
+.a4 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.a5 {
+	width: 80rpx;
+	height: 80rpx;
+	margin-right: 15rpx;
+}
+.a6 {
+	display: flex;
+	flex-direction: column;
+}
+.a7 {
+	font-size: 28rpx;
+}
+.a8 {
+	font-size: 22rpx;
+	color: darkgray;
+}
+.a9 {
+	font-size: 22rpx;
+	color: darkgray;
+}
+
