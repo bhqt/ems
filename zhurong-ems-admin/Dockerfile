@@ -8,28 +8,10 @@ RUN sed -i 's/repo.maven.apache.org/maven.aliyun.com/g' $MAVEN_HOME/conf/setting
 # 设置工作目录
 WORKDIR /build
 
-# 复制 pom.xml 文件（利用Docker缓存机制）
-COPY pom.xml .
-COPY zhurong-ems-admin/pom.xml ./zhurong-ems-admin/
-COPY zhurong-ems-framework/pom.xml ./zhurong-ems-framework/
-COPY zhurong-ems-system/pom.xml ./zhurong-ems-system/
-COPY zhurong-ems-common/pom.xml ./zhurong-ems-common/
-COPY zhurong-ems-job/pom.xml ./zhurong-ems-job/
-COPY zhurong-ems-oss/pom.xml ./zhurong-ems-oss/
-COPY zhurong-ems-sms/pom.xml ./zhurong-ems-sms/
-COPY zhurong-ems-extend/pom.xml ./zhurong-ems-extend/
-# 复制 zhurong-ems-extend 子模块的 pom.xml（因为父pom声明了这些子模块）
-COPY zhurong-ems-extend/zhurong-ems-monitor-admin/pom.xml ./zhurong-ems-extend/zhurong-ems-monitor-admin/
-COPY zhurong-ems-extend/zhurong-ems-xxl-job-admin/pom.xml ./zhurong-ems-extend/zhurong-ems-xxl-job-admin/
-
-# 注意：不能在这里执行 dependency:go-offline，因为内部模块依赖还未构建
-# 直接复制源码后一起构建，Maven会自动处理依赖关系
-
-# 复制源码
+# 复制当前目录的所有文件
 COPY . .
 
 # 构建应用（跳过测试以加快构建速度，生产环境建议运行测试）
-# Maven会先构建依赖的模块，然后再构建主应用
 RUN mvn clean package -DskipTests -B
 
 # 运行阶段

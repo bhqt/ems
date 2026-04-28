@@ -4,15 +4,23 @@ import cn.hutool.core.net.NetUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.baomidou.mybatisplus.core.MybatisXMLLanguageDriver;
+import com.baomidou.mybatisplus.core.config.GlobalConfig;
+import com.baomidou.mybatisplus.core.config.GlobalConfig.DbConfig;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.cpems.framework.handler.CreateAndUpdateMetaObjectHandler;
 import com.cpems.framework.interceptor.PlusDataPermissionInterceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import javax.sql.DataSource;
 
 /**
  * mybatis-plus配置类(下方注释有插件介绍)
@@ -77,6 +85,17 @@ public class MybatisPlusConfig {
     @Bean
     public IdentifierGenerator idGenerator() {
         return new DefaultIdentifierGenerator(NetUtil.getLocalhost());
+    }
+
+    /**
+     * 全局配置，启用自动建表
+     */
+    @Bean
+    public GlobalConfig globalConfig() {
+        GlobalConfig globalConfig = new GlobalConfig();
+        DbConfig dbConfig = new DbConfig();
+        globalConfig.setDbConfig(dbConfig);
+        return globalConfig;
     }
 
     /**

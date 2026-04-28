@@ -3,40 +3,20 @@ import VueI18n from 'vue-i18n'
 import Cookies from 'js-cookie'
 import ElementLocale from 'element-ui/lib/locale'
 
-// 导入 Element UI 语言包
+// 导入默认语言包（预加载）
 import elementZhCN from 'element-ui/lib/locale/lang/zh-CN'
-import elementEn from 'element-ui/lib/locale/lang/en'
-import elementId from 'element-ui/lib/locale/lang/id'
-import elementRu from 'element-ui/lib/locale/lang/ru-RU'
-
-// 导入应用语言包
 import zhCN from './lang/zh-CN'
-import en from './lang/en'
-import id from './lang/id'
-import ru from './lang/ru'
 
 Vue.use(VueI18n)
 
-// P3优化：语言包按需加载配置
+// 语言包按需加载配置
 const loadedLanguages = []
 
-// 合并 Element UI 和应用的语言包
+// 初始只包含默认语言
 const messages = {
   'zh-CN': {
     ...elementZhCN,
     ...zhCN
-  },
-  'en': {
-    ...elementEn,
-    ...en
-  },
-  'id': {
-    ...elementId,
-    ...id
-  },
-  'ru': {
-    ...elementRu,
-    ...ru
   }
 }
 
@@ -94,17 +74,51 @@ const i18n = new VueI18n({
 // 设置 Element UI 的国际化
 ElementLocale.i18n((key, value) => i18n.t(key, value))
 
-// 设置语言方法
-export function setLanguage(lang) {
-  if (!messages[lang]) {
-    console.warn(`[i18n] Language ${lang} not supported`)
-    return false
+// 按需加载语言包
+export function loadLanguageAsync(lang) {
+  // 如果语言已加载，直接切换
+  if (i18n.locale === lang) {
+    return Promise.resolve()
   }
 
-  i18n.locale = lang
-  Cookies.set('language', lang, { expires: 365 })
+  // 如果语言包已加载，直接切换
+  if (loadedLanguages.includes(lang)) {
+    i18n.locale = lang
+    return Promise.resolve()
+  }
 
-  return true
+  // 动态导入语言包
+  return Promise.all([
+    // 导入应用语言包
+    import(`./lang/${lang === 'zh-CN' ? 'zh-CN' : lang}`),
+    // 导入 Element UI 语言包
+    import(`element-ui/lib/locale/lang/${lang === 'zh-CN' ? 'zh-CN' : lang}`)
+  ]).then(([appLang, elementLang]) => {
+    // 合并语言包
+    messages[lang] = {
+      ...elementLang.default,
+      ...appLang.default
+    }
+
+    // 标记语言已加载
+    loadedLanguages.push(lang)
+
+    // 切换语言
+    i18n.locale = lang
+    Cookies.set('language', lang, { expires: 365 })
+
+    return Promise.resolve()
+  }).catch(error => {
+    console.error(`[i18n] Failed to load language ${lang}:`, error)
+    // 加载失败时回退到默认语言
+    i18n.locale = 'zh-CN'
+    return Promise.reject(error)
+  })
+}
+
+// 设置语言方法
+export function setLanguage(lang) {
+  return loadLanguageAsync(lang)
 }
 
 // 获取当前语言

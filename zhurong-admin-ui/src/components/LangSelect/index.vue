@@ -20,7 +20,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { supportLanguages } from '@/i18n'
+import { supportLanguages, loadLanguageAsync } from '@/i18n'
 
 export default {
   name: 'LangSelect',
@@ -37,16 +37,20 @@ export default {
     }
   },
   methods: {
-    handleSetLanguage(lang) {
-      this.$i18n.locale = lang
-      this.$store.dispatch('app/setLanguage', lang)
-      this.$message.success(this.$t('login.loginSuccess'))
+    async handleSetLanguage(lang) {
+      try {
+        await loadLanguageAsync(lang)
+        this.$store.dispatch('app/setLanguage', lang)
+        this.$message.success(this.$t('common.success'))
+      } catch (error) {
+        this.$message.error(this.$t('common.error'))
+        console.error('Language switch failed:', error)
+      }
       // 刷新页面以重新加载菜单等数据
       // location.reload()
     }
   }
-}
-</script>
+}</script>
 
 <style scoped lang="scss">
 .international {

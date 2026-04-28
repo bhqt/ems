@@ -1,0 +1,58 @@
+# Docker 容器环境配置 - 完全覆盖jar包中的配置
+# 通过 SPRING_PROFILES_ACTIVE=docker 激活
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dynamic:
+      p6spy: false
+      primary: master
+      strict: true
+      datasource:
+        # 主库数据源 - 使用Docker服务名
+        master:
+          type: ${spring.datasource.type}
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL:jdbc:mysql://zhurong-ems-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true}
+          username: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME:root}
+          password: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD:root}
+        # TDengine数据源 - 禁用
+        td:
+          enabled: false
+
+  redis:
+    host: ${SPRING_REDIS_HOST:zhurong-ems-redis}
+    port: ${SPRING_REDIS_PORT:6379}
+    database: ${SPRING_REDIS_DATABASE:13}
+    password: ${SPRING_REDIS_PASSWORD:difyyai123456}
+    timeout: 10s
+    ssl: false
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:zhurong-ems-rabbitmq}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+redisson:
+  keyPrefix:
+  threads: 64
+  nettyThreads: 64
+  singleServerConfig:
+    clientName: ${zhurong-ems.name}
+    connectionMinimumIdleSize: 16
+    connectionPoolSize: 128
+    idleConnectionTimeout: 1000
+    timeout: 3000
+    subscriptionConnectionPoolSize: 320
+
+mqtt:
+  host: ${MQTT_HOST:tcp://zhurong-ems-emqx:1883}
+  username: ${MQTT_USERNAME:admin}
+  password: ${MQTT_PASSWORD:public}
+  clientId: ${MQTT_CLIENT_ID:zhurong-ems-server-${HOSTNAME:-default}}
+  qos: 1
+  timeout: ${MQTT_TIMEOUT:120}
+  keepalive: ${MQTT_KEEPALIVE:360}

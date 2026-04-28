@@ -24,12 +24,13 @@ function Write-Step {
 function Build-Backend {
     Write-Step "构建后端服务镜像 (zhurong-ems-admin)"
 
-    $BackendDir = Join-Path $ProjectRoot "zhurong-ems-admin"
-    Push-Location $BackendDir
+    # 在根目录构建，这样所有子模块都会被包含
+    Push-Location $ProjectRoot
 
     try {
         $Tag = "$Registry/backend:latest"
-        docker build -t $Tag .
+        # 使用zhurong-ems-admin目录中的Dockerfile
+        docker build -t $Tag -f zhurong-ems-admin/Dockerfile .
 
         if ($LASTEXITCODE -eq 0) {
             Write-Host "后端镜像构建成功: $Tag" -ForegroundColor Green

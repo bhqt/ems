@@ -7,40 +7,24 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     dynamic:
-      # 性能分析插件(有性能损耗 不建议生产环境使用)
       p6spy: false
-      # 设置默认的数据源或者数据源组,默认值即为 master
       primary: master
-      # 严格模式 匹配不到数据源则报错
       strict: true
       datasource:
-        # 主库数据源 - 使用Docker服务名
         master:
           type: ${spring.datasource.type}
           driverClassName: com.mysql.cj.jdbc.Driver
-          # 使用Docker服务名 zhurong-ems-mysql 替代 localhost
-          url: jdbc:mysql://zhurong-ems-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
+          url: jdbc:mysql://zhurong-ems-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
           username: root
-          password: 123456
-        # TDengine 配置（可选）
-        # enabled 可通过环境变量 SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED 覆盖
-        # URL/Username/Password 可通过环境变量覆盖；默认密码与服务器 .env 中 Redis 密码一致
-        td:
-          enabled: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED:false}
-          driverClassName: com.taosdata.jdbc.rs.RestfulDriver
-          url: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_URL:jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy?user=root&password=difyyai123456&timezone=Asia/Shanghai}
-          username: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_USERNAME:root}
-          password: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_PASSWORD:difyyai123456}
+          password: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD:root}
 
 --- # Redis 配置 - 使用Docker服务名
 spring:
   redis:
-    # 使用Docker服务名 zhurong-ems-redis 替代 localhost
     host: zhurong-ems-redis
     port: 6379
+    password: ${SPRING_REDIS_PASSWORD:difyyai123456}
     database: 13
-    # 密码(如没有密码请注释掉)
-    # password:
     timeout: 10s
     ssl: false
 
@@ -59,7 +43,6 @@ redisson:
 --- # RabbitMQ 配置 - 使用Docker服务名
 spring:
   rabbitmq:
-    # 使用Docker服务名 zhurong-ems-rabbitmq 替代 localhost
     host: zhurong-ems-rabbitmq
     port: 5672
     username: guest
@@ -68,17 +51,11 @@ spring:
     publisher-returns: true
 
 --- # MQTT 配置
-# 注意：MQTT 通常需要外部 MQTT Broker
-# 这里使用公共测试 Broker（仅用于测试，生产环境请使用自己的 MQTT Broker）
-# 如果需要在 Docker 中部署 MQTT Broker（如 EMQX），可以在 docker-compose.yml 中添加服务并修改此处配置
 mqtt:
-  # 使用公共测试 MQTT Broker
-  host: tcp://broker.emqx.io:1883
+  host: tcp://zhurong-ems-emqx:1883
   username: admin
   password: public
-  # ClientId必须唯一，使用固定前缀确保唯一性
   clientId: docker-client-zhurong-ems
   qos: 1
   timeout: 120
   keepalive: 360
-

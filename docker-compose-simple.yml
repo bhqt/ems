@@ -1,12 +1,6 @@
-# =============================================
-# Deep-EMS 部署配置（中间件 + 后端 + 前端）
-# =============================================
+version: '3.8'
 
 services:
-
-  # ========== 中间件服务 ==========
-
-  # MySQL 数据库
   zhurong-ems-mysql:
     image: mysql:8.0
     container_name: zhurong-ems-mysql
@@ -14,49 +8,35 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: autoee_ems
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
       TZ: Asia/Shanghai
-    ports:
-      - "3306:3306"
     volumes:
       - zhurong-ems-mysql-data:/var/lib/mysql
-      - ./数据库脚本:/docker-entrypoint-initdb.d
-      - ./docker/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-      - --default-authentication-plugin=mysql_native_password
-      - --max_connections=1000
-      - --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+      - zhurong-ems-mysql-conf:/etc/mysql/conf.d
     networks:
       - zhurong-ems-network
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -uroot -proot || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -proot || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  # Redis 缓存
   zhurong-ems-redis:
     image: redis:7
     container_name: zhurong-ems-redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
+    command: redis-server --requirepass difyai123456
     volumes:
       - zhurong-ems-redis-data:/data
-    command:
-      - redis-server
-      - --appendonly yes
-      - --requirepass difyai123456
     networks:
       - zhurong-ems-network
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -a difyai123456 ping || exit 1"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-  # RabbitMQ 消息队列
   zhurong-ems-rabbitmq:
     image: rabbitmq:3.12-management-alpine
     container_name: zhurong-ems-rabbitmq
@@ -65,80 +45,39 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
       TZ: Asia/Shanghai
-    ports:
-      - "5672:5672"
-      - "15672:15672"
     volumes:
       - zhurong-ems-rabbitmq-data:/var/lib/rabbitmq
     networks:
       - zhurong-ems-network
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ========== EMQ X MQTT Broker（新增）==========
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   zhurong-ems-emqx:
     image: emqx/emqx:5.3.2
     container_name: zhurong-ems-emqx
     restart: unless-stopped
     environment:
-      TZ: Asia/Shanghai
-      EMQX_NAME: emqx
-      EMQX_HOST: 127.0.0.1
-      EMQX_Dashboard__default_username: admin
-      EMQX_Dashboard__default_password: public
-      EMQX_MQTT__DEFAULT__LISTENER: 1883
-      EMQX_MQTT__DEFAULT__MAX_PACKET_SIZE: 1MB
-      EMQX_MQTT__DEFAULT__MAX_CLIENTID_LEN: 128
-      EMQX_MQTT__DEFAULT__MAX_KEEPALIVE: 360
-      EMQX_MQTT__DEFAULT__KEEPALIVE_BACKOFF: 0.75
-    ports:
-      - "1883:1883"     # MQTT 协议端口
-      - "8883:8883"     # MQTT/SSL 端口
-      - "18083:18083"   # Dashboard HTTP API 端口
-      - "8081:8081"     # WebSocket 端口
-      - "8083:8083"     # WebSocket/SSL 端口
+      EMQX_NAME: zhurong-ems-emqx
+      EMQX_HOST: zhurong-ems-emqx
+      EMQX_LISTENER__TCP__EXTERNAL: 1883
+      EMQX_LISTENER__HTTP__EXTERNAL: 8083
+      EMQX_LISTENER__WS__EXTERNAL: 8084
+      EMQX_AUTH__USER__1__USERNAME: admin
+      EMQX_AUTH__USER__1__PASSWORD: public
+      EMQX_TZ: Asia/Shanghai
     volumes:
       - zhurong-ems-emqx-data:/opt/emqx/data
       - zhurong-ems-emqx-log:/opt/emqx/log
-      - zhurong-ems-emqx-plugins:/opt/emqx/plugins
     networks:
       - zhurong-ems-network
     healthcheck:
-      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ========== TDengine 时序数据库（可选，按需部署）==========
-
-  zhurong-ems-tdengine:
-    image: tdengine/tdengine:3.2.0.0
-    container_name: zhurong-ems-tdengine
-    restart: unless-stopped
-    environment:
-      TAOS_FQDN: zhurong-ems-tdengine
-      TAOS_USER: root
-      TAOS_PASS: difyai123456
-      TZ: Asia/Shanghai
-    ports:
-      - "6030:6030"   # TDengine 原生客户端连接端口
-      - "6041:6041"   # RESTful API 端口
-    volumes:
-      - zhurong-ems-tdengine-data:/var/lib/taos
-      - zhurong-ems-tdengine-log:/var/log/taos
-    networks:
-      - zhurong-ems-network
-    healthcheck:
-      test: ["CMD", "taos", "-c", "show databases"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # ========== 后端服务 ==========
+      test: ["CMD-SHELL", "curl -f http://localhost:18083/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   zhurong-ems-backend:
     image: zhurong-ems/backend:latest
@@ -146,54 +85,42 @@ services:
     restart: unless-stopped
     ports:
       - "1088:8088"
-    command: ["java", "-jar", "/zhurong-ems/server/app.jar", "--spring.config.location=file:/zhurong-ems/server/application.yml"]
     environment:
-      # 不设置SPRING_PROFILES_ACTIVE，避免加载jar包中的profile配置文件
-      # MySQL配置覆盖
-      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: jdbc:mysql://zhurong-ems-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL: jdbc:mysql://zhurong-ems-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME: root
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD: root
-      # Redis配置覆盖（jar包中没有密码）
       SPRING_REDIS_HOST: zhurong-ems-redis
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: difyai123456
       SPRING_REDIS_DATABASE: 13
-      # RabbitMQ配置
       SPRING_RABBITMQ_HOST: zhurong-ems-rabbitmq
       SPRING_RABBITMQ_PORT: 5672
       SPRING_RABBITMQ_USERNAME: guest
       SPRING_RABBITMQ_PASSWORD: guest
-      # MQTT配置覆盖（jar包中使用公共broker）
-      MQTT_HOST: tcp://zhurong-ems-emqx:1883
+      MQTT_HOST: zhurong-ems-emqx
       MQTT_PORT: 1883
       MQTT_USERNAME: admin
       MQTT_PASSWORD: public
       MQTT_CLIENT_ID: zhurong-ems-server-${HOSTNAME:-default}
       MQTT_TIMEOUT: 120
       MQTT_KEEPALIVE: 360
-      # TDengine配置 - 使用空配置禁用
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED: "false"
       JAVA_OPTS: -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED
       TZ: Asia/Shanghai
     volumes:
       - zhurong-ems-backend-logs:/zhurong-ems/server/logs
       - zhurong-ems-backend-temp:/zhurong-ems/server/temp
-      - ./application.yml:/zhurong-ems/server/application.yml
     networks:
       - zhurong-ems-network
     depends_on:
-      zhurong-ems-rabbitmq:
-        condition: service_healthy
-      zhurong-ems-emqx:
+      zhurong-ems-mysql:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8088/autoee-iot-ems/actuator/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 60s
-
-  # ========== 前端服务 ==========
 
   zhurong-ems-frontend:
     image: zhurong-ems/frontend:latest
@@ -235,12 +162,6 @@ volumes:
     name: zhurong-ems-emqx-data
   zhurong-ems-emqx-log:
     name: zhurong-ems-emqx-log
-  zhurong-ems-emqx-plugins:
-    name: zhurong-ems-emqx-plugins
-  zhurong-ems-tdengine-data:
-    name: zhurong-ems-tdengine-data
-  zhurong-ems-tdengine-log:
-    name: zhurong-ems-tdengine-log
   zhurong-ems-backend-logs:
     name: zhurong-ems-backend-logs
   zhurong-ems-backend-temp:

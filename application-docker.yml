@@ -1,0 +1,109 @@
+# ======================================================
+# Docker环境配置 - 完全替换jar包中的application-docker.yml
+# ======================================================
+
+server:
+  port: 8088
+  servlet:
+    context-path: /autoee-iot-ems
+
+spring:
+  application:
+    name: zhurong-ems
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dynamic:
+      p6spy: false
+      primary: master
+      strict: true
+      datasource:
+        # 主库数据源 - 使用Docker服务名
+        master:
+          type: ${spring.datasource.type}
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_URL:jdbc:mysql://zhurong-ems-mysql:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true}
+          username: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_USERNAME:root}
+          password: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_MASTER_PASSWORD:root}
+          hikari:
+            minimum-idle: 10
+            maximum-pool-size: 100
+            idle-timeout: 300000
+            connection-timeout: 30000
+            max-lifetime: 1200000
+            connection-test-query: SELECT 1
+
+  redis:
+    host: ${SPRING_REDIS_HOST:zhurong-ems-redis}
+    port: ${SPRING_REDIS_PORT:6379}
+    database: ${SPRING_REDIS_DATABASE:13}
+    password: ${SPRING_REDIS_PASSWORD:difyyai123456}
+    timeout: 10s
+    ssl: false
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:zhurong-ems-rabbitmq}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      write-dates-as-timestamps: false
+
+# MyBatis配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+  global-config:
+    db-config:
+      id-type: auto
+      table-underline: true
+
+# Redisson配置
+redisson:
+  keyPrefix:
+  threads: 64
+  nettyThreads: 64
+  singleServerConfig:
+    clientName: ${spring.application.name}
+    connectionMinimumIdleSize: 16
+    connectionPoolSize: 128
+    idleConnectionTimeout: 1000
+    timeout: 3000
+    subscriptionConnectionPoolSize: 320
+
+# MQTT配置
+mqtt:
+  host: ${MQTT_HOST:tcp://zhurong-ems-emqx:1883}
+  username: ${MQTT_USERNAME:admin}
+  password: ${MQTT_PASSWORD:public}
+  clientId: ${MQTT_CLIENT_ID:zhurong-ems-server-${HOSTNAME:-default}}
+  qos: 1
+  timeout: ${MQTT_TIMEOUT:120}
+  keepalive: ${MQTT_KEEPALIVE:360}
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.autoee: DEBUG
+    com.baomidou: WARN
+    org.springframework: WARN
+    org.hibernate: WARN
+
+# Actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
