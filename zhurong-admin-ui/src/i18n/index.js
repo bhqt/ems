@@ -6,22 +6,40 @@ import ElementLocale from 'element-ui/lib/locale'
 // 导入默认语言包（预加载）
 import elementZhCN from 'element-ui/lib/locale/lang/zh-CN'
 import zhCN from './lang/zh-CN'
+import elementEn from 'element-ui/lib/locale/lang/en'
+import en from './lang/en'
+import id from './lang/id'
+import ru from './lang/ru'
 
 Vue.use(VueI18n)
 
 // 语言包按需加载配置
 const loadedLanguages = []
 
-// 初始只包含默认语言
+// 初始包含中英文（预加载）
 const messages = {
   'zh-CN': {
     ...elementZhCN,
     ...zhCN
+  },
+  'en': {
+    ...elementEn,
+    ...en
+  },
+  // 印尼语和俄语只有应用语言包，没有 Element UI 语言包
+  'id': {
+    ...id
+  },
+  'ru': {
+    ...ru
   }
 }
 
-// 标记默认语言已加载
+// 标记所有语言已加载
 loadedLanguages.push('zh-CN')
+loadedLanguages.push('en')
+loadedLanguages.push('id')
+loadedLanguages.push('ru')
 
 // 支持的语言列表
 export const supportLanguages = [
@@ -62,7 +80,8 @@ export function getDefaultLang() {
     }
   }
 
-  return 'zh-CN'
+  // 默认返回英文
+  return 'en'
 }
 
 // 创建 i18n 实例

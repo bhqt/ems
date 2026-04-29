@@ -295,6 +295,193 @@ export default {
     dashboard: {
       title: 'Dashboard',
       dashboard: 'Dashboard'
+    },
+    visualization3D: {
+      title: '3D Visualization',
+      visualization3D: '3D Visualization'
+    },
+    business: {
+      title: 'Business Management',
+      business: 'Business Management'
+    },
+    item: {
+      title: 'Item Management',
+      item: 'Item Management'
+    },
+    operation: {
+      title: 'Operation Management',
+      operation: 'Operation Management'
+    },
+    alarmManage: {
+      title: 'Alarm Management',
+      realtime: 'Real-time Alarm',
+      history: 'History Alarm',
+      rule: 'Alarm Rules',
+      analysis: 'Alarm Analysis'
+    },
+    newEnergyManage: {
+      title: 'New Energy Management',
+      energyStorage: 'Energy Storage',
+      microGrid: 'Microgrid',
+      pvStation: 'PV Station',
+      storageBattery: 'Storage Battery'
+    },
+    managementSystem2: {
+      title: 'Management System',
+      prePlan: 'Pre-plan',
+      process: 'Process',
+      regulation: 'Regulation',
+      standard: 'Standard'
+    },
+    carbonAnalysis: {
+      title: 'Carbon Analysis',
+      analysis: 'Carbon Emission Analysis'
+    },
+    powerParam: {
+      title: 'Power Parameter Query',
+      query: 'Parameter Query'
+    },
+    videoConfig: {
+      title: 'Video Config',
+      config: 'Camera Config'
+    },
+    realTimeView: {
+      title: 'Real-time View',
+      view: 'Real-time Video'
+    },
+    orgManage: {
+      title: 'Organization Management',
+      dept: 'Department Management'
+    },
+    paramSet: {
+      title: 'Parameter Settings',
+      config: 'System Parameters'
+    },
+    fileManage: {
+      title: 'File Management',
+      files: 'File List'
+    },
+    billingType: {
+      title: 'Billing Type',
+      type: 'Billing Type'
+    },
+    adminMonitor: {
+      title: 'Admin Monitor',
+      monitor: 'System Monitor'
+    },
+    jobScheduler: {
+      title: 'Job Scheduler',
+      job: 'Scheduled Tasks'
+    },
+    cacheList: {
+      title: 'Cache List',
+      list: 'Cache Monitor'
+    },
+    usageDetect: {
+      title: 'Usage Detection',
+      detect: 'Usage Monitor'
+    },
+    energyConsumeTrend: {
+      title: 'Energy Trend',
+      trend: 'Energy Trend'
+    },
+    energyStatus: {
+      title: 'Energy Status',
+      status: 'Energy Status'
+    },
+    usageMonitor: {
+      title: 'Usage Monitor',
+      monitor: 'Usage Monitor'
+    },
+    energyOverview: {
+      title: 'Energy Overview',
+      overview: 'Energy Overview'
+    },
+    energyFlow: {
+      title: 'Energy Flow',
+      flow: 'Energy Flow'
+    },
+    itemOverview: {
+      title: 'Item Overview',
+      overview: 'Itemized Overview'
+    },
+    deviceInfo: {
+      title: 'Device Info',
+      info: 'Device List'
+    },
+    gateway: {
+      title: 'Gateway Management',
+      manage: 'Gateway List'
+    },
+    projectTopology: {
+      title: 'Project Topology',
+      topology: 'Topology Management'
+    },
+    chargingManage: {
+      title: 'Charging Management',
+      station: 'Charging Station',
+      pile: 'Charging Pile',
+      order: 'Charging Order',
+      price: 'Billing Strategy'
+    },
+    hazardous: {
+      title: 'Hazardous Materials',
+      goods: 'Hazardous Goods Info',
+      info: 'Hazardous Goods Info Management',
+      stockIn: 'Hazardous Goods Stock In Record',
+      stockOut: 'Hazardous Goods Stock Out Record',
+      inventory: 'Inventory Management',
+      warning: 'Inventory Warning'
+    },
+    patrol: {
+      title: 'Patrol Management',
+      point: 'Patrol Points',
+      route: 'Patrol Routes',
+      plan: 'Patrol Plans',
+      record: 'Patrol Records',
+      alarm: 'Patrol Alarms',
+      task: 'Patrol Tasks'
+    },
+    itemManage: {
+      title: 'Item Management',
+      info: 'Item Info',
+      inventory: 'Item Inventory',
+      stockIn: 'Item Stock In',
+      stockOut: 'Item Stock Out'
+    },
+    chargingOperation: {
+      title: 'Charging Operation',
+      home: 'Charging Home',
+      order: {
+        title: 'Order Management',
+        realtime: 'Real-time Orders',
+        history: 'History Orders',
+        abnormal: 'Abnormal Orders',
+        occupied: 'Occupied Orders'
+      },
+      merchant: {
+        title: 'Merchant Management',
+        platform: 'Platform Merchants',
+        interconnect: 'Interconnected Merchants'
+      },
+      station: {
+        title: 'Station Management',
+        direct: 'Direct Stations',
+        interconnect: 'Interconnected Stations'
+      },
+      pile: {
+        title: 'Pile Management',
+        direct: 'Direct Piles',
+        interconnect: 'Interconnected Piles'
+      },
+      brand: 'Brand & Model',
+      price: 'Price & Fees',
+      strategy: 'Charging Price Strategy'
+    },
+    pvManage: {
+      title: 'PV Management',
+      standard: 'Operation Standards',
+      billing: 'Billing Scheme'
     }
   },
 

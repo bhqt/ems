@@ -340,6 +340,227 @@ export default {
     dashboard: {
       title: '首页',
       dashboard: '首页'
+    },
+    // 3D 可视化
+    visualization3D: {
+      title: '3D 可视化',
+      visualization3D: '3D 可视化'
+    },
+    // 业务管理
+    business: {
+      title: '业务管理',
+      business: '业务管理'
+    },
+    // 物品管理
+    item: {
+      title: '物品管理',
+      item: '物品管理'
+    },
+    // 运维管理
+    operation: {
+      title: '运维管理',
+      operation: '运维管理'
+    },
+    // 报警管理
+    alarmManage: {
+      title: '报警管理',
+      realtime: '实时报警',
+      history: '历史报警',
+      rule: '报警规则',
+      analysis: '报警分析'
+    },
+    // 新能源管理
+    newEnergyManage: {
+      title: '新能源管理',
+      energyStorage: '储能管理',
+      microGrid: '微电网管理',
+      pvStation: '光伏电站管理',
+      storageBattery: '储能电池管理'
+    },
+    // 管理体系
+    managementSystem2: {
+      title: '管理体系',
+      prePlan: '预案管理',
+      process: '流程管理',
+      regulation: '制度管理',
+      standard: '标准管理'
+    },
+    // 碳排分析
+    carbonAnalysis: {
+      title: '碳排分析',
+      analysis: '碳排放分析'
+    },
+    // 电力参数查询
+    powerParam: {
+      title: '电力参数查询',
+      query: '参数查询'
+    },
+    // 视频配置
+    videoConfig: {
+      title: '视频配置',
+      config: '摄像头配置'
+    },
+    // 实时画面
+    realTimeView: {
+      title: '实时画面',
+      view: '实时视频'
+    },
+    // 机构管理
+    orgManage: {
+      title: '机构管理',
+      dept: '部门管理'
+    },
+    // 参数设置
+    paramSet: {
+      title: '参数设置',
+      config: '系统参数'
+    },
+    // 文件管理
+    fileManage: {
+      title: '文件管理',
+      files: '文件列表'
+    },
+    // 计费方式
+    billingType: {
+      title: '计费方式',
+      type: '计费类型'
+    },
+    // Admin 监控
+    adminMonitor: {
+      title: 'Admin 监控',
+      monitor: '系统监控'
+    },
+    // 任务调度中心
+    jobScheduler: {
+      title: '任务调度中心',
+      job: '定时任务'
+    },
+    // 缓存列表
+    cacheList: {
+      title: '缓存列表',
+      list: '缓存监控'
+    },
+    // 用量检测
+    usageDetect: {
+      title: '用量检测',
+      detect: '用量监控'
+    },
+    // 能耗趋势
+    energyConsumeTrend: {
+      title: '能耗趋势',
+      trend: '用能趋势'
+    },
+    // 能源管理 - 用能状况
+    energyStatus: {
+      title: '用能状况',
+      status: '用能状况'
+    },
+    // 用量监测
+    usageMonitor: {
+      title: '用量监测',
+      monitor: '用量监测'
+    },
+    // 用能概况
+    energyOverview: {
+      title: '用能概况',
+      overview: '用能概况'
+    },
+    // 能源流向
+    energyFlow: {
+      title: '能源流向',
+      flow: '能流图'
+    },
+    // 分项概览
+    itemOverview: {
+      title: '分项概览',
+      overview: '分项计量'
+    },
+    // 设备信息
+    deviceInfo: {
+      title: '设备信息',
+      info: '设备列表'
+    },
+    // 网关管理
+    gateway: {
+      title: '网关管理',
+      manage: '网关列表'
+    },
+    // 项目拓扑
+    projectTopology: {
+      title: '项目拓扑',
+      topology: '拓扑管理'
+    },
+    // 充电桩管理
+    chargingManage: {
+      title: '充电桩管理',
+      station: '充电站管理',
+      pile: '充电桩管理',
+      order: '充电订单管理',
+      price: '计费策略管理'
+    },
+    // 危化品管理
+    hazardous: {
+      title: '危化品管理',
+      goods: '危化品信息',
+      info: '危化品信息管理',
+      stockIn: '危化品入库记录',
+      stockOut: '危化品出库记录',
+      inventory: '危化品库存',
+      warning: '库存预警'
+    },
+    // 巡更管理
+    patrol: {
+      title: '巡更管理',
+      point: '巡更点位',
+      route: '巡更路线',
+      plan: '巡更计划',
+      record: '巡更记录',
+      alarm: '巡更报警',
+      task: '巡更任务'
+    },
+    // 物品管理
+    itemManage: {
+      title: '物品管理',
+      info: '物品信息管理',
+      inventory: '物品库存',
+      stockIn: '物品入库记录',
+      stockOut: '物品出库记录'
+    },
+    // 充电桩运营
+    chargingOperation: {
+      title: '充电桩运营',
+      home: '充电桩首页',
+      order: {
+        title: '订单管理',
+        realtime: '实时订单',
+        history: '历史订单',
+        abnormal: '异常订单',
+        occupied: '占位订单'
+      },
+      merchant: {
+        title: '商户管理',
+        platform: '平台商户',
+        interconnect: '互联商户'
+      },
+      station: {
+        title: '电站管理',
+        direct: '直连电站',
+        interconnect: '互联电站'
+      },
+      pile: {
+        title: '电桩管理',
+        direct: '直连电桩',
+        interconnect: '互联电桩'
+      },
+      brand: '品牌型号管理',
+      price: '价格费用管理',
+      strategy: '充电价格策略'
+    },
+    // 光伏管理
+    pvManage: {
+      title: '光伏管理',
+      standard: '作业规范',
+      billing: '计费方案'
     }
   },
 

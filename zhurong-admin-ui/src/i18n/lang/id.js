@@ -295,6 +295,193 @@ export default {
     dashboard: {
       title: 'Dasbor',
       dashboard: 'Dasbor'
+    },
+    visualization3D: {
+      title: 'Visualisasi 3D',
+      visualization3D: 'Visualisasi 3D'
+    },
+    business: {
+      title: 'Manajemen Bisnis',
+      business: 'Manajemen Bisnis'
+    },
+    item: {
+      title: 'Manajemen Item',
+      item: 'Manajemen Item'
+    },
+    operation: {
+      title: 'Manajemen Operasi',
+      operation: 'Manajemen Operasi'
+    },
+    alarmManage: {
+      title: 'Manajemen Alarm',
+      realtime: 'Alarm Real-time',
+      history: 'Alarm Histori',
+      rule: 'Aturan Alarm',
+      analysis: 'Analisis Alarm'
+    },
+    newEnergyManage: {
+      title: 'Manajemen Energi Baru',
+      energyStorage: 'Penyimpanan Energi',
+      microGrid: 'Mikrogrid',
+      pvStation: 'Stasiun PV',
+      storageBattery: 'Baterai Penyimpanan'
+    },
+    managementSystem2: {
+      title: 'Sistem Manajemen',
+      prePlan: 'Rencana Pra',
+      process: 'Proses',
+      regulation: 'Peraturan',
+      standard: 'Standar'
+    },
+    carbonAnalysis: {
+      title: 'Analisis Karbon',
+      analysis: 'Analisis Emisi Karbon'
+    },
+    powerParam: {
+      title: 'Kueri Parameter Listrik',
+      query: 'Kueri Parameter'
+    },
+    videoConfig: {
+      title: 'Konfigurasi Video',
+      config: 'Konfigurasi Kamera'
+    },
+    realTimeView: {
+      title: 'Tampilan Real-time',
+      view: 'Video Real-time'
+    },
+    orgManage: {
+      title: 'Manajemen Organisasi',
+      dept: 'Manajemen Departemen'
+    },
+    paramSet: {
+      title: 'Pengaturan Parameter',
+      config: 'Parameter Sistem'
+    },
+    fileManage: {
+      title: 'Manajemen File',
+      files: 'Daftar File'
+    },
+    billingType: {
+      title: 'Tipe Penagihan',
+      type: 'Tipe Penagihan'
+    },
+    adminMonitor: {
+      title: 'Monitor Admin',
+      monitor: 'Monitor Sistem'
+    },
+    jobScheduler: {
+      title: 'Penjadwal Tugas',
+      job: 'Tugas Terjadwal'
+    },
+    cacheList: {
+      title: 'Daftar Cache',
+      list: 'Monitor Cache'
+    },
+    usageDetect: {
+      title: 'Deteksi Penggunaan',
+      detect: 'Monitor Penggunaan'
+    },
+    energyConsumeTrend: {
+      title: 'Tren Energi',
+      trend: 'Tren Energi'
+    },
+    energyStatus: {
+      title: 'Status Energi',
+      status: 'Status Energi'
+    },
+    usageMonitor: {
+      title: 'Monitor Penggunaan',
+      monitor: 'Monitor Penggunaan'
+    },
+    energyOverview: {
+      title: 'Ringkasan Energi',
+      overview: 'Ringkasan Energi'
+    },
+    energyFlow: {
+      title: 'Aliran Energi',
+      flow: 'Aliran Energi'
+    },
+    itemOverview: {
+      title: 'Ringkasan Item',
+      overview: 'Ringkasan Item'
+    },
+    deviceInfo: {
+      title: 'Info Perangkat',
+      info: 'Daftar Perangkat'
+    },
+    gateway: {
+      title: 'Manajemen Gateway',
+      manage: 'Daftar Gateway'
+    },
+    projectTopology: {
+      title: 'Topologi Proyek',
+      topology: 'Manajemen Topologi'
+    },
+    chargingManage: {
+      title: 'Manajemen Pengisian',
+      station: 'Stasiun Pengisian',
+      pile: 'Tiang Pengisian',
+      order: 'Pesanan Pengisian',
+      price: 'Strategi Penagihan'
+    },
+    hazardous: {
+      title: 'Bahan Berbahaya',
+      goods: 'Info Barang Berbahaya',
+      info: 'Manajemen Info Barang Berbahaya',
+      stockIn: 'Catatan Stok Masuk Barang Berbahaya',
+      stockOut: 'Catatan Stok Keluar Barang Berbahaya',
+      inventory: 'Manajemen Inventaris',
+      warning: 'Peringatan Inventaris'
+    },
+    patrol: {
+      title: 'Manajemen Patroli',
+      point: 'Titik Patroli',
+      route: 'Rute Patroli',
+      plan: 'Rencana Patroli',
+      record: 'Catatan Patroli',
+      alarm: 'Alarm Patroli',
+      task: 'Tugas Patroli'
+    },
+    itemManage: {
+      title: 'Manajemen Item',
+      info: 'Info Item',
+      inventory: 'Inventaris Item',
+      stockIn: 'Stok Item Masuk',
+      stockOut: 'Stok Item Keluar'
+    },
+    chargingOperation: {
+      title: 'Operasi Pengisian',
+      home: 'Beranda Pengisian',
+      order: {
+        title: 'Manajemen Pesanan',
+        realtime: 'Pesanan Real-time',
+        history: 'Pesanan Histori',
+        abnormal: 'Pesanan Abnormal',
+        occupied: 'Pesanan Terisi'
+      },
+      merchant: {
+        title: 'Manajemen Pedagang',
+        platform: 'Pedagang Platform',
+        interconnect: 'Pedagang Terhubung'
+      },
+      station: {
+        title: 'Manajemen Stasiun',
+        direct: 'Stasiun Langsung',
+        interconnect: 'Stasiun Terhubung'
+      },
+      pile: {
+        title: 'Manajemen Tiang',
+        direct: 'Tiang Langsung',
+        interconnect: 'Tiang Terhubung'
+      },
+      brand: 'Merek & Model',
+      price: 'Harga & Biaya',
+      strategy: 'Strategi Harga Pengisian'
+    },
+    pvManage: {
+      title: 'Manajemen PV',
+      standard: 'Standar Operasi',
+      billing: 'Skema Penagihan'
     }
   },
 
