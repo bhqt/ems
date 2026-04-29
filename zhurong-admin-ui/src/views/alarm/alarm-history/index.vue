@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-            <el-form-item label="参数名称" prop="paramName">
+            <el-form-item :label="$t('alarmModule.paramName')" prop="paramName">
                 <el-select v-model="queryParams.paramName" placeholder="请选择参数名称" clearable
                     @keyup.enter.native="handleQuery">
                     <el-option v-for="dict in dict.type.electric_type" :key="dict.value" :label="dict.label"
@@ -18,7 +18,7 @@
                 <el-input v-model="queryParams.alarmInfo" placeholder="请输入报警信息" clearable
                     @keyup.enter.native="handleQuery" />
             </el-form-item> -->
-            <el-form-item label="报警等级" prop="alarmLevel">
+            <el-form-item :label="$t('alarmModule.alarmLevel')" prop="alarmLevel">
                     <el-select v-model="queryParams.alarmLevel" placeholder="请选择报警等级">
                         <el-option
                         v-for="dict in dict.type.alarm_level"
@@ -28,7 +28,7 @@
                         </el-option>
                     </el-select>
             </el-form-item>
-            <el-form-item label="报警时间">
+            <el-form-item :label="$t('alarmModule.alarmTime')">
               <el-date-picker
                 v-model="dateRange"
                 style="width: 240px"
@@ -84,26 +84,26 @@
         <el-table v-loading="loading" :data="historyList" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="55" align="center" />
             <el-table-column type="index" width="55" align="center" />
-            <el-table-column label="参数名称" align="center" prop="paramName" width="100">
+            <el-table-column :label="$t('alarmModule.paramName')" align="center" prop="paramName" width="100">
                 <template slot-scope="scope">
                     <dict-tag :options="dict.type.electric_type" :value="scope.row.paramName" />
                 </template>
             </el-table-column>
-            <el-table-column label="报警时间" align="center" prop="alarmTime" width="180">
+            <el-table-column :label="$t('alarmModule.alarmTime')" align="center" prop="alarmTime" width="180">
                 <!-- <template slot-scope="scope">
                     <span>{{ parseTime(scope.row.alarmTime, '{y}-{m}-{d}') }}</span>
                 </template> -->
             </el-table-column>
-            <el-table-column label="报警信息" align="center" prop="alarmInfo" />
-            <el-table-column label="报警等级" align="center" prop="alarmLevel" >
+            <el-table-column :label="$t('alarmModule.alarmInfo')" align="center" prop="alarmInfo" />
+            <el-table-column :label="$t('alarmModule.alarmLevel')" align="center" prop="alarmLevel" >
                 <template slot-scope="scope">
                     <dict-tag :options="dict.type.alarm_level" :value="scope.row.alarmLevel"/>
                 </template>
             </el-table-column>
-            <el-table-column label="报警区域" align="center" prop="area" />
-            <el-table-column label="报警设备" align="center" prop="equipment" />
-            <el-table-column label="报警值" align="center" prop="alarmVal" />
-            <el-table-column label="结束时间" align="center" prop="endTime" width="180">
+            <el-table-column :label="$t('alarmModule.alarmArea')" align="center" prop="area" />
+            <el-table-column :label="$t('alarmModule.alarmEquipment')" align="center" prop="equipment" />
+            <el-table-column :label="$t('alarmModule.alarmVal')" align="center" prop="alarmVal" />
+            <el-table-column :label="$t('alarmModule.endTime')" align="center" prop="endTime" width="180">
                 <template slot-scope="scope">
                     <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
                 </template>

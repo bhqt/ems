@@ -210,6 +210,91 @@ export default {
       title: 'Профиль',
       info: 'Личная информация',
       password: 'Изменить пароль'
+    },
+    control: {
+      title: 'Централизованное управление',
+      control: 'Централизованное управление'
+    },
+    metering: {
+      title: 'Управление измерением',
+      metering: 'Управление измерением'
+    },
+    carbon: {
+      title: 'Управление углеродными активами',
+      analysis: 'Анализ углерода'
+    },
+    energyAnalysis: {
+      title: 'Анализ энергопотребления',
+      energyOverview: 'Обзор энергопотребления',
+      energyFlow: 'Энергетический поток',
+      energyTrend: 'Тренд энергопотребления',
+      yoyAnalysis: 'Анализ YoY',
+      monAnalysis: 'Анализ MoM',
+      lossAnalysis: 'Анализ потерь',
+      expenseBoard: 'Панель затрат',
+      expenseReport: 'Отчет затрат'
+    },
+    digitaltwin: {
+      title: 'Цифровой двойник',
+      digitaltwin: 'Цифровой двойник'
+    },
+    inventory: {
+      title: 'Управление инвентарем',
+      attachment: 'Управление вложениями',
+      purveyor: 'Управление поставщиками'
+    },
+    managementSystem: {
+      title: 'Система управления',
+      prePlan: 'Управление планами',
+      process: 'Управление процессами',
+      regulation: 'Управление правилами',
+      standard: 'Управление стандартами'
+    },
+    maintenance: {
+      title: 'Управление обслуживанием',
+      duty: 'Управление дежурством',
+      inspectionPlan: 'План инспекции',
+      inspectionRecord: 'Записи инспекции',
+      repairOrder: 'Заказ на ремонт',
+      schedule: 'Управление расписанием',
+      exampleReport: 'Пример отчета',
+      myInspection: 'Моя инспекция',
+      myRepairOrder: 'Мой заказ',
+      itemTopology: 'Топология оборудования'
+    },
+    quota: {
+      title: 'Управление квотами',
+      analysis: 'Анализ квот',
+      config: 'Конфигурация квот',
+      monitor: 'Мониторинг квот'
+    },
+    report: {
+      title: 'Управление отчетами',
+      generate: 'Генерация отчета',
+      template: 'Шаблон отчета'
+    },
+    newenergy: {
+      title: 'Новая энергия',
+      energyStorage: 'Хранилище энергии',
+      microGrid: 'Микросеть',
+      pvStation: 'ФЭС станция',
+      storageBattery: 'Аккумуляторная батарея'
+    },
+    analysisReport: {
+      title: 'Отчет об анализе',
+      analysisReport: 'Отчет об анализе'
+    },
+    dataQuery: {
+      title: 'Запрос данных',
+      electricParams: 'Электрические параметры'
+    },
+    dataBoard: {
+      title: 'Панель данных',
+      dataBoard: 'Панель данных'
+    },
+    dashboard: {
+      title: 'Панель',
+      dashboard: 'Панель'
     }
   },
 
@@ -226,6 +311,8 @@ export default {
     sizeSmall: 'Маленький',
     sizeMini: 'Мини',
     theme: 'Настройки темы',
+    themeLight: 'Светлая тема',
+    themeDark: 'Темная тема',
     language: 'Сменить язык',
     search: 'Поиск меню'
   },
@@ -486,6 +573,7 @@ export default {
     resetPwdSuccess: 'Пароль успешно сброшен, новый пароль: ',
     noData: 'Нет данных',
     loading: 'Загрузка...',
+    clearingCache: 'Очистка кеша настроек и обновление, подождите...',
     systemError: 'Системная ошибка',
     networkError: 'Ошибка сети',
     timeout: 'Время ожидания истекло',
@@ -762,6 +850,27 @@ export default {
         searchStandard: 'Введите название стандарта',
         selectType: 'Выберите тип энергии'
       }
+    },
+    // Energy Balance Management
+    balance: {
+      title: 'Управление энергетическим балансом',
+      balanceId: 'ID баланса',
+      totalSupply: 'Общее снабжение',
+      totalConsumption: 'Общее потребление',
+      balanceAmount: 'Количество баланса',
+      balanceRate: 'Коэффициент баланса',
+      balanceDate: 'Дата баланса',
+      calculate: 'Рассчитать энергетический баланс'
+    },
+    // Energy Quality Management
+    quality: {
+      title: 'Управление качеством энергии',
+      qualityId: 'ID записи',
+      qualityIndex: 'Показатель качества',
+      standardValue: 'Стандартное значение',
+      actualValue: 'Фактическое значение',
+      deviation: 'Отклонение',
+      detectionTime: 'Время обнаружения'
     },
     // Energy Analysis
     analysis: {
@@ -1411,5 +1520,412 @@ export default {
         selectStatus: 'Выберите статус'
       }
     }
+  },
+  // Модуль профиля
+  profileModule: {
+    title: 'Профиль',
+    personalInfo: 'Личная информация',
+    myOrder: 'Мои заказы',
+    myInspection: 'Мои проверки',
+    orderCountMonthly: 'Количество заказов (ежемесячно)',
+    inspectionCountMonthly: 'Количество проверок (ежемесячно)',
+    userName: 'Имя пользователя',
+    nickName: 'Псевдоним',
+    sex: 'Пол',
+    phone: 'Телефон',
+    email: 'Эл. почта',
+    dept: 'Отдел',
+    post: 'Должность',
+    role: 'Роль',
+    createTime: 'Время создания',
+    editInfo: 'Редактировать',
+    resetPwd: 'Сбросить пароль',
+    pending: 'В ожидании',
+    completed: 'Завершено',
+    male: 'Мужской',
+    female: 'Женский',
+    unknown: 'Неизвестно',
+    oldPassword: 'Старый пароль',
+    newPassword: 'Новый пароль',
+    confirmPassword: 'Подтвердите пароль',
+    enterOldPwd: 'Введите старый пароль',
+    enterNewPwd: 'Введите новый пароль',
+    confirmNewPwd: 'Подтвердите новый пароль',
+    pwdNotEmpty: 'Старый пароль не может быть пустым',
+    pwdLength: 'Длина от 6 до 20 символов',
+    confirmPwdNotEmpty: 'Подтверждение пароля не может быть пустым',
+    pwdMismatch: 'Пароли не совпадают',
+    modifySuccess: 'Успешно изменено',
+    chart: {
+      quantity: 'Количество',
+      month: 'Месяц',
+      finished: 'Завершено',
+      unfinished: 'Не завершено'
+    },
+    placeholder: {
+      inputOldPwd: 'Введите старый пароль',
+      inputNewPwd: 'Введите новый пароль',
+      confirmNewPwd: 'Подтвердите новый пароль'
+    }
+  },
+  // Модуль управления
+  controlModule: {
+    title: 'Централизованное управление',
+    deviceManagement: 'Управление устройствами',
+    areaControl: 'Управление зоной',
+    remoteOperation: 'Дистанционная операция',
+    controlLog: 'Журнал управления',
+    deviceControl: 'Управление устройством',
+    searchDevice: 'Поиск устройства',
+    deviceId: 'ID устройства',
+    deviceName: 'Название устройства',
+    deviceType: 'Тип устройства',
+    location: 'Местоположение',
+    status: 'Статус',
+    lastOnlineTime: 'Последний раз в сети',
+    action: 'Действие',
+    control: 'Управление',
+    online: 'В сети',
+    offline: 'Не в сети',
+    waterSourceArea: 'Район источника воды',
+    middleStationArea: 'Район средней станции',
+    highPoolArea: 'Район высокого бассейна',
+    wellArea: 'Район скважины',
+    open: 'Открыть',
+    close: 'Закрыть',
+    areaControlSuffix: 'Управление зоной',
+    operationType: 'Тип операции',
+    targetDevice: 'Целевое устройство',
+    operationParams: 'Параметры операции',
+    securityVerify: 'Проверка безопасности',
+    inputSecurityCode: 'Введите код безопасности',
+    execute: 'Выполнить',
+    reset: 'Сброс',
+    logId: 'ID журнала',
+    operationTypeCol: 'Тип операции',
+    target: 'Цель',
+    operator: 'Оператор',
+    operationTime: 'Время операции',
+    result: 'Результат',
+    remark: 'Примечание',
+    success: 'Успешно',
+    fail: 'Неудачно',
+    start: 'Старт',
+    stop: 'Стоп',
+    restart: 'Перезапуск',
+    adjust: 'Настроить',
+    selectOperationType: 'Выберите тип операции',
+    selectDevice: 'Выберите устройство',
+    inputParams: 'Введите параметры',
+    inputSecurityPwd: 'Введите пароль безопасности',
+    deviceNameLabel: 'Название устройства',
+    controlCommand: 'Команда управления',
+    selectCommand: 'Выберите команду',
+    params: 'Параметры',
+    inputParamsLabel: 'Введите параметры',
+    securityPwd: 'Пароль безопасности',
+    cancel: 'Отмена',
+    confirm: 'Подтвердить',
+    placeholder: {
+      searchDevice: 'Поиск устройства',
+      selectOperationType: 'Выберите тип операции',
+      selectDevice: 'Выберите устройство',
+      inputParams: 'Введите параметры операции',
+      inputSecurityCode: 'Введите код безопасности',
+      selectCommand: 'Выберите команду',
+      inputParams: 'Введите параметры',
+      inputSecurityPwd: 'Введите пароль безопасности'
+    }
+  },
+  // Модуль измерений
+  meteringModule: {
+    title: 'Управление измерениями',
+    meterManagement: 'Управление счетчиками',
+    calibrationPlan: 'План калибровки',
+    searchMeter: 'Поиск счетчика',
+    meterId: 'ID счетчика',
+    meterName: 'Название счетчика',
+    type: 'Тип',
+    specification: 'Спецификация',
+    installationLocation: 'Место установки',
+    status: 'Статус',
+    lastCalibrationDate: 'Дата последней калибровки',
+    nextCalibrationDate: 'Дата следующей калибровки',
+    action: 'Действие',
+    detail: 'Детали',
+    calibrate: 'Калибровать',
+    planId: 'ID плана',
+    meter: 'Счетчик',
+    planCalibrationDate: 'Плановая дата калибровки',
+    executor: 'Исполнитель',
+    addPlan: 'Добавить план',
+    calibrationRecord: 'Запись калибровки',
+    startDate: 'Дата начала',
+    endDate: 'Дата окончания',
+    selectStatus: 'Выберите статус',
+    all: 'Все',
+    pending: 'В ожидании',
+    executing: 'Выполняется',
+    completed: 'Завершено',
+    cancelled: 'Отменено',
+    pass: 'Пройдено',
+    fail: 'Не пройдено',
+    analysis: 'Анализ данных калибровки',
+    qualificationTrend: 'Тренд квалификации',
+    deviationDistribution: 'Распределение отклонений',
+    meterStatusStatistics: 'Статистика статуса счетчиков',
+    export: 'Экспорт записей',
+    execute: 'Выполнить',
+    viewMeterDetail: 'Просмотр деталей счетчика',
+    viewPlanDetail: 'Просмотр плана калибровки',
+    viewRecordDetail: 'Просмотр записи калибровки',
+    fillCompleteInfo: 'Пожалуйста, заполните полную информацию о плане',
+    meterNotExist: 'Выбранный счетчик не существует',
+    planAdded: 'План калибровки добавлен',
+    startExecute: 'Начать выполнение плана калибровки',
+    planCompleted: 'План калибровки завершен',
+    exportSuccess: 'Записи калибровки успешно экспортированы',
+    placeholder: {
+      searchMeter: 'Поиск счетчика',
+      selectStatus: 'Выберите статус',
+      startDate: 'Дата начала',
+      endDate: 'Дата окончания',
+      selectMeter: 'Выберите счетчик',
+      selectDate: 'Выберите дату',
+      inputExecutor: 'Введите исполнителя',
+      inputRemark: 'Введите примечание'
+    }
+  },
+  dataBoardModule: {
+    title: 'Дашборд данных',
+    totalEnergy: 'Общий энергопотребление',
+    electricity: 'Электричество',
+    water: 'Вода',
+    projectOverview: 'Обзор проекта',
+    projectTotal: 'Всего проектов',
+    meterTotal: 'Всего счетчиков',
+    alarmRecord: 'Записи тревог',
+    equipmentStatus: 'Статус оборудования',
+    alarmInfo: 'Информация о тревоге',
+    todayEnergyTrend: 'Тренд энергии сегодня',
+    todayEnergyStatistics: 'Статистика энергии сегодня',
+    electricityKwh: 'Электричество(кВт·ч)',
+    comprehensiveEnergy: 'Комплексная энергия(кгсе)',
+    todayWaterUsage: 'Использование воды сегодня(т)',
+    dailyPowerCurve: 'Суточная кривая мощности',
+    todayWaterInfo: 'Информация о воде сегодня',
+    normal: 'Нормальный',
+    alarm: 'Тревога',
+    offline: 'Офлайн',
+    energyPlatform: 'Энергетическая платформа',
+    carbonDataVisualizationPlatform: 'Платформа визуализации данных углерода'
+  },
+  dispatchModule: {
+    title: 'Управление диспетчером',
+    loadForecast: 'Прогноз нагрузки',
+    priceForecast: 'Прогноз цены',
+    weatherForecast: 'Прогноз погоды',
+    modelManagement: 'Управление моделями',
+    costSaving: 'Экономия затрат',
+    efficiencyImprovement: 'Повышение эффективности',
+    emissionReduction: 'Снижение выбросов углерода',
+    trendAnalysis: 'Анализ трендов'
+  },
+  toolModule: {
+    title: 'Системные инструменты',
+    basicInfo: 'Основная информация',
+    columnInfo: 'Информация о столбце',
+    genInfo: 'Информация о генерации',
+    fieldProperties: 'Свойства поля',
+    formProperties: 'Свойства формы'
+  },
+  equipmentModule: {
+    title: 'Управление оборудованием',
+    equipmentInfo: 'Информация об оборудовании',
+    equipmentAlarm: 'Тревога оборудования',
+    equipmentData: 'Данные оборудования',
+    equipmentDocuments: 'Документы оборудования'
+  },
+  dataQueryModule: {
+    title: 'Запрос данных',
+    dailyRawData: 'Ежедневные сырые данные',
+    dailyPeakData: 'Ежедневные пиковые данные'
+  },
+  componentsModule: {
+    title: 'Компоненты',
+    icons: 'Иконки',
+    elementIcons: 'Иконки Element-UI'
+  },
+  autoeeModule: {
+    title: 'Автоматизация',
+    stockInRecord: 'Запись прихода',
+    stockOutRecord: 'Запись расхода'
+  },
+  alarmModule: {
+    title: 'Управление тревогами',
+    alarmAnalysis: 'Анализ тревог',
+    alarmHistory: 'История тревог',
+    alarmRule: 'Правило тревоги',
+    realtimeAlarm: 'Тревога в реальном времени',
+    paramName: 'Имя параметра',
+    alarmTime: 'Время тревоги',
+    alarmInfo: 'Информация о тревоге',
+    alarmLevel: 'Уровень тревоги',
+    alarmArea: 'Область тревоги',
+    alarmEquipment: 'Оборудование тревоги',
+    alarmVal: 'Значение тревоги',
+    endTime: 'Время окончания',
+    alarmParam: 'Параметр тревоги',
+    alarmCount: 'Количество тревог',
+    alarmType: 'Тип тревоги',
+    eventType: 'Тип события',
+    condition1: 'Условие 1',
+    thresholdValue1: 'Порог 1',
+    condition2: 'Условие 2',
+    thresholdValue2: 'Порог 2',
+    userId: 'Напоминание',
+    createOrderSwitch: 'Автоматическое создание заказа',
+    alarmSwitch: 'Переключатель тревоги',
+    alarmDesc: 'Описание тревоги',
+    addAlarm: 'Добавить тревогу в реальном времени',
+    editAlarm: 'Редактировать тревогу в реальном времени',
+    addAlarmRule: 'Добавить правило тревоги',
+    editAlarmRule: 'Редактировать правило тревоги'
+  },
+  analysisReportModule: {
+    title: 'Аналитический отчет',
+    generateReport: 'Сгенерировать аналитический отчет',
+    print: 'Печать',
+    reportName: 'Аналитический отчет',
+    energyStatistics: '1. Статистика энергопотребления',
+    electricityUsage: '2. Потребление электроэнергии',
+    electricityFee: '3. Электросчет',
+    waterUsage: '4. Потребление воды',
+    waterFee: '5. Водный счет',
+    recurringRate: '6. Повторяющаяся ставка',
+    electricityTotal: 'За этот период общее потребление электроэнергии составило {value}кВт·ч, максимальное потребление электроэнергии {max}кВт·ч, максимальная нагрузка произошла в {date}.',
+    electricityFeeTotal: 'За этот период общий электросчет составляет ￥{value}',
+    waterTotal: 'За этот период общее потребление воды составило {value}т, максимальное потребление воды {max}т, максимальный расход произошел в {date}.',
+    waterFeeTotal: 'За этот период общий водный счет составляет ￥{value}',
+    suggestion: 'Предложение: Увеличить количество контрольных цепей в нижней части трансформатора для сбора конечных данных, определить энергопотребление каждого контрольного пункта и проверить наличие потерь электроэнергии. Или заменить освещение и другое оборудование в здании энергосберегающими продуктами для снижения энергопотребления и достижения энергосбережения и снижения выбросов.'
+  },
+  cameraModule: {
+    title: 'Управление камерами',
+    realtimeVideo: 'Видео в реальном времени',
+    cameraConfig: 'Конфигурация камеры',
+    cameraName: 'Имя камеры',
+    cameraBrand: 'Бренд',
+    cameraSn: 'Серийный номер',
+    cameraIp: 'IP камеры',
+    cameraPort: 'Порт',
+    cameraUser: 'Имя пользователя',
+    cameraPassword: 'Пароль',
+    cameraType: 'Тип камеры',
+    cameraStatus: 'Статус',
+    cameraLocation: 'Место установки',
+    addCamera: 'Добавить камеру',
+    editCamera: 'Редактировать камеру'
+  },
+  carbonAssetsModule: {
+    title: 'Управление углеродными активами',
+    carbonAnalysis: 'Анализ выбросов углерода',
+    monthlyCarbon: 'Ежемесячные выбросы углерода',
+    yearlyCarbon: 'Годовые выбросы углерода',
+    currentMonth: 'Текущий месяц',
+    lastMonth: 'Прошлый месяц',
+    currentYear: 'Текущий год',
+    lastYear: 'Прошлый год',
+    trend: 'Тенденция',
+    energyType: 'Тип энергии',
+    year: 'Год'
+  },
+  energyAnalysisModule: {
+    title: 'Анализ энергопотребления',
+    energyOverview: 'Обзор энергопотребления',
+    energyFlow: 'Энергетический поток',
+    energyTrend: 'Тенденция потребления',
+    yoyAnalysis: 'Анализ YoY',
+    monAnalysis: 'Анализ MoM',
+    lossAnalysis: 'Анализ потерь',
+    expenseBoard: 'Панель затрат',
+    expenseReport: 'Отчет затрат',
+    monthOnMonth: 'MoM',
+    todayEnergy: 'Сегодня',
+    yesterdayEnergy: 'Вчера',
+    currentMonthEnergy: 'Текущий месяц',
+    lastMonthEnergy: 'Прошлый месяц',
+    currentYearEnergy: 'Текущий год',
+    lastYearEnergy: 'Прошлый год',
+    trend: 'Тенденция',
+    area: 'Область',
+    energyType: 'Тип энергии'
+  },
+  itemizedAnalysisModule: {
+    title: 'Позиционный анализ',
+    itemizedOverview: 'Позиционный обзор',
+    energyType: 'Тип энергии',
+    date: 'Дата',
+    search: 'Поиск'
+  },
+  maintenanceModule: {
+    title: 'Управление обслуживанием',
+    duty: 'Управление дежурством',
+    inspectionPlan: 'План инспекции',
+    inspectionRecord: 'Записи инспекции',
+    repairOrder: 'Заказ на ремонт',
+    schedule: 'Управление расписанием'
+  },
+  quotaModule: {
+    title: 'Управление квотами',
+    analysis: 'Анализ квот',
+    config: 'Конфигурация квот',
+    monitor: 'Мониторинг квот'
+  },
+  systemModule: {
+    title: 'Управление системой',
+    config: 'Конфигурация параметров',
+    dept: 'Управление отделами',
+    dict: 'Управление словарями',
+    menu: 'Управление меню',
+    notice: 'Управление уведомлениями',
+    post: 'Управление должностями',
+    role: 'Управление ролями',
+    user: 'Управление пользователями'
+  },
+  digitaltwinModule: {
+    title: 'Цифровой двойник'
+  },
+  inventoryModule: {
+    title: 'Управление инвентарем',
+    attachment: 'Управление вложениями',
+    purveyor: 'Управление поставщиками'
+  },
+  managementSystemModule: {
+    title: 'Система управления',
+    prePlan: 'Управление планами',
+    process: 'Управление процессами',
+    regulation: 'Управление правилами',
+    standard: 'Управление стандартами'
+  },
+  monitorModule: {
+    title: 'Мониторинг системы',
+    admin: 'Системный администратор',
+    cache: 'Мониторинг кэша',
+    logininfor: 'Журнал входа',
+    online: 'Онлайн пользователи',
+    operlog: 'Журнал операций',
+    xxljob: 'Планируемые задачи'
+  },
+  newenergyModule: {
+    title: 'Новая энергия',
+    energyStorage: 'Хранилище энергии',
+    microGrid: 'Микросеть',
+    pvStation: 'ФЭС станция',
+    storageBattery: 'Аккумуляторная батарея'
+  },
+  reportModule: {
+    title: 'Управление отчетами',
+    generate: 'Генерация отчета',
+    template: 'Шаблон отчета'
   }
 }

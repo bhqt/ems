@@ -24,10 +24,10 @@
       </div>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="theme-light">
-          <span>浅色主题</span>
+          <span>{{ $t('navbar.themeLight') }}</span>
         </el-dropdown-item>
         <el-dropdown-item command="theme-dark">
-          <span>深色主题</span>
+          <span>{{ $t('navbar.themeDark') }}</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>

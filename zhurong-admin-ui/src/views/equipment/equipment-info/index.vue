@@ -239,14 +239,14 @@
     <el-drawer :visible.sync="drawer" :with-header="false" destroy-on-close size="700px">
       <div style="width:100%;height:100%;padding:16px;">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="设备信息" name="first">
+        <el-tab-pane :label="$t('equipmentModule.equipmentInfo')" name="first">
           <EquipmentInfoVue :equipmentInfo="form"/>
         </el-tab-pane>
-        <el-tab-pane label="设备报警" name="second">
+        <el-tab-pane :label="$t('equipmentModule.equipmentAlarm')" name="second">
           <EquipmentAlarmVue :equipmentInfo="form"/>
         </el-tab-pane>
-        <!-- <el-tab-pane label="设备数据" name="third">设备数据</el-tab-pane>
-        <el-tab-pane label="设备资料" name="fourth">设备资料</el-tab-pane> -->
+        <!-- <el-tab-pane :label="$t('equipmentModule.equipmentData')" name="third">{{ $t('equipmentModule.equipmentData') }}</el-tab-pane>
+        <el-tab-pane :label="$t('equipmentModule.equipmentDocuments')" name="fourth">{{ $t('equipmentModule.equipmentDocuments') }}</el-tab-pane> -->
       </el-tabs>
       </div>
     </el-drawer>

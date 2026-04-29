@@ -5,6 +5,9 @@
       <h2 style="font-weight: 700;">{{ sysTitle }}</h2>
       <!-- <img src="../assets/logo/logo-heng.png" style="height: 50px;"> -->
     </div>
+    <div class="lang-select-mobile">
+      <lang-select />
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
       <h3 class="title">
         <!-- <img src="../assets/logo/logo-横.png" style="height: 30px;" v-if="logoShow"> -->
@@ -56,6 +59,9 @@
     <div class="top-logo">
       <h2 style="font-weight: 700;">{{ sysTitle }}</h2>
       <!-- <img src="../assets/logo/logo-heng.png" style="height: 50px;"> -->
+    </div>
+    <div class="lang-select-desktop">
+      <lang-select />
     </div>
     <div class="left-pic">
       <img src="../assets/images/hero-img.gif" style="height: 450px;">
@@ -113,9 +119,13 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from '@/utils/jsencrypt'
+import LangSelect from '@/components/LangSelect'
 
 export default {
   name: "Login",
+  components: {
+    LangSelect
+  },
   data() {
     return {
       isMobile: false, // 默认为Web端
@@ -128,15 +138,6 @@ export default {
         rememberMe: false,
         code: "",
         uuid: ""
-      },
-      loginRules: {
-        username: [
-          { required: true, trigger: "blur", message: this.$t('login.usernameRequired') }
-        ],
-        password: [
-          { required: true, trigger: "blur", message: this.$t('login.passwordRequired') }
-        ],
-        code: [{ required: true, trigger: "blur", message: this.$t('login.captchaRequired') }]
       },
       loading: false,
       // 验证码开关
@@ -163,6 +164,20 @@ export default {
     },
     experienceShow() {
       return this.$store.getters.logoInfo.experienceShow
+    },
+    loginRules() {
+      // 通过访问 language 建立响应式依赖
+      const _ = this.$store.getters.language;
+      
+      return {
+        username: [
+          { required: true, trigger: "blur", message: this.$t('login.usernameRequired') }
+        ],
+        password: [
+          { required: true, trigger: "blur", message: this.$t('login.passwordRequired') }
+        ],
+        code: [{ required: true, trigger: "blur", message: this.$t('login.captchaRequired') }]
+      }
     }
   },
   watch: {
@@ -376,4 +391,29 @@ export default {
 
 .left-pic {
   padding-top: 40px;
+}
+
+.lang-select-desktop {
+  position: fixed;
+  right: 30px;
+  top: 20px;
+  z-index: 1000;
+}
+
+.lang-select-mobile {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 1000;
+}
+
+.lang-select-desktop,
+.lang-select-mobile {
+  ::v-deep .international .lang-text {
+    color: #ffffff;
+  }
+  
+  ::v-deep .international:hover .lang-text {
+    color: #409EFF;
+  }
 }</style>

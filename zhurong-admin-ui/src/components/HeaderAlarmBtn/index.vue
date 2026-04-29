@@ -1,15 +1,15 @@
 <template>
   <div class="btn-container flex-between">
     <div class="alarm-item mr20">
-      <el-button type="success" size="mini" @click="toAlarmDetail(0)">{{ $t('alarm.level.general') }}</el-button>
+      <el-button type="success" size="mini" @click="toAlarmDetail(0)">{{ translatedGeneral }}</el-button>
       <sup class="alarm-num-success">{{ general > 99 ? '99+' : general }}</sup>
     </div>
     <div class="alarm-item mr20">
-      <el-button type="warning" size="mini" @click="toAlarmDetail(1)">{{ $t('alarm.level.urgent') }}</el-button>
+      <el-button type="warning" size="mini" @click="toAlarmDetail(1)">{{ translatedUrgent }}</el-button>
       <sup class="alarm-num-warning">{{ emergent > 99 ? '99+' : emergent }}</sup>
     </div>
     <div class="alarm-item">
-      <el-button type="danger" size="mini" @click="toAlarmDetail(2)">{{ $t('alarm.level.serious') }}</el-button>
+      <el-button type="danger" size="mini" @click="toAlarmDetail(2)">{{ translatedSerious }}</el-button>
       <sup class="alarm-num-danger">{{ serious > 99 ? '99+' : serious }}</sup>
     </div>
   </div>
@@ -17,6 +17,7 @@
 
 <script>
 import { getCountOfAllStatus } from '@/api/system/alarm'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -25,6 +26,21 @@ export default {
       emergent:0,
       serious:0,
 
+    }
+  },
+  computed: {
+    ...mapGetters(['language']),
+    translatedGeneral() {
+      const _ = this.language // 通过访问language建立响应式依赖
+      return this.$t('menu.alarm.level.general')
+    },
+    translatedUrgent() {
+      const _ = this.language // 通过访问language建立响应式依赖
+      return this.$t('menu.alarm.level.urgent')
+    },
+    translatedSerious() {
+      const _ = this.language // 通过访问language建立响应式依赖
+      return this.$t('menu.alarm.level.serious')
     }
   },
   methods: {

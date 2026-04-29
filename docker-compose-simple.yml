@@ -129,7 +129,8 @@ services:
     ports:
       - "3080:80"
     environment:
-      VUE_APP_API_BASE_URL: http://localhost:1088/autoee-iot-ems
+      # 使用Docker内部网络通过服务名访问后端
+      VUE_APP_API_BASE_URL: http://zhurong-ems-backend:8088/autoee-iot-ems
       TZ: Asia/Shanghai
     volumes:
       - zhurong-ems-frontend-logs:/var/log/nginx

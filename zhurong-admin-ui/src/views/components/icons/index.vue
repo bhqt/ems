@@ -5,7 +5,7 @@
       </a>
     </aside>
     <el-tabs type="border-card">
-      <el-tab-pane label="Icons">
+      <el-tab-pane :label="$t('componentsModule.icons')">
         <div v-for="item of svgIcons" :key="item">
           <el-tooltip placement="top">
             <div slot="content">
@@ -18,7 +18,7 @@
           </el-tooltip>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="Element-UI Icons">
+      <el-tab-pane :label="$t('componentsModule.elementIcons')">
         <div v-for="item of elementIcons" :key="item">
           <el-tooltip placement="top">
             <div slot="content">

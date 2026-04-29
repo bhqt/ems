@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item label="摄像头名称" prop="cameraName">
+      <el-form-item :label="$t('cameraModule.cameraName')" prop="cameraName">
         <el-input
           v-model="queryParams.cameraName"
           placeholder="请输入摄像头名称"
@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="品牌" prop="cameraBrand">
+      <el-form-item :label="$t('cameraModule.cameraBrand')" prop="cameraBrand">
         <el-input
           v-model="queryParams.cameraBrand"
           placeholder="请输入品牌"
@@ -17,7 +17,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="序列号" prop="cameraSn">
+      <el-form-item :label="$t('cameraModule.cameraSn')" prop="cameraSn">
         <el-input
           v-model="queryParams.cameraSn"
           placeholder="请输入序列号"
@@ -100,13 +100,13 @@
     <el-table v-loading="loading" :data="cameraConfigList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="index" width="55" align="center"/>
-      <el-table-column label="摄像头名称" align="center" prop="cameraName" />
-      <el-table-column label="品牌" align="center" prop="cameraBrand" />
-      <el-table-column label="序列号" align="center" prop="cameraSn" />
+      <el-table-column :label="$t('cameraModule.cameraName')" align="center" prop="cameraName" />
+      <el-table-column :label="$t('cameraModule.cameraBrand')" align="center" prop="cameraBrand" />
+      <el-table-column :label="$t('cameraModule.cameraSn')" align="center" prop="cameraSn" />
       <el-table-column label="视频token" align="center" prop="cameraToken" width="180" show-overflow-tooltip/>
       <el-table-column label="视频key" align="center" prop="cameraKey" width="180" show-overflow-tooltip/>
       <el-table-column label="视频secret" align="center" prop="cameraSecret" width="180" show-overflow-tooltip/>
-      <el-table-column label="所在区域" align="center" >
+      <el-table-column :label="$t('cameraModule.cameraLocation')" align="center" >
         <template slot-scope="scope">{{scope.row.area.itemName}}</template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -140,13 +140,13 @@
     <!-- 添加或修改视频配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="摄像头名称" prop="cameraName">
+        <el-form-item :label="$t('cameraModule.cameraName')" prop="cameraName">
           <el-input v-model="form.cameraName" placeholder="请输入摄像头名称" />
         </el-form-item>
-        <el-form-item label="品牌" prop="cameraBrand">
+        <el-form-item :label="$t('cameraModule.cameraBrand')" prop="cameraBrand">
           <el-input v-model="form.cameraBrand" placeholder="请输入品牌" />
         </el-form-item>
-        <el-form-item label="序列号" prop="cameraSn">
+        <el-form-item :label="$t('cameraModule.cameraSn')" prop="cameraSn">
           <el-input v-model="form.cameraSn" placeholder="请输入序列号" />
         </el-form-item>
         <el-form-item label="视频token" prop="cameraToken">
@@ -158,7 +158,7 @@
         <el-form-item label="视频secret" prop="cameraSecret">
           <el-input v-model="form.cameraSecret" placeholder="请输入视频secret" />
         </el-form-item>
-        <el-form-item label="区域" prop="areaId">
+        <el-form-item :label="$t('cameraModule.cameraLocation')" prop="areaId">
           <treeselect v-model="form.areaId" :options="areaList" :show-count="true" placeholder="请选择区域"/>
         </el-form-item>
       </el-form>

@@ -34,7 +34,10 @@ export const supportLanguages = [
 // 获取默认语言
 export function getDefaultLang() {
   const cookieLang = Cookies.get('language')
-  if (cookieLang && messages[cookieLang]) {
+  // 支持的语言代码列表
+  const supportedLangCodes = supportLanguages.map(lang => lang.code)
+  
+  if (cookieLang && supportedLangCodes.includes(cookieLang)) {
     return cookieLang
   }
 
@@ -74,16 +77,26 @@ const i18n = new VueI18n({
 // 设置 Element UI 的国际化
 ElementLocale.i18n((key, value) => i18n.t(key, value))
 
+// 初始化时加载默认语言（如果不是 zh-CN）
+const initialLang = getDefaultLang()
+if (initialLang !== 'zh-CN') {
+  loadLanguageAsync(initialLang).catch(error => {
+    console.warn('[i18n] 初始语言加载失败，使用默认语言:', error)
+  })
+}
+
 // 按需加载语言包
 export function loadLanguageAsync(lang) {
   // 如果语言已加载，直接切换
   if (i18n.locale === lang) {
+    Cookies.set('language', lang, { expires: 365 })
     return Promise.resolve()
   }
 
   // 如果语言包已加载，直接切换
   if (loadedLanguages.includes(lang)) {
     i18n.locale = lang
+    Cookies.set('language', lang, { expires: 365 })
     return Promise.resolve()
   }
 

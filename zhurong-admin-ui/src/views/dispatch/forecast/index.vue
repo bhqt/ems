@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-tabs v-model="activeTab" type="border-card">
-      <el-tab-pane label="负荷预测" name="load">
+      <el-tab-pane :label="$t('dispatchModule.loadForecast')" name="load">
         <el-form :inline="true" class="query-form">
           <el-form-item label="预测类型">
             <el-select v-model="loadQuery.forecastType" placeholder="请选择" size="small">
@@ -38,7 +38,7 @@
         </el-table>
       </el-tab-pane>
 
-      <el-tab-pane label="价格预测" name="price">
+      <el-tab-pane :label="$t('dispatchModule.priceForecast')" name="price">
         <el-form :inline="true" class="query-form">
           <el-form-item label="能源类型">
             <el-select v-model="priceQuery.energyType" placeholder="请选择" size="small">
@@ -65,7 +65,7 @@
         </el-table>
       </el-tab-pane>
 
-      <el-tab-pane label="天气预测" name="weather">
+      <el-tab-pane :label="$t('dispatchModule.weatherForecast')" name="weather">
         <el-form :inline="true" class="query-form">
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini" @click="getWeatherList">查询</el-button>
@@ -83,7 +83,7 @@
         </el-table>
       </el-tab-pane>
 
-      <el-tab-pane label="模型管理" name="model">
+      <el-tab-pane :label="$t('dispatchModule.modelManagement')" name="model">
         <el-row :gutter="10" class="mb8">
           <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAddModel">新增模型</el-button>
         </el-row>

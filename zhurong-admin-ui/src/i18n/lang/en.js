@@ -210,6 +210,91 @@ export default {
       title: 'Profile',
       info: 'Personal Info',
       password: 'Change Password'
+    },
+    control: {
+      title: 'Centralized Control',
+      control: 'Centralized Control'
+    },
+    metering: {
+      title: 'Metering Management',
+      metering: 'Metering Management'
+    },
+    carbon: {
+      title: 'Carbon Asset Management',
+      analysis: 'Carbon Analysis'
+    },
+    energyAnalysis: {
+      title: 'Energy Analysis',
+      energyOverview: 'Energy Overview',
+      energyFlow: 'Energy Flow',
+      energyTrend: 'Energy Trend',
+      yoyAnalysis: 'YoY Analysis',
+      monAnalysis: 'MoM Analysis',
+      lossAnalysis: 'Loss Analysis',
+      expenseBoard: 'Expense Board',
+      expenseReport: 'Expense Report'
+    },
+    digitaltwin: {
+      title: 'Digital Twin',
+      digitaltwin: 'Digital Twin'
+    },
+    inventory: {
+      title: 'Inventory Management',
+      attachment: 'Attachment Management',
+      purveyor: 'Supplier Management'
+    },
+    managementSystem: {
+      title: 'Management System',
+      prePlan: 'Pre-plan Management',
+      process: 'Process Management',
+      regulation: 'Regulation Management',
+      standard: 'Standard Management'
+    },
+    maintenance: {
+      title: 'Maintenance Management',
+      duty: 'Duty Management',
+      inspectionPlan: 'Inspection Plan',
+      inspectionRecord: 'Inspection Record',
+      repairOrder: 'Repair Order',
+      schedule: 'Schedule Management',
+      exampleReport: 'Example Report',
+      myInspection: 'My Inspection',
+      myRepairOrder: 'My Order',
+      itemTopology: 'Equipment Topology'
+    },
+    quota: {
+      title: 'Quota Management',
+      analysis: 'Quota Analysis',
+      config: 'Quota Config',
+      monitor: 'Quota Monitor'
+    },
+    report: {
+      title: 'Report Management',
+      generate: 'Report Generate',
+      template: 'Report Template'
+    },
+    newenergy: {
+      title: 'New Energy',
+      energyStorage: 'Energy Storage',
+      microGrid: 'Micro Grid',
+      pvStation: 'PV Station',
+      storageBattery: 'Storage Battery'
+    },
+    analysisReport: {
+      title: 'Analysis Report',
+      analysisReport: 'Analysis Report'
+    },
+    dataQuery: {
+      title: 'Data Query',
+      electricParams: 'Electric Parameters'
+    },
+    dataBoard: {
+      title: 'Data Board',
+      dataBoard: 'Data Board'
+    },
+    dashboard: {
+      title: 'Dashboard',
+      dashboard: 'Dashboard'
     }
   },
 
@@ -226,6 +311,8 @@ export default {
     sizeSmall: 'Small',
     sizeMini: 'Mini',
     theme: 'Theme Settings',
+    themeLight: 'Light Theme',
+    themeDark: 'Dark Theme',
     language: 'Switch Language',
     search: 'Menu Search'
   },
@@ -486,6 +573,7 @@ export default {
     resetPwdSuccess: 'Password reset successful, new password is: ',
     noData: 'No data',
     loading: 'Loading...',
+    clearingCache: 'Clearing settings cache and refreshing, please wait...',
     systemError: 'System error',
     networkError: 'Network error',
     timeout: 'Request timeout',
@@ -762,6 +850,27 @@ export default {
         searchStandard: 'Please input standard name',
         selectType: 'Please select energy type'
       }
+    },
+    // Energy Balance Management
+    balance: {
+      title: 'Energy Balance Management',
+      balanceId: 'Balance ID',
+      totalSupply: 'Total Supply',
+      totalConsumption: 'Total Consumption',
+      balanceAmount: 'Balance Amount',
+      balanceRate: 'Balance Rate',
+      balanceDate: 'Balance Date',
+      calculate: 'Calculate Energy Balance'
+    },
+    // Energy Quality Management
+    quality: {
+      title: 'Energy Quality Management',
+      qualityId: 'Record ID',
+      qualityIndex: 'Quality Index',
+      standardValue: 'Standard Value',
+      actualValue: 'Actual Value',
+      deviation: 'Deviation',
+      detectionTime: 'Detection Time'
     },
     // Energy Analysis
     analysis: {
@@ -1411,5 +1520,412 @@ export default {
         selectStatus: 'Please select handle status'
       }
     }
+  },
+  // Profile Module
+  profileModule: {
+    title: 'Profile',
+    personalInfo: 'Personal Info',
+    myOrder: 'My Orders',
+    myInspection: 'My Inspections',
+    orderCountMonthly: 'Order Count (Monthly)',
+    inspectionCountMonthly: 'Inspection Count (Monthly)',
+    userName: 'Username',
+    nickName: 'Nickname',
+    sex: 'Gender',
+    phone: 'Phone',
+    email: 'Email',
+    dept: 'Department',
+    post: 'Post',
+    role: 'Role',
+    createTime: 'Create Time',
+    editInfo: 'Edit Info',
+    resetPwd: 'Reset Password',
+    pending: 'Pending',
+    completed: 'Completed',
+    male: 'Male',
+    female: 'Female',
+    unknown: 'Unknown',
+    oldPassword: 'Old Password',
+    newPassword: 'New Password',
+    confirmPassword: 'Confirm Password',
+    enterOldPwd: 'Please enter old password',
+    enterNewPwd: 'Please enter new password',
+    confirmNewPwd: 'Please confirm new password',
+    pwdNotEmpty: 'Old password cannot be empty',
+    pwdLength: 'Length should be between 6 and 20 characters',
+    confirmPwdNotEmpty: 'Confirm password cannot be empty',
+    pwdMismatch: 'Two passwords do not match',
+    modifySuccess: 'Modified successfully',
+    chart: {
+      quantity: 'Quantity',
+      month: 'Month',
+      finished: 'Finished',
+      unfinished: 'Unfinished'
+    },
+    placeholder: {
+      inputOldPwd: 'Please enter old password',
+      inputNewPwd: 'Please enter new password',
+      confirmNewPwd: 'Please confirm new password'
+    }
+  },
+  // Control Module
+  controlModule: {
+    title: 'Centralized Control',
+    deviceManagement: 'Device Management',
+    areaControl: 'Area Control',
+    remoteOperation: 'Remote Operation',
+    controlLog: 'Control Log',
+    deviceControl: 'Device Control',
+    searchDevice: 'Search device',
+    deviceId: 'Device ID',
+    deviceName: 'Device Name',
+    deviceType: 'Device Type',
+    location: 'Location',
+    status: 'Status',
+    lastOnlineTime: 'Last Online Time',
+    action: 'Action',
+    control: 'Control',
+    online: 'Online',
+    offline: 'Offline',
+    waterSourceArea: 'Water Source Area',
+    middleStationArea: 'Middle Station Area',
+    highPoolArea: 'High Pool Area',
+    wellArea: 'Well Area',
+    open: 'Open',
+    close: 'Close',
+    areaControlSuffix: 'Area Control',
+    operationType: 'Operation Type',
+    targetDevice: 'Target Device',
+    operationParams: 'Operation Params',
+    securityVerify: 'Security Verify',
+    inputSecurityCode: 'Input security code',
+    execute: 'Execute',
+    reset: 'Reset',
+    logId: 'Log ID',
+    operationTypeCol: 'Operation Type',
+    target: 'Target',
+    operator: 'Operator',
+    operationTime: 'Operation Time',
+    result: 'Result',
+    remark: 'Remark',
+    success: 'Success',
+    fail: 'Fail',
+    start: 'Start',
+    stop: 'Stop',
+    restart: 'Restart',
+    adjust: 'Adjust',
+    selectOperationType: 'Select operation type',
+    selectDevice: 'Select device',
+    inputParams: 'Input operation params',
+    inputSecurityPwd: 'Input security password',
+    deviceNameLabel: 'Device Name',
+    controlCommand: 'Control Command',
+    selectCommand: 'Select command',
+    params: 'Parameters',
+    inputParamsLabel: 'Input parameters',
+    securityPwd: 'Security Password',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    placeholder: {
+      searchDevice: 'Search device',
+      selectOperationType: 'Select operation type',
+      selectDevice: 'Select device',
+      inputParams: 'Input operation params',
+      inputSecurityCode: 'Input security code',
+      selectCommand: 'Select command',
+      inputParams: 'Input parameters',
+      inputSecurityPwd: 'Input security password'
+    }
+  },
+  // Metering Module
+  meteringModule: {
+    title: 'Metering Management',
+    meterManagement: 'Meter Management',
+    calibrationPlan: 'Calibration Plan',
+    searchMeter: 'Search meter',
+    meterId: 'Meter ID',
+    meterName: 'Meter Name',
+    type: 'Type',
+    specification: 'Specification',
+    installationLocation: 'Installation Location',
+    status: 'Status',
+    lastCalibrationDate: 'Last Calibration Date',
+    nextCalibrationDate: 'Next Calibration Date',
+    action: 'Action',
+    detail: 'Detail',
+    calibrate: 'Calibrate',
+    planId: 'Plan ID',
+    meter: 'Meter',
+    planCalibrationDate: 'Plan Calibration Date',
+    executor: 'Executor',
+    addPlan: 'Add Plan',
+    calibrationRecord: 'Calibration Record',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    selectStatus: 'Select Status',
+    all: 'All',
+    pending: 'Pending',
+    executing: 'Executing',
+    completed: 'Completed',
+    cancelled: 'Cancelled',
+    pass: 'Pass',
+    fail: 'Fail',
+    analysis: 'Calibration Data Analysis',
+    qualificationTrend: 'Qualification Rate Trend',
+    deviationDistribution: 'Deviation Distribution',
+    meterStatusStatistics: 'Meter Status Statistics',
+    export: 'Export Records',
+    execute: 'Execute',
+    viewMeterDetail: 'View meter details of',
+    viewPlanDetail: 'View calibration plan',
+    viewRecordDetail: 'View calibration record',
+    fillCompleteInfo: 'Please fill in complete plan information',
+    meterNotExist: 'Selected meter does not exist',
+    planAdded: 'Calibration plan added',
+    startExecute: 'Start executing calibration plan',
+    planCompleted: 'Calibration plan completed',
+    exportSuccess: 'Calibration records exported',
+    placeholder: {
+      searchMeter: 'Search meter',
+      selectStatus: 'Select status',
+      startDate: 'Start date',
+      endDate: 'End date',
+      selectMeter: 'Select meter',
+      selectDate: 'Select date',
+      inputExecutor: 'Input executor',
+      inputRemark: 'Input remark'
+    }
+  },
+  dataBoardModule: {
+    title: 'Data Dashboard',
+    totalEnergy: 'Total Energy Consumption',
+    electricity: 'Electricity',
+    water: 'Water',
+    projectOverview: 'Project Overview',
+    projectTotal: 'Total Projects',
+    meterTotal: 'Total Meters',
+    alarmRecord: 'Alarm Records',
+    equipmentStatus: 'Equipment Status',
+    alarmInfo: 'Alarm Information',
+    todayEnergyTrend: 'Today\'s Energy Trend',
+    todayEnergyStatistics: 'Today\'s Energy Statistics',
+    electricityKwh: 'Electricity(kW·h)',
+    comprehensiveEnergy: 'Comprehensive Energy(kgce)',
+    todayWaterUsage: 'Today\'s Water Usage(t)',
+    dailyPowerCurve: 'Daily Power Curve',
+    todayWaterInfo: 'Today\'s Water Information',
+    normal: 'Normal',
+    alarm: 'Alarm',
+    offline: 'Offline',
+    energyPlatform: 'Energy Platform',
+    carbonDataVisualizationPlatform: 'Carbon Data Visualization Platform'
+  },
+  dispatchModule: {
+    title: 'Dispatch Management',
+    loadForecast: 'Load Forecast',
+    priceForecast: 'Price Forecast',
+    weatherForecast: 'Weather Forecast',
+    modelManagement: 'Model Management',
+    costSaving: 'Cost Saving',
+    efficiencyImprovement: 'Efficiency Improvement',
+    emissionReduction: 'Carbon Emission Reduction',
+    trendAnalysis: 'Trend Analysis'
+  },
+  toolModule: {
+    title: 'System Tools',
+    basicInfo: 'Basic Information',
+    columnInfo: 'Column Information',
+    genInfo: 'Generation Information',
+    fieldProperties: 'Field Properties',
+    formProperties: 'Form Properties'
+  },
+  equipmentModule: {
+    title: 'Equipment Management',
+    equipmentInfo: 'Equipment Information',
+    equipmentAlarm: 'Equipment Alarm',
+    equipmentData: 'Equipment Data',
+    equipmentDocuments: 'Equipment Documents'
+  },
+  dataQueryModule: {
+    title: 'Data Query',
+    dailyRawData: 'Daily Raw Data',
+    dailyPeakData: 'Daily Peak Data'
+  },
+  componentsModule: {
+    title: 'Components',
+    icons: 'Icons',
+    elementIcons: 'Element-UI Icons'
+  },
+  autoeeModule: {
+    title: 'Automation',
+    stockInRecord: 'Stock In Record',
+    stockOutRecord: 'Stock Out Record'
+  },
+  alarmModule: {
+    title: 'Alarm Management',
+    alarmAnalysis: 'Alarm Analysis',
+    alarmHistory: 'Alarm History',
+    alarmRule: 'Alarm Rule',
+    realtimeAlarm: 'Realtime Alarm',
+    paramName: 'Parameter Name',
+    alarmTime: 'Alarm Time',
+    alarmInfo: 'Alarm Info',
+    alarmLevel: 'Alarm Level',
+    alarmArea: 'Alarm Area',
+    alarmEquipment: 'Alarm Equipment',
+    alarmVal: 'Alarm Value',
+    endTime: 'End Time',
+    alarmParam: 'Alarm Parameter',
+    alarmCount: 'Alarm Count',
+    alarmType: 'Alarm Type',
+    eventType: 'Event Type',
+    condition1: 'Condition 1',
+    thresholdValue1: 'Threshold 1',
+    condition2: 'Condition 2',
+    thresholdValue2: 'Threshold 2',
+    userId: 'Reminder',
+    createOrderSwitch: 'Auto Create Order',
+    alarmSwitch: 'Alarm Switch',
+    alarmDesc: 'Alarm Description',
+    addAlarm: 'Add Realtime Alarm',
+    editAlarm: 'Edit Realtime Alarm',
+    addAlarmRule: 'Add Alarm Rule',
+    editAlarmRule: 'Edit Alarm Rule'
+  },
+  analysisReportModule: {
+    title: 'Analysis Report',
+    generateReport: 'Generate Analysis Report',
+    print: 'Print',
+    reportName: 'Analysis Report',
+    energyStatistics: '1. Energy Statistics',
+    electricityUsage: '2. Electricity Usage',
+    electricityFee: '3. Electricity Fee',
+    waterUsage: '4. Water Usage',
+    waterFee: '5. Water Fee',
+    recurringRate: '6. Recurring Rate',
+    electricityTotal: 'During this period, total electricity consumption is {value}kW·h, maximum electricity consumption is {max}kW·h, maximum load occurred at {date}.',
+    electricityFeeTotal: 'During this period, total electricity fee is ￥{value}',
+    waterTotal: 'During this period, total water consumption is {value}t, maximum water consumption is {max}t, maximum flow occurred at {date}.',
+    waterFeeTotal: 'During this period, total water fee is ￥{value}',
+    suggestion: 'Suggestion: Increase monitoring circuits at the lower end of the transformer to collect end data, determine the energy consumption of each monitoring point, and check for electricity waste. Or replace lighting and other equipment in the building with energy-saving products to reduce energy consumption and achieve energy conservation and emission reduction.'
+  },
+  cameraModule: {
+    title: 'Camera Management',
+    realtimeVideo: 'Realtime Video',
+    cameraConfig: 'Camera Configuration',
+    cameraName: 'Camera Name',
+    cameraBrand: 'Brand',
+    cameraSn: 'Serial Number',
+    cameraIp: 'Camera IP',
+    cameraPort: 'Port',
+    cameraUser: 'Username',
+    cameraPassword: 'Password',
+    cameraType: 'Camera Type',
+    cameraStatus: 'Status',
+    cameraLocation: 'Installation Location',
+    addCamera: 'Add Camera',
+    editCamera: 'Edit Camera'
+  },
+  carbonAssetsModule: {
+    title: 'Carbon Assets Management',
+    carbonAnalysis: 'Carbon Emission Analysis',
+    monthlyCarbon: 'Monthly Carbon Emission',
+    yearlyCarbon: 'Yearly Carbon Emission',
+    currentMonth: 'Current Month',
+    lastMonth: 'Last Month',
+    currentYear: 'Current Year',
+    lastYear: 'Last Year',
+    trend: 'Trend',
+    energyType: 'Energy Type',
+    year: 'Year'
+  },
+  energyAnalysisModule: {
+    title: 'Energy Analysis',
+    energyOverview: 'Energy Overview',
+    energyFlow: 'Energy Flow',
+    energyTrend: 'Energy Trend',
+    yoyAnalysis: 'YoY Analysis',
+    monAnalysis: 'MoM Analysis',
+    lossAnalysis: 'Loss Analysis',
+    expenseBoard: 'Expense Dashboard',
+    expenseReport: 'Expense Report',
+    monthOnMonth: 'MoM',
+    todayEnergy: 'Today Energy',
+    yesterdayEnergy: 'Yesterday',
+    currentMonthEnergy: 'Current Month',
+    lastMonthEnergy: 'Last Month',
+    currentYearEnergy: 'Current Year',
+    lastYearEnergy: 'Last Year',
+    trend: 'Trend',
+    area: 'Area',
+    energyType: 'Energy Type'
+  },
+  itemizedAnalysisModule: {
+    title: 'Itemized Analysis',
+    itemizedOverview: 'Itemized Overview',
+    energyType: 'Energy Type',
+    date: 'Date',
+    search: 'Search'
+  },
+  maintenanceModule: {
+    title: 'Maintenance Management',
+    duty: 'Duty Management',
+    inspectionPlan: 'Inspection Plan',
+    inspectionRecord: 'Inspection Record',
+    repairOrder: 'Repair Order',
+    schedule: 'Schedule Management'
+  },
+  quotaModule: {
+    title: 'Quota Management',
+    analysis: 'Quota Analysis',
+    config: 'Quota Configuration',
+    monitor: 'Quota Monitor'
+  },
+  systemModule: {
+    title: 'System Management',
+    config: 'Parameter Configuration',
+    dept: 'Department Management',
+    dict: 'Dictionary Management',
+    menu: 'Menu Management',
+    notice: 'Notice Management',
+    post: 'Position Management',
+    role: 'Role Management',
+    user: 'User Management'
+  },
+  digitaltwinModule: {
+    title: 'Digital Twin'
+  },
+  inventoryModule: {
+    title: 'Inventory Management',
+    attachment: 'Attachment Management',
+    purveyor: 'Supplier Management'
+  },
+  managementSystemModule: {
+    title: 'Management System',
+    prePlan: 'PrePlan Management',
+    process: 'Process Management',
+    regulation: 'Regulation Management',
+    standard: 'Standard Management'
+  },
+  monitorModule: {
+    title: 'System Monitor',
+    admin: 'System Admin',
+    cache: 'Cache Monitor',
+    logininfor: 'Login Log',
+    online: 'Online Users',
+    operlog: 'Operation Log',
+    xxljob: 'Scheduled Task'
+  },
+  newenergyModule: {
+    title: 'New Energy',
+    energyStorage: 'Energy Storage',
+    microGrid: 'Micro Grid',
+    pvStation: 'PV Station',
+    storageBattery: 'Storage Battery'
+  },
+  reportModule: {
+    title: 'Report Management',
+    generate: 'Report Generate',
+    template: 'Report Template'
   }
 }

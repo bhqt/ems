@@ -1,10 +1,10 @@
 <template>
   <el-card>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="基本信息" name="basic">
+      <el-tab-pane :label="$t('toolModule.basicInfo')" name="basic">
         <basic-info-form ref="basicInfo" :info="info" />
       </el-tab-pane>
-      <el-tab-pane label="字段信息" name="columnInfo">
+      <el-tab-pane :label="$t('toolModule.columnInfo')" name="columnInfo">
         <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
           <el-table-column label="序号" type="index" min-width="5%" class-name="allowDrag" />
           <el-table-column
@@ -113,7 +113,7 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="生成信息" name="genInfo">
+      <el-tab-pane :label="$t('toolModule.genInfo')" name="genInfo">
         <gen-info-form ref="genInfo" :info="info" :tables="tables" :menus="menus"/>
       </el-tab-pane>
     </el-tabs>

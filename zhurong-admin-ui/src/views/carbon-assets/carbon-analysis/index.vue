@@ -4,46 +4,46 @@
       <div class="month-change">
         <div class="change-title">
           <div class="change-icon"></div>
-          <span>本月碳排放</span>
+          <span>{{ $t('carbonAssetsModule.monthlyCarbon') }}</span>
         </div>
         <div class="flex-between carbon-box">
           <div class="carbon-item flex-column-center">
             <div class="mb10"><span>{{ chainData.nowMonth ? chainData.nowMonth : "--" }}</span> t</div>
-            <div>当月</div>
+            <div>{{ $t('carbonAssetsModule.currentMonth') }}</div>
           </div>
           <div class="carbon-item flex-column-center">
             <div class="mb10"><span>{{ chainData.lastMonth ? chainData.lastMonth : "--" }}</span> t</div>
-            <div>上月同期</div>
+            <div>{{ $t('carbonAssetsModule.lastMonth') }}</div>
           </div>
           <div class="carbon-item flex-column-center">
             <div class="mb10">
               <span v-if="chainData.yearTrend" :class="chainData.monthTrend > 0 ? 'change-red' : 'change-green'">{{ chainData.monthTrend }}</span>
               <span v-else>--</span>
             </div>
-            <div>趋势</div>
+            <div>{{ $t('carbonAssetsModule.trend') }}</div>
           </div>
         </div>
       </div>
       <div class="year-change">
         <div class="change-title">
           <div class="change-icon"></div>
-          <span>本年碳排放</span>
+          <span>{{ $t('carbonAssetsModule.yearlyCarbon') }}</span>
         </div>
         <div class="flex-between carbon-box">
           <div class="carbon-item flex-column-center">
             <div class="mb10"><span>{{ chainData.nowYear ? chainData.nowYear : "--" }}</span> t</div>
-            <div>当年</div>
+            <div>{{ $t('carbonAssetsModule.currentYear') }}</div>
           </div>
           <div class="carbon-item flex-column-center">
             <div class="mb10"><span>{{ chainData.lastYear ? chainData.lastYear : "--" }}</span> t</div>
-            <div>去年同期</div>
+            <div>{{ $t('carbonAssetsModule.lastYear') }}</div>
           </div>
           <div class="carbon-item flex-column-center">
             <div class="mb10">
               <span v-if="chainData.yearTrend" :class="chainData.yearTrend > 0 ? 'change-red' : 'change-green'">{{ chainData.yearTrend }}</span>
               <span v-else>--</span>
             </div>
-            <div>趋势</div>
+            <div>{{ $t('carbonAssetsModule.trend') }}</div>
           </div>
         </div>
       </div>
@@ -51,7 +51,7 @@
     <div class="content-bottom">
       <div class="data-select">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
-          <el-form-item label="分类能耗" prop="type">
+          <el-form-item :label="$t('carbonAssetsModule.energyType')" prop="type">
             <el-select v-model="queryParams.type" placeholder="请选择">
               <el-option
                 v-for="item in dict.type.energy_type"
@@ -61,7 +61,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="年份">
+          <el-form-item :label="$t('carbonAssetsModule.year')">
             <el-date-picker
               v-model="queryParams.year"
               type="year"
@@ -73,7 +73,7 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="getMonthData">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="getMonthData">{{ $t('common.query') }}</el-button>
           </el-form-item>
         </el-form>
       </div>

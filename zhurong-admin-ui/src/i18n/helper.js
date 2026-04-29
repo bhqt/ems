@@ -29,21 +29,35 @@ export function translateMenuTitle(title, fallback = '') {
 
   // 2. 尝试在 menu 配置中查找（用于后端返回中文的情况）
   // 构建可能的 key 路径
-  const possibleKeys = [
-    `menu.${title}`,
-    `menu.system.${title}`,
-    `menu.monitor.${title}`,
-    `menu.tool.${title}`,
-    `menu.energy.${title}`,
-    `menu.equipment.${title}`,
-    `menu.alarm.${title}`,
-    `menu.camera.${title}`,
-    `menu.charging.${title}`,
-    `menu.inspection.${title}`,
-    `menu.itemized.${title}`,
-    `menu.dataQuery.${title}`,
-    `menu.profile.${title}`
-  ]
+    const possibleKeys = [
+      `menu.${title}`,
+      `menu.system.${title}`,
+      `menu.monitor.${title}`,
+      `menu.tool.${title}`,
+      `menu.energy.${title}`,
+      `menu.equipment.${title}`,
+      `menu.alarm.${title}`,
+      `menu.camera.${title}`,
+      `menu.charging.${title}`,
+      `menu.inspection.${title}`,
+      `menu.itemized.${title}`,
+      `menu.dataQuery.${title}`,
+      `menu.profile.${title}`,
+      `menu.control.${title}`,
+      `menu.metering.${title}`,
+      `menu.carbon.${title}`,
+      `menu.energyAnalysis.${title}`,
+      `menu.digitaltwin.${title}`,
+      `menu.inventory.${title}`,
+      `menu.managementSystem.${title}`,
+      `menu.maintenance.${title}`,
+      `menu.quota.${title}`,
+      `menu.report.${title}`,
+      `menu.newenergy.${title}`,
+      `menu.analysisReport.${title}`,
+      `menu.dataBoard.${title}`,
+      `menu.dashboard.${title}`
+    ]
 
   for (const key of possibleKeys) {
     const translated = i18n.t(key)

@@ -28,7 +28,7 @@
     </el-row>
 
     <el-tabs v-model="activeTab" type="border-card">
-      <el-tab-pane label="成本节约" name="cost">
+      <el-tab-pane :label="$t('dispatchModule.costSaving')" name="cost">
         <el-table v-loading="loading" :data="costSavingList" border>
           <el-table-column label="记录ID" prop="recordId" width="80" />
           <el-table-column label="记录日期" prop="recordDate" width="120" />
@@ -41,19 +41,19 @@
         </el-table>
       </el-tab-pane>
 
-      <el-tab-pane label="效率提升" name="efficiency">
+      <el-tab-pane :label="$t('dispatchModule.efficiencyImprovement')" name="efficiency">
         <div class="chart-container">
           <div id="efficiencyChart" style="width: 100%; height: 350px;"></div>
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="碳排放减少" name="emission">
+      <el-tab-pane :label="$t('dispatchModule.emissionReduction')" name="emission">
         <div class="chart-container">
           <div id="emissionChart" style="width: 100%; height: 350px;"></div>
         </div>
       </el-tab-pane>
 
-      <el-tab-pane label="趋势分析" name="trend">
+      <el-tab-pane :label="$t('dispatchModule.trendAnalysis')" name="trend">
         <el-form :inline="true" class="query-form">
           <el-form-item label="开始日期">
             <el-date-picker v-model="trendQuery.startDate" type="date" placeholder="选择开始日期" value-format="yyyy-MM-dd" size="small" />

@@ -1,8 +1,8 @@
 <template>
   <div class="right-board">
     <el-tabs v-model="currentTab" class="center-tabs">
-      <el-tab-pane label="组件属性" name="field" />
-      <el-tab-pane label="表单属性" name="form" />
+      <el-tab-pane :label="$t('toolModule.fieldProperties')" name="field" />
+      <el-tab-pane :label="$t('toolModule.formProperties')" name="form" />
     </el-tabs>
     <div class="field-box">
       <a class="document-link" target="_blank" :href="documentLink" title="查看组件文档">

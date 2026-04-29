@@ -26,9 +26,9 @@ export default {
       type: Array,
       default: function () {
         return [
-          { value: 0, name: "正常" },
-          { value: 0, name: "报警" },
-          { value: 0, name: "离线" },
+          { value: 0, name: this.$t ? this.$t('dataBoardModule.normal') : '正常' },
+          { value: 0, name: this.$t ? this.$t('dataBoardModule.alarm') : '报警' },
+          { value: 0, name: this.$t ? this.$t('dataBoardModule.offline') : '离线' },
         ];
       },
     },
@@ -92,7 +92,7 @@ export default {
         },
         series: [
           {
-            name: "设备状态",
+            name: this.$t ? this.$t('dataBoardModule.equipmentStatus') : '设备状态',
             type: "pie",
             radius: [0, '65%'],
             center: ["50%", "40%"],

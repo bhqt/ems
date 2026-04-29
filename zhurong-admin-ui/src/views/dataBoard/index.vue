@@ -1,36 +1,36 @@
 <template>
   <div class="board-container">
-    <div v-if="showWhich" class="back-btn" @click="backHome"><img src="@/assets/images/home.png">能源平台</div>
+    <div v-if="showWhich" class="back-btn" @click="backHome"><img src="@/assets/images/home.png">{{ $t('dataBoardModule.energyPlatform') }}</div>
     <img v-else src="@/assets/images/fullscreen.png" alt="" class="fullscreen-img" @click="toDataBoard">
     <div class="time-stamp">{{ nowTime }}</div>
-    <div class="board-title"><span>智碳数据可视化平台</span></div>
+    <div class="board-title"><span>{{ $t('dataBoardModule.carbonDataVisualizationPlatform') }}</span></div>
     <div class="board-content flex-between">
       <div class="content-left flex-column-between">
         <div class="content-overview">
-          <div class="box-title">项目总览</div>
+          <div class="box-title">{{ $t('dataBoardModule.projectOverview') }}</div>
           <div class="box-content flex-between">
             <div class="overview-object flex-column-center">
               <div class="object-count">3</div>
-              <div class="object-name">项目总数</div>
+              <div class="object-name">{{ $t('dataBoardModule.projectTotal') }}</div>
             </div>
             <div class="overview-meter flex-column-center">
               <div class="object-count">{{ deviceTotal }}</div>
-              <div class="object-name">仪表总数</div>
+              <div class="object-name">{{ $t('dataBoardModule.meterTotal') }}</div>
             </div>
             <div class="overview-alarm flex-column-center">
               <div class="object-count">{{ alarmTotal }}</div>
-              <div class="object-name">报警记录</div>
+              <div class="object-name">{{ $t('dataBoardModule.alarmRecord') }}</div>
             </div>
           </div>
         </div>
         <div class="content-status">
-          <div class="box-title">设备状态</div>
+          <div class="box-title">{{ $t('dataBoardModule.equipmentStatus') }}</div>
           <div class="box-content">
             <CirclePieChartVue height="100%" :pieData="pieData"/>
           </div>
         </div>
         <div class="content-alarm">
-          <div class="box-title">报警信息</div>
+          <div class="box-title">{{ $t('dataBoardModule.alarmInfo') }}</div>
           <div class="box-content">
             <alarmInfo />
           </div>
@@ -39,14 +39,14 @@
       <div class="content-middle flex-column-between">
         <div class="content-map" id="boardMap"></div>
         <div class="content-chart">
-          <div class="box-title">今日能源趋势</div>
+          <div class="box-title">{{ $t('dataBoardModule.todayEnergyTrend') }}</div>
           <div class="box-content">
             <el-tabs
               v-model="activeName"
               @tab-click="handleClick"
               class="trend-tabs"
             >
-              <el-tab-pane label="综合能耗" name="total">
+              <el-tab-pane :label="$t('dataBoardModule.totalEnergy')" name="total">
                 <TrendLineChart
                   v-if="activeName === 'total'"
                   :height="'100%'"
@@ -55,7 +55,7 @@
                   :yData="energyData"
                 />
               </el-tab-pane>
-              <el-tab-pane label="电" name="electricity">
+              <el-tab-pane :label="$t('dataBoardModule.electricity')" name="electricity">
                 <TrendLineChart
                   v-if="activeName === 'electricity'"
                   :height="'100%'"
@@ -64,7 +64,7 @@
                   :yData="electricityData"
                 />
               </el-tab-pane>
-              <el-tab-pane label="水" name="water">
+              <el-tab-pane :label="$t('dataBoardModule.water')" name="water">
                 <TrendLineChart
                   v-if="activeName === 'water'"
                   :height="'100%'"
@@ -79,33 +79,33 @@
       </div>
       <div class="content-right flex-column-between">
         <div class="content-statistics">
-          <div class="box-title">今日用能统计</div>
+          <div class="box-title">{{ $t('dataBoardModule.todayEnergyStatistics') }}</div>
           <div class="box-content flex-between">
             <div class="statistics-item flex-column-center">
               <lightning theme="outline" size="25" fill="#00d1ff" />
               <div class="item-count">{{ electricityTotal }}</div>
-              <div style="text-align: center">电(kW·h)</div>
+              <div style="text-align: center">{{ $t('dataBoardModule.electricityKwh') }}</div>
             </div>
             <div class="statistics-item flex-column-center">
               <dashboard theme="outline" size="25" fill="#00d1ff" />
               <div class="item-count">{{ powerTotal}}</div>
-              <div style="text-align: center">综合能耗(kgce)</div>
+              <div style="text-align: center">{{ $t('dataBoardModule.comprehensiveEnergy') }}</div>
             </div>
             <div class="statistics-item flex-column-center">
               <cycle theme="outline" size="25" fill="#00d1ff" />
               <div class="item-count">{{ waterTotal }}</div>
-              <div style="text-align: center">今日用水(t)</div>
+              <div style="text-align: center">{{ $t('dataBoardModule.todayWaterUsage') }}</div>
             </div>
           </div>
         </div>
         <div class="content-trend">
-          <div class="box-title">日用电功率曲线</div>
+          <div class="box-title">{{ $t('dataBoardModule.dailyPowerCurve') }}</div>
           <div class="box-content">
             <LineChart height="100%" :chartData="dailyP" :yName="'kW'" xName=""/>
           </div>
         </div>
         <div class="content-carbon">
-          <div class="box-title">今日用水信息</div>
+          <div class="box-title">{{ $t('dataBoardModule.todayWaterInfo') }}</div>
           <div class="box-content">
             <alarmInfo />
           </div>
@@ -174,9 +174,9 @@ export default {
     getEquipmentData() {
       getAllStatus().then(res => {
         this.pieData = [
-          { value: res.data[0].count, name: "正常", itemStyle: {color: '#6be6c3'} },
-          { value: res.data[1].count, name: "报警", itemStyle: {color: '#e0c464'} },
-          { value: res.data[2].count, name: "离线", itemStyle: {color: '#297ef8'} },
+          { value: res.data[0].count, name: this.$t('dataBoardModule.normal'), itemStyle: {color: '#6be6c3'} },
+          { value: res.data[1].count, name: this.$t('dataBoardModule.alarm'), itemStyle: {color: '#e0c464'} },
+          { value: res.data[2].count, name: this.$t('dataBoardModule.offline'), itemStyle: {color: '#297ef8'} },
         ]
         res.data.forEach(item=>{
           this.deviceTotal = item.count + this.deviceTotal;

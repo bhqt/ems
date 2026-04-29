@@ -13,7 +13,7 @@
         @contextmenu.prevent.native="openMenu(tag,$event)"
         style="border-radius:4px"
       >
-        {{ tag.title }}
+        {{ translatedTagTitle(tag) }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
@@ -31,6 +31,8 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
+import { translateMenuTitle } from '@/i18n/helper'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { ScrollPane },
@@ -44,6 +46,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['language']),
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
@@ -72,6 +75,10 @@ export default {
     this.addTags()
   },
   methods: {
+    translatedTagTitle(tag) {
+      const _ = this.language // 通过访问 language 建立响应式依赖
+      return translateMenuTitle(tag.title, tag.title)
+    },
     isActive(route) {
       return route.path === this.$route.path
     },

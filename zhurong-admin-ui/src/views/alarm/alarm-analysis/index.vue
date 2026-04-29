@@ -17,7 +17,7 @@
         <div class="columnar">
           <div class="overview-title">
             <div class="overview-icon"></div>
-            <span>报警参数</span>
+            <span>{{ $t('alarmModule.alarmParam') }}</span>
           </div>
           <MinMaxDoubleBarVue height="100%" :xData="paramX" :yData="paramY" :setInfo="{
             legendName: ['报警量'],
@@ -26,7 +26,7 @@
         <div class="circle-pie">
           <div class="overview-title">
             <div class="overview-icon"></div>
-            <span>报警等级</span>
+            <span>{{ $t('alarmModule.alarmLevel') }}</span>
           </div>
           <PieChartVue height="100%" :pieData="pieData" />
         </div>
@@ -40,7 +40,7 @@
           <div class="day-chart">
             <div class="overview-title">
               <div class="overview-icon"></div>
-              <span>报警数量</span>
+              <span>{{ $t('alarmModule.alarmCount') }}</span>
             </div>
             <MinMaxDoubleBarVue height="100%" :xData="countX" :yData="countY" :setInfo="{
               legendName: ['本周期数据量', '上周期数据量'],
@@ -49,7 +49,7 @@
           <div class="month-chart">
             <div class="overview-title">
               <div class="overview-icon"></div>
-              <span>报警类型</span>
+              <span>{{ $t('alarmModule.alarmType') }}</span>
             </div>
             <MinMaxDoubleBarVue height="100%" :xData="typeX" :yData="typeY" :setInfo="{
               legendName: ['本周期数据量', '上周期数据量'],
@@ -58,7 +58,7 @@
           <div class="year-chart">
             <div class="overview-title">
               <div class="overview-icon"></div>
-              <span>报警区域</span>
+              <span>{{ $t('alarmModule.alarmArea') }}</span>
             </div>
             <MinMaxDoubleBarVue height="100%" :xData="areaX" :yData="areaY" :setInfo="{
               legendName: ['本周期数据量', '上周期数据量'],

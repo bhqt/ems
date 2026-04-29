@@ -17,44 +17,44 @@
         <topologicaTree @selectItem="treeItem($event)" />
       </div>
       <div class="button-confirm">
-        <el-button type="primary" @click="search">生成分析报告</el-button>
+        <el-button type="primary" @click="search">{{ $t('analysisReportModule.generateReport') }}</el-button>
       </div>
     </div>
     <div class="content-right">
-      <el-button class="print-btn" type="primary" icon="el-icon-printer" v-print="printObj">打印</el-button>
+      <el-button class="print-btn" type="primary" icon="el-icon-printer" v-print="printObj">{{ $t('analysisReportModule.print') }}</el-button>
       <!-- 这里是需要打印的内容 -->
       <div id="printableContent">
         <div class="print-cover">
-          <div class="report-name">分析报告</div>
+          <div class="report-name">{{ $t('analysisReportModule.reportName') }}</div>
           <div class="report-date" v-if="show">{{ dateRange[0].split(" ")[0] }}~{{ dateRange[1].split(" ")[0] }}</div>
         </div>
         <div class="print-content" v-if="show">
-          <div class="report-title">1、用能统计</div>
+          <div class="report-title">{{ $t('analysisReportModule.energyStatistics') }}</div>
           <div style="padding: 20px 20px; height: 261px;width: 100%">
             <report-table :chain-data="tableData"/>
           </div>
-          <div class="report-title">2、用电量</div>
-          <div class="report-content">本周期内，共计使用电力{{electricityTotal}}kW·h，最大用电量{{electricityMax}}kW·h， 最大负荷发生时间{{electricityMaxDate}}。</div>
+          <div class="report-title">{{ $t('analysisReportModule.electricityUsage') }}</div>
+          <div class="report-content">{{ $t('analysisReportModule.electricityTotal', { value: electricityTotal, max: electricityMax, date: electricityMaxDate }) }}</div>
           <div style="padding: 20px 20px;">
             <report-chart :yName="'kW.h'" :xName="title" :xData="xData" :yData="electricityData" :title="'用电量'"/>
           </div>
-          <div class="report-content">建议：通过在变压器下端增多监测回路，收集末端数据，判断各个监测点的能耗情况，有无电量浪费现象。或将楼宇内照明等设备更换节能产品。降低能耗，实现节能减排。</div>
-          <div class="report-title">3、电费</div>
-          <div class="report-content">本周期内，共计使用电费￥{{ electricityChargingTotal }} 元</div>
+          <div class="report-content">{{ $t('analysisReportModule.suggestion') }}</div>
+          <div class="report-title">{{ $t('analysisReportModule.electricityFee') }}</div>
+          <div class="report-content">{{ $t('analysisReportModule.electricityFeeTotal', { value: electricityChargingTotal }) }}</div>
           <div style="padding: 20px 20px;">
             <report-chart :yName="'￥'" :xName="title" :xData="xChargingData" :yData="electricityChargingData" :title="'电费'"/>
           </div>
-          <div class="report-title">4、用水量</div>
-          <div class="report-content">本周期内，共计使用水{{ waterTotal }}t，最大用水量{{waterMax}}t，最大流量发生时间{{waterMaxDate}}。</div>
+          <div class="report-title">{{ $t('analysisReportModule.waterUsage') }}</div>
+          <div class="report-content">{{ $t('analysisReportModule.waterTotal', { value: waterTotal, max: waterMax, date: waterMaxDate }) }}</div>
           <div style="padding: 20px 20px;">
             <report-chart :yName="'t'" :xName="title" :xData="xData" :yData="waterData" :title="'用水量'"/>
           </div>
-          <div class="report-title">5、水费</div>
-          <div class="report-content">本周期内，共计使用水费￥{{ waterChargingTotal }} 元</div>
+          <div class="report-title">{{ $t('analysisReportModule.waterFee') }}</div>
+          <div class="report-content">{{ $t('analysisReportModule.waterFeeTotal', { value: waterChargingTotal }) }}</div>
           <div style="padding: 20px 20px;">
             <report-chart :yName="'￥'" :xName="title" :xData="xChargingData" :yData="waterChargingData" :title="'水费'"/>
           </div>
-          <div class="report-title">6、复费率</div>
+          <div class="report-title">{{ $t('analysisReportModule.recurringRate') }}</div>
           <div style="padding: 20px 20px;">
             <div style="height: 221px;width: 100%">
               <RecurringRateTableVue :chainData="recurringRateTableData"/>

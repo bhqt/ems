@@ -15,7 +15,7 @@
                 v-model="queryParams.areaId"
                 :options="areaList"
                 :show-count="true"
-                placeholder="请选择区域"
+                :placeholder="$t('placeholder.select') + $t('energyAnalysisModule.area')"
                 style="width: 200px"
                 @select="areaChange"
                 :clearable="false"
@@ -31,7 +31,7 @@
               </el-select> -->
             </el-form-item>
             <el-form-item prop="energyType">
-              <el-select v-model="queryParams.energyType" placeholder="请选择" @change="typeChange">
+              <el-select v-model="queryParams.energyType" :placeholder="$t('placeholder.select')" @change="typeChange">
                 <el-option
                   v-for="item in dict.type.energy_type"
                   :key="item.value"
@@ -50,17 +50,17 @@
         <div class="ratio-month">
           <div class="overview-title">
             <div class="overview-icon"></div>
-            <span>环比</span>
+            <span>{{ $t('energyAnalysisModule.monthOnMonth') }}</span>
           </div>
           <div class="ratio-content flex-column-between">
             <div class="flex-between content-row">
               <div class="ratio-item flex-column-center">
                 <div>{{ chainData.now ? chainData.now : "--" }}</div>
-                <span>今日用能({{showText.unit}})</span>
+                <span>{{ $t('energyAnalysisModule.todayEnergy') }}({{showText.unit}})</span>
               </div>
               <div class="ratio-item flex-column-center">
                 <div>{{ chainData.last ? chainData.last : "--" }}</div>
-                <span>昨日同期({{showText.unit}})</span>
+                <span>{{ $t('energyAnalysisModule.yesterdayEnergy') }}({{showText.unit}})</span>
               </div>
               <div class="ratio-change flex-column-center">
                 <div
@@ -80,19 +80,19 @@
                   <span>{{chainData.nowTrend > 0 ? ('+' + chainData.nowTrend) : chainData.nowTrend}}</span>
                   {{showText.unit}}
                 </div>
-                <div class="item-bottom">趋势</div>
+                <div class="item-bottom">{{ $t('energyAnalysisModule.trend') }}</div>
               </div>
             </div>
             <div class="flex-between content-row">
               <div class="ratio-item flex-column-center">
                 <div>{{ chainData.nowMonth ? chainData.nowMonth : "--" }}</div>
-                <span>当月用能({{showText.unit}})</span>
+                <span>{{ $t('energyAnalysisModule.currentMonthEnergy') }}({{showText.unit}})</span>
               </div>
               <div class="ratio-item flex-column-center">
                 <div>
                   {{ chainData.lastMonth ? chainData.lastMonth : "--" }}
                 </div>
-                <span>上月同期({{showText.unit}})</span>
+                <span>{{ $t('energyAnalysisModule.lastMonthEnergy') }}({{showText.unit}})</span>
               </div>
               <div class="ratio-change flex-column-center">
                 <div
@@ -118,17 +118,17 @@
                   }}</span> -->
                   {{showText.unit}}
                 </div>
-                <div class="item-bottom">趋势</div>
+                <div class="item-bottom">{{ $t('energyAnalysisModule.trend') }}</div>
               </div>
             </div>
             <div class="flex-between content-row">
               <div class="ratio-item flex-column-center">
                 <div>{{ chainData.nowYear ? chainData.nowYear : "--" }}</div>
-                <span>今年用能({{showText.unit}})</span>
+                <span>{{ $t('energyAnalysisModule.currentYearEnergy') }}({{showText.unit}})</span>
               </div>
               <div class="ratio-item flex-column-center">
                 <div>{{ chainData.lastYear ? chainData.lastYear : "--" }}</div>
-                <span>去年同期({{showText.unit}})</span>
+                <span>{{ $t('energyAnalysisModule.lastYearEnergy') }}({{showText.unit}})</span>
               </div>
               <div class="ratio-change flex-column-center">
                 <div
@@ -146,15 +146,9 @@
                 </div>
                 <div class="item-center">
                   <span>{{chainData.yearTrend > 0 ? ('+' + chainData.yearTrend) : chainData.yearTrend}}</span>
-                  <!-- <span v-if="chainData.yearTrend<=0">{{
-                    chainData.yearTrend ? chainData.yearTrend : "--"
-                  }}</span>
-                  <span v-if="chainData.yearTrend>0">{{
-                    chainData.yearTrend ? ('+'+chainData.yearTrend) : "--"
-                  }}</span> -->
                   {{showText.unit}}
                 </div>
-                <div class="item-bottom">趋势</div>
+                <div class="item-bottom">{{ $t('energyAnalysisModule.trend') }}</div>
               </div>
             </div>
           </div>

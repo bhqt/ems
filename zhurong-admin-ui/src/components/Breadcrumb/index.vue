@@ -2,19 +2,25 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ translateItemTitle(item) }}</span>
+        <a v-else @click.prevent="handleLink(item)">{{ translateItemTitle(item) }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
 </template>
 
 <script>
+import { translateMenuTitle } from '@/i18n/helper'
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
       levelList: null
     }
+  },
+  computed: {
+    ...mapGetters(['language'])
   },
   watch: {
     $route(route) {
@@ -29,6 +35,10 @@ export default {
     this.getBreadcrumb()
   },
   methods: {
+    translateItemTitle(item) {
+      const _ = this.language // 通过访问 language 建立响应式依赖
+      return translateMenuTitle(item.meta.title, item.meta.title)
+    },
     getBreadcrumb() {
       // only show routes with meta.title
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)

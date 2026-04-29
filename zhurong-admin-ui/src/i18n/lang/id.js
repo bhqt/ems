@@ -210,6 +210,91 @@ export default {
       title: 'Profil',
       info: 'Info Pribadi',
       password: 'Ubah Kata Sandi'
+    },
+    control: {
+      title: 'Kontrol Terpusat',
+      control: 'Kontrol Terpusat'
+    },
+    metering: {
+      title: 'Manajemen Pengukuran',
+      metering: 'Manajemen Pengukuran'
+    },
+    carbon: {
+      title: 'Manajemen Aset Karbon',
+      analysis: 'Analisis Karbon'
+    },
+    energyAnalysis: {
+      title: 'Analisis Energi',
+      energyOverview: 'Ikhtisar Energi',
+      energyFlow: 'Aliran Energi',
+      energyTrend: 'Tren Energi',
+      yoyAnalysis: 'Analisis YoY',
+      monAnalysis: 'Analisis MoM',
+      lossAnalysis: 'Analisis Kerugian',
+      expenseBoard: 'Papan Biaya',
+      expenseReport: 'Laporan Biaya'
+    },
+    digitaltwin: {
+      title: 'Kembar Digital',
+      digitaltwin: 'Kembar Digital'
+    },
+    inventory: {
+      title: 'Manajemen Persediaan',
+      attachment: 'Manajemen Lampiran',
+      purveyor: 'Manajemen Pemasok'
+    },
+    managementSystem: {
+      title: 'Sistem Manajemen',
+      prePlan: 'Manajemen Rencana',
+      process: 'Manajemen Proses',
+      regulation: 'Manajemen Peraturan',
+      standard: 'Manajemen Standar'
+    },
+    maintenance: {
+      title: 'Manajemen Pemeliharaan',
+      duty: 'Manajemen Tugas',
+      inspectionPlan: 'Rencana Inspeksi',
+      inspectionRecord: 'Catatan Inspeksi',
+      repairOrder: 'Pesanan Perbaikan',
+      schedule: 'Manajemen Jadwal',
+      exampleReport: 'Contoh Laporan',
+      myInspection: 'Inspeksi Saya',
+      myRepairOrder: 'Pesanan Saya',
+      itemTopology: 'Topologi Peralatan'
+    },
+    quota: {
+      title: 'Manajemen Kuota',
+      analysis: 'Analisis Kuota',
+      config: 'Konfigurasi Kuota',
+      monitor: 'Monitor Kuota'
+    },
+    report: {
+      title: 'Manajemen Laporan',
+      generate: 'Hasilkan Laporan',
+      template: 'Template Laporan'
+    },
+    newenergy: {
+      title: 'Energi Baru',
+      energyStorage: 'Penyimpanan Energi',
+      microGrid: 'Jaringan Mikro',
+      pvStation: 'Stasiun PV',
+      storageBattery: 'Baterai Penyimpanan'
+    },
+    analysisReport: {
+      title: 'Laporan Analisis',
+      analysisReport: 'Laporan Analisis'
+    },
+    dataQuery: {
+      title: 'Kueri Data',
+      electricParams: 'Parameter Listrik'
+    },
+    dataBoard: {
+      title: 'Papan Data',
+      dataBoard: 'Papan Data'
+    },
+    dashboard: {
+      title: 'Dasbor',
+      dashboard: 'Dasbor'
     }
   },
 
@@ -226,6 +311,8 @@ export default {
     sizeSmall: 'Kecil',
     sizeMini: 'Mini',
     theme: 'Pengaturan Tema',
+    themeLight: 'Tema Terang',
+    themeDark: 'Tema Gelap',
     language: 'Ganti Bahasa',
     search: 'Cari Menu'
   },
@@ -486,6 +573,7 @@ export default {
     resetPwdSuccess: 'Reset kata sandi berhasil, kata sandi baru: ',
     noData: 'Tidak ada data',
     loading: 'Memuat...',
+    clearingCache: 'Menghapus pengaturan cache dan memuat ulang, harap tunggu...',
     systemError: 'Kesalahan sistem',
     networkError: 'Kesalahan jaringan',
     timeout: 'Permintaan habis waktu',
@@ -762,6 +850,27 @@ export default {
         searchStandard: 'Masukkan nama standar',
         selectType: 'Pilih jenis energi'
       }
+    },
+    // Energy Balance Management
+    balance: {
+      title: 'Manajemen Keseimbangan Energi',
+      balanceId: 'ID Keseimbangan',
+      totalSupply: 'Total Pasokan',
+      totalConsumption: 'Total Konsumsi',
+      balanceAmount: 'Jumlah Keseimbangan',
+      balanceRate: 'Tingkat Keseimbangan',
+      balanceDate: 'Tanggal Keseimbangan',
+      calculate: 'Hitung Keseimbangan Energi'
+    },
+    // Energy Quality Management
+    quality: {
+      title: 'Manajemen Kualitas Energi',
+      qualityId: 'ID Catatan',
+      qualityIndex: 'Indeks Kualitas',
+      standardValue: 'Nilai Standar',
+      actualValue: 'Nilai Aktual',
+      deviation: 'Deviasi',
+      detectionTime: 'Waktu Deteksi'
     },
     // Energy Analysis
     analysis: {
@@ -1411,5 +1520,412 @@ export default {
         selectStatus: 'Pilih status'
       }
     }
+  },
+  // Profil Modul
+  profileModule: {
+    title: 'Profil',
+    personalInfo: 'Info Pribadi',
+    myOrder: 'Pesanan Saya',
+    myInspection: 'Inspeksi Saya',
+    orderCountMonthly: 'Jumlah Pesanan (Bulanan)',
+    inspectionCountMonthly: 'Jumlah Inspeksi (Bulanan)',
+    userName: 'Nama Pengguna',
+    nickName: 'Nama Panggilan',
+    sex: 'Jenis Kelamin',
+    phone: 'Telepon',
+    email: 'Email',
+    dept: 'Departemen',
+    post: 'Posisi',
+    role: 'Peran',
+    createTime: 'Waktu Dibuat',
+    editInfo: 'Edit Info',
+    resetPwd: 'Reset Kata Sandi',
+    pending: 'Tertunda',
+    completed: 'Selesai',
+    male: 'Pria',
+    female: 'Wanita',
+    unknown: 'Tidak Diketahui',
+    oldPassword: 'Kata Sandi Lama',
+    newPassword: 'Kata Sandi Baru',
+    confirmPassword: 'Konfirmasi Kata Sandi',
+    enterOldPwd: 'Masukkan kata sandi lama',
+    enterNewPwd: 'Masukkan kata sandi baru',
+    confirmNewPwd: 'Konfirmasi kata sandi baru',
+    pwdNotEmpty: 'Kata sandi lama tidak boleh kosong',
+    pwdLength: 'Panjang antara 6 dan 20 karakter',
+    confirmPwdNotEmpty: 'Konfirmasi kata sandi tidak boleh kosong',
+    pwdMismatch: 'Dua kata sandi tidak cocok',
+    modifySuccess: 'Berhasil dimodifikasi',
+    chart: {
+      quantity: 'Jumlah',
+      month: 'Bulan',
+      finished: 'Selesai',
+      unfinished: 'Belum Selesai'
+    },
+    placeholder: {
+      inputOldPwd: 'Masukkan kata sandi lama',
+      inputNewPwd: 'Masukkan kata sandi baru',
+      confirmNewPwd: 'Konfirmasi kata sandi baru'
+    }
+  },
+  // Kontrol Modul
+  controlModule: {
+    title: 'Kontrol Terpusat',
+    deviceManagement: 'Manajemen Perangkat',
+    areaControl: 'Kontrol Area',
+    remoteOperation: 'Operasi Jarak Jauh',
+    controlLog: 'Log Kontrol',
+    deviceControl: 'Kontrol Perangkat',
+    searchDevice: 'Cari perangkat',
+    deviceId: 'ID Perangkat',
+    deviceName: 'Nama Perangkat',
+    deviceType: 'Jenis Perangkat',
+    location: 'Lokasi',
+    status: 'Status',
+    lastOnlineTime: 'Terakhir Online',
+    action: 'Tindakan',
+    control: 'Kontrol',
+    online: 'Online',
+    offline: 'Offline',
+    waterSourceArea: 'Area Sumber Air',
+    middleStationArea: 'Area Stasiun Tengah',
+    highPoolArea: 'Area Kolam Tinggi',
+    wellArea: 'Area Sumur',
+    open: 'Buka',
+    close: 'Tutup',
+    areaControlSuffix: 'Kontrol Area',
+    operationType: 'Jenis Operasi',
+    targetDevice: 'Perangkat Target',
+    operationParams: 'Parameter Operasi',
+    securityVerify: 'Verifikasi Keamanan',
+    inputSecurityCode: 'Masukkan kode keamanan',
+    execute: 'Jalankan',
+    reset: 'Reset',
+    logId: 'ID Log',
+    operationTypeCol: 'Jenis Operasi',
+    target: 'Target',
+    operator: 'Operator',
+    operationTime: 'Waktu Operasi',
+    result: 'Hasil',
+    remark: 'Keterangan',
+    success: 'Berhasil',
+    fail: 'Gagal',
+    start: 'Mulai',
+    stop: 'Berhenti',
+    restart: 'Mulai Ulang',
+    adjust: 'Sesuaikan',
+    selectOperationType: 'Pilih jenis operasi',
+    selectDevice: 'Pilih perangkat',
+    inputParams: 'Masukkan parameter',
+    inputSecurityPwd: 'Masukkan kata sandi keamanan',
+    deviceNameLabel: 'Nama Perangkat',
+    controlCommand: 'Perintah Kontrol',
+    selectCommand: 'Pilih perintah',
+    params: 'Parameter',
+    inputParamsLabel: 'Masukkan parameter',
+    securityPwd: 'Kata Sandi Keamanan',
+    cancel: 'Batal',
+    confirm: 'Konfirmasi',
+    placeholder: {
+      searchDevice: 'Cari perangkat',
+      selectOperationType: 'Pilih jenis operasi',
+      selectDevice: 'Pilih perangkat',
+      inputParams: 'Masukkan parameter operasi',
+      inputSecurityCode: 'Masukkan kode keamanan',
+      selectCommand: 'Pilih perintah',
+      inputParams: 'Masukkan parameter',
+      inputSecurityPwd: 'Masukkan kata sandi keamanan'
+    }
+  },
+  // Metering Modul
+  meteringModule: {
+    title: 'Manajemen Metering',
+    meterManagement: 'Manajemen Meter',
+    calibrationPlan: 'Rencana Kalibrasi',
+    searchMeter: 'Cari meter',
+    meterId: 'ID Meter',
+    meterName: 'Nama Meter',
+    type: 'Jenis',
+    specification: 'Spesifikasi',
+    installationLocation: 'Lokasi Pemasangan',
+    status: 'Status',
+    lastCalibrationDate: 'Tanggal Kalibrasi Terakhir',
+    nextCalibrationDate: 'Tanggal Kalibrasi Berikutnya',
+    action: 'Tindakan',
+    detail: 'Detail',
+    calibrate: 'Kalibrasi',
+    planId: 'ID Rencana',
+    meter: 'Meter',
+    planCalibrationDate: 'Tanggal Kalibrasi Rencana',
+    executor: 'Pelaksana',
+    addPlan: 'Tambah Rencana',
+    calibrationRecord: 'Catatan Kalibrasi',
+    startDate: 'Tanggal Mulai',
+    endDate: 'Tanggal Selesai',
+    selectStatus: 'Pilih Status',
+    all: 'Semua',
+    pending: 'Tertunda',
+    executing: 'Sedang Dieksekusi',
+    completed: 'Selesai',
+    cancelled: 'Dibatalkan',
+    pass: 'Lulus',
+    fail: 'Gagal',
+    analysis: 'Analisis Data Kalibrasi',
+    qualificationTrend: 'Tren Tingkat Kualifikasi',
+    deviationDistribution: 'Distribusi Deviasi',
+    meterStatusStatistics: 'Statistik Status Meter',
+    export: 'Ekspor Catatan',
+    execute: 'Eksekusi',
+    viewMeterDetail: 'Lihat detail meter',
+    viewPlanDetail: 'Lihat rencana kalibrasi',
+    viewRecordDetail: 'Lihat catatan kalibrasi',
+    fillCompleteInfo: 'Silakan isi informasi rencana secara lengkap',
+    meterNotExist: 'Meter yang dipilih tidak ada',
+    planAdded: 'Rencana kalibrasi ditambahkan',
+    startExecute: 'Mulai menjalankan rencana kalibrasi',
+    planCompleted: 'Rencana kalibrasi selesai dijalankan',
+    exportSuccess: 'Catatan kalibrasi berhasil diekspor',
+    placeholder: {
+      searchMeter: 'Cari meter',
+      selectStatus: 'Pilih status',
+      startDate: 'Tanggal mulai',
+      endDate: 'Tanggal selesai',
+      selectMeter: 'Pilih meter',
+      selectDate: 'Pilih tanggal',
+      inputExecutor: 'Masukkan pelaksana',
+      inputRemark: 'Masukkan catatan'
+    }
+  },
+  dataBoardModule: {
+    title: 'Dasbor Data',
+    totalEnergy: 'Konsumsi Energi Total',
+    electricity: 'Listrik',
+    water: 'Air',
+    projectOverview: 'Gambaran Proyek',
+    projectTotal: 'Total Proyek',
+    meterTotal: 'Total Meter',
+    alarmRecord: 'Rekam Alarm',
+    equipmentStatus: 'Status Peralatan',
+    alarmInfo: 'Info Alarm',
+    todayEnergyTrend: 'Tren Energi Hari Ini',
+    todayEnergyStatistics: 'Statistik Energi Hari Ini',
+    electricityKwh: 'Listrik(kW·h)',
+    comprehensiveEnergy: 'Energi Komprehensif(kgce)',
+    todayWaterUsage: 'Penggunaan Air Hari Ini(t)',
+    dailyPowerCurve: 'Kurva Daya Harian',
+    todayWaterInfo: 'Info Air Hari Ini',
+    normal: 'Normal',
+    alarm: 'Alarm',
+    offline: 'Offline',
+    energyPlatform: 'Platform Energi',
+    carbonDataVisualizationPlatform: 'Platform Visualisasi Data Karbon'
+  },
+  dispatchModule: {
+    title: 'Manajemen Dispatching',
+    loadForecast: 'Prakiraan Beban',
+    priceForecast: 'Prakiraan Harga',
+    weatherForecast: 'Prakiraan Cuaca',
+    modelManagement: 'Manajemen Model',
+    costSaving: 'Penghematan Biaya',
+    efficiencyImprovement: 'Peningkatan Efisiensi',
+    emissionReduction: 'Pengurangan Emisi Karbon',
+    trendAnalysis: 'Analisis Tren'
+  },
+  toolModule: {
+    title: 'Alat Sistem',
+    basicInfo: 'Informasi Dasar',
+    columnInfo: 'Informasi Kolom',
+    genInfo: 'Informasi Generasi',
+    fieldProperties: 'Properti Bidang',
+    formProperties: 'Properti Form'
+  },
+  equipmentModule: {
+    title: 'Manajemen Peralatan',
+    equipmentInfo: 'Informasi Peralatan',
+    equipmentAlarm: 'Alarm Peralatan',
+    equipmentData: 'Data Peralatan',
+    equipmentDocuments: 'Dokumen Peralatan'
+  },
+  dataQueryModule: {
+    title: 'Kueri Data',
+    dailyRawData: 'Data Mentah Harian',
+    dailyPeakData: 'Data Puncak Harian'
+  },
+  componentsModule: {
+    title: 'Komponen',
+    icons: 'Ikon',
+    elementIcons: 'Ikon Element-UI'
+  },
+  autoeeModule: {
+    title: 'Otomasi',
+    stockInRecord: 'Rekaman Masuk',
+    stockOutRecord: 'Rekaman Keluar'
+  },
+  alarmModule: {
+    title: 'Manajemen Alarm',
+    alarmAnalysis: 'Analisis Alarm',
+    alarmHistory: 'Riwayat Alarm',
+    alarmRule: 'Aturan Alarm',
+    realtimeAlarm: 'Alarm Real-time',
+    paramName: 'Nama Parameter',
+    alarmTime: 'Waktu Alarm',
+    alarmInfo: 'Info Alarm',
+    alarmLevel: 'Tingkat Alarm',
+    alarmArea: 'Area Alarm',
+    alarmEquipment: 'Peralatan Alarm',
+    alarmVal: 'Nilai Alarm',
+    endTime: 'Waktu Akhir',
+    alarmParam: 'Parameter Alarm',
+    alarmCount: 'Jumlah Alarm',
+    alarmType: 'Tipe Alarm',
+    eventType: 'Tipe Acara',
+    condition1: 'Kondisi 1',
+    thresholdValue1: 'Ambang 1',
+    condition2: 'Kondisi 2',
+    thresholdValue2: 'Ambang 2',
+    userId: 'Pemberitahuan',
+    createOrderSwitch: 'Buat Pesanan Otomatis',
+    alarmSwitch: 'Tombol Alarm',
+    alarmDesc: 'Deskripsi Alarm',
+    addAlarm: 'Tambah Alarm Real-time',
+    editAlarm: 'Edit Alarm Real-time',
+    addAlarmRule: 'Tambah Aturan Alarm',
+    editAlarmRule: 'Edit Aturan Alarm'
+  },
+  analysisReportModule: {
+    title: 'Laporan Analisis',
+    generateReport: 'Generate Laporan Analisis',
+    print: 'Cetak',
+    reportName: 'Laporan Analisis',
+    energyStatistics: '1. Statistik Energi',
+    electricityUsage: '2. Penggunaan Listrik',
+    electricityFee: '3. Biaya Listrik',
+    waterUsage: '4. Penggunaan Air',
+    waterFee: '5. Biaya Air',
+    recurringRate: '6. Tingkat Pengulangan',
+    electricityTotal: 'Selama periode ini, total konsumsi listrik adalah {value}kW·h, konsumsi listrik maksimum adalah {max}kW·h, beban maksimum terjadi pada {date}.',
+    electricityFeeTotal: 'Selama periode ini, total biaya listrik adalah ￥{value}',
+    waterTotal: 'Selama periode ini, total konsumsi air adalah {value}t, konsumsi air maksimum adalah {max}t, aliran maksimum terjadi pada {date}.',
+    waterFeeTotal: 'Selama periode ini, total biaya air adalah ￥{value}',
+    suggestion: 'Saran: Tambahkan sirkuit pemantauan di ujung bawah trafo untuk mengumpulkan data akhir, tentukan konsumsi energi setiap titik pemantauan, dan periksa pemborosan listrik. Atau ganti pencahayaan dan peralatan lain di gedung dengan produk hemat energi untuk mengurangi konsumsi energi dan mencapai penghematan energi dan pengurangan emisi.'
+  },
+  cameraModule: {
+    title: 'Manajemen Kamera',
+    realtimeVideo: 'Video Real-time',
+    cameraConfig: 'Konfigurasi Kamera',
+    cameraName: 'Nama Kamera',
+    cameraBrand: 'Merek',
+    cameraSn: 'Nomor Seri',
+    cameraIp: 'IP Kamera',
+    cameraPort: 'Port',
+    cameraUser: 'Nama Pengguna',
+    cameraPassword: 'Kata Sandi',
+    cameraType: 'Tipe Kamera',
+    cameraStatus: 'Status',
+    cameraLocation: 'Lokasi Pemasangan',
+    addCamera: 'Tambah Kamera',
+    editCamera: 'Edit Kamera'
+  },
+  carbonAssetsModule: {
+    title: 'Manajemen Aset Karbon',
+    carbonAnalysis: 'Analisis Emisi Karbon',
+    monthlyCarbon: 'Emisi Karbon Bulanan',
+    yearlyCarbon: 'Emisi Karbon Tahunan',
+    currentMonth: 'Bulan Ini',
+    lastMonth: 'Bulan Lalu',
+    currentYear: 'Tahun Ini',
+    lastYear: 'Tahun Lalu',
+    trend: 'Tren',
+    energyType: 'Tipe Energi',
+    year: 'Tahun'
+  },
+  energyAnalysisModule: {
+    title: 'Analisis Energi',
+    energyOverview: 'Ringkasan Energi',
+    energyFlow: 'Aliran Energi',
+    energyTrend: 'Tren Penggunaan',
+    yoyAnalysis: 'Analisis YoY',
+    monAnalysis: 'Analisis MoM',
+    lossAnalysis: 'Analisis Kerugian',
+    expenseBoard: 'Papan Biaya',
+    expenseReport: 'Laporan Biaya',
+    monthOnMonth: 'MoM',
+    todayEnergy: 'Hari Ini',
+    yesterdayEnergy: 'Kemarin',
+    currentMonthEnergy: 'Bulan Ini',
+    lastMonthEnergy: 'Bulan Lalu',
+    currentYearEnergy: 'Tahun Ini',
+    lastYearEnergy: 'Tahun Lalu',
+    trend: 'Tren',
+    area: 'Area',
+    energyType: 'Tipe Energi'
+  },
+  itemizedAnalysisModule: {
+    title: 'Analisis Item',
+    itemizedOverview: 'Ringkasan Item',
+    energyType: 'Tipe Energi',
+    date: 'Tanggal',
+    search: 'Cari'
+  },
+  maintenanceModule: {
+    title: 'Manajemen Perawatan',
+    duty: 'Manajemen Tugas',
+    inspectionPlan: 'Rencana Inspeksi',
+    inspectionRecord: 'Catatan Inspeksi',
+    repairOrder: 'Perintah Perbaikan',
+    schedule: 'Manajemen Jadwal'
+  },
+  quotaModule: {
+    title: 'Manajemen Kuota',
+    analysis: 'Analisis Kuota',
+    config: 'Konfigurasi Kuota',
+    monitor: 'Monitor Kuota'
+  },
+  systemModule: {
+    title: 'Manajemen Sistem',
+    config: 'Konfigurasi Parameter',
+    dept: 'Manajemen Departemen',
+    dict: 'Manajemen Kamus',
+    menu: 'Manajemen Menu',
+    notice: 'Manajemen Pemberitahuan',
+    post: 'Manajemen Posisi',
+    role: 'Manajemen Peran',
+    user: 'Manajemen Pengguna'
+  },
+  digitaltwinModule: {
+    title: 'Digital Twin'
+  },
+  inventoryModule: {
+    title: 'Manajemen Inventaris',
+    attachment: 'Manajemen Lampiran',
+    purveyor: 'Manajemen Pemasok'
+  },
+  managementSystemModule: {
+    title: 'Sistem Manajemen',
+    prePlan: 'Manajemen Pra-Rencana',
+    process: 'Manajemen Proses',
+    regulation: 'Manajemen Peraturan',
+    standard: 'Manajemen Standar'
+  },
+  monitorModule: {
+    title: 'Monitor Sistem',
+    admin: 'Admin Sistem',
+    cache: 'Monitor Cache',
+    logininfor: 'Log Masuk',
+    online: 'Pengguna Online',
+    operlog: 'Log Operasi',
+    xxljob: 'Tugas Terjadwal'
+  },
+  newenergyModule: {
+    title: 'Energi Baru',
+    energyStorage: 'Penyimpanan Energi',
+    microGrid: 'Micro Grid',
+    pvStation: 'Stasiun PV',
+    storageBattery: 'Baterai Penyimpanan'
+  },
+  reportModule: {
+    title: 'Manajemen Laporan',
+    generate: 'Generate Laporan',
+    template: 'Template Laporan'
   }
 }

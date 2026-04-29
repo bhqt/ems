@@ -120,9 +120,9 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      this.$confirm('确定注销并退出系统吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm(this.$t('confirm.logout'), this.$t('common.prompt'), {
+        confirmButtonText: this.$t('button.confirm'),
+        cancelButtonText: this.$t('button.cancel'),
         type: 'warning'
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {

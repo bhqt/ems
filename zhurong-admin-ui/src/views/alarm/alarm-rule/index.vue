@@ -8,7 +8,7 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="参数名称" prop="paramName">
+      <el-form-item :label="$t('alarmModule.paramName')" prop="paramName">
         <el-select
           v-model="queryParams.paramName"
           placeholder="请选择参数名称"
@@ -24,7 +24,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="报警等级" prop="alarmLevel">
+      <el-form-item :label="$t('alarmModule.alarmLevel')" prop="alarmLevel">
         <el-select
           v-model="queryParams.alarmLevel"
           placeholder="请选择报警等级"
@@ -40,7 +40,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="事件类型" prop="eventType">
+      <el-form-item :label="$t('alarmModule.eventType')" prop="eventType">
         <el-select
           v-model="queryParams.eventType"
           placeholder="请选择事件类型"
@@ -56,7 +56,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="报警开关" prop="alarmSwitch">
+      <el-form-item :label="$t('alarmModule.alarmSwitch')" prop="alarmSwitch">
         <el-select
           v-model="queryParams.alarmSwitch"
           placeholder="请选择报警状态"
@@ -72,7 +72,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="提醒人" prop="userId">
+      <el-form-item :label="$t('alarmModule.userId')" prop="userId">
         <el-select v-model="queryParams.userId" placeholder="请选择报警提醒人" clearable @keyup.enter.native="handleQuery">
           <el-option
             v-for="item in userData"
@@ -157,28 +157,28 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="index" width="55" align="center" />
       <!-- <el-table-column label="参数id" align="center" prop="paramId" /> -->
-      <el-table-column label="参数名称" align="center" prop="paramName" >
+      <el-table-column :label="$t('alarmModule.paramName')" align="center" prop="paramName" >
         <template slot-scope="scope">
           {{ paramTypeFormat(scope.row.paramName) }}
         </template>
       </el-table-column>
 <!--      <el-table-column label="报警类型" align="center" prop="alarmType" />-->
-      <el-table-column label="报警等级" align="center" prop="alarmLevel">
+      <el-table-column :label="$t('alarmModule.alarmLevel')" align="center" prop="alarmLevel">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.alarm_level" :value="scope.row.alarmLevel"/>
         </template>
       </el-table-column>
-      <el-table-column label="事件类型" align="center" prop="eventType" >
+      <el-table-column :label="$t('alarmModule.eventType')" align="center" prop="eventType" >
         <template slot-scope="scope">
           {{ eventTypeFormat(scope.row.eventType) }}
         </template>
       </el-table-column>
-      <el-table-column label="条件1" align="center" prop="condition1" />
-      <el-table-column label="阈值1" align="center" prop="thresholdValue1" />
-      <el-table-column label="条件2" align="center" prop="condition2" />
-      <el-table-column label="阈值2" align="center" prop="thresholdValue2" />
-      <el-table-column label="提醒人" align="center" prop="nickName" />
-      <el-table-column label="自动创建工单" align="center" prop="alarmSwitch" >
+      <el-table-column :label="$t('alarmModule.condition1')" align="center" prop="condition1" />
+      <el-table-column :label="$t('alarmModule.thresholdValue1')" align="center" prop="thresholdValue1" />
+      <el-table-column :label="$t('alarmModule.condition2')" align="center" prop="condition2" />
+      <el-table-column :label="$t('alarmModule.thresholdValue2')" align="center" prop="thresholdValue2" />
+      <el-table-column :label="$t('alarmModule.userId')" align="center" prop="nickName" />
+      <el-table-column :label="$t('alarmModule.createOrderSwitch')" align="center" prop="alarmSwitch" >
         <template slot-scope="scope">
           <el-switch v-model="scope.row.createOrderSwitch"
           active-value="0"
@@ -186,7 +186,7 @@
           @change="handleCreareOrderSwitch(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="报警开关" align="center" prop="alarmSwitch" >
+      <el-table-column :label="$t('alarmModule.alarmSwitch')" align="center" prop="alarmSwitch" >
         <template slot-scope="scope">
           <el-switch v-model="scope.row.alarmSwitch"
           active-value="0"
@@ -233,7 +233,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="参数名称" prop="paramName">
+            <el-form-item :label="$t('alarmModule.paramName')" prop="paramName">
               <el-select v-model="form.paramName" placeholder="请选择参数名称">
                 <el-option
                   v-for="dict in dict.type.electric_type"
@@ -246,7 +246,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="报警等级" prop="alarmLevel">
+            <el-form-item :label="$t('alarmModule.alarmLevel')" prop="alarmLevel">
               <el-select v-model="form.alarmLevel" placeholder="请选择报警等级" style="width:100%">
                 <el-option
                   v-for="dict in dict.type.alarm_level"
@@ -261,7 +261,7 @@
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="条件1" prop="condition1">
+            <el-form-item :label="$t('alarmModule.condition1')" prop="condition1">
               <el-select v-model="form.condition1" placeholder="请选择条件1" style="width:100%">
                 <el-option
                   v-for="dict in dict.type.alarm_rule_condition"
@@ -274,14 +274,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="阈值1" prop="thresholdValue1">
+            <el-form-item :label="$t('alarmModule.thresholdValue1')" prop="thresholdValue1">
               <el-input-number v-model="form.thresholdValue1" controls-position="right" :min="0" placeholder="请输入阈值1" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="条件2" prop="condition2">
+            <el-form-item :label="$t('alarmModule.condition2')" prop="condition2">
               <el-select v-model="form.condition2" placeholder="请选择条件2" style="width:100%">
                 <el-option
                   v-for="dict in dict.type.alarm_rule_condition"
@@ -294,14 +294,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="阈值2" prop="thresholdValue2">
+            <el-form-item :label="$t('alarmModule.thresholdValue2')" prop="thresholdValue2">
               <el-input-number v-model="form.thresholdValue2" controls-position="right" :min="0" placeholder="请输入阈值2"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="事件类型" prop="eventType">
+            <el-form-item :label="$t('alarmModule.eventType')" prop="eventType">
               <el-select v-model="form.eventType" placeholder="请选择事件类型" style="width:100%">
                 <el-option
                   v-for="dict in dict.type.alarm_event_type"
@@ -314,7 +314,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="提醒人" prop="userId">
+            <el-form-item :label="$t('alarmModule.userId')" prop="userId">
               <el-select v-model="form.userId" placeholder="请选择报警提醒人" style="width:100%">
                 <el-option
                   v-for="item in userData"
@@ -328,14 +328,14 @@
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="报警描述" prop="alarmInfo">
+            <el-form-item :label="$t('alarmModule.alarmDesc')" prop="alarmInfo">
               <el-input v-model="form.alarmInfo" placeholder="请输入报警描述" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="自动创建工单" prop="alarmSwitch">
+            <el-form-item :label="$t('alarmModule.createOrderSwitch')" prop="alarmSwitch">
               <el-radio-group v-model="form.createOrderSwitch">
                 <el-radio
                   v-for="dict in dict.type.sys_normal_disable"
@@ -346,7 +346,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="报警开关" prop="alarmSwitch">
+            <el-form-item :label="$t('alarmModule.alarmSwitch')" prop="alarmSwitch">
               <el-radio-group v-model="form.alarmSwitch">
                 <el-radio
                 v-for="dict in dict.type.sys_normal_disable"

@@ -54,11 +54,11 @@ export default {
     getLevel(level) {
       switch (level) {
         case '0':
-          return '一般'
+          return this.$t('menu.alarm.level.general')
         case '1':
-          return '紧急'
+          return this.$t('menu.alarm.level.urgent')
         case '2':
-          return '严重'
+          return this.$t('menu.alarm.level.serious')
         default:
           break;
       }

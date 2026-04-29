@@ -5,10 +5,10 @@
   "author": "LionLi",
   "license": "MIT",
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "build:test": "vue-cli-service build --mode test",
-    "build:test-vite": "node --max_old_space_size=4096 ./node_modules/vite/bin/vite.js build --mode test",
-    "build:prod": "vue-cli-service build",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "build:test": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build --mode test",
+    "build:test-vite": "set NODE_OPTIONS=--openssl-legacy-provider && node --max_old_space_size=4096 ./node_modules/vite/bin/vite.js build --mode test",
+    "build:prod": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
     "preview": "node build/index.js --preview",
     "lint": "eslint --ext .js,.vue src"
   },

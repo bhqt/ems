@@ -3,14 +3,14 @@
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="translatedTitle(onlyOneChild.meta.title)" />
+          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="computedOnlyOneTitle" />
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="translatedTitle(item.meta.title)" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="computedTitle" />
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -31,6 +31,7 @@ import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
 import { translateMenuTitle } from '@/i18n/helper'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SidebarItem',
@@ -55,11 +56,24 @@ export default {
     this.onlyOneChild = null
     return {}
   },
-  methods: {
-    // 翻译菜单标题
-    translatedTitle(title) {
-      return translateMenuTitle(title, title)
+  computed: {
+    ...mapGetters(['language']),
+    // 计算当前菜单标题的翻译（响应式）
+    computedTitle() {
+      if (!this.item.meta || !this.item.meta.title) return ''
+      // 通过获取 language 来建立响应式依赖
+      const _ = this.language
+      return translateMenuTitle(this.item.meta.title, this.item.meta.title)
     },
+    // 计算唯一子菜单标题的翻译（响应式）
+    computedOnlyOneTitle() {
+      if (!this.onlyOneChild || !this.onlyOneChild.meta || !this.onlyOneChild.meta.title) return ''
+      // 通过获取 language 来建立响应式依赖
+      const _ = this.language
+      return translateMenuTitle(this.onlyOneChild.meta.title, this.onlyOneChild.meta.title)
+    }
+  },
+  methods: {
     hasOneShowingChild(children = [], parent) {
       if (!children) {
         children = [];

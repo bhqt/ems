@@ -192,7 +192,7 @@ export default {
       setTimeout(this.$modal.closeLoading(), 1000)
     },
     resetSetting() {
-      this.$modal.loading("正在清除设置缓存并刷新，请稍候...");
+      this.$modal.loading(this.$t('message.clearingCache'));
       this.$cache.local.remove("layout-setting")
       setTimeout("window.location.reload()", 1000)
     }

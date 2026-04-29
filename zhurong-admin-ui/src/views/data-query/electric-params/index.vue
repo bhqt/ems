@@ -5,7 +5,7 @@
     </div>
     <div class="content-data">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
-      <el-tab-pane label="日原始数据" name="origin">
+      <el-tab-pane :label="$t('dataQueryModule.dailyRawData')" name="origin">
         <div class="origin-content" v-if="activeName == 'origin'" v-loading="loading">
           <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
             <el-form-item label="起始时间">
@@ -55,7 +55,7 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="逐日极值数据" name="peak">
+      <el-tab-pane :label="$t('dataQueryModule.dailyPeakData')" name="peak">
         <div class="origin-content" v-if="activeName=='peak'" v-loading="loading">
           <el-form :model="peakParams" ref="peakParams" size="small" :inline="true">
             <el-form-item label="起始时间">

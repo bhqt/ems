@@ -197,7 +197,7 @@ export default {
         serious: '严重'
       },
       rule: '告警规则',
-      level: '告警级别'
+      levelLabel: '告警级别'
     },
     // 视频监控
     camera: {
@@ -240,6 +240,106 @@ export default {
       title: '个人中心',
       info: '个人信息',
       password: '修改密码'
+    },
+    // 集控化功能
+    control: {
+      title: '集控化功能',
+      control: '集控化功能'
+    },
+    // 计量管理
+    metering: {
+      title: '计量管理',
+      metering: '计量管理'
+    },
+    // 碳资产管理
+    carbon: {
+      title: '碳资产管理',
+      analysis: '碳分析'
+    },
+    // 能源分析
+    energyAnalysis: {
+      title: '能源分析',
+      energyOverview: '能源概览',
+      energyFlow: '能流图',
+      energyTrend: '用能趋势',
+      yoyAnalysis: '同比分析',
+      monAnalysis: '环比分析',
+      lossAnalysis: '损耗分析',
+      expenseBoard: '费用看板',
+      expenseReport: '费用报表'
+    },
+    // 数字孪生
+    digitaltwin: {
+      title: '数字孪生',
+      digitaltwin: '数字孪生'
+    },
+    // 库存管理
+    inventory: {
+      title: '库存管理',
+      attachment: '附件管理',
+      purveyor: '供应商管理'
+    },
+    // 管理系统
+    managementSystem: {
+      title: '管理系统',
+      prePlan: '预案管理',
+      process: '流程管理',
+      regulation: '制度管理',
+      standard: '标准管理'
+    },
+    // 维护管理
+    maintenance: {
+      title: '维护管理',
+      duty: '值班管理',
+      inspectionPlan: '巡检计划',
+      inspectionRecord: '巡检记录',
+      repairOrder: '维修工单',
+      schedule: '排班管理',
+      exampleReport: '示例报告',
+      myInspection: '我的巡检',
+      myRepairOrder: '我的工单',
+      itemTopology: '设备拓扑'
+    },
+    // 配额管理
+    quota: {
+      title: '配额管理',
+      analysis: '配额分析',
+      config: '配额配置',
+      monitor: '配额监控'
+    },
+    // 报表管理
+    report: {
+      title: '报表管理',
+      generate: '报表生成',
+      template: '报表模板'
+    },
+    // 新能源
+    newenergy: {
+      title: '新能源',
+      energyStorage: '储能',
+      microGrid: '微电网',
+      pvStation: '光伏电站',
+      storageBattery: '储能电池'
+    },
+    // 分析报告
+    analysisReport: {
+      title: '分析报告',
+      analysisReport: '分析报告'
+    },
+    // 数据查询
+    dataQuery: {
+      title: '数据查询',
+      electricParams: '电参查询'
+    },
+    // 数据看板
+    dataBoard: {
+      title: '数据看板',
+      dataBoard: '数据看板'
+    },
+    // 首页
+    dashboard: {
+      title: '首页',
+      dashboard: '首页'
     }
   },
 
@@ -256,6 +356,8 @@ export default {
     sizeSmall: '小型',
     sizeMini: '超小',
     theme: '主题设置',
+    themeLight: '浅色主题',
+    themeDark: '深色主题',
     language: '切换语言',
     search: '菜单搜索'
   },
@@ -515,6 +617,7 @@ export default {
     resetPwdSuccess: '重置密码成功，新密码是：',
     noData: '暂无数据',
     loading: '加载中...',
+    clearingCache: '正在清除设置缓存并刷新，请稍候...',
     systemError: '系统错误',
     networkError: '网络错误',
     timeout: '请求超时',
@@ -1471,5 +1574,412 @@ export default {
         selectStatus: '请选择处理状态'
       }
     }
+  },
+  // 个人中心模块
+  profileModule: {
+    title: '个人中心',
+    personalInfo: '个人信息',
+    myOrder: '我的工单',
+    myInspection: '我的巡检',
+    orderCountMonthly: '工单数量（月度）',
+    inspectionCountMonthly: '巡检数量（月度）',
+    userName: '用户名称',
+    nickName: '用户昵称',
+    sex: '性别',
+    phone: '手机号码',
+    email: '用户邮箱',
+    dept: '所属部门',
+    post: '所在岗位',
+    role: '所属角色',
+    createTime: '创建时间',
+    editInfo: '修改信息',
+    resetPwd: '重置密码',
+    pending: '待处理',
+    completed: '已完成',
+    male: '男',
+    female: '女',
+    unknown: '未知',
+    oldPassword: '旧密码',
+    newPassword: '新密码',
+    confirmPassword: '确认密码',
+    enterOldPwd: '请输入旧密码',
+    enterNewPwd: '请输入新密码',
+    confirmNewPwd: '请确认新密码',
+    pwdNotEmpty: '旧密码不能为空',
+    pwdLength: '长度在 6 到 20 个字符',
+    confirmPwdNotEmpty: '确认密码不能为空',
+    pwdMismatch: '两次输入的密码不一致',
+    modifySuccess: '修改成功',
+    chart: {
+      quantity: '数量',
+      month: '月份',
+      finished: '已完成',
+      unfinished: '未完成'
+    },
+    placeholder: {
+      inputOldPwd: '请输入旧密码',
+      inputNewPwd: '请输入新密码',
+      confirmNewPwd: '请确认新密码'
+    }
+  },
+  // 集控化功能模块
+  controlModule: {
+    title: '集控化功能',
+    deviceManagement: '设备管理',
+    areaControl: '区域控制',
+    remoteOperation: '远程操作',
+    controlLog: '控制日志',
+    deviceControl: '设备控制',
+    searchDevice: '搜索设备',
+    deviceId: '设备ID',
+    deviceName: '设备名称',
+    deviceType: '设备类型',
+    location: '位置',
+    status: '状态',
+    lastOnlineTime: '最后在线时间',
+    action: '操作',
+    control: '控制',
+    online: '在线',
+    offline: '离线',
+    waterSourceArea: '水源水区域',
+    middleStationArea: '中间站区域',
+    highPoolArea: '高位水池区域',
+    wellArea: '水井区域',
+    open: '开启',
+    close: '关闭',
+    areaControlSuffix: '区域控制',
+    operationType: '操作类型',
+    targetDevice: '目标设备',
+    operationParams: '操作参数',
+    securityVerify: '安全验证',
+    inputSecurityCode: '输入安全验证码',
+    execute: '执行远程操作',
+    reset: '重置',
+    logId: '日志ID',
+    operationTypeCol: '操作类型',
+    target: '操作目标',
+    operator: '操作人',
+    operationTime: '操作时间',
+    result: '操作结果',
+    remark: '备注',
+    success: '成功',
+    fail: '失败',
+    start: '启动',
+    stop: '停止',
+    restart: '重启',
+    adjust: '调整参数',
+    selectOperationType: '选择操作类型',
+    selectDevice: '选择设备',
+    inputParams: '输入操作参数',
+    inputSecurityPwd: '输入安全密码',
+    deviceNameLabel: '设备名称',
+    controlCommand: '控制指令',
+    selectCommand: '选择控制指令',
+    params: '参数',
+    inputParamsLabel: '输入参数',
+    securityPwd: '安全密码',
+    cancel: '取消',
+    confirm: '确定',
+    placeholder: {
+      searchDevice: '搜索设备',
+      selectOperationType: '选择操作类型',
+      selectDevice: '选择设备',
+      inputParams: '输入操作参数',
+      inputSecurityCode: '输入安全验证码',
+      selectCommand: '选择控制指令',
+      inputParams: '输入参数',
+      inputSecurityPwd: '输入安全密码'
+    }
+  },
+  // 计量管理模块
+  meteringModule: {
+    title: '计量管理',
+    meterManagement: '计量器具管理',
+    calibrationPlan: '校准计划管理',
+    searchMeter: '搜索计量器具',
+    meterId: '计量器具ID',
+    meterName: '计量器具名称',
+    type: '类型',
+    specification: '规格型号',
+    installationLocation: '安装位置',
+    status: '状态',
+    lastCalibrationDate: '上次校准日期',
+    nextCalibrationDate: '下次校准日期',
+    action: '操作',
+    detail: '详情',
+    calibrate: '校准',
+    planId: '计划ID',
+    meter: '计量器具',
+    planCalibrationDate: '计划校准日期',
+    executor: '执行人',
+    addPlan: '新增校准计划',
+    calibrationRecord: '校准记录',
+    startDate: '开始日期',
+    endDate: '结束日期',
+    selectStatus: '选择状态',
+    all: '全部',
+    pending: '待执行',
+    executing: '执行中',
+    completed: '已完成',
+    cancelled: '已取消',
+    pass: '合格',
+    fail: '不合格',
+    analysis: '校准数据分析',
+    qualificationTrend: '校准合格率趋势',
+    deviationDistribution: '偏差值分布',
+    meterStatusStatistics: '计量器具状态统计',
+    export: '导出记录',
+    execute: '执行',
+    viewMeterDetail: '查看计量器具',
+    viewPlanDetail: '查看校准计划',
+    viewRecordDetail: '查看校准记录',
+    fillCompleteInfo: '请填写完整的计划信息',
+    meterNotExist: '选择的计量器具不存在',
+    planAdded: '校准计划已添加',
+    startExecute: '开始执行校准计划',
+    planCompleted: '校准计划已执行完成',
+    exportSuccess: '校准记录已导出',
+    placeholder: {
+      searchMeter: '搜索计量器具',
+      selectStatus: '选择状态',
+      startDate: '开始日期',
+      endDate: '结束日期',
+      selectMeter: '选择计量器具',
+      selectDate: '选择日期',
+      inputExecutor: '输入执行人',
+      inputRemark: '输入备注'
+    }
+  },
+  dataBoardModule: {
+    title: '数据看板',
+    totalEnergy: '综合能耗',
+    electricity: '电',
+    water: '水',
+    projectOverview: '项目总览',
+    projectTotal: '项目总数',
+    meterTotal: '仪表总数',
+    alarmRecord: '报警记录',
+    equipmentStatus: '设备状态',
+    alarmInfo: '报警信息',
+    todayEnergyTrend: '今日能源趋势',
+    todayEnergyStatistics: '今日用能统计',
+    electricityKwh: '电(kW·h)',
+    comprehensiveEnergy: '综合能耗(kgce)',
+    todayWaterUsage: '今日用水(t)',
+    dailyPowerCurve: '日用电功率曲线',
+    todayWaterInfo: '今日用水信息',
+    normal: '正常',
+    alarm: '报警',
+    offline: '离线',
+    energyPlatform: '能源平台',
+    carbonDataVisualizationPlatform: '智碳数据可视化平台'
+  },
+  dispatchModule: {
+    title: '调度管理',
+    loadForecast: '负荷预测',
+    priceForecast: '价格预测',
+    weatherForecast: '天气预测',
+    modelManagement: '模型管理',
+    costSaving: '成本节约',
+    efficiencyImprovement: '效率提升',
+    emissionReduction: '碳排放减少',
+    trendAnalysis: '趋势分析'
+  },
+  toolModule: {
+    title: '系统工具',
+    basicInfo: '基本信息',
+    columnInfo: '字段信息',
+    genInfo: '生成信息',
+    fieldProperties: '组件属性',
+    formProperties: '表单属性'
+  },
+  equipmentModule: {
+    title: '设备管理',
+    equipmentInfo: '设备信息',
+    equipmentAlarm: '设备报警',
+    equipmentData: '设备数据',
+    equipmentDocuments: '设备资料'
+  },
+  dataQueryModule: {
+    title: '数据查询',
+    dailyRawData: '日原始数据',
+    dailyPeakData: '逐日极值数据'
+  },
+  componentsModule: {
+    title: '组件',
+    icons: 'Icons',
+    elementIcons: 'Element-UI Icons'
+  },
+  autoeeModule: {
+    title: '自动化',
+    stockInRecord: '入库记录',
+    stockOutRecord: '出库记录'
+  },
+  alarmModule: {
+    title: '报警管理',
+    alarmAnalysis: '报警分析',
+    alarmHistory: '报警历史',
+    alarmRule: '报警规则',
+    realtimeAlarm: '实时报警',
+    paramName: '参数名称',
+    alarmTime: '报警时间',
+    alarmInfo: '报警信息',
+    alarmLevel: '报警等级',
+    alarmArea: '报警区域',
+    alarmEquipment: '报警设备',
+    alarmVal: '报警值',
+    endTime: '结束时间',
+    alarmParam: '报警参数',
+    alarmCount: '报警数量',
+    alarmType: '报警类型',
+    eventType: '事件类型',
+    condition1: '条件1',
+    thresholdValue1: '阈值1',
+    condition2: '条件2',
+    thresholdValue2: '阈值2',
+    userId: '提醒人',
+    createOrderSwitch: '自动创建工单',
+    alarmSwitch: '报警开关',
+    alarmDesc: '报警描述',
+    addAlarm: '添加实时报警',
+    editAlarm: '修改实时报警',
+    addAlarmRule: '添加报警规则',
+    editAlarmRule: '修改报警规则'
+  },
+  analysisReportModule: {
+    title: '分析报告',
+    generateReport: '生成分析报告',
+    print: '打印',
+    reportName: '分析报告',
+    energyStatistics: '1、用能统计',
+    electricityUsage: '2、用电量',
+    electricityFee: '3、电费',
+    waterUsage: '4、用水量',
+    waterFee: '5、水费',
+    recurringRate: '6、复费率',
+    electricityTotal: '本周期内，共计使用电力{value}kW·h，最大用电量{max}kW·h，最大负荷发生时间{date}。',
+    electricityFeeTotal: '本周期内，共计使用电费￥{value} 元',
+    waterTotal: '本周期内，共计使用水{value}t，最大用水量{max}t，最大流量发生时间{date}。',
+    waterFeeTotal: '本周期内，共计使用水费￥{value} 元',
+    suggestion: '建议：通过在变压器下端增多监测回路，收集末端数据，判断各个监测点的能耗情况，有无电量浪费现象。或将楼宇内照明等设备更换节能产品。降低能耗，实现节能减排。'
+  },
+  cameraModule: {
+    title: '摄像头管理',
+    realtimeVideo: '实时视频',
+    cameraConfig: '摄像头配置',
+    cameraName: '摄像头名称',
+    cameraBrand: '品牌',
+    cameraSn: '序列号',
+    cameraIp: '摄像头IP',
+    cameraPort: '端口',
+    cameraUser: '用户名',
+    cameraPassword: '密码',
+    cameraType: '摄像头类型',
+    cameraStatus: '状态',
+    cameraLocation: '安装位置',
+    addCamera: '添加摄像头',
+    editCamera: '修改摄像头'
+  },
+  carbonAssetsModule: {
+    title: '碳资产管理',
+    carbonAnalysis: '碳排放分析',
+    monthlyCarbon: '本月碳排放',
+    yearlyCarbon: '本年碳排放',
+    currentMonth: '当月',
+    lastMonth: '上月同期',
+    currentYear: '当年',
+    lastYear: '去年同期',
+    trend: '趋势',
+    energyType: '分类能耗',
+    year: '年份'
+  },
+  energyAnalysisModule: {
+    title: '能源分析',
+    energyOverview: '能源概览',
+    energyFlow: '能流图',
+    energyTrend: '用能趋势',
+    yoyAnalysis: '同比分析',
+    monAnalysis: '环比分析',
+    lossAnalysis: '损耗分析',
+    expenseBoard: '费用看板',
+    expenseReport: '费用报表',
+    monthOnMonth: '环比',
+    todayEnergy: '今日用能',
+    yesterdayEnergy: '昨日同期',
+    currentMonthEnergy: '当月用能',
+    lastMonthEnergy: '上月同期',
+    currentYearEnergy: '今年用能',
+    lastYearEnergy: '去年同期',
+    trend: '趋势',
+    area: '区域',
+    energyType: '能源类型'
+  },
+  itemizedAnalysisModule: {
+    title: '分项分析',
+    itemizedOverview: '分项概览',
+    energyType: '能源类型',
+    date: '日期',
+    search: '查询'
+  },
+  maintenanceModule: {
+    title: '维护管理',
+    duty: '值班管理',
+    inspectionPlan: '巡检计划',
+    inspectionRecord: '巡检记录',
+    repairOrder: '维修工单',
+    schedule: '排班管理'
+  },
+  quotaModule: {
+    title: '配额管理',
+    analysis: '配额分析',
+    config: '配额配置',
+    monitor: '配额监控'
+  },
+  systemModule: {
+    title: '系统管理',
+    config: '参数配置',
+    dept: '部门管理',
+    dict: '字典管理',
+    menu: '菜单管理',
+    notice: '公告通知',
+    post: '岗位管理',
+    role: '角色管理',
+    user: '用户管理'
+  },
+  digitaltwinModule: {
+    title: '数字孪生'
+  },
+  inventoryModule: {
+    title: '库存管理',
+    attachment: '附件管理',
+    purveyor: '供应商管理'
+  },
+  managementSystemModule: {
+    title: '管理系统',
+    prePlan: '预案管理',
+    process: '流程管理',
+    regulation: '制度管理',
+    standard: '标准管理'
+  },
+  monitorModule: {
+    title: '系统监控',
+    admin: '系统管理员',
+    cache: '缓存监控',
+    logininfor: '登录日志',
+    online: '在线用户',
+    operlog: '操作日志',
+    xxljob: '定时任务'
+  },
+  newenergyModule: {
+    title: '新能源',
+    energyStorage: '储能',
+    microGrid: '微电网',
+    pvStation: '光伏电站',
+    storageBattery: '储能电池'
+  },
+  reportModule: {
+    title: '报表管理',
+    generate: '报表生成',
+    template: '报表模板'
   }
 }

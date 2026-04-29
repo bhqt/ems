@@ -7,7 +7,7 @@
     append-to-body
   >
     <el-tabs v-model="activeTab" type="border-card">
-      <el-tab-pane label="入库记录" name="stockIn">
+      <el-tab-pane :label="$t('autoeeModule.stockInRecord')" name="stockIn">
         <!-- 入库记录表格 -->
         <el-table
           :data="stockInData"
@@ -42,7 +42,7 @@
           @pagination="loadStockInData"
         />
       </el-tab-pane>
-      <el-tab-pane label="出库记录" name="stockOut">
+      <el-tab-pane :label="$t('autoeeModule.stockOutRecord')" name="stockOut">
         <!-- 出库记录表格 -->
         <el-table
           :data="stockOutData"

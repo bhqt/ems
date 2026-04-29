@@ -4,7 +4,7 @@
       <el-col :lg="14" :sm="24" :xs="24">
         <el-card class="box-card">
           <div class="overview-title">
-            <div class="overview-icon"></div><span>个人信息</span>
+            <div class="overview-icon"></div><span>{{ $t('profileModule.personalInfo') }}</span>
           </div>
           <div class="info-content">
             <div style="flex: 1;text-align:center;">
@@ -12,20 +12,20 @@
             </div>
             <div class="info-box">
               <div class="info-body">
-                <div><svg-icon icon-class="user" style="margin-right:6px;"/>用户名称：{{user.userName}}</div>
-                <div><svg-icon icon-class="nickname" style="margin-right:6px;"/>用户昵称：{{user.nickName}}</div>
-                <div><svg-icon icon-class="sex" style="margin-right:6px;"/>性别：{{handleSex(user.sex)}}</div>
-                <div><svg-icon icon-class="phone" style="margin-right:6px;"/>手机号码：{{user.phonenumber || '--'}}</div>
-                <div style="height:21px;"><svg-icon icon-class="email" style="margin-right:6px;"/>用户邮箱：{{user.email || '--'}}</div>
+                <div><svg-icon icon-class="user" style="margin-right:6px;"/>{{ $t('profileModule.userName') }}：{{user.userName}}</div>
+                <div><svg-icon icon-class="nickname" style="margin-right:6px;"/>{{ $t('profileModule.nickName') }}：{{user.nickName}}</div>
+                <div><svg-icon icon-class="sex" style="margin-right:6px;"/>{{ $t('profileModule.sex') }}：{{handleSex(user.sex)}}</div>
+                <div><svg-icon icon-class="phone" style="margin-right:6px;"/>{{ $t('profileModule.phone') }}：{{user.phonenumber || '--'}}</div>
+                <div style="height:21px;"><svg-icon icon-class="email" style="margin-right:6px;"/>{{ $t('profileModule.email') }}：{{user.email || '--'}}</div>
               </div>
               <div class="info-body">
-                <div><svg-icon icon-class="tree" style="margin-right:6px;"/>所属部门：{{ user.dept ? (user.dept.deptName || '--') : '--'}}</div>
-                <div><svg-icon icon-class="post" style="margin-right:6px;"/>所在岗位：{{postGroup || '--'}}</div>
-                <div><svg-icon icon-class="peoples" style="margin-right:6px;"/>所属角色：{{roleGroup || '--'}}</div>
-                <div><svg-icon icon-class="date" style="margin-right:6px;"/>创建时间：{{parseTime(user.createTime, '{y}-{m}-{d}')}}</div>
+                <div><svg-icon icon-class="tree" style="margin-right:6px;"/>{{ $t('profileModule.dept') }}：{{ user.dept ? (user.dept.deptName || '--') : '--'}}</div>
+                <div><svg-icon icon-class="post" style="margin-right:6px;"/>{{ $t('profileModule.post') }}：{{postGroup || '--'}}</div>
+                <div><svg-icon icon-class="peoples" style="margin-right:6px;"/>{{ $t('profileModule.role') }}：{{roleGroup || '--'}}</div>
+                <div><svg-icon icon-class="date" style="margin-right:6px;"/>{{ $t('profileModule.createTime') }}：{{parseTime(user.createTime, '{y}-{m}-{d}')}}</div>
                 <div style="height:21px;">
-                  <el-button size="mini" type="primary" @click="openInfoDialog">修改信息</el-button>
-                  <el-button size="mini" type="primary" @click="openPwdDialog">重置密码</el-button>
+                  <el-button size="mini" type="primary" @click="openInfoDialog">{{ $t('profileModule.editInfo') }}</el-button>
+                  <el-button size="mini" type="primary" @click="openPwdDialog">{{ $t('profileModule.resetPwd') }}</el-button>
                 </div>
               </div>
             </div>
@@ -35,24 +35,20 @@
       <el-col :lg="5" :sm="12" :xs="12">
         <el-card class="box-card">
           <div class="overview-title">
-            <div class="overview-icon"></div><span>我的工单</span>
+            <div class="overview-icon"></div><span>{{ $t('profileModule.myOrder') }}</span>
           </div>
           <div class="count-body">
             <div class="count-item" @click="toRepairOrder">
-              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">待处理</div>
+              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">{{ $t('profileModule.pending') }}</div>
               <div class="count-num">
                 {{repairCount.inProgress}}
               </div>
-              <!-- <div style="color:var(--theme-color);font-size:36px;font-weight:bold;">{{repairCount.inProgress}}</div>
-              <div style="color:var(--base-color-3);font-size:14px;">待处理</div> -->
             </div>
             <div class="count-item" @click="toRepairOrder">
-              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">已完成</div>
+              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">{{ $t('profileModule.completed') }}</div>
               <div class="count-num">
                 {{repairCount.completed}}
               </div>
-              <!-- <div style="color:var(--theme-color);font-size:36px;font-weight:bold;">{{repairCount.completed}}</div>
-              <div style="color:var(--base-color-3);font-size:14px;">已完成</div> -->
             </div>
           </div>
         </el-card>
@@ -60,24 +56,20 @@
       <el-col :lg="5" :sm="12" :xs="12">
         <el-card class="box-card">
           <div class="overview-title">
-            <div class="overview-icon"></div><span>我的巡检</span>
+            <div class="overview-icon"></div><span>{{ $t('profileModule.myInspection') }}</span>
           </div>
           <div class="count-body">
             <div class="count-item" @click="toInspection">
-              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">待处理</div>
+              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">{{ $t('profileModule.pending') }}</div>
               <div class="count-num">
                 {{inspectionCount.inProgress}}
               </div>
-              <!-- <div style="color:var(--theme-color);font-size:36px;font-weight:bold;">{{inspectionCount.inProgress}}</div>
-              <div style="color:var(--base-color-3);font-size:14px;">待处理</div> -->
             </div>
             <div class="count-item" @click="toInspection">
-              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">已完成</div>
+              <div style="font-size:14px;color:var(--base-color-3);padding: 8px 10px 0;">{{ $t('profileModule.completed') }}</div>
               <div class="count-num">
                 {{inspectionCount.completed}}
               </div>
-              <!-- <div style="color:var(--theme-color);font-size:36px;font-weight:bold;">{{inspectionCount.completed}}</div>
-              <div style="color:var(--base-color-3);font-size:14px;">已完成</div> -->
             </div>
           </div>
         </el-card>
@@ -87,17 +79,17 @@
       <el-col :lg="12" :sm="24" :xs="24">
         <el-card class="box-card" style="height: 480px;margin-bottom: 20px;">
           <div class="overview-title">
-            <div class="overview-icon"></div><span>工单数量（月度）</span>
+            <div class="overview-icon"></div><span>{{ $t('profileModule.orderCountMonthly') }}</span>
           </div>
-          <OrderChartVue style="height:calc(100% - 41px);" height="100%" :setInfo="{yName: '数量', xName: '月份', legendName: ['已完成', '未完成']}" :barData="repairs"/>
+          <OrderChartVue style="height:calc(100% - 41px);" height="100%" :setInfo="{yName: $t('profileModule.chart.quantity'), xName: $t('profileModule.chart.month'), legendName: [$t('profileModule.chart.finished'), $t('profileModule.chart.unfinished')]}" :barData="repairs"/>
         </el-card>
       </el-col>
       <el-col :lg="12" :sm="24" :xs="24">
         <el-card class="box-card" style="height: 480px;margin-bottom: 20px;">
           <div class="overview-title">
-            <div class="overview-icon"></div><span>巡检数量（月度）</span>
+            <div class="overview-icon"></div><span>{{ $t('profileModule.inspectionCountMonthly') }}</span>
           </div>
-          <OrderChartVue style="height:calc(100% - 41px);" height="100%" :setInfo="{yName: '数量', xName: '月份', legendName: ['已完成', '未完成']}" :barData="inspections"/>
+          <OrderChartVue style="height:calc(100% - 41px);" height="100%" :setInfo="{yName: $t('profileModule.chart.quantity'), xName: $t('profileModule.chart.month'), legendName: [$t('profileModule.chart.finished'), $t('profileModule.chart.unfinished')]}" :barData="inspections"/>
         </el-card>
       </el-col>
     </el-row>
@@ -130,11 +122,9 @@ export default {
       activeTab: "userinfo",
       infoDialog: false,
       pwdDialog: false,
-      title: '修改信息',
+      title: this.$t('profileModule.editInfo'),
       repairCount: {},
       inspectionCount: {},
-      // repairPie: [],
-      // inspectionPie: [],
       repairs: {},
       inspections: {},
       loading: true,
@@ -159,31 +149,19 @@ export default {
       if(!sex) return '--'
       switch (sex) {
         case '1':
-          return '女'
+          return this.$t('profileModule.female')
         case '0':
-          return '男'
+          return this.$t('profileModule.male')
         case '2':
-          return '未知'
+          return this.$t('profileModule.unknown')
         default:
           break;
       }
     },
-    // 查询我的工单
     getRepairOeder() {
       countRepairAndInspection().then(res => {
-        // this.repairCount = {
-        //   residueName: '工单数量',
-        //   residueValue: res.data.repairCount.total,
-        //   residueClass: '#3671e8',
-        // }
-        // this.inspectionCount = {
-        //   residueName: '巡检数量',
-        //   residueValue: res.data.inspectionCount.total,
-        //   residueClass: '#3671e8',
-        // }
         this.repairCount = res.data.repairCount
         this.inspectionCount = res.data.inspectionCount
-        // 柱状图数据
         let repairData = {
           xData: [],
           currentData: [],
@@ -208,30 +186,24 @@ export default {
         this.inspections = inspectionData
       })
     },
-    // 打开修改信息弹窗
     openInfoDialog() {
-      this.title = '修改信息'
+      this.title = this.$t('profileModule.editInfo')
       this.infoDialog = true
     },
-    // 重置密码
     openPwdDialog() {
-      this.title = '重置密码'
+      this.title = this.$t('profileModule.resetPwd')
       this.pwdDialog = true
     },
-    // 关闭信息修改弹窗
     closeInfoDialog(value) {
       if(value) this.getUser()
       this.infoDialog = false
     },
-    // 关闭重置密码弹窗
     closePwdDialog(value) {
       this.pwdDialog = false
     },
-    // 跳转我的工单
     toRepairOrder() {
       this.$router.push({path: '/maintenance/my-order'})
     },
-    // 跳转我的巡检
     toInspection() {
       this.$router.push({path: '/maintenance/my-inspection'})
     },
@@ -263,10 +235,6 @@ export default {
 .count-item {
   cursor: pointer;
   height:40%;
-  /* display:flex; */
-  /* flex-direction:column; */
-  /* align-items:center; */
-  /* justify-content:center; */
   width:70%;
   border:1px solid var(--border-color-1);
   transition: background 1s;
@@ -309,7 +277,6 @@ export default {
   flex:3;
   display:flex;
   height:100%;
-  /* border-right: 1px solid var(--base-color-1); */
 }
 .info-body {
   flex: 1;
