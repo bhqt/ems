@@ -10,27 +10,27 @@
       :inline="true"
     >
       <!-- 循环生成查询表单项 -->
-      <el-form-item class="a_query_form_item" label="路线编号" prop="routeCode">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.pathCode')" prop="routeCode">
         <el-input
           clearable
-          placeholder="请输入路线编号"
+          :placeholder="$t('patrolModule.pathCodeRequired')"
           v-model="pageData.queryParams.routeCode"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="路线名称" prop="routeName">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.pathName')" prop="routeName">
         <el-input
           clearable
-          placeholder="请输入路线名称"
+          :placeholder="$t('patrolModule.pathNameRequired')"
           v-model="pageData.queryParams.routeName"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="状态" prop="patrolRouteStatus">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.pathStatus')" prop="patrolRouteStatus">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolRouteStatus"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -53,7 +53,7 @@
           size="small"
           @click="handleAdd"
           v-hasPermi="['autoee:patrolPath:add']"
-        >新增
+        >{{ $t('common.add') }}
         </el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
@@ -65,7 +65,7 @@
           :disabled="pageData.singleSelected"
           @click="handleUpdate"
           v-hasPermi="['autoee:patrolPath:edit']"
-        >编辑
+        >{{ $t('common.edit') }}
         </el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
@@ -77,7 +77,7 @@
           :disabled="!checkTableDataHasChanged"
           @click="submitTableEdit"
           v-hasPermi="['autoee:patrolPath:edit']"
-        >提交列表编辑
+        >{{ $t('common.submitEdit') }}
         </el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
@@ -89,7 +89,7 @@
           :disabled="pageData.multipleSelected"
           @click="handleDeleteMuti"
           v-hasPermi="['autoee:patrolPath:remove']"
-        >删除
+        >{{ $t('common.delete') }}
         </el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
@@ -100,7 +100,7 @@
           size="small"
           @click="handleDeleteAllData"
           v-hasPermi="['autoee:patrolPath:remove']"
-        >清空
+        >{{ $t('common.clear') }}
         </el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
@@ -111,7 +111,7 @@
           size="small"
           @click="handleImport"
           v-hasPermi="['autoee:patrolPath:import']"
-        >导入
+        >{{ $t('common.import') }}
         </el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
@@ -122,17 +122,17 @@
           size="small"
           @click="handleExport"
           v-hasPermi="['autoee:patrolPath:export']"
-        >导出
+        >{{ $t('common.export') }}
         </el-button>
       </el-col>
       <el-col :span="0.5">
         <el-divider direction="vertical"/>
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
+        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">{{ $t('common.query') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="pageData.showSearchTool" @queryTable="getList()"></right-toolbar>
     </el-row>
@@ -154,14 +154,14 @@
       <el-table-column type="selection" width="55" align="center"/>
 
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
-      <el-table-column v-if="true" label="路线编号" align="center" prop="routeCode" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="路线名称" align="center" prop="routeName" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="状态" align="center" prop="patrolRouteStatus" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.pathCode')" align="center" prop="routeCode" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('patrolModule.pathName')" align="center" prop="routeName" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('patrolModule.pathStatus')" align="center" prop="patrolRouteStatus" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.patrol_route_status" :value="scope.row.patrolRouteStatus"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="巡更点列表" align="center" prop="pointList" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.pathPoints')" align="center" prop="pointList" sortable="custom" :sort-orders="['descending', 'ascending']">
         <!--        <template slot-scope="scope">-->
         <!--          <dict-tag :options="dict.type.a_patrol_point" :value="scope.row.pointList" />-->
         <!--        </template>-->
@@ -181,51 +181,51 @@
           <span v-else>-</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="备注" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="所属用户" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.remark')" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.user')" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.userId"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="所属部门" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.dept')" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_dept" :value="scope.row.deptId"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建者" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="创建时间" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.createUser')" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.createTime')" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="更新者" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="更新时间" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.updateUser')" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('common.updateTime')" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="删除标志" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除者" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除时间" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.deleteFlag')" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleteUser')" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleteTime')" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatTime(scope.row.delTime) }}</span>
         </template>
       </el-table-column>
 
       <!-- 操作列 -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="true" size="small" link icon="el-icon-edit" type="text"
                      @click="handleUpdate(scope.row)" v-hasPermi="['autoee:patrolPath:edit']"
-          >编辑
+          >{{ $t('common.edit') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-zoom-in" type="text"
                      @click="handleShowDetail(scope.row)" v-hasPermi="['autoee:patrolPath:list']"
-          >查看
+          >{{ $t('common.view') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-delete" type="text"
                      @click="handleDelete(scope.row)" v-hasPermi="['autoee:patrolPath:remove']"
-          >删除
+          >{{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

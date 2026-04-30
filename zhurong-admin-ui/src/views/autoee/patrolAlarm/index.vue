@@ -10,19 +10,19 @@
       :inline="true"
     >
       <!-- 循环生成查询表单项 -->
-      <el-form-item class="a_query_form_item" label="报警编号" prop="alarmNo">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.alarmName')" prop="alarmNo">
         <el-input
           clearable
-          placeholder="请输入报警编号"
+          :placeholder="$t('patrolModule.alarmNameRequired')"
           v-model="pageData.queryParams.alarmNo"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="巡更计划" prop="patrolPlanId">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.planName')" prop="patrolPlanId">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolPlanId"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -33,11 +33,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="巡更任务" prop="patrolTaskId">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.taskName')" prop="patrolTaskId">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolTaskId"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -48,11 +48,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="巡更人员" prop="patrolUserId">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.taskAssignee')" prop="patrolUserId">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolUserId"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -63,11 +63,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="报警类型" prop="patrolAlarmType">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.alarmLevel')" prop="patrolAlarmType">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolAlarmType"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -78,25 +78,25 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item_datetime_between" label="报警时间">
+      <el-form-item class="a_query_form_item_datetime_between" :label="$t('patrolModule.alarmTime')">
         <el-date-picker
           v-model="dateRangePatrolAlarmTime"
           type="datetimerange"
           unlink-panels
           style="width: 360px"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          start-placeholder="$t('common.startTime')"
+          end-placeholder="$t('common.endTime')"
           format="yyyy-MM-dd HH:mm:ss"
           value-format="yyyy-MM-dd HH:mm:ss"
           range-separator="-"
           clearable
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="报警状态" prop="patrolAlarmStatus">
+      <el-form-item class="a_query_form_item" :label="$t('patrolModule.alarmStatus')" prop="patrolAlarmStatus">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolAlarmStatus"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -119,7 +119,7 @@
           size="small"
           @click="handleAdd"
           v-hasPermi="['autoee:patrolAlarm:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -130,7 +130,7 @@
           :disabled="pageData.singleSelected"
           @click="handleUpdate"
           v-hasPermi="['autoee:patrolAlarm:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -141,7 +141,7 @@
           :disabled="!checkTableDataHasChanged"
           @click="submitTableEdit"
           v-hasPermi="['autoee:patrolAlarm:edit']"
-        >提交列表编辑</el-button>
+        >{{ $t('common.submitEdit') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -152,7 +152,7 @@
           :disabled="pageData.multipleSelected"
           @click="handleDeleteMuti"
           v-hasPermi="['autoee:patrolAlarm:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -162,7 +162,7 @@
           size="small"
           @click="handleDeleteAllData"
           v-hasPermi="['autoee:patrolAlarm:remove']"
-        >清空</el-button>
+        >{{ $t('common.clear') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -172,7 +172,7 @@
           size="small"
           @click="handleImport"
           v-hasPermi="['autoee:patrolAlarm:import']"
-        >导入</el-button>
+        >{{ $t('common.import') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -182,16 +182,16 @@
           size="small"
           @click="handleExport"
           v-hasPermi="['autoee:patrolAlarm:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <el-col :span="0.5">
         <el-divider direction="vertical" />
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
+        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">{{ $t('common.search') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="pageData.showSearchTool" @queryTable="getList()"></right-toolbar>
     </el-row>
@@ -213,94 +213,94 @@
       <el-table-column type="selection" width="55" align="center"/>
 
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
-      <el-table-column v-if="true" label="报警编号" align="center" prop="alarmNo" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="巡更计划" align="center" prop="patrolPlanId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.alarmName')" align="center" prop="alarmNo" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('patrolModule.planName')" align="center" prop="patrolPlanId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.a_patrol_plan" :value="scope.row.patrolPlanId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="巡更任务" align="center" prop="patrolTaskId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.taskName')" align="center" prop="patrolTaskId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.a_patrol_task" :value="scope.row.patrolTaskId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="巡更人员" align="center" prop="patrolUserId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.taskAssignee')" align="center" prop="patrolUserId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.patrolUserId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="报警类型" align="center" prop="patrolAlarmType" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.alarmLevel')" align="center" prop="patrolAlarmType" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.patrol_alarm_type" :value="scope.row.patrolAlarmType"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="报警时间" align="center" prop="patrolAlarmTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.alarmTime')" align="center" prop="patrolAlarmTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.patrolAlarmTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="报警内容" align="center" prop="patrolAlarmContent" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="报警状态" align="center" prop="patrolAlarmStatus" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.alarmDesc')" align="center" prop="patrolAlarmContent" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('patrolModule.alarmStatus')" align="center" prop="patrolAlarmStatus" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.patrol_alarm_status" :value="scope.row.patrolAlarmStatus"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="处理人" align="center" prop="handleUserId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('patrolModule.taskAssignee')" align="center" prop="handleUserId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.handleUserId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="处理时间" align="center" prop="handleTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('patrolModule.taskEndTime')" align="center" prop="handleTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.handleTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="处理描述" align="center" prop="handleDesc" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="备注" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="所属用户" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('patrolModule.recordDesc')" align="center" prop="handleDesc" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.remark')" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.user')" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.userId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="所属部门" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.dept')" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_dept" :value="scope.row.deptId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建者" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="创建时间" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.createUser')" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.createTime')" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="更新者" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="更新时间" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.updateUser')" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('common.updateTime')" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="删除标志" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除者" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除时间" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.deleteFlag')" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleteUser')" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleteTime')" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.delTime) }}</span>
         </template>
       </el-table-column>
 
       <!-- 操作列 -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="true" size="small" link icon="el-icon-edit" type="text"
                      @click="handleUpdate(scope.row)" v-hasPermi="['autoee:patrolAlarm:edit']"
-          >编辑
+          >{{ $t('common.edit') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-zoom-in" type="text"
                      @click="handleShowDetail(scope.row)" v-hasPermi="['autoee:patrolAlarm:list']"
-          >查看
+          >{{ $t('common.view') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-delete" type="text"
                      @click="handleDelete(scope.row)" v-hasPermi="['autoee:patrolAlarm:remove']"
-          >删除
+          >{{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

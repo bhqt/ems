@@ -2,17 +2,17 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="90px">
       <el-form-item label="计划编号" prop="planCode">
-        <el-input v-model="queryParams.planCode" placeholder="请输入计划编号" clearable size="small" @keyup.enter.native="handleQuery" />
+        <el-input v-model="queryParams.planCode" :placeholder="$t('common.pleaseInput')" clearable size="small" @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="计划类型" prop="planType">
-        <el-select v-model="queryParams.planType" placeholder="请选择计划类型" clearable size="small">
+        <el-select v-model="queryParams.planType" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option label="短期" :value="1" />
           <el-option label="中期" :value="2" />
           <el-option label="长期" :value="3" />
         </el-select>
       </el-form-item>
       <el-form-item label="计划状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option label="草稿" :value="1" />
           <el-option label="审批中" :value="2" />
           <el-option label="已批准" :value="3" />
@@ -21,20 +21,20 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">{{ $t('common.delete') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -59,21 +59,21 @@
           <span>{{ parseTime(scope.row.endDate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status" width="100">
+      <el-table-column :label="$t('common.status')" align="center" prop="status" width="100">
         <template slot-scope="scope">
           <el-tag :type="getStatusTag(scope.row.status)">{{ getStatusLabel(scope.row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="160">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width" width="180">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">{{ $t('common.detail') }}</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">{{ $t('common.edit') }}</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,19 +85,19 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="计划编号" prop="planCode">
-              <el-input v-model="form.planCode" placeholder="请输入计划编号" />
+              <el-input v-model="form.planCode" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="计划名称" prop="planName">
-              <el-input v-model="form.planName" placeholder="请输入计划名称" />
+              <el-input v-model="form.planName" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="计划类型" prop="planType">
-              <el-select v-model="form.planType" placeholder="请选择计划类型" style="width: 100%">
+              <el-select v-model="form.planType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option label="短期" :value="1" />
                 <el-option label="中期" :value="2" />
                 <el-option label="长期" :value="3" />
@@ -105,8 +105,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="form.status" placeholder="请选择状态" style="width: 100%">
+            <el-form-item :label="$t('common.status')" prop="status">
+              <el-select v-model="form.status" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option label="草稿" :value="1" />
                 <el-option label="审批中" :value="2" />
                 <el-option label="已批准" :value="3" />
@@ -129,7 +129,7 @@
           </el-col>
         </el-row>
         <el-form-item label="计划内容" prop="content">
-          <el-input v-model="form.content" type="textarea" :rows="4" placeholder="请输入计划内容" />
+          <el-input v-model="form.content" type="textarea" :rows="4" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -143,13 +143,13 @@
         <el-descriptions-item label="计划编号">{{ detailData.planCode }}</el-descriptions-item>
         <el-descriptions-item label="计划名称">{{ detailData.planName }}</el-descriptions-item>
         <el-descriptions-item label="计划类型">{{ getPlanTypeLabel(detailData.planType) }}</el-descriptions-item>
-        <el-descriptions-item label="状态">
+        <el-descriptions-item :label="$t('common.status')">
           <el-tag :type="getStatusTag(detailData.status)">{{ getStatusLabel(detailData.status) }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="开始时间">{{ parseTime(detailData.startDate) }}</el-descriptions-item>
         <el-descriptions-item label="结束时间">{{ parseTime(detailData.endDate) }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
-        <el-descriptions-item label="更新时间">{{ parseTime(detailData.updateTime) }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('common.createTime')">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('common.updateTime')">{{ parseTime(detailData.updateTime) }}</el-descriptions-item>
         <el-descriptions-item label="计划内容" :span="2">{{ detailData.content }}</el-descriptions-item>
       </el-descriptions>
       <div slot="footer" class="dialog-footer">

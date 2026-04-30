@@ -1,44 +1,36 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
-      <el-form-item :label="$t('equipment.name')" prop="name">
+      <el-form-item :label="$t('equipmentModule.gatewayName')" prop="name">
         <el-input
           v-model="queryParams.name"
-          :placeholder="$t('placeholder.inputName')"
+          :placeholder="$t('equipmentModule.gatewayName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="$t('equipment.sn')" prop="sn">
+      <el-form-item :label="$t('equipmentModule.gatewayCode')" prop="sn">
         <el-input
           v-model="queryParams.sn"
-          :placeholder="$t('placeholder.inputSn')"
+          :placeholder="$t('equipmentModule.gatewayCode')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item :label="$t('equipment.model')" prop="model">
+      <el-form-item :label="$t('equipmentModule.gatewayType')" prop="model">
         <el-input
           v-model="queryParams.model"
-          :placeholder="$t('placeholder.inputModel')"
+          :placeholder="$t('equipmentModule.gatewayType')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!-- <el-form-item label="工厂" prop="factory">
-        <el-input
-          v-model="queryParams.factory"
-          placeholder="请输入工厂"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item> -->
-      <el-form-item :label="$t('equipment.area')" prop="areaId">
-        <treeselect style="width: 180px;" v-model="queryParams.areaId" :options="areaOptions" :show-count="false" :placeholder="$t('placeholder.selectArea')"/>
+      <el-form-item :label="$t('equipmentModule.gatewayLocation')" prop="areaId">
+        <treeselect style="width: 180px;" v-model="queryParams.areaId" :options="areaOptions" :show-count="false" :placeholder="$t('common.pleaseSelect')"/>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -51,7 +43,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:gateway:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +54,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:gateway:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -73,7 +65,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:gateway:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -83,7 +75,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:gateway:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -91,15 +83,13 @@
     <el-table v-loading="loading" :data="gatewayList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="index" width="55" align="center" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="网关SN" align="center" prop="sn" />
-      <el-table-column label="网关型号" align="center" prop="model" />
-      <el-table-column label="网关描述" align="center" prop="description" />
-      <el-table-column label="设备时区" align="center" prop="timeZone" />
-      <!-- <el-table-column label="设备二维码" align="center" prop="qrCode" /> -->
-      <!-- <el-table-column label="工厂" align="center" prop="factory" /> -->
-      <el-table-column label="区域" align="center" prop="area" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('equipmentModule.gatewayName')" align="center" prop="name" />
+      <el-table-column :label="$t('equipmentModule.gatewayCode')" align="center" prop="sn" />
+      <el-table-column :label="$t('equipmentModule.gatewayType')" align="center" prop="model" />
+      <el-table-column :label="$t('equipmentModule.equipmentDesc')" align="center" prop="description" />
+      <el-table-column :label="$t('equipmentModule.equipmentSn')" align="center" prop="timeZone" />
+      <el-table-column :label="$t('equipmentModule.gatewayLocation')" align="center" prop="area" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -107,14 +97,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:gateway:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:gateway:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -132,59 +122,56 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入名称" />
+            <el-form-item :label="$t('equipmentModule.gatewayName')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('equipmentModule.gatewayName')" />
         </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="网关SN" prop="sn">
-          <el-input v-model="form.sn" placeholder="请输入网关SN" />
-        </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12">
-          <el-col :span="12">
-            <el-form-item label="网关型号" prop="model">
-          <el-input v-model="form.model" placeholder="请输入网关型号" />
-        </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="网关描述" prop="description">
-          <el-input v-model="form.description" placeholder="请输入网关描述" />
+            <el-form-item :label="$t('equipmentModule.gatewayCode')" prop="sn">
+          <el-input v-model="form.sn" :placeholder="$t('equipmentModule.gatewayCode')" />
         </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="网关时区" prop="timeZone">
-          <el-input v-model="form.timeZone" placeholder="请输入设备时区" />
+            <el-form-item :label="$t('equipmentModule.gatewayType')" prop="model">
+          <el-input v-model="form.model" :placeholder="$t('equipmentModule.gatewayType')" />
         </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="区域" prop="areaId">
-          <treeselect v-model="form.areaId" :options="areaOptions" :show-count="false" placeholder="请选择区域" @select="areaSelect"/>
+            <el-form-item :label="$t('equipmentModule.equipmentDesc')" prop="description">
+          <el-input v-model="form.description" :placeholder="$t('equipmentModule.equipmentDesc')" />
         </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="网关图片" prop="img">
+            <el-form-item :label="$t('equipmentModule.equipmentSn')" prop="timeZone">
+          <el-input v-model="form.timeZone" :placeholder="$t('equipmentModule.equipmentSn')" />
+        </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="$t('equipmentModule.gatewayLocation')" prop="areaId">
+          <treeselect v-model="form.areaId" :options="areaOptions" :show-count="false" :placeholder="$t('common.pleaseSelect')" @select="areaSelect"/>
+        </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="12">
+          <el-col :span="12">
+            <el-form-item :label="$t('equipmentModule.equipmentImage')" prop="img">
           <imageUpload v-model="form.img" :limit="2" :values="form.img"/>
         </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="网关二维码" prop="qrCode">
+            <el-form-item :label="$t('equipmentModule.equipmentQrCode')" prop="qrCode">
           <imageUpload v-model="form.qrCode" :limit="1" :values="form.qrCode"/>
         </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-form-item label="工厂" prop="factory">
-          <el-input v-model="form.factory" placeholder="请输入工厂" />
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('common.confirm') }}</el-button>
+        <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

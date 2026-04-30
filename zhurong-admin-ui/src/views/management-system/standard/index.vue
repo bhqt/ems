@@ -1,26 +1,26 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="规范编码" prop="standardCode">
+      <el-form-item :label="$t('managementSystemModule.standardCode')" prop="standardCode">
         <el-input
           v-model="queryParams.standardCode"
-          placeholder="请输入规范编码"
+          :placeholder="$t('managementSystemModule.standardCode')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="规范名称" prop="standardName">
+      <el-form-item :label="$t('managementSystemModule.standardName')" prop="standardName">
         <el-input
           v-model="queryParams.standardName"
-          placeholder="请输入规范名称"
+          :placeholder="$t('managementSystemModule.standardName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="规范描述" prop="standardDescribe">
+      <el-form-item :label="$t('managementSystemModule.standardDescribe')" prop="standardDescribe">
         <el-input
           v-model="queryParams.standardDescribe"
-          placeholder="请输入规范描述"
+          :placeholder="$t('managementSystemModule.standardDescribe')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -28,14 +28,14 @@
 <!--      <el-form-item label="规范文件" prop="docOssId">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.docOssId"-->
-<!--          placeholder="请输入规范文件"-->
+<!--          :placeholder="$t('common.pleaseInput')"-->
 <!--          clearable-->
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
 <!--      </el-form-item>-->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,7 +48,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:standard:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -59,7 +59,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:standard:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -70,7 +70,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:standard:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -80,7 +80,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:standard:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -89,12 +89,12 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="index" width="55" align="center" />
 <!--      <el-table-column label="主键" align="center" prop="standardId" v-if="true"/>-->
-      <el-table-column label="规范编码" align="center" prop="standardCode" />
-      <el-table-column label="规范名称" align="center" prop="standardName" />
-      <el-table-column label="规范描述" align="center" prop="standardDescribe" />
+      <el-table-column :label="$t('managementSystemModule.standardCode')" align="center" prop="standardCode" />
+      <el-table-column :label="$t('managementSystemModule.standardName')" align="center" prop="standardName" />
+      <el-table-column :label="$t('managementSystemModule.standardDescribe')" align="center" prop="standardDescribe" />
 <!--      <el-table-column label="规范文件" align="center" prop="docOssId" />-->
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -102,14 +102,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:standard:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:standard:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -126,22 +126,22 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="规范编码" prop="standardCode">
-          <el-input v-model="form.standardCode" placeholder="请输入规范编码" />
+          <el-input v-model="form.standardCode" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="规范名称" prop="standardName">
-          <el-input v-model="form.standardName" placeholder="请输入规范名称" />
+          <el-input v-model="form.standardName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="规范描述" prop="standardDescribe">
-          <el-input v-model="form.standardDescribe" placeholder="请输入规范描述" />
+          <el-input v-model="form.standardDescribe" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
 <!--        <el-form-item label="规范文件" prop="docOssId">-->
-<!--          <el-input v-model="form.docOssId" placeholder="请输入规范文件" />-->
+<!--          <el-input v-model="form.docOssId" :placeholder="$t('common.pleaseInput')" />-->
 <!--        </el-form-item>-->
         <el-form-item label="规范文件" prop="docOssId">
           <fileUpload v-model="form.docOssId"/>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

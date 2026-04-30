@@ -5,13 +5,13 @@
       <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef" :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
         <el-form-item v-show='true' label="路线编号" prop="routeCode" style="display: inline-block;width: 90%;">
-          <el-input v-model="addUpdateForm.routeCode" placeholder="请输入路线编号" maxlength="25" show-word-limit clearable/>
+          <el-input v-model="addUpdateForm.routeCode" :placeholder="$t('common.pleaseInput')" maxlength="25" show-word-limit clearable/>
         </el-form-item>
         <el-form-item v-show='true' label="路线名称" prop="routeName" style="display: inline-block;width: 90%;">
-          <el-input v-model="addUpdateForm.routeName" placeholder="请输入路线名称" maxlength="50" show-word-limit clearable/>
+          <el-input v-model="addUpdateForm.routeName" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
         </el-form-item>
-        <el-form-item v-show='true' label="状态" prop="patrolRouteStatus" style="display: inline-block;width: 90%;">
-          <el-select clearable v-model="addUpdateForm.patrolRouteStatus" placeholder="请选择状态" style="width: 100%">
+        <el-form-item v-show='true' :label="$t('common.status')" prop="patrolRouteStatus" style="display: inline-block;width: 90%;">
+          <el-select clearable v-model="addUpdateForm.patrolRouteStatus" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
             <el-option
               v-for="dict in dict.type.patrol_route_status"
               :key="dict.value"
@@ -21,7 +21,7 @@
           </el-select>
         </el-form-item>
         <!--                  <el-form-item v-show='true' label="巡更点列表" prop="pointList" style="display: inline-block;width: 90%;">-->
-        <!--                    <el-select clearable v-model="addUpdateForm.pointList" placeholder="请选择巡更点列表" style="width: 100%">-->
+        <!--                    <el-select clearable v-model="addUpdateForm.pointList" :placeholder="$t('common.pleaseSelect')" style="width: 100%">-->
         <!--                      <el-option-->
         <!--                        v-for="dict in dict.type.a_patrol_point"-->
         <!--                        :key="dict.value"-->
@@ -77,7 +77,7 @@
               <!--              </el-table-column>-->
 
               <el-table-column
-                label="操作"
+                :label="$t('common.operation')"
                 width="220"
               >
                 <template #default="{row, $index}">
@@ -115,7 +115,7 @@
           >
             <el-select
               v-model="selectedPointIds"
-              placeholder="请选择巡更点，可以多选，可输入进行查询"
+              :placeholder="$t('common.pleaseSelect')"
               style="width: 80%"
               multiple
               filterable
@@ -145,16 +145,16 @@
             </div>
 
             <div slot="footer" class="dialog-footer">
-              <el-button @click="addPointDialogVisible = false">取消</el-button>
-              <el-button type="primary" @click="confirmAddPoints">确定</el-button>
+              <el-button @click="addPointDialogVisible = false">{{ $t('common.cancel') }}</el-button>
+              <el-button type="primary" @click="confirmAddPoints">{{ $t('common.confirm') }}</el-button>
             </div>
           </el-dialog>
         </el-form-item>
-        <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-          <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+        <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+          <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
         </el-form-item>
         <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 90%;">
-          <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+          <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
             <el-option
               v-for="dict in dict.type.sys_user"
               :key="dict.value"

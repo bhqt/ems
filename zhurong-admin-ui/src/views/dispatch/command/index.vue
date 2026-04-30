@@ -2,17 +2,17 @@
   <div class="app-container">
     <el-form :model="queryParams" :inline="true" v-show="showSearch" label-width="90px">
       <el-form-item label="指令编号" prop="commandCode">
-        <el-input v-model="queryParams.commandCode" placeholder="请输入指令编号" clearable size="small" @keyup.enter="handleQuery" />
+        <el-input v-model="queryParams.commandCode" :placeholder="$t('common.pleaseInput')" clearable size="small" @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item label="指令类型" prop="commandType">
-        <el-select v-model="queryParams.commandType" placeholder="请选择" clearable size="small">
+        <el-select v-model="queryParams.commandType" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option label="开机" :value="1" />
           <el-option label="关机" :value="2" />
           <el-option label="调节" :value="3" />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择" clearable size="small">
+      <el-form-item :label="$t('common.status')" prop="status">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option label="待执行" :value="1" />
           <el-option label="执行中" :value="2" />
           <el-option label="已执行" :value="3" />
@@ -20,20 +20,20 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">{{ $t('common.delete') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -51,16 +51,16 @@
       <el-table-column label="指令参数" prop="parameter" :show-overflow-tooltip="true" />
       <el-table-column label="计划执行时间" prop="scheduledTime" width="160" />
       <el-table-column label="实际执行时间" prop="actualTime" width="160" />
-      <el-table-column label="状态" prop="status" width="100">
+      <el-table-column :label="$t('common.status')" prop="status" width="100">
         <template slot-scope="scope">
           <el-tag :type="getStatusTag(scope.row.status)">{{ getStatusLabel(scope.row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="150">
+      <el-table-column :label="$t('common.operation')" align="center" width="150">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-caret-right" @click="handleExecute(scope.row)" v-if="scope.row.status === 1">执行</el-button>
-          <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">{{ $t('common.detail') }}</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -72,12 +72,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="指令编号" prop="commandCode">
-              <el-input v-model="form.commandCode" placeholder="请输入指令编号" />
+              <el-input v-model="form.commandCode" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="指令类型" prop="commandType">
-              <el-select v-model="form.commandType" placeholder="请选择" style="width: 100%">
+              <el-select v-model="form.commandType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option label="开机" :value="1" />
                 <el-option label="关机" :value="2" />
                 <el-option label="调节" :value="3" />
@@ -88,7 +88,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="目标设备" prop="targetDevice">
-              <el-input v-model="form.targetDevice" placeholder="请输入目标设备" />
+              <el-input v-model="form.targetDevice" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -98,7 +98,7 @@
           </el-col>
         </el-row>
         <el-form-item label="指令参数" prop="parameter">
-          <el-input v-model="form.parameter" type="textarea" :rows="2" placeholder="请输入指令参数" />
+          <el-input v-model="form.parameter" type="textarea" :rows="2" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

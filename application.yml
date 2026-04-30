@@ -10,7 +10,7 @@ spring:
       primary: master
       strict: true
       datasource:
-        # 只定义主库数据源，不定义TDengine
+        # 主库数据源
         master:
           type: ${spring.datasource.type}
           driverClassName: com.mysql.cj.jdbc.Driver
@@ -24,6 +24,13 @@ spring:
             connection-timeout: 30000
             max-lifetime: 1200000
             connection-test-query: SELECT 1
+        # TDengine 时序数据库
+        td:
+          enabled: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED:false}
+          driverClassName: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_DRIVERCLASSNAME:com.taosdata.jdbc.rs.RestfulDriver}
+          url: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_URL:jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy?user=energy&password=difyai123456&timezone=Asia/Shanghai}
+          username: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_USERNAME:energy}
+          password: ${SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_PASSWORD:difyai123456}
 
   redis:
     host: ${SPRING_REDIS_HOST:zhurong-ems-redis}

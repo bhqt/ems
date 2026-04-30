@@ -10,7 +10,7 @@
           class="query-form"
         >
           <el-form-item label="能源类型" prop="itemId">
-            <el-select v-model="queryParams.itemId" placeholder="请选择">
+            <el-select v-model="queryParams.itemId" :placeholder="$t('common.pleaseSelect')">
               <el-option
                 v-for="item in topologyTree"
                 :key="item.id"
@@ -24,7 +24,7 @@
           <el-form-item label="日期" prop="dateType">
             <el-select
               v-model="queryParams.dateType"
-              placeholder="请选择"
+              :placeholder="$t('common.pleaseSelect')"
               style="width: 80px"
               @change="dateTypeChange"
             >
@@ -54,7 +54,7 @@
               icon="el-icon-search"
               size="mini"
               @click="search"
-              >查询</el-button
+              >{{ $t('common.search') }}</el-button
             >
           </el-form-item>
         </el-form>

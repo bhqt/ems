@@ -4,7 +4,7 @@
       <el-form-item label="key键" prop="testKey">
         <el-input
           v-model="queryParams.testKey"
-          placeholder="请输入key键"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -13,13 +13,13 @@
       <el-form-item label="值" prop="value">
         <el-input
           v-model="queryParams.value"
-          placeholder="请输入值"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item :label="$t('common.createTime')">
         <el-date-picker
           v-model="daterangeCreateTime"
           size="small"
@@ -33,9 +33,9 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handlePage">查询(自定义分页接口)</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,7 +48,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['demo:demo:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -59,7 +59,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['demo:demo:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -70,7 +70,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['demo:demo:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -90,7 +90,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['demo:demo:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -103,19 +103,19 @@
       <el-table-column label="排序号" align="center" prop="orderNum" />
       <el-table-column label="key键" align="center" prop="testKey" />
       <el-table-column label="值" align="center" prop="value" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建人" align="center" prop="createBy" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
+      <el-table-column :label="$t('common.updateTime')" align="center" prop="updateTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updateTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="更新人" align="center" prop="updateBy" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -123,14 +123,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['demo:demo:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['demo:demo:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -147,21 +147,21 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="部门id" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门id" />
+          <el-input v-model="form.deptId" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="用户id" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入用户id" />
+          <el-input v-model="form.userId" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="排序号" prop="orderNum">
-          <el-input v-model="form.orderNum" placeholder="请输入排序号" />
+          <el-input v-model="form.orderNum" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="key键" prop="testKey">
-          <el-input v-model="form.testKey" placeholder="请输入key键" />
+          <el-input v-model="form.testKey" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="值" prop="value">
-          <el-input v-model="form.value" placeholder="请输入值" />
+          <el-input v-model="form.value" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="创建时间" prop="createTime">
+        <el-form-item :label="$t('common.createTime')" prop="createTime">
           <el-date-picker clearable size="small"
                           v-model="form.createTime"
                           type="datetime"

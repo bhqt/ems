@@ -8,7 +8,7 @@
             :default-time="['00:00:00', '23:59:59']"></el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="getAlarmCharts">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="getAlarmCharts">{{ $t('common.search') }}</el-button>
         </el-form-item>
       </el-form>
     </div>

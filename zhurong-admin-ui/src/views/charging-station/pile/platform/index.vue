@@ -20,7 +20,7 @@
       <!-- <el-form-item label="归属商户" prop="merchantId">
         <el-input
           v-model="queryParams.merchantId"
-          placeholder="请输入归属商户"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -36,7 +36,7 @@
       <!-- <el-form-item label="归属电站" prop="stationId">
         <el-input
           v-model="queryParams.stationId"
-          placeholder="请输入归属电站"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -52,11 +52,11 @@
       <el-form-item label="品牌" prop="brand">
         <!-- <el-input
           v-model="queryParams.brand"
-          placeholder="请输入品牌"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         /> -->
-        <el-select v-model="queryParams.brand" placeholder="请选择品牌" clearable>
+        <el-select v-model="queryParams.brand" :placeholder="$t('common.pleaseSelect')" clearable>
           <el-option v-for="brand in brandList"
             :key="brand.id"
             :label="brand.brandName"
@@ -64,7 +64,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="型号" prop="model">
-        <el-select v-model="queryParams.model" placeholder="请选择型号">
+        <el-select v-model="queryParams.model" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="model in modelList"
               :key="model.id"
@@ -129,7 +129,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:pile:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -230,33 +230,33 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="终端编码" prop="encoding">
-          <el-input v-model="form.encoding" placeholder="请输入终端编码" />
+          <el-input v-model="form.encoding" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="终端名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入终端名称" />
+          <el-input v-model="form.name" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="归属商户" prop="merchantId">
-          <!-- <el-input v-model="form.merchantId" placeholder="请输入归属商户" /> -->
-          <el-select v-model="form.merchantId" placeholder="请输入归属商户" @change="merchantChange">
+          <!-- <el-input v-model="form.merchantId" :placeholder="$t('common.pleaseInput')" /> -->
+          <el-select v-model="form.merchantId" :placeholder="$t('common.pleaseInput')" @change="merchantChange">
             <el-option v-for="item in merchantList" :key="item.merchantId" :label="item.name"
               :value="item.merchantId"></el-option>
           </el-select>
         </el-form-item>
         <!-- <el-form-item label="归属商户名" prop="merchantName">
-          <el-input v-model="form.merchantName" placeholder="请输入归属商户名" />
+          <el-input v-model="form.merchantName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item> -->
         <el-form-item label="归属电站" prop="stationId">
-          <el-select v-model="form.stationId" placeholder="请输入归属电站" @change="stationChange">
+          <el-select v-model="form.stationId" :placeholder="$t('common.pleaseInput')" @change="stationChange">
             <el-option v-for="item in stationList" :key="item.stationId" :label="item.name"
               :value="item.stationId"></el-option>
           </el-select>
         </el-form-item>
         <!-- <el-form-item label="归属电站名称" prop="stationName">
-          <el-input v-model="form.stationName" placeholder="请输入归属电站名称" />
+          <el-input v-model="form.stationName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item> -->
         <el-form-item label="品牌" prop="brand">
-          <!-- <el-input v-model="form.brand" placeholder="请输入品牌" /> -->
-          <el-select v-model="form.brand" placeholder="请选择品牌" @change="changeBrand">
+          <!-- <el-input v-model="form.brand" :placeholder="$t('common.pleaseInput')" /> -->
+          <el-select v-model="form.brand" :placeholder="$t('common.pleaseSelect')" @change="changeBrand">
             <el-option
               v-for="brand in brandList"
               :key="brand.id"
@@ -273,8 +273,8 @@
               :value="model.modelName"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

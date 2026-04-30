@@ -1,67 +1,50 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="例报类型" prop="type">
-        <!-- <el-input
-            v-model="queryParams.cycle"
-            placeholder="请输入例报周期"
-            clearable
-            @keyup.enter.native="handleQuery"
-          /> -->
-        <el-select v-model="queryParams.type" placeholder="请选择">
+      <el-form-item :label="$t('maintenanceModule.reportType')" prop="type">
+        <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')">
           <el-option v-for="dict in dict.type.example_report_type" :key="dict.value" :label="dict.label"
             :value="dict.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="例报周期" prop="cycle">
-        <!-- <el-input
-            v-model="queryParams.cycle"
-            placeholder="请输入例报周期"
-            clearable
-            @keyup.enter.native="handleQuery"
-          /> -->
-        <el-select v-model="queryParams.cycle" clearable placeholder="请选择">
+      <el-form-item :label="$t('maintenanceModule.reportCycle')" prop="cycle">
+        <el-select v-model="queryParams.cycle" clearable :placeholder="$t('common.pleaseSelect')">
           <el-option v-for="item in cycleList" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="推送方式" prop="pushMethod">
-        <!-- <el-input v-model="queryParams.pushMethod" placeholder="请输入推送方式" clearable @keyup.enter.native="handleQuery" /> -->
-        <el-select v-model="queryParams.pushMethod" placeholder="请选择">
+      <el-form-item :label="$t('maintenanceModule.pushMethod')" prop="pushMethod">
+        <el-select v-model="queryParams.pushMethod" :placeholder="$t('common.pleaseSelect')">
           <el-option v-for="dict in dict.type.report_push_type" :key="dict.value" :label="dict.label"
             :value="dict.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="接收人" prop="userId">
-        <el-select v-model="queryParams.userId" clearable placeholder="请选择">
+      <el-form-item :label="$t('maintenanceModule.receiver')" prop="userId">
+        <el-select v-model="queryParams.userId" clearable :placeholder="$t('common.pleaseSelect')">
           <el-option v-for="item in userList" :key="item.userId" :label="item.nickName" :value="item.userId"></el-option>
         </el-select>
-        <!-- <el-input v-model="queryParams.receiver" placeholder="请输入接收人" clearable @keyup.enter.native="handleQuery" /> -->
       </el-form-item>
-      <!-- <el-form-item label="发送时间" prop="sendingTime">
-        <el-input v-model="queryParams.sendingTime" placeholder="请输入发送时间" clearable @keyup.enter.native="handleQuery" />
-      </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['system:exampleReport:add']">新增</el-button>
+          v-hasPermi="['system:exampleReport:add']">{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['system:exampleReport:edit']">修改</el-button>
+          v-hasPermi="['system:exampleReport:edit']">{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:exampleReport:remove']">删除</el-button>
+          v-hasPermi="['system:exampleReport:remove']">{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['system:exampleReport:export']">导出</el-button>
+          v-hasPermi="['system:exampleReport:export']">{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -92,12 +75,12 @@
         </template>
       </el-table-column>
       <el-table-column label="接收人" align="center" prop="receiver" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:exampleReport:edit']">修改</el-button>
+            v-hasPermi="['system:exampleReport:edit']">{{ $t('common.edit') }}</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['system:exampleReport:remove']">删除</el-button>
+            v-hasPermi="['system:exampleReport:remove']">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -109,47 +92,47 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="例报类型" prop="type">
-          <!-- <el-input v-model="form.cycle" placeholder="请输入例报周期" /> -->
-          <el-select v-model="form.type" placeholder="请选择">
+          <!-- <el-input v-model="form.cycle" :placeholder="$t('common.pleaseInput')" /> -->
+          <el-select v-model="form.type" :placeholder="$t('common.pleaseSelect')">
             <el-option v-for="dict in dict.type.example_report_type" :key="dict.value" :label="dict.label"
               :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="例报周期" prop="cycle">
-          <!-- <el-input v-model="form.cycle" placeholder="请输入例报周期" /> -->
-          <el-select v-model="form.cycle" clearable placeholder="请选择">
+          <!-- <el-input v-model="form.cycle" :placeholder="$t('common.pleaseInput')" /> -->
+          <el-select v-model="form.cycle" clearable :placeholder="$t('common.pleaseSelect')">
             <el-option v-for="item in cycleList" :key="item.value" :label="item.label" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开始日期" prop="startDate">
           <el-date-picker clearable v-model="form.startDate" type="date" value-format="yyyy-MM-dd 00:00:00"
-            @change="changeStart" placeholder="请选择开始日期">
+            @change="changeStart" :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束日期" prop="endDate">
           <el-date-picker clearable v-model="form.endDate" type="date" value-format="yyyy-MM-dd 23:59:59"
-            @change="changeEnd" placeholder="请选择结束日期">
+            @change="changeEnd" :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="例报内容">
           <editor v-model="form.content" :min-height="192" />
         </el-form-item>
         <el-form-item label="推送方式" prop="pushMethod">
-          <!-- <el-input v-model="form.pushMethod" placeholder="请输入推送方式" /> -->
-          <el-select v-model="form.pushMethod" placeholder="请选择">
+          <!-- <el-input v-model="form.pushMethod" :placeholder="$t('common.pleaseInput')" /> -->
+          <el-select v-model="form.pushMethod" :placeholder="$t('common.pleaseSelect')">
             <el-option v-for="dict in dict.type.report_push_type" :key="dict.value" :label="dict.label"
               :value="dict.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="接收人" prop="userId">
-          <!-- <el-input v-model="form.receiver" placeholder="请输入接收人" /> -->
-          <el-select v-model="form.userId" clearable placeholder="请选择" @change="personChange">
+          <!-- <el-input v-model="form.receiver" :placeholder="$t('common.pleaseInput')" /> -->
+          <el-select v-model="form.userId" clearable :placeholder="$t('common.pleaseSelect')" @change="personChange">
             <el-option v-for="item in userList" :key="item.userId" :label="item.nickName"
               :value="item.userId"></el-option>
           </el-select>
         </el-form-item>
         <!-- <el-form-item label="发送时间" prop="sendingTime">
-          <el-input v-model="form.sendingTime" placeholder="请输入发送时间" />
+          <el-input v-model="form.sendingTime" :placeholder="$t('common.pleaseInput')" />
         </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">

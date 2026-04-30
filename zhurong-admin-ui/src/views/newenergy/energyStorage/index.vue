@@ -45,7 +45,7 @@
       <el-form-item label="系统名称" prop="storageName">
         <el-input
           v-model="queryParams.storageName"
-          placeholder="请输入系统名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -54,14 +54,14 @@
       <el-form-item label="系统编号" prop="storageCode">
         <el-input
           v-model="queryParams.storageCode"
-          placeholder="请输入系统编号"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="系统类型" prop="storageType">
-        <el-select v-model="queryParams.storageType" placeholder="请选择系统类型" clearable size="small">
+        <el-select v-model="queryParams.storageType" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option
             v-for="dict in storageTypeOptions"
             :key="dict.dictValue"
@@ -75,12 +75,12 @@
           v-model="queryParams.areaId"
           :options="deptOptions"
           :show-count="true"
-          placeholder="请选择所属区域"
+          :placeholder="$t('common.pleaseSelect')"
           style="width: 200px"
         />
       </el-form-item>
       <el-form-item label="系统状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择系统状态" clearable size="small">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option
             v-for="dict in statusOptions"
             :key="dict.dictValue"
@@ -90,8 +90,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -105,7 +105,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['newenergy:energyStorage:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -116,7 +116,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['newenergy:energyStorage:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -127,7 +127,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['newenergy:energyStorage:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -137,7 +137,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['newenergy:energyStorage:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -165,12 +165,12 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -178,21 +178,21 @@
             icon="el-icon-view"
             @click="handleView(scope.row)"
             v-hasPermi="['newenergy:energyStorage:query']"
-          >详情</el-button>
+          >{{ $t('common.detail') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['newenergy:energyStorage:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['newenergy:energyStorage:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -211,19 +211,19 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="系统名称" prop="storageName">
-              <el-input v-model="form.storageName" placeholder="请输入系统名称" />
+              <el-input v-model="form.storageName" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="系统编号" prop="storageCode">
-              <el-input v-model="form.storageCode" placeholder="请输入系统编号" />
+              <el-input v-model="form.storageCode" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="系统类型" prop="storageType">
-              <el-select v-model="form.storageType" placeholder="请选择系统类型" style="width: 100%">
+              <el-select v-model="form.storageType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option
                   v-for="dict in storageTypeOptions"
                   :key="dict.dictValue"
@@ -235,26 +235,26 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="装机容量" prop="capacity">
-              <el-input-number v-model="form.capacity" :min="0" :precision="2" style="width: 100%" placeholder="请输入装机容量(kWh)" />
+              <el-input-number v-model="form.capacity" :min="0" :precision="2" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="额定功率" prop="power">
-              <el-input-number v-model="form.power" :min="0" :precision="2" style="width: 100%" placeholder="请输入额定功率(kW)" />
+              <el-input-number v-model="form.power" :min="0" :precision="2" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="电压等级" prop="voltageLevel">
-              <el-input v-model="form.voltageLevel" placeholder="请输入电压等级" />
+              <el-input v-model="form.voltageLevel" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="电池类型" prop="batteryType">
-              <el-input v-model="form.batteryType" placeholder="请输入电池类型" />
+              <el-input v-model="form.batteryType" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -263,7 +263,7 @@
                 v-model="form.areaId"
                 :options="deptOptions"
                 :show-count="true"
-                placeholder="请选择所属区域"
+                :placeholder="$t('common.pleaseSelect')"
               />
             </el-form-item>
           </el-col>
@@ -271,12 +271,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="经度" prop="longitude">
-              <el-input-number v-model="form.longitude" :precision="6" style="width: 100%" placeholder="请输入经度" />
+              <el-input-number v-model="form.longitude" :precision="6" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="纬度" prop="latitude">
-              <el-input-number v-model="form.latitude" :precision="6" style="width: 100%" placeholder="请输入纬度" />
+              <el-input-number v-model="form.latitude" :precision="6" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -286,7 +286,7 @@
               <el-date-picker
                 v-model="form.commissioningDate"
                 type="date"
-                placeholder="请选择投运日期"
+                :placeholder="$t('common.pleaseSelect')"
                 style="width: 100%"
                 value-format="yyyy-MM-dd"
               />
@@ -294,7 +294,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="系统状态" prop="status">
-              <el-select v-model="form.status" placeholder="请选择系统状态" style="width: 100%">
+              <el-select v-model="form.status" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -306,10 +306,10 @@
           </el-col>
         </el-row>
         <el-form-item label="地址" prop="address">
-          <el-input v-model="form.address" placeholder="请输入地址" />
+          <el-input v-model="form.address" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -339,7 +339,7 @@
         <el-descriptions-item label="投运日期">{{ detailData.commissioningDate }}</el-descriptions-item>
         <el-descriptions-item label="地址">{{ detailData.address }}</el-descriptions-item>
         <el-descriptions-item label="电池组数量">{{ detailData.batteryCount }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('common.createTime')">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
       </el-descriptions>
       <div slot="footer" class="dialog-footer">
         <el-button @click="detailOpen = false">关 闭</el-button>

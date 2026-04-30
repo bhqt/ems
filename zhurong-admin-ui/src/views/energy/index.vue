@@ -41,8 +41,8 @@
             <el-table-column prop="energyConsumption" :label="$t('energyModule.batch.energyConsumption')" width="100" />
             <el-table-column prop="status" :label="$t('common.status')" width="100">
               <template slot-scope="scope">
-                <el-tag :type="scope.row.status === $t('message.completed') ? 'success' : 'warning'">
-                  {{ scope.row.status }}
+                <el-tag :type="scope.row.status === 'completed' ? 'success' : 'warning'">
+                  {{ scope.row.status === 'completed' ? $t('common.completed') : $t('common.inProgress') }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -92,8 +92,8 @@
             <el-table-column prop="applicableRange" :label="$t('energyModule.benchmark.applicableRange') || '适用范围'" />
             <el-table-column prop="status" :label="$t('common.status')" width="100">
               <template slot-scope="scope">
-                <el-tag :type="scope.row.status === $t('common.enable') ? 'success' : 'danger'">
-                  {{ scope.row.status }}
+                <el-tag :type="scope.row.status === 'enabled' ? 'success' : 'danger'">
+                  {{ scope.row.status === 'enabled' ? $t('common.enable') : $t('common.disable') }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -112,7 +112,7 @@
                   @click="toggleBenchmarkStatus(scope.row)"
                   style="margin-left: 5px;"
                 >
-                  {{ scope.row.status === $t('common.enable') ? $t('button.disable') : $t('button.enable') }}
+                  {{ scope.row.status === 'enabled' ? $t('button.disable') : $t('button.enable') }}
                 </el-button>
               </template>
             </el-table-column>
@@ -216,8 +216,8 @@
             </el-table-column>
             <el-table-column prop="status" :label="$t('common.status')" width="100">
               <template slot-scope="scope">
-                <el-tag :type="scope.row.status === $t('common.pass') ? 'success' : 'danger'">
-                  {{ scope.row.status === '合格' ? $t('common.pass') : $t('common.fail') }}
+                <el-tag :type="scope.row.status === 'passed' ? 'success' : 'danger'">
+                  {{ scope.row.status === 'passed' ? $t('common.pass') : $t('common.fail') }}
                 </el-tag>
               </template>
             </el-table-column>
@@ -297,7 +297,7 @@ export default {
           productionDate: '2026-03-28',
           productionLine: '生产线1',
           energyConsumption: 1200,
-          status: '已完成',
+          status: 'completed',
           remark: '正常生产'
         },
         {
@@ -307,7 +307,7 @@ export default {
           productionDate: '2026-03-28',
           productionLine: '生产线2',
           energyConsumption: 1500,
-          status: '已完成',
+          status: 'completed',
           remark: '正常生产'
         },
         {
@@ -317,7 +317,7 @@ export default {
           productionDate: '2026-03-29',
           productionLine: '生产线1',
           energyConsumption: 0,
-          status: '生产中',
+          status: 'inProgress',
           remark: '正在生产'
         }
       ],
@@ -330,7 +330,7 @@ export default {
           benchmarkValue: 1000,
           unit: 'kWh/t',
           applicableRange: '生产线1',
-          status: '启用'
+          status: 'enabled'
         },
         {
           standardId: 'STD002',
@@ -339,7 +339,7 @@ export default {
           benchmarkValue: 1200,
           unit: 'kWh/t',
           applicableRange: '生产线2',
-          status: '启用'
+          status: 'enabled'
         },
         {
           standardId: 'STD003',
@@ -348,7 +348,7 @@ export default {
           benchmarkValue: 1100,
           unit: 'kWh/t',
           applicableRange: '生产线1',
-          status: '禁用'
+          status: 'disabled'
         }
       ],
       balanceDate: '',
@@ -392,7 +392,7 @@ export default {
           standardValue: 380,
           actualValue: 382,
           deviation: 2,
-          status: '合格',
+          status: 'passed',
           detectionTime: '2026-03-28 10:00:00',
           detectionLocation: '车间A'
         },
@@ -403,7 +403,7 @@ export default {
           standardValue: 50,
           actualValue: 50.1,
           deviation: 0.1,
-          status: '合格',
+          status: 'passed',
           detectionTime: '2026-03-28 10:00:00',
           detectionLocation: '车间A'
         },
@@ -414,7 +414,7 @@ export default {
           standardValue: 7.0,
           actualValue: 6.5,
           deviation: -0.5,
-          status: '不合格',
+          status: 'failed',
           detectionTime: '2026-03-28 11:00:00',
           detectionLocation: '水源水区域'
         }
@@ -479,9 +479,8 @@ export default {
       this.$message.info(`查看批次 ${batch.batchNumber} 的详细信息`)
     },
     calculateEnergyConsumption(batch) {
-      // 模拟计算能耗
       batch.energyConsumption = Math.floor(Math.random() * 500) + 1000
-      batch.status = '已完成'
+      batch.status = 'completed'
       this.$message.success(`批次 ${batch.batchNumber} 的能耗已计算完成：${batch.energyConsumption} kWh`)
     },
     addBatchRecord() {

@@ -8,24 +8,24 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="计划名称" prop="planName">
+      <el-form-item :label="$t('maintenanceModule.planName')" prop="planName">
         <el-input
           v-model="queryParams.planName"
-          placeholder="请输入计划名称"
+          :placeholder="$t('maintenanceModule.planName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目名称" prop="projectName">
+      <el-form-item :label="$t('maintenanceModule.projectName')" prop="projectName">
         <el-input
           v-model="queryParams.projectName"
-          placeholder="请输入项目名称"
+          :placeholder="$t('maintenanceModule.projectName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="巡检人" prop="userId">
-        <el-select v-model="queryParams.userId" clearable placeholder="请选择">
+      <el-form-item :label="$t('maintenanceModule.inspector')" prop="userId">
+        <el-select v-model="queryParams.userId" clearable :placeholder="$t('common.pleaseSelect')">
           <el-option
           v-for="item in userList"
           :key="item.userId"
@@ -39,10 +39,10 @@
           icon="el-icon-search"
           size="mini"
           @click="handleQuery"
-          >查询</el-button
+          >{{ $t('common.search') }}</el-button
         >
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-          >重置</el-button
+          >{{ $t('common.reset') }}</el-button
         >
       </el-form-item>
     </el-form>
@@ -56,7 +56,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:plan:add']"
-          >新增</el-button
+          >{{ $t('common.add') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -68,7 +68,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:plan:edit']"
-          >编辑</el-button
+          >{{ $t('common.edit') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -80,7 +80,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:plan:remove']"
-          >删除</el-button
+          >{{ $t('common.delete') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -91,7 +91,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:plan:export']"
-          >导出</el-button
+          >{{ $t('common.export') }}</el-button
         >
       </el-col>
       <right-toolbar
@@ -142,7 +142,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="创建时间"
+        :label="$t('common.createTime')"
         align="center"
         prop="createTime"
         width="180"
@@ -152,7 +152,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         align="center"
         class-name="small-padding"
         width="180"
@@ -165,7 +165,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:plan:edit']"
-            >编辑</el-button
+            >{{ $t('common.edit') }}</el-button
           >
           <el-button
             size="mini"
@@ -173,7 +173,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:plan:remove']"
-            >删除</el-button
+            >{{ $t('common.delete') }}</el-button
           >
         </template>
       </el-table-column>
@@ -191,14 +191,14 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="计划名称" prop="planName">
-          <el-input v-model="form.planName" placeholder="请输入计划名称" />
+          <el-input v-model="form.planName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="计划内容">
           <!-- <editor v-model="form.planContent" :min-height="192" /> -->
-          <el-input type="textarea" v-model="form.planContent" placeholder="请输入巡检内容"></el-input>
+          <el-input type="textarea" v-model="form.planContent" :placeholder="$t('common.pleaseInput')"></el-input>
         </el-form-item>
         <el-form-item label="项目名称" prop="projectName">
-          <el-input v-model="form.projectName" placeholder="请输入项目名称" />
+          <el-input v-model="form.projectName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="开始日期" prop="startDate">
           <el-date-picker
@@ -207,7 +207,7 @@
             type="date"
             value-format="yyyy-MM-dd 00:00:00"
             @change="changeStart"
-            placeholder="请选择开始日期"
+            :placeholder="$t('common.pleaseSelect')"
           >
           </el-date-picker>
         </el-form-item>
@@ -218,16 +218,16 @@
             type="date"
             value-format="yyyy-MM-dd 23:59:59"
             @change="changeEnd"
-            placeholder="请选择结束日期"
+            :placeholder="$t('common.pleaseSelect')"
           >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="巡检周期" prop="inspectionCycle">
           <!-- <el-input
             v-model="form.inspectionCycle"
-            placeholder="请输入巡检周期"
+            :placeholder="$t('common.pleaseInput')"
           /> -->
-          <el-select v-model="form.inspectionCycle" placeholder="请选择周期" @change="clearSetDates">
+          <el-select v-model="form.inspectionCycle" :placeholder="$t('common.pleaseSelect')" @change="clearSetDates">
             <el-option
               v-for="item in inspectionCycleList"
               :key="item.value"
@@ -237,7 +237,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="巡检日期" prop="setDates" v-if="form.inspectionCycle==='周'">
-          <el-select v-model="form.setDates" multiple placeholder="请选择巡检日期" @change="selectSetDate">
+          <el-select v-model="form.setDates" multiple :placeholder="$t('common.pleaseSelect')" @change="selectSetDate">
             <el-option
               v-for="item in weekList"
               :key="item.value"
@@ -245,10 +245,10 @@
               :value="item.value">
             </el-option>
           </el-select>
-          <!-- <el-input v-model="form.setDate" placeholder="请输入巡检日期" /> -->
+          <!-- <el-input v-model="form.setDate" :placeholder="$t('common.pleaseInput')" /> -->
         </el-form-item>
         <el-form-item label="巡检日期" prop="setDates" v-if="form.inspectionCycle==='月'">
-          <el-select v-model="form.setDates" multiple placeholder="请选择巡检日期">
+          <el-select v-model="form.setDates" multiple :placeholder="$t('common.pleaseSelect')">
             <!-- <el-option
               v-for="item in dayList"
               :key="item.value"
@@ -259,7 +259,7 @@
                   <selectDate :selectIds="form.setDates" @selectChange="selectChange" />
             </template>
           </el-select>
-          <!-- <el-input v-model="form.setDate" placeholder="请输入巡检日期" /> -->
+          <!-- <el-input v-model="form.setDate" :placeholder="$t('common.pleaseInput')" /> -->
         </el-form-item>
         <el-form-item label="具体时间" prop="setTime" :key="form.setTime">
           <el-time-select
@@ -273,7 +273,7 @@
           </el-time-select>
         </el-form-item>
         <el-form-item label="巡检人" prop="userIds">
-          <el-select v-model="form.userIds" multiple placeholder="请选择巡检人"  @change="selectUser">
+          <el-select v-model="form.userIds" multiple :placeholder="$t('common.pleaseSelect')"  @change="selectUser">
             <el-option
               v-for="item in userList"
               :key="item.userId"

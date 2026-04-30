@@ -90,7 +90,7 @@
           :disabled="!checkTableDataHasChanged"
           @click="submitTableEdit"
           v-hasPermi="['autoee:dangerGoodsInfo:edit']"
-        >提交列表编辑</el-button>
+        >{{ $t('common.submitEdit') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -101,7 +101,7 @@
           :disabled="pageData.multipleSelected"
           @click="handleDeleteMuti"
           v-hasPermi="['autoee:dangerGoodsInfo:remove']"
-        >{{ $t('button.delete') }}</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -111,7 +111,7 @@
           size="small"
           @click="handleDeleteAllData"
           v-hasPermi="['autoee:dangerGoodsInfo:remove']"
-        >清空</el-button>
+        >{{ $t('common.clear') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -121,7 +121,7 @@
           size="small"
           @click="handleImport"
           v-hasPermi="['autoee:dangerGoodsInfo:import']"
-        >导入</el-button>
+        >{{ $t('common.import') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -162,68 +162,68 @@
       <el-table-column type="selection" width="55" align="center"/>
 
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
-      <el-table-column v-if="true" label="危化品名称" align="center" prop="dangerGoodsName" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="危化品类型" align="center" prop="dangerGoodsType" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.dangerGoodsName')" align="center" prop="dangerGoodsName" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.dangerType')" align="center" prop="dangerGoodsType" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.danger_goods_type" :value="scope.row.dangerGoodsType"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="危化品状态" align="center" prop="dangerGoodsStatus" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.dangerGoodsStatus')" align="center" prop="dangerGoodsStatus" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.danger_goods_status" :value="scope.row.dangerGoodsStatus"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="规格型号" align="center" prop="specification" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="单位" align="center" prop="goodsUnit" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.specification')" align="center" prop="specification" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('goodsModule.goodsUnit')" align="center" prop="goodsUnit" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.goods_unit" :value="scope.row.goodsUnit"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="存储位置" align="center" prop="storageLocation" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="所属用户" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('dangerGoodsModule.storageLocation')" align="center" prop="storageLocation" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.owner')" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.userId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="所属部门" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.department')" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_dept" :value="scope.row.deptId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建时间" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.createTime')" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建者" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="更新者" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="更新时间" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.creator')" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.updater')" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('common.updateTime')" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="删除标志" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除者" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除时间" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.deleteFlag')" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleter')" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleteTime')" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.delTime) }}</span>
         </template>
       </el-table-column>
 
       <!-- 操作列 -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="true" size="small" link icon="el-icon-edit" type="text"
             @click="handleUpdate(scope.row)" v-hasPermi="['autoee:dangerGoodsInfo:edit']"
-          >编辑
+          >{{ $t('common.edit') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-zoom-in" type="text"
             @click="handleShowDetail(scope.row)" v-hasPermi="['autoee:dangerGoodsInfo:list']"
-          >查看
+          >{{ $t('common.view') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-delete" type="text"
             @click="handleDelete(scope.row)" v-hasPermi="['autoee:dangerGoodsInfo:remove']"
-          >删除
+          >{{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

@@ -14,12 +14,12 @@
       <el-form-item label="字典标签" prop="dictLabel">
         <el-input
           v-model="queryParams.dictLabel"
-          placeholder="请输入字典标签"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="$t('common.status')" prop="status">
         <el-select v-model="queryParams.status" placeholder="数据状态" clearable>
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
@@ -30,8 +30,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -44,7 +44,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:dict:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -55,7 +55,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:dict:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -66,7 +66,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:dict:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -76,7 +76,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:dict:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -85,7 +85,7 @@
           icon="el-icon-close"
           size="mini"
           @click="handleClose"
-        >关闭</el-button>
+        >{{ $t('common.close') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -101,18 +101,18 @@
       </el-table-column>
       <el-table-column label="字典键值" align="center" prop="dictValue" />
       <el-table-column label="字典排序" align="center" prop="dictSort" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="$t('common.status')" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -120,14 +120,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:dict:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:dict:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -147,13 +147,13 @@
           <el-input v-model="form.dictType" :disabled="true" />
         </el-form-item>
         <el-form-item label="数据标签" prop="dictLabel">
-          <el-input v-model="form.dictLabel" placeholder="请输入数据标签" />
+          <el-input v-model="form.dictLabel" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="数据键值" prop="dictValue">
-          <el-input v-model="form.dictValue" placeholder="请输入数据键值" />
+          <el-input v-model="form.dictValue" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="样式属性" prop="cssClass">
-          <el-input v-model="form.cssClass" placeholder="请输入样式属性" />
+          <el-input v-model="form.cssClass" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="显示排序" prop="dictSort">
           <el-input-number v-model="form.dictSort" controls-position="right" :min="0" />
@@ -168,7 +168,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="$t('common.status')" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio
               v-for="dict in dict.type.sys_normal_disable"
@@ -177,8 +177,8 @@
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

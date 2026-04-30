@@ -59,14 +59,14 @@
       <el-form-item label="任务编码" prop="taskCode">
         <el-input
           v-model="queryParams.taskCode"
-          placeholder="请输入任务编码"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 180px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="执行状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable style="width: 120px">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable style="width: 120px">
           <el-option label="执行中" :value="1" />
           <el-option label="成功" :value="2" />
           <el-option label="失败" :value="3" />
@@ -85,8 +85,8 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -135,7 +135,7 @@
           <span class="fail-color">{{ scope.row.failCount || 0 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status" width="100">
+      <el-table-column :label="$t('common.status')" align="center" prop="status" width="100">
         <template slot-scope="scope">
           <el-tag :type="getStatusType(scope.row.status)">
             {{ getStatusLabel(scope.row.status) }}

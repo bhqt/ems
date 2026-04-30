@@ -1,6 +1,6 @@
-FROM anapsix/alpine-java:8_server-jre_unlimited
+FROM eclipse-temurin:8-jre-alpine
 
-MAINTAINER cp_energy_xxl_job
+LABEL maintainer="cp_energy_xxl_job"
 
 RUN mkdir -p /zhurong-ems/xxljob/logs
 RUN mkdir -p /zhurong-ems/xxljob

@@ -6,8 +6,8 @@
     <div class="content-data" v-loading="loading">
       <div class="data-select">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
-          <el-form-item label="分类能耗" prop="energyType">
-            <el-select v-model="queryParams.energyType" placeholder="请选择" @change="energyTypeChange">
+          <el-form-item :label="$t('energyAnalysisModule.categoryEnergy')" prop="energyType">
+            <el-select v-model="queryParams.energyType" :placeholder="$t('common.pleaseSelect')" @change="energyTypeChange">
               <el-option
                 v-for="item in dict.type.energy_type"
                 :key="item.value"
@@ -16,8 +16,8 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="日期" prop="dateType">
-            <el-select v-model="queryParams.dateType" placeholder="请选择" style="width: 80px;" @change="dateTypeChange">
+          <el-form-item :label="$t('energyAnalysisModule.date')" prop="dateType">
+            <el-select v-model="queryParams.dateType" :placeholder="$t('common.pleaseSelect')" style="width: 80px;" @change="dateTypeChange">
               <el-option
                 v-for="item in dateTypeList"
                 :key="item.value"
@@ -31,11 +31,11 @@
               v-model="queryParams.time"
               :format="queryParams.dateType === 'week' ? 'yyyy-WW' : ''"
               :type="queryParams.dateType"
-              placeholder="选择时间"
+              :placeholder="$t('energyAnalysisModule.selectTime')"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="search">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="search">{{ $t('common.search') }}</el-button>
           </el-form-item>
         </el-form>
       </div>

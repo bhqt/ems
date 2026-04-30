@@ -11,8 +11,8 @@
           size="small"
           :inline="true"
         >
-          <el-form-item label="分类能耗" prop="energyType">
-            <el-select v-model="queryParams.energyType" placeholder="请选择" @change="energyTypeChange">
+          <el-form-item :label="$t('energyAnalysisModule.categoryEnergy')" prop="energyType">
+            <el-select v-model="queryParams.energyType" :placeholder="$t('common.pleaseSelect')" @change="energyTypeChange">
               <el-option
                 v-for="item in dict.type.energy_type"
                 :key="item.value"
@@ -30,7 +30,7 @@
             ></el-date-picker>
           </el-form-item> -->
           <!-- <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini">{{ $t('common.search') }}</el-button>
           </el-form-item> -->
         </el-form>
       </div>
@@ -40,7 +40,7 @@
             <el-date-picker
               v-model="queryParams.dayTime"
               type="date"
-              placeholder="选择日期"
+              :placeholder="$t('energyAnalysisModule.selectDate')"
               style="width: 140px"
               value-format="yyyy-MM-dd"
               :picker-options="pickerOptions"
@@ -48,7 +48,7 @@
               :editable="false"
               @change="changeDayTime"
             ></el-date-picker>
-            <div class="day-select-text">当日能耗总值：{{dayTotal}}kW·h</div>
+            <div class="day-select-text">{{ $t('energyAnalysisModule.dayTotal') }}：{{dayTotal}}kW·h</div>
           </div>
           <MinMaxDoubleBarVue
             height="100%"
@@ -92,7 +92,7 @@
             <el-date-picker
               v-model="queryParams.monthTime"
               type="month"
-              placeholder="选择日期"
+              :placeholder="$t('energyAnalysisModule.selectDate')"
               style="width: 140px"
               value-format="yyyy-MM"
               :clearable="false"
@@ -100,7 +100,7 @@
               :picker-options="pickerOptions"
               @change="changeMonthTime"
             ></el-date-picker>
-            <div class="day-select-text">当月能耗总值：{{monthTotal}}kW·h</div>
+            <div class="day-select-text">{{ $t('energyAnalysisModule.monthTotal') }}：{{monthTotal}}kW·h</div>
           </div>
           <MinMaxDoubleBarVue
             height="100%"

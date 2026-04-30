@@ -4,11 +4,11 @@
       <div>
         <el-tabs v-model="item" type="card">
           <el-tab-pane name="first">
-            <span slot="label"><i class="el-icon-help"></i> 能源区域</span>
+            <span slot="label"><i class="el-icon-help"></i> {{ $t('quotaModule.energyArea') }}</span>
             <topologicaTree v-if="item=='first'" item-type="building" :showCheckbox="false" @selectItem="treeItem($event)"/>
           </el-tab-pane>
           <el-tab-pane name="second">
-            <span slot="label"><i class="el-icon-set-up"></i> 能源分项</span>
+            <span slot="label"><i class="el-icon-set-up"></i> {{ $t('quotaModule.energySubsections') }}</span>
             <topologicaTree v-if="item=='second'" item-type="energySubsections" :showCheckbox="false" @selectItem="treeItem($event)"/>
           </el-tab-pane>
         </el-tabs>
@@ -17,30 +17,30 @@
     <div class="content-data">
       <div class="overview-title">
         <div class="overview-icon"></div>
-        <span>定额配置</span>
+        <span>{{ $t('quotaModule.config') }}</span>
       </div>
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="定额时间">
+        <el-form-item :label="$t('quotaModule.quotaTime')">
           <el-date-picker
             v-model="dateRange"
             style="width: 240px"
             value-format="yyyy-MM-dd HH:mm:ss"
             type="daterange"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="$t('quotaModule.startDate')"
+            :end-placeholder="$t('quotaModule.endDate')"
             :default-time="['00:00:00', '23:59:59']"
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="定额类型" prop="quotaType">
-          <el-select v-model="queryParams.quotaType" placeholder="请选择定额类型">
+        <el-form-item :label="$t('quotaModule.quotaType')" prop="quotaType">
+          <el-select v-model="queryParams.quotaType" :placeholder="$t('common.pleaseSelect')">
             <el-option v-for="item in dict.type.quota_type" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
         </el-form-item>
       </el-form>
 
@@ -53,7 +53,7 @@
             size="mini"
             @click="handleAdd"
             v-hasPermi="['system:quota:add']"
-          >新增</el-button>
+          >{{ $t('common.add') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -64,7 +64,7 @@
             :disabled="single"
             @click="handleUpdate"
             v-hasPermi="['system:quota:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -75,7 +75,7 @@
             :disabled="multiple"
             @click="handleDelete"
             v-hasPermi="['system:quota:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -85,30 +85,30 @@
             size="mini"
             @click="handleExport"
             v-hasPermi="['system:quota:export']"
-          >导出</el-button>
+          >{{ $t('common.export') }}</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
       <el-table v-loading="loading" :data="quotaList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column type="index" label="序号" width="55" align="center" />
-        <el-table-column label="定额类型" align="center" prop="quotaType" >
+        <el-table-column type="index" :label="$t('common.index')" width="55" align="center" />
+        <el-table-column :label="$t('quotaModule.quotaType')" align="center" prop="quotaType" >
           <template slot-scope="scope">
             <dict-tag :options="dict.type.quota_type" :value="scope.row.quotaType"/>
           </template>
         </el-table-column>
-        <el-table-column label="定额对象" align="center" prop="itemName" />
-        <el-table-column label="定额时间" align="center" prop="quotaTime" width="180">
+        <el-table-column :label="$t('quotaModule.quotaObject')" align="center" prop="itemName" />
+        <el-table-column :label="$t('quotaModule.quotaTime')" align="center" prop="quotaTime" width="180">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.quotaTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="定额数值" align="center" prop="quotaValue" />
-        <el-table-column label="实际累计能耗" align="center" prop="realEnergy" />
-        <el-table-column label="临界范围" align="center" prop="criticalVo" />
-        <el-table-column label="越限范围" align="center" prop="overMedianVo" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="$t('quotaModule.quotaValue')" align="center" prop="quotaValue" />
+        <el-table-column :label="$t('quotaModule.realEnergy')" align="center" prop="realEnergy" />
+        <el-table-column :label="$t('quotaModule.criticalRange')" align="center" prop="criticalVo" />
+        <el-table-column :label="$t('quotaModule.overLimitRange')" align="center" prop="overMedianVo" />
+        <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -116,14 +116,14 @@
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['system:quota:edit']"
-            >修改</el-button>
+            >{{ $t('common.edit') }}</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['system:quota:remove']"
-            >删除</el-button>
+            >{{ $t('common.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -140,34 +140,34 @@
     <!-- 添加或修改定额配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="定额类型" prop="quotaType">
-          <el-select v-model="form.quotaType" placeholder="请选择定额类型" @change="changeType" :disabled="edit">
+        <el-form-item :label="$t('quotaModule.quotaType')" prop="quotaType">
+          <el-select v-model="form.quotaType" :placeholder="$t('common.pleaseSelect')" @change="changeType" :disabled="edit">
             <el-option v-for="item in dict.type.quota_type" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="定额时间" prop="quotaTime">
+        <el-form-item :label="$t('quotaModule.quotaTime')" prop="quotaTime">
           <el-date-picker clearable :disabled="edit"
                           v-model="form.quotaTime"
                           :type="form.dateType"
                           value-format="yyyy-MM-dd HH:mm:ss"
-                          placeholder="请选择定额时间"
+                          :placeholder="$t('common.pleaseSelect')"
                           :picker-options="pickerOptions">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="定额数值" prop="quotaValue">
-          <el-input v-model="form.quotaValue" placeholder="填写定额数值,如10000,20000等" />
+        <el-form-item :label="$t('quotaModule.quotaValue')" prop="quotaValue">
+          <el-input v-model="form.quotaValue" :placeholder="$t('quotaModule.placeholder.inputQuotaValue')" />
         </el-form-item>
-        <el-form-item label="临界范围" prop="critical">
-          <el-input v-model="form.critical" placeholder="填写临界范围比例,如0.8、0.9等" />
+        <el-form-item :label="$t('quotaModule.criticalRange')" prop="critical">
+          <el-input v-model="form.critical" :placeholder="$t('quotaModule.placeholder.inputCriticalRange')" />
         </el-form-item>
-        <el-form-item label="越限范围" prop="overMedian">
-          <el-input v-model="form.overMedian" placeholder="填写越限范围比例,如1.1、1.2等" />
+        <el-form-item :label="$t('quotaModule.overLimitRange')" prop="overMedian">
+          <el-input v-model="form.overMedian" :placeholder="$t('quotaModule.placeholder.inputOverLimitRange')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

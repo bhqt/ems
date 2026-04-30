@@ -2,26 +2,26 @@
   <div class="app-container">
     <!-- 搜索表单 -->
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="电池组名称" prop="batteryName">
+      <el-form-item :label="$t('newenergyModule.storageBattery.batteryName')" prop="batteryName">
         <el-input
           v-model="queryParams.batteryName"
-          placeholder="请输入电池组名称"
+          :placeholder="$t('newenergyModule.storageBattery.placeholder.inputBatteryName')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="电池组编号" prop="batteryCode">
+      <el-form-item :label="$t('newenergyModule.storageBattery.batteryCode')" prop="batteryCode">
         <el-input
           v-model="queryParams.batteryCode"
-          placeholder="请输入电池组编号"
+          :placeholder="$t('newenergyModule.storageBattery.placeholder.inputBatteryCode')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="储能系统" prop="storageId">
-        <el-select v-model="queryParams.storageId" placeholder="请选择储能系统" clearable size="small">
+      <el-form-item :label="$t('newenergyModule.storageBattery.storageSystem')" prop="storageId">
+        <el-select v-model="queryParams.storageId" :placeholder="$t('newenergyModule.storageBattery.placeholder.selectStorageSystem')" clearable size="small">
           <el-option
             v-for="storage in storageOptions"
             :key="storage.id"
@@ -30,8 +30,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="电池状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择电池状态" clearable size="small">
+      <el-form-item :label="$t('newenergyModule.storageBattery.status')" prop="status">
+        <el-select v-model="queryParams.status" :placeholder="$t('newenergyModule.storageBattery.placeholder.selectStatus')" clearable size="small">
           <el-option
             v-for="dict in statusOptions"
             :key="dict.dictValue"
@@ -41,8 +41,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -56,7 +56,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['newenergy:storageBattery:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -67,7 +67,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['newenergy:storageBattery:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -78,7 +78,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['newenergy:storageBattery:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -88,7 +88,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['newenergy:storageBattery:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -96,29 +96,29 @@
     <!-- 数据表格 -->
     <el-table v-loading="loading" :data="storageBatteryList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键ID" align="center" prop="id" v-if="false" />
-      <el-table-column label="电池组名称" align="center" prop="batteryName" :show-overflow-tooltip="true" />
-      <el-table-column label="电池组编号" align="center" prop="batteryCode" />
-      <el-table-column label="储能系统" align="center" prop="storageName" />
-      <el-table-column label="电池型号" align="center" prop="batteryModel" />
-      <el-table-column label="额定容量(Ah)" align="center" prop="ratedCapacity" />
-      <el-table-column label="额定电压(V)" align="center" prop="ratedVoltage" />
-      <el-table-column label="总容量(kWh)" align="center" prop="totalCapacity" />
-      <el-table-column label="串数" align="center" prop="seriesCount" />
-      <el-table-column label="并数" align="center" prop="parallelCount" />
-      <el-table-column label="电池状态" align="center" prop="status">
+      <el-table-column :label="$t('newenergyModule.storageBattery.id')" align="center" prop="id" v-if="false" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.batteryName')" align="center" prop="batteryName" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.batteryCode')" align="center" prop="batteryCode" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.storageSystem')" align="center" prop="storageName" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.batteryModel')" align="center" prop="batteryModel" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.ratedCapacity')" align="center" prop="ratedCapacity" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.ratedVoltage')" align="center" prop="ratedVoltage" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.totalCapacity')" align="center" prop="totalCapacity" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.seriesCount')" align="center" prop="seriesCount" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.parallelCount')" align="center" prop="parallelCount" />
+      <el-table-column :label="$t('newenergyModule.storageBattery.status')" align="center" prop="status">
         <template slot-scope="scope">
           <el-tag :type="getStatusType(scope.row.status)">
             {{ getStatusLabel(scope.row.status) }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -126,21 +126,21 @@
             icon="el-icon-view"
             @click="handleView(scope.row)"
             v-hasPermi="['newenergy:storageBattery:query']"
-          >详情</el-button>
+          >{{ $t('common.detail') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['newenergy:storageBattery:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['newenergy:storageBattery:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -158,8 +158,8 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="储能系统" prop="storageId">
-              <el-select v-model="form.storageId" placeholder="请选择储能系统" style="width: 100%">
+            <el-form-item :label="$t('newenergyModule.storageBattery.storageSystem')" prop="storageId">
+              <el-select v-model="form.storageId" :placeholder="$t('newenergyModule.storageBattery.placeholder.selectStorageSystem')" style="width: 100%">
                 <el-option
                   v-for="storage in storageOptions"
                   :key="storage.id"
@@ -170,59 +170,59 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电池组名称" prop="batteryName">
-              <el-input v-model="form.batteryName" placeholder="请输入电池组名称" />
+            <el-form-item :label="$t('newenergyModule.storageBattery.batteryName')" prop="batteryName">
+              <el-input v-model="form.batteryName" :placeholder="$t('newenergyModule.storageBattery.placeholder.inputBatteryName')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="电池组编号" prop="batteryCode">
-              <el-input v-model="form.batteryCode" placeholder="请输入电池组编号" />
+            <el-form-item :label="$t('newenergyModule.storageBattery.batteryCode')" prop="batteryCode">
+              <el-input v-model="form.batteryCode" :placeholder="$t('newenergyModule.storageBattery.placeholder.inputBatteryCode')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="电池型号" prop="batteryModel">
-              <el-input v-model="form.batteryModel" placeholder="请输入电池型号" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="额定容量" prop="ratedCapacity">
-              <el-input-number v-model="form.ratedCapacity" :min="0" :precision="2" style="width: 100%" placeholder="请输入额定容量(Ah)" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="额定电压" prop="ratedVoltage">
-              <el-input-number v-model="form.ratedVoltage" :min="0" :precision="2" style="width: 100%" placeholder="请输入额定电压(V)" />
+            <el-form-item :label="$t('newenergyModule.storageBattery.batteryModel')" prop="batteryModel">
+              <el-input v-model="form.batteryModel" :placeholder="$t('newenergyModule.storageBattery.placeholder.inputBatteryModel')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="串数" prop="seriesCount">
-              <el-input-number v-model="form.seriesCount" :min="1" style="width: 100%" placeholder="请输入串数" />
+            <el-form-item :label="$t('newenergyModule.storageBattery.ratedCapacity')" prop="ratedCapacity">
+              <el-input-number v-model="form.ratedCapacity" :min="0" :precision="2" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="并数" prop="parallelCount">
-              <el-input-number v-model="form.parallelCount" :min="1" style="width: 100%" placeholder="请输入并数" />
+            <el-form-item :label="$t('newenergyModule.storageBattery.ratedVoltage')" prop="ratedVoltage">
+              <el-input-number v-model="form.ratedVoltage" :min="0" :precision="2" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="总容量" prop="totalCapacity">
-              <el-input-number v-model="form.totalCapacity" :min="0" :precision="2" style="width: 100%" placeholder="请输入总容量(kWh)" />
+            <el-form-item :label="$t('newenergyModule.storageBattery.seriesCount')" prop="seriesCount">
+              <el-input-number v-model="form.seriesCount" :min="1" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="投运日期" prop="commissioningDate">
+            <el-form-item :label="$t('newenergyModule.storageBattery.parallelCount')" prop="parallelCount">
+              <el-input-number v-model="form.parallelCount" :min="1" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item :label="$t('newenergyModule.storageBattery.totalCapacity')" prop="totalCapacity">
+              <el-input-number v-model="form.totalCapacity" :min="0" :precision="2" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item :label="$t('newenergyModule.storageBattery.commissioningDate')" prop="commissioningDate">
               <el-date-picker
                 v-model="form.commissioningDate"
                 type="date"
-                placeholder="请选择投运日期"
+                :placeholder="$t('common.pleaseSelect')"
                 style="width: 100%"
                 value-format="yyyy-MM-dd"
               />
@@ -231,8 +231,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="电池状态" prop="status">
-              <el-select v-model="form.status" placeholder="请选择电池状态" style="width: 100%">
+            <el-form-item :label="$t('newenergyModule.storageBattery.status')" prop="status">
+              <el-select v-model="form.status" :placeholder="$t('newenergyModule.storageBattery.placeholder.selectStatus')" style="width: 100%">
                 <el-option
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -243,36 +243,36 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
 
     <!-- 详情对话框 -->
-    <el-dialog title="电池组详情" :visible.sync="detailOpen" width="900px" append-to-body>
+    <el-dialog :title="$t('newenergyModule.storageBattery.title') + $t('common.detail')" :visible.sync="detailOpen" width="900px" append-to-body>
       <el-descriptions :column="3" border v-if="detailData">
-        <el-descriptions-item label="电池组名称">{{ detailData.batteryName }}</el-descriptions-item>
-        <el-descriptions-item label="电池组编号">{{ detailData.batteryCode }}</el-descriptions-item>
-        <el-descriptions-item label="储能系统">{{ detailData.storageName }}</el-descriptions-item>
-        <el-descriptions-item label="电池型号">{{ detailData.batteryModel }}</el-descriptions-item>
-        <el-descriptions-item label="额定容量">{{ detailData.ratedCapacity }} Ah</el-descriptions-item>
-        <el-descriptions-item label="额定电压">{{ detailData.ratedVoltage }} V</el-descriptions-item>
-        <el-descriptions-item label="总容量">{{ detailData.totalCapacity }} kWh</el-descriptions-item>
-        <el-descriptions-item label="串数">{{ detailData.seriesCount }}</el-descriptions-item>
-        <el-descriptions-item label="并数">{{ detailData.parallelCount }}</el-descriptions-item>
-        <el-descriptions-item label="投运日期">{{ detailData.commissioningDate }}</el-descriptions-item>
-        <el-descriptions-item label="电池状态">
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.batteryName')">{{ detailData.batteryName }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.batteryCode')">{{ detailData.batteryCode }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.storageSystem')">{{ detailData.storageName }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.batteryModel')">{{ detailData.batteryModel }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.ratedCapacity')">{{ detailData.ratedCapacity }} Ah</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.ratedVoltage')">{{ detailData.ratedVoltage }} V</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.totalCapacity')">{{ detailData.totalCapacity }} kWh</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.seriesCount')">{{ detailData.seriesCount }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.parallelCount')">{{ detailData.parallelCount }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.commissioningDate')">{{ detailData.commissioningDate }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('newenergyModule.storageBattery.status')">
           <el-tag :type="getStatusType(detailData.status)">{{ getStatusLabel(detailData.status) }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('common.createTime')">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
       </el-descriptions>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="detailOpen = false">关 闭</el-button>
+        <el-button @click="detailOpen = false">{{ $t('button.close') }}</el-button>
       </div>
     </el-dialog>
   </div>

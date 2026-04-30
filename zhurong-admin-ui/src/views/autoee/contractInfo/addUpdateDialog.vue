@@ -5,19 +5,19 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                 <el-form-item v-show='true' label="合同编号(新)" prop="contractNoNew" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.contractNoNew" placeholder="请输入合同编号(新)" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.contractNoNew" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="续签编号(老)" prop="contractNoOld" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.contractNoOld" placeholder="请输入续签编号(老)" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.contractNoOld" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="所属客户" prop="belongCustomer" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.belongCustomer" placeholder="请输入所属客户" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.belongCustomer" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="客户方联系人" prop="customerContact" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.customerContact" placeholder="请输入客户方联系人" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.customerContact" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='true' label="合同类型" prop="contractType" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.contractType" placeholder="请选择合同类型" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.contractType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.contract_type"
                         :key="dict.value"
@@ -27,7 +27,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="合同子类型" prop="contractSubtype" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.contractSubtype" placeholder="请选择合同子类型" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.contractSubtype" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.contract_subtype"
                         :key="dict.value"
@@ -37,35 +37,35 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="签约公司" prop="signCompany" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.signCompany" placeholder="请输入签约公司" maxlength="100" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.signCompany" :placeholder="$t('common.pleaseInput')" maxlength="100" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="业务员" prop="salesmanId" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.salesmanId" placeholder="请输入业务员" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.salesmanId" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="技术支持" prop="techSupport" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.techSupport" placeholder="请输入技术支持" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.techSupport" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="报价单号" prop="quoteNo" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.quoteNo" placeholder="请输入报价单号" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.quoteNo" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="合同总价" prop="contractTotal" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.contractTotal" placeholder="请输入合同总价" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.contractTotal" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="已收金额" prop="receivedAmount" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.receivedAmount" placeholder="请输入已收金额" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.receivedAmount" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="签约日期" prop="signDate" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.signDate" type="date" value-format="yyyy-MM-dd" :picker-options="datePickerOptions" placeholder="请选择签约日期" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.signDate" type="date" value-format="yyyy-MM-dd" :picker-options="datePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                 <el-form-item v-show='true' label="附件" prop="attachmentFiles" style="width: 90%;">
                   <file-upload v-model="addUpdateForm.attachmentFiles"/>
                   <!-- <file-upload v-model="addUpdateForm.attachmentFiles"/> -->
                 </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="250" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="250" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -76,8 +76,8 @@
                   </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

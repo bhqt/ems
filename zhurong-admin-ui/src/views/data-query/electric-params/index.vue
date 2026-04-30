@@ -8,21 +8,21 @@
       <el-tab-pane :label="$t('dataQueryModule.dailyRawData')" name="origin">
         <div class="origin-content" v-if="activeName == 'origin'" v-loading="loading">
           <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
-            <el-form-item label="起始时间">
+            <el-form-item :label="$t('dataQueryModule.startTime')">
               <el-date-picker
                 v-model="queryParams.dateRange"
                 style="width: 300px"
                 value-format="yyyy-MM-dd HH:mm:ss"
                 type="daterange"
                 range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                :start-placeholder="$t('dataQueryModule.startDate')"
+                :end-placeholder="$t('dataQueryModule.endDate')"
                 :default-time="['00:00:00', '23:59:59']"
                 @change="getTimeRange"
               ></el-date-picker>
             </el-form-item>
             <!-- <el-form-item label="电力类别" prop="type">
-              <el-select v-model="queryParams.type" placeholder="请选择" style="width:150px">
+              <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')" style="width:150px">
                 <el-option
                   v-for="item in energyType"
                   :key="item.value"
@@ -40,14 +40,14 @@
               </el-checkbox-group> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" size="mini" @click="getOriginData">查询</el-button>
-              <!-- <el-button type="primary" size="mini">重置</el-button> -->
+              <el-button type="primary" icon="el-icon-search" size="mini" @click="getOriginData">{{ $t('common.search') }}</el-button>
+              <!-- <el-button type="primary" size="mini">{{ $t('common.reset') }}</el-button> -->
             </el-form-item>
           </el-form>
           <div class="change-btn">
-            <el-button :type="showWhich === 'chart' ? 'primary' : 'default'" icon="el-icon-data-line" size="mini" @click="changeChart">图表</el-button>
-            <el-button :type="showWhich === 'table' ? 'primary' : 'default'" icon="el-icon-data-analysis" size="mini" @click="changeTable">数据</el-button>
-            <!-- <el-button v-if="showWhich === 'table'" type="warning" icon="el-icon-download" size="mini" @click="changeTable">导出</el-button> -->
+            <el-button :type="showWhich === 'chart' ? 'primary' : 'default'" icon="el-icon-data-line" size="mini" @click="changeChart">{{ $t('dataQueryModule.chart') }}</el-button>
+            <el-button :type="showWhich === 'table' ? 'primary' : 'default'" icon="el-icon-data-analysis" size="mini" @click="changeTable">{{ $t('dataQueryModule.data') }}</el-button>
+            <!-- <el-button v-if="showWhich === 'table'" type="warning" icon="el-icon-download" size="mini" @click="changeTable">{{ $t('dataQueryModule.export') }}</el-button> -->
           </div>
           <div class="chart-box">
             <ElectricLineChart height="100%" v-if="showWhich == 'chart'" :chartData="paramData" :dateRange="queryParams.dateRange" :configData="configData"/>
@@ -58,20 +58,20 @@
       <el-tab-pane :label="$t('dataQueryModule.dailyPeakData')" name="peak">
         <div class="origin-content" v-if="activeName=='peak'" v-loading="loading">
           <el-form :model="peakParams" ref="peakParams" size="small" :inline="true">
-            <el-form-item label="起始时间">
+            <el-form-item :label="$t('dataQueryModule.startTime')">
               <el-date-picker
                 v-model="peakParams.dateRange"
                 style="width: 300px"
                 value-format="yyyy-MM-dd"
                 type="daterange"
                 range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                :start-placeholder="$t('dataQueryModule.startDate')"
+                :end-placeholder="$t('dataQueryModule.endDate')"
                 @change="dateChange"
               ></el-date-picker>
             </el-form-item>
             <!-- <el-form-item label="电力类别" prop="type">
-              <el-select v-model="queryParams.type" placeholder="请选择" style="width:150px">
+              <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')" style="width:150px">
                 <el-option
                   v-for="item in energyType"
                   :key="item.value"
@@ -89,14 +89,14 @@
               </el-checkbox-group> -->
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" size="mini" @click="getPeakData">查询</el-button>
-              <!-- <el-button type="primary" size="mini">重置</el-button> -->
+              <el-button type="primary" icon="el-icon-search" size="mini" @click="getPeakData">{{ $t('common.search') }}</el-button>
+              <!-- <el-button type="primary" size="mini">{{ $t('common.reset') }}</el-button> -->
             </el-form-item>
           </el-form>
           <div class="change-btn">
-            <el-button :type="showWhich === 'chart' ? 'primary' : 'default'" icon="el-icon-data-line" size="mini" @click="changeChart">图表</el-button>
-            <el-button :type="showWhich === 'table' ? 'primary' : 'default'" icon="el-icon-data-analysis" size="mini" @click="changeTable">数据</el-button>
-            <!-- <el-button v-if="showWhich === 'table'" type="warning" icon="el-icon-download" size="mini" @click="changeTable">导出</el-button> -->
+            <el-button :type="showWhich === 'chart' ? 'primary' : 'default'" icon="el-icon-data-line" size="mini" @click="changeChart">{{ $t('dataQueryModule.chart') }}</el-button>
+            <el-button :type="showWhich === 'table' ? 'primary' : 'default'" icon="el-icon-data-analysis" size="mini" @click="changeTable">{{ $t('dataQueryModule.data') }}</el-button>
+            <!-- <el-button v-if="showWhich === 'table'" type="warning" icon="el-icon-download" size="mini" @click="changeTable">{{ $t('dataQueryModule.export') }}</el-button> -->
           </div>
           <div class="chart-box">
             <ElectricyPeakLineVue height="100%" v-if="showWhich == 'chart'" :dateRange="peakParams.dateRange" :configData="peakConfig" :chartData="peakData"/>
@@ -108,7 +108,7 @@
       <!-- <div class="data-select">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
           <el-form-item label="分类能耗" prop="type">
-            <el-select v-model="queryParams.type" placeholder="请选择">
+            <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')">
               <el-option
                 v-for="item in energyType"
                 :key="item.value"
@@ -118,7 +118,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="日期" prop="dateType">
-            <el-select v-model="queryParams.dateType" placeholder="请选择" style="width: 80px;">
+            <el-select v-model="queryParams.dateType" :placeholder="$t('common.pleaseSelect')" style="width: 80px;">
               <el-option
                 v-for="item in dateTypeList"
                 :key="item.value"
@@ -136,7 +136,7 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini">{{ $t('common.search') }}</el-button>
           </el-form-item>
         </el-form>
       </div>

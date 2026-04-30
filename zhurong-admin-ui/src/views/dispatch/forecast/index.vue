@@ -4,21 +4,21 @@
       <el-tab-pane :label="$t('dispatchModule.loadForecast')" name="load">
         <el-form :inline="true" class="query-form">
           <el-form-item label="预测类型">
-            <el-select v-model="loadQuery.forecastType" placeholder="请选择" size="small">
+            <el-select v-model="loadQuery.forecastType" :placeholder="$t('common.pleaseSelect')" size="small">
               <el-option label="短期" :value="1" />
               <el-option label="中期" :value="2" />
               <el-option label="长期" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item label="负荷类型">
-            <el-select v-model="loadQuery.loadType" placeholder="请选择" size="small">
+            <el-select v-model="loadQuery.loadType" :placeholder="$t('common.pleaseSelect')" size="small">
               <el-option label="生产负荷" :value="1" />
               <el-option label="非生产负荷" :value="2" />
               <el-option label="总负荷" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="getLoadList">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="getLoadList">{{ $t('common.search') }}</el-button>
             <el-button type="success" icon="el-icon-refresh" size="mini" @click="doLoadForecast">预测</el-button>
           </el-form-item>
         </el-form>
@@ -41,14 +41,14 @@
       <el-tab-pane :label="$t('dispatchModule.priceForecast')" name="price">
         <el-form :inline="true" class="query-form">
           <el-form-item label="能源类型">
-            <el-select v-model="priceQuery.energyType" placeholder="请选择" size="small">
+            <el-select v-model="priceQuery.energyType" :placeholder="$t('common.pleaseSelect')" size="small">
               <el-option label="电力" :value="1" />
               <el-option label="天然气" :value="2" />
               <el-option label="煤炭" :value="3" />
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="getPriceList">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="getPriceList">{{ $t('common.search') }}</el-button>
             <el-button type="success" icon="el-icon-refresh" size="mini" @click="doPriceForecast">预测</el-button>
           </el-form-item>
         </el-form>
@@ -68,7 +68,7 @@
       <el-tab-pane :label="$t('dispatchModule.weatherForecast')" name="weather">
         <el-form :inline="true" class="query-form">
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="getWeatherList">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="getWeatherList">{{ $t('common.search') }}</el-button>
             <el-button type="success" icon="el-icon-refresh" size="mini" @click="doWeatherForecast">预测</el-button>
           </el-form-item>
         </el-form>
@@ -93,17 +93,17 @@
           <el-table-column label="模型类型" prop="modelType" />
           <el-table-column label="目标变量" prop="targetVariable" />
           <el-table-column label="准确率(%)" prop="accuracy" />
-          <el-table-column label="状态" prop="status">
+          <el-table-column :label="$t('common.status')" prop="status">
             <template slot-scope="scope">
               <el-tag :type="scope.row.status === 1 ? 'success' : 'info'">{{ scope.row.status === 1 ? '启用' : '禁用' }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column label="最后训练" prop="lastTrainTime" width="160" />
-          <el-table-column label="操作" width="180">
+          <el-table-column :label="$t('common.operation')" width="180">
             <template slot-scope="scope">
               <el-button size="mini" type="text" @click="trainModel(scope.row)">训练</el-button>
-              <el-button size="mini" type="text" @click="handleUpdateModel(scope.row)">修改</el-button>
-              <el-button size="mini" type="text" @click="handleDeleteModel(scope.row)">删除</el-button>
+              <el-button size="mini" type="text" @click="handleUpdateModel(scope.row)">{{ $t('common.edit') }}</el-button>
+              <el-button size="mini" type="text" @click="handleDeleteModel(scope.row)">{{ $t('common.delete') }}</el-button>
             </template>
           </el-table-column>
         </el-table>

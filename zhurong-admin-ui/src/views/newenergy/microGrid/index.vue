@@ -40,31 +40,31 @@
     <el-card class="search-card" shadow="hover">
       <el-form :inline="true" :model="searchForm" class="mb-4">
         <el-form-item label="微电网名称">
-          <el-input v-model="searchForm.name" placeholder="请输入微电网名称" clearable style="width: 200px;"></el-input>
+          <el-input v-model="searchForm.name" :placeholder="$t('common.pleaseInput')" clearable style="width: 200px;"></el-input>
         </el-form-item>
         <el-form-item label="微电网编码">
-          <el-input v-model="searchForm.code" placeholder="请输入微电网编码" clearable style="width: 200px;"></el-input>
+          <el-input v-model="searchForm.code" :placeholder="$t('common.pleaseInput')" clearable style="width: 200px;"></el-input>
         </el-form-item>
         <el-form-item label="所在区域">
-          <el-input v-model="searchForm.region" placeholder="请输入所在区域" clearable style="width: 200px;"></el-input>
+          <el-input v-model="searchForm.region" :placeholder="$t('common.pleaseInput')" clearable style="width: 200px;"></el-input>
         </el-form-item>
         <el-form-item label="并网状态">
-          <el-select v-model="searchForm.gridStatus" placeholder="请选择并网状态" clearable style="width: 150px;">
+          <el-select v-model="searchForm.gridStatus" :placeholder="$t('common.pleaseSelect')" clearable style="width: 150px;">
             <el-option label="并网" value="1"></el-option>
             <el-option label="离网" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="运行状态">
-          <el-select v-model="searchForm.status" placeholder="请选择运行状态" clearable style="width: 150px;">
+          <el-select v-model="searchForm.status" :placeholder="$t('common.pleaseSelect')" clearable style="width: 150px;">
             <el-option label="运行" value="1"></el-option>
             <el-option label="停用" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleSearch">查询</el-button>
-          <el-button @click="resetForm">重置</el-button>
-          <el-button type="success" @click="handleAdd" icon="el-icon-plus">新增</el-button>
-          <el-button type="warning" @click="handleExport">导出</el-button>
+          <el-button type="primary" @click="handleSearch">{{ $t('common.search') }}</el-button>
+          <el-button @click="resetForm">{{ $t('common.reset') }}</el-button>
+          <el-button type="success" @click="handleAdd" icon="el-icon-plus">{{ $t('common.add') }}</el-button>
+          <el-button type="warning" @click="handleExport">{{ $t('common.export') }}</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -83,10 +83,10 @@
         <el-table-column prop="gridStatusName" label="并网状态" width="100"></el-table-column>
         <el-table-column prop="statusName" label="运行状态" width="100"></el-table-column>
         <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
-        <el-table-column label="操作" width="180" fixed="right">
+        <el-table-column :label="$t('common.operation')" width="180" fixed="right">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="handleEdit(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">删除</el-button>
+            <el-button type="primary" size="small" @click="handleEdit(scope.row)">{{ $t('common.edit') }}</el-button>
+            <el-button type="danger" size="small" @click="handleDelete(scope.row.id)">{{ $t('common.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -109,45 +109,45 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="600px">
       <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
         <el-form-item label="微电网名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入微电网名称" style="width: 400px;"></el-input>
+          <el-input v-model="form.name" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="微电网编码" prop="code">
-          <el-input v-model="form.code" placeholder="请输入微电网编码" style="width: 400px;"></el-input>
+          <el-input v-model="form.code" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="所在区域" prop="region">
-          <el-input v-model="form.region" placeholder="请输入所在区域" style="width: 400px;"></el-input>
+          <el-input v-model="form.region" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="电压等级(kV)" prop="voltageLevel">
-          <el-input v-model="form.voltageLevel" type="number" placeholder="请输入电压等级" style="width: 400px;"></el-input>
+          <el-input v-model="form.voltageLevel" type="number" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="总容量(kW)" prop="totalCapacity">
-          <el-input v-model="form.totalCapacity" type="number" placeholder="请输入总容量" style="width: 400px;"></el-input>
+          <el-input v-model="form.totalCapacity" type="number" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="最大负荷(kW)" prop="maxLoad">
-          <el-input v-model="form.maxLoad" type="number" placeholder="请输入最大负荷" style="width: 400px;"></el-input>
+          <el-input v-model="form.maxLoad" type="number" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
         <el-form-item label="并网状态" prop="gridStatus">
-          <el-select v-model="form.gridStatus" placeholder="请选择并网状态" style="width: 400px;">
+          <el-select v-model="form.gridStatus" :placeholder="$t('common.pleaseSelect')" style="width: 400px;">
             <el-option label="并网" value="1"></el-option>
             <el-option label="离网" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="运行状态" prop="status">
-          <el-select v-model="form.status" placeholder="请选择运行状态" style="width: 400px;">
+          <el-select v-model="form.status" :placeholder="$t('common.pleaseSelect')" style="width: 400px;">
             <el-option label="运行" value="1"></el-option>
             <el-option label="停用" value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入描述" style="width: 400px;"></el-input>
+          <el-input v-model="form.description" type="textarea" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" style="width: 400px;"></el-input>
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')" style="width: 400px;"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="handleSubmit">确定</el-button>
+        <el-button @click="dialogVisible = false">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleSubmit">{{ $t('common.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>

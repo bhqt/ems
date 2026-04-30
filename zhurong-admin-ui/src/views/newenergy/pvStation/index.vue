@@ -45,7 +45,7 @@
       <el-form-item label="电站名称" prop="stationName">
         <el-input
           v-model="queryParams.stationName"
-          placeholder="请输入电站名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -54,14 +54,14 @@
       <el-form-item label="电站编号" prop="stationCode">
         <el-input
           v-model="queryParams.stationCode"
-          placeholder="请输入电站编号"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="电站类型" prop="stationType">
-        <el-select v-model="queryParams.stationType" placeholder="请选择电站类型" clearable size="small">
+        <el-select v-model="queryParams.stationType" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option
             v-for="dict in stationTypeOptions"
             :key="dict.dictValue"
@@ -75,12 +75,12 @@
           v-model="queryParams.areaId"
           :options="deptOptions"
           :show-count="true"
-          placeholder="请选择所属区域"
+          :placeholder="$t('common.pleaseSelect')"
           style="width: 200px"
         />
       </el-form-item>
       <el-form-item label="电站状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择电站状态" clearable size="small">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option
             v-for="dict in statusOptions"
             :key="dict.dictValue"
@@ -90,8 +90,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -105,7 +105,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['newenergy:pvStation:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -116,7 +116,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['newenergy:pvStation:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -127,7 +127,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['newenergy:pvStation:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -137,7 +137,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['newenergy:pvStation:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -166,12 +166,12 @@
       </el-table-column>
       <el-table-column label="负责人" align="center" prop="manager" />
       <el-table-column label="联系电话" align="center" prop="contactPhone" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -179,21 +179,21 @@
             icon="el-icon-view"
             @click="handleView(scope.row)"
             v-hasPermi="['newenergy:pvStation:query']"
-          >详情</el-button>
+          >{{ $t('common.detail') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['newenergy:pvStation:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['newenergy:pvStation:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -212,19 +212,19 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="电站名称" prop="stationName">
-              <el-input v-model="form.stationName" placeholder="请输入电站名称" />
+              <el-input v-model="form.stationName" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="电站编号" prop="stationCode">
-              <el-input v-model="form.stationCode" placeholder="请输入电站编号" />
+              <el-input v-model="form.stationCode" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="电站类型" prop="stationType">
-              <el-select v-model="form.stationType" placeholder="请选择电站类型" style="width: 100%">
+              <el-select v-model="form.stationType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option
                   v-for="dict in stationTypeOptions"
                   :key="dict.dictValue"
@@ -236,7 +236,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="装机容量" prop="capacity">
-              <el-input-number v-model="form.capacity" :min="0" :precision="2" style="width: 100%" placeholder="请输入装机容量(kW)" />
+              <el-input-number v-model="form.capacity" :min="0" :precision="2" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -247,13 +247,13 @@
                 v-model="form.areaId"
                 :options="deptOptions"
                 :show-count="true"
-                placeholder="请选择所属区域"
+                :placeholder="$t('common.pleaseSelect')"
               />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="电站状态" prop="status">
-              <el-select v-model="form.status" placeholder="请选择电站状态" style="width: 100%">
+              <el-select v-model="form.status" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option
                   v-for="dict in statusOptions"
                   :key="dict.dictValue"
@@ -267,12 +267,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="经度" prop="longitude">
-              <el-input-number v-model="form.longitude" :precision="6" style="width: 100%" placeholder="请输入经度" />
+              <el-input-number v-model="form.longitude" :precision="6" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="纬度" prop="latitude">
-              <el-input-number v-model="form.latitude" :precision="6" style="width: 100%" placeholder="请输入纬度" />
+              <el-input-number v-model="form.latitude" :precision="6" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -282,7 +282,7 @@
               <el-date-picker
                 v-model="form.installDate"
                 type="date"
-                placeholder="请选择安装日期"
+                :placeholder="$t('common.pleaseSelect')"
                 style="width: 100%"
                 value-format="yyyy-MM-dd"
               />
@@ -293,7 +293,7 @@
               <el-date-picker
                 v-model="form.gridDate"
                 type="date"
-                placeholder="请选择并网日期"
+                :placeholder="$t('common.pleaseSelect')"
                 style="width: 100%"
                 value-format="yyyy-MM-dd"
               />
@@ -303,12 +303,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="设计寿命" prop="designLife">
-              <el-input-number v-model="form.designLife" :min="0" style="width: 100%" placeholder="请输入设计寿命(年)" />
+              <el-input-number v-model="form.designLife" :min="0" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="组件类型" prop="componentType">
-              <el-select v-model="form.componentType" placeholder="请选择组件类型" style="width: 100%">
+              <el-select v-model="form.componentType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option
                   v-for="dict in componentTypeOptions"
                   :key="dict.dictValue"
@@ -322,36 +322,36 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="逆变器型号" prop="inverterModel">
-              <el-input v-model="form.inverterModel" placeholder="请输入逆变器型号" />
+              <el-input v-model="form.inverterModel" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="逆变器数量" prop="inverterCount">
-              <el-input-number v-model="form.inverterCount" :min="0" style="width: 100%" placeholder="请输入逆变器数量" />
+              <el-input-number v-model="form.inverterCount" :min="0" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="组件数量" prop="componentCount">
-              <el-input-number v-model="form.componentCount" :min="0" style="width: 100%" placeholder="请输入组件数量" />
+              <el-input-number v-model="form.componentCount" :min="0" style="width: 100%" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="负责人" prop="manager">
-              <el-input v-model="form.manager" placeholder="请输入负责人" />
+              <el-input v-model="form.manager" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="联系电话" prop="contactPhone">
-              <el-input v-model="form.contactPhone" placeholder="请输入联系电话" />
+              <el-input v-model="form.contactPhone" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -386,7 +386,7 @@
         <el-descriptions-item label="组件数量">{{ detailData.componentCount }}</el-descriptions-item>
         <el-descriptions-item label="负责人">{{ detailData.manager }}</el-descriptions-item>
         <el-descriptions-item label="联系电话">{{ detailData.contactPhone }}</el-descriptions-item>
-        <el-descriptions-item label="创建时间">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('common.createTime')">{{ parseTime(detailData.createTime) }}</el-descriptions-item>
       </el-descriptions>
       <div slot="footer" class="dialog-footer">
         <el-button @click="detailOpen = false">关 闭</el-button>

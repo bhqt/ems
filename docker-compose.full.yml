@@ -133,7 +133,7 @@ services:
     networks:
       - zhurong-ems-network
     healthcheck:
-      test: ["CMD", "taos", "-c", "show databases"]
+      test: ["CMD-SHELL", "taos -u root -s 'show databases;' > /dev/null 2>&1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -171,8 +171,12 @@ services:
       MQTT_CLIENT_ID: zhurong-ems-server-${HOSTNAME:-default}
       MQTT_TIMEOUT: 120
       MQTT_KEEPALIVE: 360
-      # TDengine配置 - 使用空配置禁用
-      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED: "false"
+      # TDengine 配置
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED: "true"
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_DRIVERCLASSNAME: com.taosdata.jdbc.rs.RestfulDriver
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_URL: jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy?user=energy&password=difyai123456&timezone=Asia/Shanghai
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_USERNAME: energy
+      SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_PASSWORD: difyai123456
       JAVA_OPTS: -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED
       TZ: Asia/Shanghai
     volumes:
@@ -181,10 +185,13 @@ services:
       - ./application.yml:/zhurong-ems/server/application.yml
     networks:
       - zhurong-ems-network
+      - legal-network
     depends_on:
       zhurong-ems-rabbitmq:
         condition: service_healthy
       zhurong-ems-emqx:
+        condition: service_healthy
+      zhurong-ems-tdengine:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8088/autoee-iot-ems/actuator/health || exit 1"]
@@ -221,6 +228,9 @@ services:
 networks:
   zhurong-ems-network:
     name: zhurong-ems-network
+    driver: bridge
+  legal-network:
+    name: legal-network
     driver: bridge
 
 volumes:

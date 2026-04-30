@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="充电站" prop="stationId">
-        <el-select v-model="queryParams.stationId" placeholder="请选择充电站" clearable>
+        <el-select v-model="queryParams.stationId" :placeholder="$t('common.pleaseSelect')" clearable>
           <el-option
             v-for="station in stationList"
             :key="station.stationId"
@@ -14,13 +14,13 @@
       <el-form-item label="价格策略名称" prop="strategyName">
         <el-input
           v-model="queryParams.strategyName"
-          placeholder="请输入策略名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="计费模式" prop="billModel">
-        <el-select v-model="queryParams.billModel" placeholder="请选择计费模式" clearable>
+        <el-select v-model="queryParams.billModel" :placeholder="$t('common.pleaseSelect')" clearable>
           <el-option
             v-for="dict in dict.type.bill_model"
             :key="dict.value"
@@ -29,7 +29,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="策略状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择" clearable>
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable>
           <el-option
             v-for="dict in dict.type.price_strategy_status"
             :key="dict.value"
@@ -38,8 +38,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -52,7 +52,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:priceStrategy:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <!-- <el-col :span="1.5">
         <el-button
@@ -63,7 +63,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:priceStrategy:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col> -->
       <el-col :span="1.5">
         <el-button
@@ -74,7 +74,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:priceStrategy:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -84,7 +84,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:priceStrategy:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -110,8 +110,8 @@
         </template>
       </el-table-column>
       <el-table-column label="创建人" align="center" prop="createBy" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" fixed="right" width="160">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180"/>
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width" fixed="right" width="160">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -119,7 +119,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:priceStrategy:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
@@ -133,7 +133,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:priceStrategy:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -163,12 +163,12 @@
           <el-row :gutter="12">
             <el-col :span="12">
               <el-form-item label="策略名称" prop="strategyName">
-                <el-input v-model="form.strategyName" placeholder="请输入策略名称" />
+                <el-input v-model="form.strategyName" :placeholder="$t('common.pleaseInput')" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="充电站名称" prop="stationId">
-                <el-select v-model="form.stationId" placeholder="请选择充电站" clearable style="width:100%;" @change="stationChange">
+                <el-select v-model="form.stationId" :placeholder="$t('common.pleaseSelect')" clearable style="width:100%;" @change="stationChange">
                   <el-option
                     v-for="station in stationList"
                     :key="station.stationId"
@@ -192,7 +192,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="状态" prop="status">
+              <el-form-item :label="$t('common.status')" prop="status">
                 <el-radio-group v-model="form.status">
                   <el-radio
                     v-for="dict in dict.type.price_strategy_status"
@@ -206,7 +206,7 @@
           <el-row :gutter="12">
             <el-col :span="24">
               <el-form-item label="策略说明">
-                <el-input v-model="form.description" placeholder="请输入策略说明" type="textarea" :rows="1"/>
+                <el-input v-model="form.description" :placeholder="$t('common.pleaseInput')" type="textarea" :rows="1"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -220,7 +220,7 @@
             style="margin-bottom: 8px;"
             @click="addParam"
             v-hasPermi="['system:priceStrategy:add']"
-          >新增</el-button>
+          >{{ $t('common.add') }}</el-button>
           <div>
             <el-table v-loading="paramLoading" :data="paramList" @row-click="rowClick">
               <el-table-column label="序号" align="center" type="index" width="50"></el-table-column>
@@ -246,7 +246,7 @@
               </el-table-column>
               <el-table-column label="时段标识" prop="mark" align="center">
                 <template slot-scope="scope">
-                  <el-select v-model="scope.row.mark" placeholder="请选择" size="mini">
+                  <el-select v-model="scope.row.mark" :placeholder="$t('common.pleaseSelect')" size="mini">
                     <el-option 
                       v-for="dict in dict.type.price_param_mark"
                       :key="dict.value"
@@ -257,18 +257,18 @@
               </el-table-column>
               <el-table-column label="电费单价(元)" prop="elecPrice" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.elecPrice" placeholder="请输入" size="mini" :controls="false" :precision="4" style="width: 100%;"></el-input-number>
+                  <el-input-number v-model="scope.row.elecPrice" :placeholder="$t('common.pleaseInput')" size="mini" :controls="false" :precision="4" style="width: 100%;"></el-input-number>
                 </template>
               </el-table-column>
               <el-table-column label="服务费单价(元)" prop="servicePrice" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.servicePrice" placeholder="请输入" size="mini" :controls="false" :precision="4" style="width: 100%;"></el-input-number>
+                  <el-input-number v-model="scope.row.servicePrice" :placeholder="$t('common.pleaseInput')" size="mini" :controls="false" :precision="4" style="width: 100%;"></el-input-number>
                 </template>
               </el-table-column>
               <el-table-column label="总价(元)" align="center">
                 <template slot-scope="scope">{{totalPrice(scope.row)}}</template>
               </el-table-column>
-              <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                   <el-button
                     size="mini"
@@ -277,7 +277,7 @@
                     v-show="scope.$index + 1 < paramList.length"
                     @click="delectParam(scope.row)"
                     v-hasPermi="['system:priceStrategy:remove']"
-                  >删除</el-button>
+                  >{{ $t('common.delete') }}</el-button>
                 </template>
               </el-table-column>
             </el-table>

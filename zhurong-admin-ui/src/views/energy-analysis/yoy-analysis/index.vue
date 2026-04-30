@@ -6,17 +6,17 @@
     <div class="content-data" v-loading="showLoading">
       <div class="data-select">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
-          <el-form-item label="分类能耗" prop="energyType">
-            <el-select v-model="queryParams.energyType" placeholder="请选择">
+          <el-form-item :label="$t('energyAnalysisModule.categoryEnergy')" prop="energyType">
+            <el-select v-model="queryParams.energyType" :placeholder="$t('common.pleaseSelect')">
               <el-option v-for="item in dict.type.energy_type" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="年份">
-            <el-date-picker v-model="queryParams.year" type="year" value-format="yyyy" placeholder="选择年份"></el-date-picker>
+          <el-form-item :label="$t('energyAnalysisModule.year')">
+            <el-date-picker v-model="queryParams.year" type="year" value-format="yyyy" :placeholder="$t('energyAnalysisModule.selectYear')"></el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
           </el-form-item>
         </el-form>
       </div>

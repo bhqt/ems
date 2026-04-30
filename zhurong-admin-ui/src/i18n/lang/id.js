@@ -489,6 +489,8 @@ export default {
   navbar: {
     home: 'Beranda',
     profile: 'Profil',
+    layoutSetting: 'Pengaturan Tata Letak',
+    logout: 'Keluar',
     settings: 'Pengaturan',
     fullscreen: 'Layar Penuh',
     exitFullscreen: 'Keluar Layar Penuh',

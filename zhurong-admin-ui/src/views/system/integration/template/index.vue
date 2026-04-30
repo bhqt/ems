@@ -4,7 +4,7 @@
       <el-form-item label="模板名称" prop="templateName">
         <el-input
           v-model="queryParams.templateName"
-          placeholder="请输入模板名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 200px"
           @keyup.enter.native="handleQuery"
@@ -13,29 +13,29 @@
       <el-form-item label="模板编码" prop="templateCode">
         <el-input
           v-model="queryParams.templateCode"
-          placeholder="请输入模板编码"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 200px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="模板类型" prop="templateType">
-        <el-select v-model="queryParams.templateType" placeholder="请选择模板类型" clearable style="width: 150px">
+        <el-select v-model="queryParams.templateType" :placeholder="$t('common.pleaseSelect')" clearable style="width: 150px">
           <el-option label="MES同步" value="MES_SYNC" />
           <el-option label="ERP同步" value="ERP_SYNC" />
           <el-option label="环保系统同步" value="ENV_SYNC" />
           <el-option label="消防系统同步" value="FIRE_SYNC" />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable style="width: 120px">
+      <el-form-item :label="$t('common.status')" prop="status">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable style="width: 120px">
           <el-option label="启用" :value="1" />
           <el-option label="禁用" :value="2" />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -47,7 +47,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -57,7 +57,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -67,7 +67,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -95,26 +95,26 @@
       </el-table-column>
       <el-table-column label="源系统" align="center" prop="sourceSystem" width="100" />
       <el-table-column label="目标系统" align="center" prop="targetSystem" width="100" />
-      <el-table-column label="状态" align="center" prop="status" width="80">
+      <el-table-column :label="$t('common.status')" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">
             {{ scope.row.status === 1 ? '启用' : '禁用' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
@@ -132,7 +132,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -148,13 +148,13 @@
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="模板名称" prop="templateName">
-          <el-input v-model="form.templateName" placeholder="请输入模板名称" />
+          <el-input v-model="form.templateName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="模板编码" prop="templateCode">
-          <el-input v-model="form.templateCode" placeholder="请输入模板编码" />
+          <el-input v-model="form.templateCode" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="模板类型" prop="templateType">
-          <el-select v-model="form.templateType" placeholder="请选择模板类型">
+          <el-select v-model="form.templateType" :placeholder="$t('common.pleaseSelect')">
             <el-option label="MES同步" value="MES_SYNC" />
             <el-option label="ERP同步" value="ERP_SYNC" />
             <el-option label="环保系统同步" value="ENV_SYNC" />
@@ -162,7 +162,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="源系统" prop="sourceSystem">
-          <el-select v-model="form.sourceSystem" placeholder="请选择源系统">
+          <el-select v-model="form.sourceSystem" :placeholder="$t('common.pleaseSelect')">
             <el-option label="MES" value="MES" />
             <el-option label="ERP" value="ERP" />
             <el-option label="环保系统" value="ENV" />
@@ -170,7 +170,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="目标系统" prop="targetSystem">
-          <el-select v-model="form.targetSystem" placeholder="请选择目标系统">
+          <el-select v-model="form.targetSystem" :placeholder="$t('common.pleaseSelect')">
             <el-option label="MES" value="MES" />
             <el-option label="ERP" value="ERP" />
             <el-option label="环保系统" value="ENV" />
@@ -179,15 +179,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="字段映射" prop="fieldMapping">
-          <el-input v-model="form.fieldMapping" type="textarea" placeholder="请输入字段映射（JSON格式）" :rows="4" />
+          <el-input v-model="form.fieldMapping" type="textarea" :placeholder="$t('common.pleaseInput')" :rows="4" />
         </el-form-item>
         <el-form-item label="转换规则" prop="transformRules">
-          <el-input v-model="form.transformRules" type="textarea" placeholder="请输入转换规则（JSON格式）" :rows="4" />
+          <el-input v-model="form.transformRules" type="textarea" :placeholder="$t('common.pleaseInput')" :rows="4" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-input v-model="form.description" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="$t('common.status')" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="2">禁用</el-radio>
@@ -206,10 +206,10 @@
           <el-input v-model="copyForm.originalName" disabled />
         </el-form-item>
         <el-form-item label="新模板名称" prop="newTemplateName">
-          <el-input v-model="copyForm.newTemplateName" placeholder="请输入新模板名称" />
+          <el-input v-model="copyForm.newTemplateName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="新模板编码" prop="newTemplateCode">
-          <el-input v-model="copyForm.newTemplateCode" placeholder="请输入新模板编码" />
+          <el-input v-model="copyForm.newTemplateCode" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

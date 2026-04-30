@@ -23,7 +23,7 @@
             >
               <el-input
                 v-model="formData.label"
-                placeholder="请输入选项名"
+                :placeholder="$t('common.pleaseInput')"
                 clearable
               />
             </el-form-item>
@@ -35,7 +35,7 @@
             >
               <el-input
                 v-model="formData.value"
-                placeholder="请输入选项值"
+                :placeholder="$t('common.pleaseInput')"
                 clearable
               >
                 <el-select
@@ -60,12 +60,8 @@
         <el-button
           type="primary"
           @click="handleConfirm"
-        >
-          确定
-        </el-button>
-        <el-button @click="close">
-          取消
-        </el-button>
+        >{{ $t('common.confirm') }}</el-button>
+        <el-button @click="close">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

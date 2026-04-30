@@ -35,13 +35,13 @@
             ></el-table-column>
 
             <el-table-column
-              label="备注"
+              :label="$t('common.remark')"
               align="center"
               prop="remark"
               :show-overflow-tooltip="true"
             />
             <el-table-column
-              label="操作"
+              :label="$t('common.operation')"
               width="60"
               align="center"
               class-name="small-padding fixed-width"
@@ -91,7 +91,7 @@
             >
             </el-table-column>
             <el-table-column
-              label="操作"
+              :label="$t('common.operation')"
               width="60"
               align="center"
               class-name="small-padding fixed-width"

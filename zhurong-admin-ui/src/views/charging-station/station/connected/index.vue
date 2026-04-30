@@ -4,24 +4,24 @@
       <!-- <el-form-item label="归属商户" prop="merchantId">
           <el-input
             v-model="queryParams.merchantId"
-            placeholder="请输入归属商户"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item> -->
-      <el-form-item label="归属商户" prop="merchantName">
-        <el-input v-model="queryParams.merchantName" placeholder="请输入归属商户名" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item :label="$t('chargingModule.station.merchant')" prop="merchantName">
+        <el-input v-model="queryParams.merchantName" :placeholder="$t('chargingModule.station.placeholder.searchMerchant')" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="充电站名" prop="name">
-        <el-input v-model="queryParams.name" placeholder="请输入充电站名称" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item :label="$t('chargingModule.station.stationName')" prop="name">
+        <el-input v-model="queryParams.name" :placeholder="$t('chargingModule.station.placeholder.searchStation')" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="电站电价" prop="price">
-        <el-input v-model="queryParams.price" placeholder="请输入电站电价" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item :label="$t('chargingModule.station.price')" prop="price">
+        <el-input v-model="queryParams.price" :placeholder="$t('common.pleaseInput')" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <!-- <el-form-item label="电站地址" prop="address">
           <el-input
             v-model="queryParams.address"
-            placeholder="请输入电站地址"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -29,33 +29,33 @@
       <!-- <el-form-item label="电站活动" prop="activity">
           <el-input
             v-model="queryParams.activity"
-            placeholder="请输入电站活动"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['system:station:add']">新增</el-button>
+          v-hasPermi="['system:station:add']">{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['system:station:edit']">修改</el-button>
+          v-hasPermi="['system:station:edit']">{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:station:remove']">删除</el-button>
+          v-hasPermi="['system:station:remove']">{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['system:station:export']">导出</el-button>
+          v-hasPermi="['system:station:export']">{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -65,24 +65,24 @@
       <!-- <el-table-column label="充电站ID" align="center" prop="stationId" v-if="true"/>
         <el-table-column label="归属商户" align="center" prop="merchantId" /> -->
       
-      <el-table-column label="充电站名称" align="center" prop="name" />
-      <el-table-column label="电站电价" align="center" prop="price" />
-      <el-table-column label="归属商户名" align="center" prop="merchantName" />
-      <el-table-column label="电站地址" align="center" prop="address" />
+      <el-table-column :label="$t('chargingModule.station.stationName')" align="center" prop="name" />
+      <el-table-column :label="$t('chargingModule.station.price')" align="center" prop="price" />
+      <el-table-column :label="$t('chargingModule.station.merchantName')" align="center" prop="merchantName" />
+      <el-table-column :label="$t('chargingModule.station.address')" align="center" prop="address" />
       <!-- <el-table-column label="电站活动" align="center" prop="activity" /> -->
-      <el-table-column label="电站状态开关" align="center" prop="status">
+      <el-table-column :label="$t('chargingModule.station.status')" align="center" prop="status">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
             @change="handleStatusChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:station:edit']">修改</el-button>
+            v-hasPermi="['system:station:edit']">{{ $t('common.edit') }}</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['system:station:remove']">删除</el-button>
+            v-hasPermi="['system:station:remove']">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -93,35 +93,35 @@
     <!-- 添加或修改充电站信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="充电站名" prop="name">
-          <el-input v-model="form.name" placeholder="请输入充电站名称" />
+        <el-form-item :label="$t('chargingModule.station.stationName')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('chargingModule.station.placeholder.searchStation')" />
         </el-form-item>
-        <el-form-item label="电站电价" prop="price">
-          <el-input-number v-model="form.price" style="width: 40%;" :controls="false" placeholder="请输入电站电价" />
+        <el-form-item :label="$t('chargingModule.station.price')" prop="price">
+          <el-input-number v-model="form.price" style="width: 40%;" :controls="false" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="归属商户" prop="merchantId">
-          <el-select v-model="form.merchantId" placeholder="请输入归属商户" @change="merchantChange">
+        <el-form-item :label="$t('chargingModule.station.merchant')" prop="merchantId">
+          <el-select v-model="form.merchantId" :placeholder="$t('common.pleaseSelect')" @change="merchantChange">
             <el-option v-for="item in merchantList" :key="item.merchantId" :label="item.name"
               :value="item.merchantId"></el-option>
           </el-select>
         </el-form-item>
         <!-- <el-form-item label="归属商户名" prop="merchantName">
-            <el-input v-model="form.merchantName" placeholder="请输入归属商户名" />
+            <el-input v-model="form.merchantName" :placeholder="$t('common.pleaseInput')" />
           </el-form-item> -->
         
-        <el-form-item label="电站地址" prop="address">
-          <el-input v-model="form.address" placeholder="请输入电站地址" />
+        <el-form-item :label="$t('chargingModule.station.address')" prop="address">
+          <el-input v-model="form.address" :placeholder="$t('chargingModule.station.placeholder.inputAddress')" />
         </el-form-item>
         <el-form-item label="电站活动" prop="activity">
-          <el-input v-model="form.activity" placeholder="请输入电站活动" />
+          <el-input v-model="form.activity" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

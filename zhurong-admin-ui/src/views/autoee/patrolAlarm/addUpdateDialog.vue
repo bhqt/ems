@@ -5,10 +5,10 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                 <el-form-item v-show='true' label="报警编号" prop="alarmNo" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.alarmNo" placeholder="请输入报警编号" maxlength="25" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.alarmNo" :placeholder="$t('common.pleaseInput')" maxlength="25" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='true' label="巡更计划" prop="patrolPlanId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolPlanId" placeholder="请选择巡更计划" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolPlanId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_plan"
                         :key="dict.value"
@@ -18,7 +18,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更任务" prop="patrolTaskId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolTaskId" placeholder="请选择巡更任务" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolTaskId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_task"
                         :key="dict.value"
@@ -28,7 +28,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更人员" prop="patrolUserId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolUserId" placeholder="请选择巡更人员" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolUserId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -38,7 +38,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="报警类型" prop="patrolAlarmType" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolAlarmType" placeholder="请选择报警类型" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolAlarmType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.patrol_alarm_type"
                         :key="dict.value"
@@ -48,13 +48,13 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="报警时间" prop="patrolAlarmTime" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.patrolAlarmTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" placeholder="请选择报警时间" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.patrolAlarmTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                 <el-form-item v-show='true' label="报警内容" prop="patrolAlarmContent" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.patrolAlarmContent" type="textarea" :rows="3" placeholder="请输入报警内容" maxlength="300" show-word-limit/>
+                  <el-input v-model="addUpdateForm.patrolAlarmContent" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='true' label="报警状态" prop="patrolAlarmStatus" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolAlarmStatus" placeholder="请选择报警状态" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolAlarmStatus" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.patrol_alarm_status"
                         :key="dict.value"
@@ -64,7 +64,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="处理人" prop="handleUserId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.handleUserId" placeholder="请选择处理人" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.handleUserId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -74,16 +74,16 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="处理时间" prop="handleTime" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.handleTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" placeholder="请选择处理时间" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.handleTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                 <el-form-item v-show='true' label="处理描述" prop="handleDesc" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.handleDesc" type="textarea" :rows="3" placeholder="请输入处理描述" maxlength="300" show-word-limit/>
+                  <el-input v-model="addUpdateForm.handleDesc" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

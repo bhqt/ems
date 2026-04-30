@@ -89,12 +89,12 @@
                                 v-model="queryParams.quotaTime"
                                 :type="queryParams.dateType"
                                 value-format="yyyy-MM-dd HH:mm:ss"
-                                placeholder="请选择定额时间"
+                                :placeholder="$t('common.pleaseSelect')"
                                 :picker-options="pickerOptions">
                 </el-date-picker>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" icon="el-icon-search" size="mini" @click="search">查询</el-button>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="search">{{ $t('common.search') }}</el-button>
               </el-form-item>
             </el-form>
           </div>

@@ -73,7 +73,7 @@
             :options="menus"
             :normalizer="normalizer"
             :show-count="true"
-            placeholder="请选择系统菜单"
+            :placeholder="$t('common.pleaseSelect')"
           />
         </el-form-item>
       </el-col>
@@ -124,7 +124,7 @@
               <i class="el-icon-question"></i>
             </el-tooltip>
           </span>
-          <el-select v-model="info.treeCode" placeholder="请选择">
+          <el-select v-model="info.treeCode" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="(column, index) in info.columns"
               :key="index"
@@ -142,7 +142,7 @@
               <i class="el-icon-question"></i>
             </el-tooltip>
           </span>
-          <el-select v-model="info.treeParentCode" placeholder="请选择">
+          <el-select v-model="info.treeParentCode" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="(column, index) in info.columns"
               :key="index"
@@ -160,7 +160,7 @@
               <i class="el-icon-question"></i>
             </el-tooltip>
           </span>
-          <el-select v-model="info.treeName" placeholder="请选择">
+          <el-select v-model="info.treeName" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="(column, index) in info.columns"
               :key="index"
@@ -181,7 +181,7 @@
               <i class="el-icon-question"></i>
             </el-tooltip>
           </span>
-          <el-select v-model="info.subTableName" placeholder="请选择" @change="subSelectChange">
+          <el-select v-model="info.subTableName" :placeholder="$t('common.pleaseSelect')" @change="subSelectChange">
             <el-option
               v-for="(table, index) in tables"
               :key="index"
@@ -199,7 +199,7 @@
               <i class="el-icon-question"></i>
             </el-tooltip>
           </span>
-          <el-select v-model="info.subTableFkName" placeholder="请选择">
+          <el-select v-model="info.subTableFkName" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="(column, index) in subColumns"
               :key="index"

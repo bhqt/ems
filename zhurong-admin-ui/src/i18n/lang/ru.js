@@ -489,6 +489,8 @@ export default {
   navbar: {
     home: 'Главная',
     profile: 'Профиль',
+    layoutSetting: 'Настройки макета',
+    logout: 'Выйти',
     settings: 'Настройки',
     fullscreen: 'Полный экран',
     exitFullscreen: 'Выйти из полного экрана',

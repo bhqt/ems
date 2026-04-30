@@ -4,7 +4,7 @@
       <el-form-item :label="$t('cameraModule.cameraName')" prop="cameraName">
         <el-input
           v-model="queryParams.cameraName"
-          placeholder="请输入摄像头名称"
+          :placeholder="$t('cameraModule.cameraName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -12,7 +12,7 @@
       <el-form-item :label="$t('cameraModule.cameraBrand')" prop="cameraBrand">
         <el-input
           v-model="queryParams.cameraBrand"
-          placeholder="请输入品牌"
+          :placeholder="$t('cameraModule.cameraBrand')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -20,14 +20,14 @@
       <el-form-item :label="$t('cameraModule.cameraSn')" prop="cameraSn">
         <el-input
           v-model="queryParams.cameraSn"
-          placeholder="请输入序列号"
+          :placeholder="$t('cameraModule.cameraSn')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -40,7 +40,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:cameraConfig:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -51,7 +51,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:cameraConfig:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +62,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:cameraConfig:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -72,7 +72,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:cameraConfig:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <el-col :span="1.5">
          <!-- 引入 Tooltip 组件（若项目已全局引入 Element UI，可直接使用） -->
@@ -103,13 +103,13 @@
       <el-table-column :label="$t('cameraModule.cameraName')" align="center" prop="cameraName" />
       <el-table-column :label="$t('cameraModule.cameraBrand')" align="center" prop="cameraBrand" />
       <el-table-column :label="$t('cameraModule.cameraSn')" align="center" prop="cameraSn" />
-      <el-table-column label="视频token" align="center" prop="cameraToken" width="180" show-overflow-tooltip/>
-      <el-table-column label="视频key" align="center" prop="cameraKey" width="180" show-overflow-tooltip/>
-      <el-table-column label="视频secret" align="center" prop="cameraSecret" width="180" show-overflow-tooltip/>
+      <el-table-column :label="$t('cameraModule.cameraToken')" align="center" prop="cameraToken" width="180" show-overflow-tooltip/>
+      <el-table-column :label="$t('cameraModule.cameraKey')" align="center" prop="cameraKey" width="180" show-overflow-tooltip/>
+      <el-table-column :label="$t('cameraModule.cameraSecret')" align="center" prop="cameraSecret" width="180" show-overflow-tooltip/>
       <el-table-column :label="$t('cameraModule.cameraLocation')" align="center" >
         <template slot-scope="scope">{{scope.row.area.itemName}}</template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -117,14 +117,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:cameraConfig:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:cameraConfig:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -141,30 +141,30 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item :label="$t('cameraModule.cameraName')" prop="cameraName">
-          <el-input v-model="form.cameraName" placeholder="请输入摄像头名称" />
+          <el-input v-model="form.cameraName" :placeholder="$t('cameraModule.cameraName')" />
         </el-form-item>
         <el-form-item :label="$t('cameraModule.cameraBrand')" prop="cameraBrand">
-          <el-input v-model="form.cameraBrand" placeholder="请输入品牌" />
+          <el-input v-model="form.cameraBrand" :placeholder="$t('cameraModule.cameraBrand')" />
         </el-form-item>
         <el-form-item :label="$t('cameraModule.cameraSn')" prop="cameraSn">
-          <el-input v-model="form.cameraSn" placeholder="请输入序列号" />
+          <el-input v-model="form.cameraSn" :placeholder="$t('cameraModule.cameraSn')" />
         </el-form-item>
-        <el-form-item label="视频token" prop="cameraToken">
-          <el-input v-model="form.cameraToken" placeholder="请输入视频token" />
+        <el-form-item :label="$t('cameraModule.cameraToken')" prop="cameraToken">
+          <el-input v-model="form.cameraToken" :placeholder="$t('cameraModule.cameraToken')" />
         </el-form-item>
-        <el-form-item label="视频key" prop="cameraKey">
-          <el-input v-model="form.cameraKey" placeholder="请输入视频key" />
+        <el-form-item :label="$t('cameraModule.cameraKey')" prop="cameraKey">
+          <el-input v-model="form.cameraKey" :placeholder="$t('cameraModule.cameraKey')" />
         </el-form-item>
-        <el-form-item label="视频secret" prop="cameraSecret">
-          <el-input v-model="form.cameraSecret" placeholder="请输入视频secret" />
+        <el-form-item :label="$t('cameraModule.cameraSecret')" prop="cameraSecret">
+          <el-input v-model="form.cameraSecret" :placeholder="$t('cameraModule.cameraSecret')" />
         </el-form-item>
         <el-form-item :label="$t('cameraModule.cameraLocation')" prop="areaId">
-          <treeselect v-model="form.areaId" :options="areaList" :show-count="true" placeholder="请选择区域"/>
+          <treeselect v-model="form.areaId" :options="areaList" :show-count="true" :placeholder="$t('common.pleaseSelect')"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('common.confirm') }}</el-button>
+        <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

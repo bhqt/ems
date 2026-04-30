@@ -194,7 +194,7 @@ export function delEnergyQuality(qualityIds) {
 // 获取日趋势
 export function getDayTrend(query) {
   return request({
-    url: '/energy/trend/day',
+    url: '/data/energy/dayTrend',
     method: 'get',
     params: query
   })
@@ -230,7 +230,7 @@ export function getChainData(query) {
 // 获取日用电功率
 export function getDailyP(query) {
   return request({
-    url: '/energy/daily/power',
+    url: '/data/energy/getDailyP',
     method: 'get',
     params: query
   })

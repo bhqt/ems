@@ -1,40 +1,40 @@
 <template>
     <div class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="值班日期" prop="dutyDate">
+        <el-form-item :label="$t('maintenanceModule.dutyDate')" prop="dutyDate">
           <el-input
             v-model="queryParams.dutyDate"
-            placeholder="请输入值班日期"
+            :placeholder="$t('maintenanceModule.dutyDate')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="值班人员" prop="onDuty">
+        <el-form-item :label="$t('maintenanceModule.onDuty')" prop="onDuty">
           <el-input
             v-model="queryParams.onDuty"
-            placeholder="请输入值班人员"
+            :placeholder="$t('maintenanceModule.onDuty')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="值班时段" prop="dutyPeriod">
+        <el-form-item :label="$t('maintenanceModule.dutyPeriod')" prop="dutyPeriod">
           <el-input
             v-model="queryParams.dutyPeriod"
-            placeholder="请输入值班时段"
+            :placeholder="$t('maintenanceModule.dutyPeriod')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="替班人员" prop="relief">
+        <el-form-item :label="$t('maintenanceModule.relief')" prop="relief">
           <el-input
             v-model="queryParams.relief"
-            placeholder="请输入替班人员"
+            :placeholder="$t('maintenanceModule.relief')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="值班类型" prop="type">
-          <el-select v-model="queryParams.type" placeholder="请选择">
+        <el-form-item :label="$t('maintenanceModule.dutyType')" prop="type">
+          <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')">
             <el-option v-for="dict in dict.type.duty_type"
               :key="dict.value"
               :label="dict.label"
@@ -42,77 +42,77 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
         </el-form-item>
       </el-form>
   
       <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
           <el-button
-            type="primary"
-            plain
-            icon="el-icon-plus"
-            size="mini"
-            @click="handleAdd"
-            v-hasPermi="['system:duty:add']"
-          >新增</el-button>
-        </el-col>
-        <el-col :span="1.5">
-          <el-button
-            type="success"
-            plain
-            icon="el-icon-edit"
-            size="mini"
-            :disabled="single"
-            @click="handleUpdate"
-            v-hasPermi="['system:duty:edit']"
-          >修改</el-button>
-        </el-col>
-        <el-col :span="1.5">
-          <el-button
-            type="danger"
-            plain
-            icon="el-icon-delete"
-            size="mini"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['system:duty:remove']"
-          >删除</el-button>
-        </el-col>
-        <el-col :span="1.5">
-          <el-button
-            type="warning"
-            plain
-            icon="el-icon-download"
-            size="mini"
-            @click="handleExport"
-            v-hasPermi="['system:duty:export']"
-          >导出</el-button>
-        </el-col>
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAdd"
+          v-hasPermi="['system:duty:add']"
+        >{{ $t('common.add') }}</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="success"
+          plain
+          icon="el-icon-edit"
+          size="mini"
+          :disabled="single"
+          @click="handleUpdate"
+          v-hasPermi="['system:duty:edit']"
+        >{{ $t('common.edit') }}</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:duty:remove']"
+        >{{ $t('common.delete') }}</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          @click="handleExport"
+          v-hasPermi="['system:duty:export']"
+        >{{ $t('common.export') }}</el-button>
+      </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
   
       <el-table v-loading="loading" :data="dutyList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <!-- <el-table-column label="值班id" align="center" prop="dutyId" v-if="true"/> -->
-        <el-table-column label="值班日期" align="center" prop="dutyDate" />
-        <el-table-column label="值班人员" align="center" prop="onDuty" />
-        <el-table-column label="值班时间段" align="center" prop="dutyPeriod" />
-        <el-table-column label="值班类型" align="center" prop="type" >
+        <el-table-column :label="$t('maintenanceModule.dutyDate')" align="center" prop="dutyDate" />
+        <el-table-column :label="$t('maintenanceModule.onDuty')" align="center" prop="onDuty" />
+        <el-table-column :label="$t('maintenanceModule.dutyPeriod')" align="center" prop="dutyPeriod" />
+        <el-table-column :label="$t('maintenanceModule.dutyType')" align="center" prop="type" >
           <template slot-scope="scope">
             <dict-tag :options="dict.type.duty_type" :value="scope.row.type"/>
           </template>
         </el-table-column>
-        <el-table-column label="值班状态" align="center" prop="status" >
+        <el-table-column :label="$t('maintenanceModule.dutyStatus')" align="center" prop="status" >
           <template slot-scope="scope">
             <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
             @change="handleStatusChange(scope.row)"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="替班人员" align="center" prop="relief" />
-        <el-table-column label="值班备注" align="center" prop="remark" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="$t('maintenanceModule.relief')" align="center" prop="relief" />
+        <el-table-column :label="$t('maintenanceModule.dutyRemark')" align="center" prop="remark" />
+        <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -120,14 +120,14 @@
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['system:duty:edit']"
-            >修改</el-button>
+            >{{ $t('common.edit') }}</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['system:duty:remove']"
-            >删除</el-button>
+            >{{ $t('common.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -143,30 +143,30 @@
       <!-- 添加或修改值班管理对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-          <el-form-item label="值班日期" prop="dutyDate">
-            <el-input v-model="form.dutyDate" placeholder="请输入值班日期" />
-          </el-form-item>
-          <el-form-item label="值班人员" prop="onDuty">
-            <el-input v-model="form.onDuty" placeholder="请输入值班人员" />
-          </el-form-item>
-          <el-form-item label="值班时间段" prop="dutyPeriod">
-            <el-input v-model="form.dutyPeriod" placeholder="请输入值班时间段" />
-          </el-form-item>
-          <el-form-item label="替班人员" prop="relief">
-            <el-input v-model="form.relief" placeholder="请输入替班人员" />
-          </el-form-item>
-          <el-form-item label="值班状态" prop="status">
-            <el-radio-group v-model="form.status">
-              <el-radio
-                v-for="dict in dict.type.sys_normal_disable"
-                :key="dict.value"
-                :label="dict.value"
-              >{{dict.label}}</el-radio>
-            </el-radio-group>
-          </el-form-item>
-          <el-form-item label="值班备注" prop="remark">
-            <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-          </el-form-item>
+          <el-form-item :label="$t('maintenanceModule.dutyDate')" prop="dutyDate">
+          <el-input v-model="form.dutyDate" :placeholder="$t('maintenanceModule.dutyDate')" />
+        </el-form-item>
+        <el-form-item :label="$t('maintenanceModule.onDuty')" prop="onDuty">
+          <el-input v-model="form.onDuty" :placeholder="$t('maintenanceModule.onDuty')" />
+        </el-form-item>
+        <el-form-item :label="$t('maintenanceModule.dutyPeriod')" prop="dutyPeriod">
+          <el-input v-model="form.dutyPeriod" :placeholder="$t('maintenanceModule.dutyPeriod')" />
+        </el-form-item>
+        <el-form-item :label="$t('maintenanceModule.relief')" prop="relief">
+          <el-input v-model="form.relief" :placeholder="$t('maintenanceModule.relief')" />
+        </el-form-item>
+        <el-form-item :label="$t('maintenanceModule.dutyStatus')" prop="status">
+          <el-radio-group v-model="form.status">
+            <el-radio
+              v-for="dict in dict.type.sys_normal_disable"
+              :key="dict.value"
+              :label="dict.value"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item :label="$t('maintenanceModule.dutyRemark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')" />
+        </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>

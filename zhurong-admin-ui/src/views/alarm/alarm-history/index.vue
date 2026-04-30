@@ -2,24 +2,15 @@
     <div class="app-container">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
             <el-form-item :label="$t('alarmModule.paramName')" prop="paramName">
-                <el-select v-model="queryParams.paramName" placeholder="请选择参数名称" clearable
+                <el-select v-model="queryParams.paramName" :placeholder="$t('alarmModule.paramName')" clearable
                     @keyup.enter.native="handleQuery">
                     <el-option v-for="dict in dict.type.electric_type" :key="dict.value" :label="dict.label"
                         :value="dict.value">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <!-- <el-form-item label="报警时间" prop="alarmTime">
-                <el-date-picker clearable v-model="queryParams.alarmTime" type="date" value-format="yyyy-MM-dd"
-                    placeholder="请选择报警时间">
-                </el-date-picker>
-            </el-form-item> -->
-            <!-- <el-form-item label="报警信息" prop="alarmInfo">
-                <el-input v-model="queryParams.alarmInfo" placeholder="请输入报警信息" clearable
-                    @keyup.enter.native="handleQuery" />
-            </el-form-item> -->
             <el-form-item :label="$t('alarmModule.alarmLevel')" prop="alarmLevel">
-                    <el-select v-model="queryParams.alarmLevel" placeholder="请选择报警等级">
+                    <el-select v-model="queryParams.alarmLevel" :placeholder="$t('alarmModule.alarmLevel')">
                         <el-option
                         v-for="dict in dict.type.alarm_level"
                         :key="dict.value"
@@ -35,48 +26,33 @@
                 value-format="yyyy-MM-dd HH:mm:ss"
                 type="daterange"
                 range-separator="-"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期"
+                :start-placeholder="$t('common.startDate')"
+                :end-placeholder="$t('common.endDate')"
                 :default-time="['00:00:00', '23:59:59']"
               ></el-date-picker>
             </el-form-item>
-            <!-- <el-form-item label="报警区域" prop="area">
-                <el-input v-model="queryParams.area" placeholder="请输入报警区域" clearable @keyup.enter.native="handleQuery" />
-            </el-form-item> -->
-            <!-- <el-form-item label="报警设备" prop="equipment">
-                <el-input v-model="queryParams.equipment" placeholder="请输入报警设备" clearable
-                    @keyup.enter.native="handleQuery" />
-            </el-form-item> -->
-            <!-- <el-form-item label="报警值" prop="alarmVal">
-                <el-input v-model="queryParams.alarmVal" placeholder="请输入报警值" clearable @keyup.enter.native="handleQuery" />
-            </el-form-item> -->
-            <!-- <el-form-item label="结束时间" prop="endTime">
-                <el-date-picker clearable v-model="queryParams.endTime" type="date" value-format="yyyy-MM-dd"
-                    placeholder="请选择结束时间">
-                </el-date-picker>
-            </el-form-item> -->
             <el-form-item>
-                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
             </el-form-item>
         </el-form>
 
         <el-row :gutter="10" class="mb8">
             <el-col :span="1.5">
                 <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-                    v-hasPermi="['system:history:add']">新增</el-button>
+                    v-hasPermi="['system:history:add']">{{ $t('common.add') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                 <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-                    v-hasPermi="['system:history:edit']">编辑</el-button>
+                    v-hasPermi="['system:history:edit']">{{ $t('common.edit') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                 <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-                    v-hasPermi="['system:history:remove']">删除</el-button>
+                    v-hasPermi="['system:history:remove']">{{ $t('common.delete') }}</el-button>
             </el-col>
             <el-col :span="1.5">
                 <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-                    v-hasPermi="['system:history:export']">导出</el-button>
+                    v-hasPermi="['system:history:export']">{{ $t('common.export') }}</el-button>
             </el-col>
             <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>
@@ -108,12 +84,12 @@
                     <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d}') }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                     <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-                        v-hasPermi="['system:history:edit']">编辑</el-button>
+                        v-hasPermi="['system:history:edit']">{{ $t('common.edit') }}</el-button>
                     <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-                        v-hasPermi="['system:history:remove']">删除</el-button>
+                        v-hasPermi="['system:history:remove']">{{ $t('common.delete') }}</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -124,24 +100,23 @@
         <!-- 添加或修改实时报警对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                <el-form-item label="参数名称" prop="paramName">
-                    <!-- <el-input v-model="form.paramName" placeholder="请输入参数名称" /> -->
-                    <el-select v-model="form.paramName" placeholder="请选择参数名称" clearable @keyup.enter.native="handleQuery">
+                <el-form-item :label="$t('alarmModule.paramName')" prop="paramName">
+                    <el-select v-model="form.paramName" :placeholder="$t('alarmModule.paramName')" clearable @keyup.enter.native="handleQuery">
                         <el-option v-for="dict in dict.type.electric_type" :key="dict.value" :label="dict.label"
                             :value="dict.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="报警时间" prop="alarmTime">
+                <el-form-item :label="$t('alarmModule.alarmTime')" prop="alarmTime">
                     <el-date-picker clearable v-model="form.alarmTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择报警时间">
+                        :placeholder="$t('alarmModule.alarmTime')">
                     </el-date-picker>
                 </el-form-item>
-                <el-form-item label="报警信息" prop="alarmInfo">
-                    <el-input v-model="form.alarmInfo" placeholder="请输入报警信息" />
+                <el-form-item :label="$t('alarmModule.alarmInfo')" prop="alarmInfo">
+                    <el-input v-model="form.alarmInfo" :placeholder="$t('alarmModule.alarmInfo')" />
                 </el-form-item>
-                <el-form-item label="报警等级" prop="alarmLevel">
-                    <el-select v-model="form.alarmLevel" placeholder="请选择报警等级">
+                <el-form-item :label="$t('alarmModule.alarmLevel')" prop="alarmLevel">
+                    <el-select v-model="form.alarmLevel" :placeholder="$t('alarmModule.alarmLevel')">
                         <el-option
                         v-for="dict in dict.type.alarm_level"
                         :key="dict.value"
@@ -150,24 +125,24 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="报警区域" prop="area">
-                    <el-input v-model="form.area" placeholder="请输入报警区域" />
+                <el-form-item :label="$t('alarmModule.alarmArea')" prop="area">
+                    <el-input v-model="form.area" :placeholder="$t('alarmModule.alarmArea')" />
                 </el-form-item>
-                <el-form-item label="报警设备" prop="equipment">
-                    <el-input v-model="form.equipment" placeholder="请输入报警设备" />
+                <el-form-item :label="$t('alarmModule.alarmEquipment')" prop="equipment">
+                    <el-input v-model="form.equipment" :placeholder="$t('alarmModule.alarmEquipment')" />
                 </el-form-item>
-                <el-form-item label="报警值" prop="alarmVal">
-                    <el-input-number v-model="form.alarmVal" controls-position="right" :min="0" placeholder="请输入报警值" />
+                <el-form-item :label="$t('alarmModule.alarmVal')" prop="alarmVal">
+                    <el-input-number v-model="form.alarmVal" controls-position="right" :min="0" :placeholder="$t('alarmModule.alarmVal')" />
                 </el-form-item>
-                <el-form-item label="结束时间" prop="endTime">
+                <el-form-item :label="$t('alarmModule.endTime')" prop="endTime">
                     <el-date-picker clearable v-model="form.endTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
-                        placeholder="请选择结束时间">
+                        :placeholder="$t('alarmModule.endTime')">
                     </el-date-picker>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-                <el-button @click="cancel">取 消</el-button>
+                <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('common.confirm') }}</el-button>
+                <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
             </div>
         </el-dialog>
     </div>

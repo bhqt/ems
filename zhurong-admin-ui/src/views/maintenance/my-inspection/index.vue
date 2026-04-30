@@ -1,28 +1,28 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
-      <el-form-item label="计划名称" prop="planName">
-        <el-input v-model="queryParams.planName" placeholder="请输入计划名称" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item :label="$t('maintenanceModule.planName')" prop="planName">
+        <el-input v-model="queryParams.planName" :placeholder="$t('maintenanceModule.planName')" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="项目名称" prop="projectName">
-        <el-input v-model="queryParams.projectName" placeholder="请输入项目名称" clearable @keyup.enter.native="handleQuery" />
+      <el-form-item :label="$t('maintenanceModule.projectName')" prop="projectName">
+        <el-input v-model="queryParams.projectName" :placeholder="$t('maintenanceModule.projectName')" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
-      <el-form-item label="巡检人" prop="userId">
-        <el-select v-model="queryParams.userId" placeholder="请选择巡检人" clearable @keyup.enter.native="handleQuery">
+      <el-form-item :label="$t('maintenanceModule.inspector')" prop="userId">
+        <el-select v-model="queryParams.userId" :placeholder="$t('maintenanceModule.inspector')" clearable @keyup.enter.native="handleQuery">
           <el-option v-for="item in userList" :key="item.userId" :label="item.nickName" :value="item.userId">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="巡检状态" prop="inspectionStatus">
-        <el-select v-model="queryParams.inspectionStatus" placeholder="请选择状态" clearable @keyup.enter.native="handleQuery">
+      <el-form-item :label="$t('maintenanceModule.inspectionStatus')" prop="inspectionStatus">
+        <el-select v-model="queryParams.inspectionStatus" :placeholder="$t('maintenanceModule.inspectionStatus')" clearable @keyup.enter.native="handleQuery">
           <el-option v-for="item in dict.type.inspection_record_status" :key="item.value" :label="item.label"
             :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -52,11 +52,11 @@
       </el-col> -->
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:record:remove']">删除</el-button>
+          v-hasPermi="['system:record:remove']">{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['system:record:export']">导出</el-button>
+          v-hasPermi="['system:record:export']">{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -86,20 +86,20 @@
           {{ scope.row.inspectionRemark ? scope.row.inspectionRemark : '--' }}
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <!-- <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="180">
+      <el-table-column :label="$t('common.updateTime')" align="center" prop="updateTime" width="180">
         <!-- <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" class-name="small-padding" width="240">
+      <el-table-column :label="$t('common.operation')" fixed="right" align="center" class-name="small-padding" width="240">
         <template slot-scope="scope">
             <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetail(scope.row)"
-            v-hasPermi="['system:record:query']">详情</el-button>
+            v-hasPermi="['system:record:query']">{{ $t('common.detail') }}</el-button>
             <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             v-hasPermi="['system:record:edit']" v-if="scope.row.inspectionStatus == 0">处理</el-button>
           <el-button size="mini" type="text" icon="el-icon-tickets" @click="handleOrder(scope.row)"
@@ -110,7 +110,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:record:remove']"
-            >删除</el-button
+            >{{ $t('common.delete') }}</el-button
           > -->
         </template>
       </el-table-column>
@@ -183,7 +183,7 @@
         </el-form>
       </div>
       <div class="drawer-footer" style="padding: 20px;">
-        <el-button type="default" size="small" @click="cancel" icon="el-icon-close">关闭</el-button>
+        <el-button type="default" size="small" @click="cancel" icon="el-icon-close">{{ $t('common.close') }}</el-button>
         <el-button v-if="!disabled" type="primary" size="small" @click="submitForm" icon="el-icon-edit-outline" :loading="buttonLoading">完成</el-button>
       </div>
     </el-drawer>
@@ -192,17 +192,17 @@
     <el-dialog :title="orderTitle" :visible.sync="orderOpen" width="500px" append-to-body>
       <el-form ref="orderForm" :model="orderForm" :rules="orderRules" label-width="80px">
         <el-form-item label="工单编号" prop="orderNo">
-          <el-input v-model="orderForm.orderNo" placeholder="请输入工单编号" :disabled="true" />
+          <el-input v-model="orderForm.orderNo" :placeholder="$t('common.pleaseInput')" :disabled="true" />
         </el-form-item>
         <el-form-item label="工单内容" prop="orderContent">
           <!-- <editor v-model="form.orderContent" :min-height="192"/> -->
           <el-input type="textarea" v-model="orderForm.orderContent"></el-input>
         </el-form-item>
         <el-form-item label="项目名称" prop="projectName">
-          <el-input v-model="orderForm.projectName" placeholder="请输入项目名称" :disabled="true" />
+          <el-input v-model="orderForm.projectName" :placeholder="$t('common.pleaseInput')" :disabled="true" />
         </el-form-item>
         <el-form-item label="负责人" prop="userId">
-          <el-select v-model="orderForm.userId" placeholder="请选择" @change="userChange">
+          <el-select v-model="orderForm.userId" :placeholder="$t('common.pleaseSelect')" @change="userChange">
             <el-option v-for="item in userList" :key="item.userId" :label="item.nickName"
               :value="item.userId"></el-option>
           </el-select>
@@ -211,7 +211,7 @@
           <fileUpload v-model="orderForm.annex"/>
         </el-form-item>
         <el-form-item label="工单备注" prop="orderRemark">
-          <el-input v-model="orderForm.orderRemark" placeholder="请输入工单备注" />
+          <el-input v-model="orderForm.orderRemark" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

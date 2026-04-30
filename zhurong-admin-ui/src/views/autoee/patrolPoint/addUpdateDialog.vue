@@ -5,16 +5,16 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                 <el-form-item v-show='true' label="点位名称" prop="pointName" style="display: inline-block;width: 90%;">
-                      <el-input v-model="addUpdateForm.pointName" placeholder="请输入点位名称" maxlength="100" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.pointName" :placeholder="$t('common.pleaseInput')" maxlength="100" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="点位地点" prop="pointLocation" style="display: inline-block;width: 90%;">
-                      <el-input v-model="addUpdateForm.pointLocation" placeholder="请输入点位地点" maxlength="100" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.pointLocation" :placeholder="$t('common.pleaseInput')" maxlength="100" show-word-limit clearable/>
                 </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 90%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

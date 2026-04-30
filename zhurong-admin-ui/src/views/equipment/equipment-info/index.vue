@@ -8,40 +8,32 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="名称" prop="name">
+      <el-form-item :label="$t('equipmentModule.equipmentName')" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入名称"
+          :placeholder="$t('equipmentModule.equipmentName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="设备SN" prop="sn">
+      <el-form-item :label="$t('equipmentModule.equipmentSn')" prop="sn">
         <el-input
           v-model="queryParams.sn"
-          placeholder="请输入设备SN"
+          :placeholder="$t('equipmentModule.equipmentSn')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="设备型号" prop="model">
+      <el-form-item :label="$t('equipmentModule.equipmentModel')" prop="model">
         <el-input
           v-model="queryParams.model"
-          placeholder="请输入设备型号"
+          :placeholder="$t('equipmentModule.equipmentModel')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <!-- <el-form-item label="工厂" prop="factory">
-        <el-input
-          v-model="queryParams.factory"
-          placeholder="请输入工厂"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item> -->
-      <el-form-item label="设备类型" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择">
+      <el-form-item :label="$t('equipmentModule.equipmentType')" prop="type">
+        <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')">
           <el-option
             v-for="item in dict.type.energy_type"
             :key="item.value"
@@ -57,10 +49,10 @@
           icon="el-icon-search"
           size="mini"
           @click="handleQuery"
-          >查询</el-button
+          >{{ $t('common.search') }}</el-button
         >
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-          >重置</el-button
+          >{{ $t('common.reset') }}</el-button
         >
       </el-form-item>
     </el-form>
@@ -74,7 +66,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:equipmentInfo:add']"
-          >新增</el-button
+          >{{ $t('common.add') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -86,7 +78,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:equipmentInfo:edit']"
-          >编辑</el-button
+          >{{ $t('common.edit') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -98,7 +90,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:equipmentInfo:remove']"
-          >删除</el-button
+          >{{ $t('common.delete') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -109,7 +101,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:equipmentInfo:export']"
-          >导出</el-button
+          >{{ $t('common.export') }}</el-button
         >
       </el-col>
       <right-toolbar
@@ -125,15 +117,15 @@
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="index" width="55" align="center" />
-      <el-table-column label="名称" align="center" prop="name" />
-      <el-table-column label="设备SN" align="center" prop="sn" />
-      <el-table-column label="设备型号" align="center" prop="model" />
-      <el-table-column label="设备类型" align="center" prop="type" >
+      <el-table-column :label="$t('equipmentModule.equipmentName')" align="center" prop="name" />
+      <el-table-column :label="$t('equipmentModule.equipmentSn')" align="center" prop="sn" />
+      <el-table-column :label="$t('equipmentModule.equipmentModel')" align="center" prop="model" />
+      <el-table-column :label="$t('equipmentModule.equipmentType')" align="center" prop="type" >
         <template slot-scope="scope">
           <dict-tag :options="dict.type.energy_type" :value="scope.row.type"/>
         </template>
       </el-table-column>
-      <el-table-column label="设备描述" align="center" prop="description" />
+      <el-table-column :label="$t('equipmentModule.equipmentDesc')" align="center" prop="description" />
       <!-- <el-table-column label="设备图片" align="center" prop="img" width="240px">
         <template slot-scope="scope">
           <div style="display: flex;justify-content:space-evenly;">
@@ -149,9 +141,9 @@
       <!-- <el-table-column label="设备二维码" align="center" prop="qrCode" /> -->
       <!-- <el-table-column label="工厂" align="center" prop="factory" /> -->
       <!-- <el-table-column label="区域" align="center" prop="areaName" /> -->
-      <!-- <el-table-column label="状态" align="center" prop="status" /> -->
+      <!-- <el-table-column :label="$t('common.status')" align="center" prop="status" /> -->
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         align="center"
         class-name="small-padding fixed-width"
       >
@@ -162,7 +154,7 @@
             icon="el-icon-view"
             @click="openDrawer(scope.row)"
             v-hasPermi="['system:equipmentInfo:query']"
-            >详情</el-button
+            >{{ $t('common.view') }}</el-button
           >
           <el-button
             size="mini"
@@ -170,7 +162,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:equipmentInfo:edit']"
-            >编辑</el-button
+            >{{ $t('common.edit') }}</el-button
           >
           <el-button
             size="mini"
@@ -178,7 +170,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:equipmentInfo:remove']"
-            >删除</el-button
+            >{{ $t('common.delete') }}</el-button
           >
         </template>
       </el-table-column>
@@ -195,17 +187,17 @@
     <!-- 添加或修改设备信息对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入名称" />
+        <el-form-item :label="$t('equipmentModule.equipmentName')" prop="name">
+          <el-input v-model="form.name" :placeholder="$t('equipmentModule.equipmentName')" />
         </el-form-item>
-        <el-form-item label="设备SN" prop="sn">
-          <el-input v-model="form.sn" placeholder="请输入设备SN" />
+        <el-form-item :label="$t('equipmentModule.equipmentSn')" prop="sn">
+          <el-input v-model="form.sn" :placeholder="$t('equipmentModule.equipmentSn')" />
         </el-form-item>
-        <el-form-item label="设备型号" prop="model">
-          <el-input v-model="form.model" placeholder="请输入设备型号" />
+        <el-form-item :label="$t('equipmentModule.equipmentModel')" prop="model">
+          <el-input v-model="form.model" :placeholder="$t('equipmentModule.equipmentModel')" />
         </el-form-item>
-        <el-form-item label="设备类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择">
+        <el-form-item :label="$t('equipmentModule.equipmentType')" prop="type">
+          <el-select v-model="form.type" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="item in dict.type.energy_type"
               :key="item.value"
@@ -215,23 +207,21 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="设备描述" prop="description">
-          <el-input v-model="form.description" placeholder="请输入设备描述" />
+        <el-form-item :label="$t('equipmentModule.equipmentDesc')" prop="description">
+          <el-input v-model="form.description" :placeholder="$t('equipmentModule.equipmentDesc')" />
         </el-form-item>
-        <el-form-item label="设备图片" prop="img">
-          <!-- <el-input v-model="form.img" placeholder="请输入设备图片" /> -->
+        <el-form-item :label="$t('equipmentModule.equipmentImage')" prop="img">
           <imageUpload v-model="form.img" :limit="2" :values="form.img"/>
         </el-form-item>
-        <el-form-item label="设备二维码" prop="qrCode">
-          <!-- <el-input v-model="form.qrCode" placeholder="请输入设备二维码" /> -->
+        <el-form-item :label="$t('equipmentModule.equipmentQrCode')" prop="qrCode">
           <imageUpload v-model="form.qrCode" :limit="2" :values="form.qrCode"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button :loading="buttonLoading" type="primary" @click="submitForm"
-          >确 定</el-button
+          >{{ $t('common.confirm') }}</el-button
         >
-        <el-button @click="cancel">取 消</el-button>
+        <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
       </div>
     </el-dialog>
 

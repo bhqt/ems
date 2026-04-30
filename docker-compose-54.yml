@@ -41,11 +41,11 @@ services:
       EMQX_HOST: 127.0.0.1
       EMQX_Dashboard__default_username: admin
       EMQX_Dashboard__default_password: public
-      EMQX MQTT__DEFAULT__LISTENER: 1883
-      EMQX MQTT__DEFAULT__MAX_PACKET_SIZE: 1MB
-      EMQX MQTT__DEFAULT__MAX_CLIENTID_LEN: 128
-      EMQX MQTT__DEFAULT__MAX_KEEPALIVE: 360
-      EMQX MQTT__DEFAULT__KEEPALIVE_BACKOFF: 0.75
+      EMQX_MQTT__DEFAULT__LISTENER: 1883
+      EMQX_MQTT__DEFAULT__MAX_PACKET_SIZE: 1MB
+      EMQX_MQTT__DEFAULT__MAX_CLIENTID_LEN: 128
+      EMQX_MQTT__DEFAULT__MAX_KEEPALIVE: 360
+      EMQX_MQTT__DEFAULT__KEEPALIVE_BACKOFF: 0.75
     ports:
       - "1883:1883"     # MQTT 协议端口
       - "8883:8883"     # MQTT/SSL 端口
@@ -84,12 +84,10 @@ services:
     volumes:
       - zhurong-ems-tdengine-data:/var/lib/taos
       - zhurong-ems-tdengine-log:/var/log/taos
-      - ./docker/tdengine/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: "sleep 15 && taos -u root -p xx -f /docker-entrypoint-initdb.d/init.sql && /usr/bin/taosd"
     networks:
       - legal-network
     healthcheck:
-      test: ["CMD", "taos", "-s", "show databases"]
+      test: ["CMD-SHELL", "taos -u root -s 'show databases;' > /dev/null 2>&1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -131,10 +129,10 @@ services:
       MQTT_TIMEOUT: 120
       MQTT_KEEPALIVE: 360
       # TDengine 时序数据库（可选，按需启用）
-      # 与服务器 .env 中 Redis 密码保持一致：difyyai123456
+      # 密码与 TDengine 配置保持一致：difyai123456
       SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_ENABLED: "false"
-      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_URL: jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy?user=root&password=difyyai123456&timezone=Asia/Shanghai
-      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_USERNAME: root
+      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_URL: jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy?user=energy&password=difyai123456&timezone=Asia/Shanghai
+      # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_USERNAME: energy
       # SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_PASSWORD: difyai123456
       # JVM 参数
       JAVA_OPTS: -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.ClassLoader=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED
@@ -150,7 +148,7 @@ services:
       zhurong-ems-emqx:
         condition: service_healthy
       zhurong-ems-tdengine:
-        condition: service_started
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8088/autoee-iot-ems/actuator/health || exit 1"]
       interval: 30s
@@ -166,33 +164,42 @@ services:
     restart: unless-stopped
     ports:
       - "3080:80"
+    environment:
+      VUE_APP_API_BASE_URL: http://zhurong-ems-backend:8088/autoee-iot-ems
+      TZ: Asia/Shanghai
     volumes:
       - zhurong-ems-frontend-logs:/var/log/nginx
     networks:
       - legal-network
     depends_on:
-      - zhurong-ems-backend
+      zhurong-ems-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   # ========== XXL-Job 调度中心 ==========
 
   zhurong-ems-xxl-job:
     image: zhurong-ems/xxl-job:4.6.0
-    container_name: zhurong-ems-xxl-job
+    container_name: zhurong-ems-xxl-job-admin
     restart: unless-stopped
     ports:
-      - "9110:8080"
+      - "9110:9100"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://legal-mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      TZ: Asia/Shanghai
+      SPRING_DATASOURCE_URL: jdbc:mysql://zhurong-ems-mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-      SPRING_PROFILES_ACTIVE: admin
-      TZ: Asia/Shanghai
     volumes:
-      - zhurong-ems-xxljob-logs:/zhurong-ems/xxljob/logs
+      - ./logs/xxljob:/zhurong-ems/xxljob/logs
+      - zhurong-ems-xxljob-logs:/data/applogs
     networks:
       - legal-network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/xxl-job-admin || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9100/xxl-job-admin/actuator/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

@@ -4,7 +4,7 @@
       <el-form-item label="备件编号" prop="attachmentCode">
         <el-input
           v-model="queryParams.attachmentCode"
-          placeholder="请输入备件编号"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -12,13 +12,13 @@
       <el-form-item label="备件名称" prop="attachmentName">
         <el-input
           v-model="queryParams.attachmentName"
-          placeholder="请输入备件名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="供应商" prop="purveyorId">
-        <el-select v-model="queryParams.purveyorId" placeholder="请选择供应商">
+        <el-select v-model="queryParams.purveyorId" :placeholder="$t('common.pleaseSelect')">
           <el-option v-for="purveyor in purveyorList"
             :key="purveyor.purveyorId"
             :label="purveyor.purveyorName"
@@ -26,8 +26,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -40,7 +40,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:attachment:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -51,7 +51,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:attachment:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +62,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:attachment:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -72,7 +72,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:attachment:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -86,9 +86,9 @@
       <el-table-column label="数量" align="center" prop="quantity" />
       <el-table-column label="单位" align="center" prop="unit" />
       <el-table-column label="供应商名称" align="center" prop="purveyorName" />
-      <el-table-column label="备注" align="center" prop="remark" show-overflow-tooltip/>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" show-overflow-tooltip/>
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180"/>
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -96,14 +96,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:attachment:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:attachment:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -120,30 +120,30 @@
     <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="备件编号" prop="attachmentCode">
-          <el-input v-model="form.attachmentCode" placeholder="请输入备件编码" />
+          <el-input v-model="form.attachmentCode" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="备件名称" prop="attachmentName">
-          <el-input v-model="form.attachmentName" placeholder="请输入备件名称" />
+          <el-input v-model="form.attachmentName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="备件型号" prop="model">
-          <el-input v-model="form.model" placeholder="请输入备件型号" />
+          <el-input v-model="form.model" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="数量" prop="quantity">
           <el-input-number v-model="form.quantity" :min="0"></el-input-number>
         </el-form-item>
         <el-form-item label="单位" prop="unit">
-          <el-input v-model="form.unit" placeholder="请输入单位" />
+          <el-input v-model="form.unit" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="供应商" prop="purveyorId">
-          <el-select v-model="form.purveyorId" placeholder="请选择供应商" @change="purveyorChange">
+          <el-select v-model="form.purveyorId" :placeholder="$t('common.pleaseSelect')" @change="purveyorChange">
             <el-option v-for="purveyor in purveyorList"
               :key="purveyor.purveyorId"
               :label="purveyor.purveyorName"
               :value="purveyor.purveyorId"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input type="textarea" v-model="form.remark" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

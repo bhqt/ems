@@ -8,8 +8,8 @@
           size="small"
           :inline="true"
         >
-          <el-form-item label="分类能耗" prop="energyType">
-            <el-select v-model="queryParams.energyType" placeholder="请选择" >
+          <el-form-item :label="$t('energyAnalysisModule.categoryEnergy')" prop="energyType">
+            <el-select v-model="queryParams.energyType" :placeholder="$t('common.pleaseSelect')" >
               <el-option
                 v-for="item in dict.type.energy_type"
                 :key="item.value"
@@ -19,22 +19,22 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="起始时间">
+          <el-form-item :label="$t('energyAnalysisModule.startTime')">
             <el-date-picker
               v-model="queryParams.dateRange"
               style="width: 300px"
               value-format="yyyy-MM-dd HH:mm:ss"
               type="daterange"
               range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
+              :start-placeholder="$t('common.startDate')"
+              :end-placeholder="$t('common.endDate')"
               :default-time="['00:00:00', '23:59:59']"
               @change="getTimeRange"
             ></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" size="mini"
-            @click="handleQuery">查询</el-button
+            @click="handleQuery">{{ $t('common.search') }}</el-button
             >
           </el-form-item>
         </el-form>

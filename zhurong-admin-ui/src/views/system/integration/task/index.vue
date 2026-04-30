@@ -4,7 +4,7 @@
       <el-form-item label="任务编码" prop="taskCode">
         <el-input
           v-model="queryParams.taskCode"
-          placeholder="请输入任务编码"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 180px"
           @keyup.enter.native="handleQuery"
@@ -13,29 +13,29 @@
       <el-form-item label="任务名称" prop="taskName">
         <el-input
           v-model="queryParams.taskName"
-          placeholder="请输入任务名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 180px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="源系统" prop="sourceSystem">
-        <el-select v-model="queryParams.sourceSystem" placeholder="请选择源系统" clearable style="width: 120px">
+        <el-select v-model="queryParams.sourceSystem" :placeholder="$t('common.pleaseSelect')" clearable style="width: 120px">
           <el-option label="MES" value="MES" />
           <el-option label="ERP" value="ERP" />
           <el-option label="环保" value="ENV" />
           <el-option label="消防" value="FIRE" />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="enabled">
-        <el-select v-model="queryParams.enabled" placeholder="请选择状态" clearable style="width: 100px">
+      <el-form-item :label="$t('common.status')" prop="enabled">
+        <el-select v-model="queryParams.enabled" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100px">
           <el-option label="启用" :value="1" />
           <el-option label="禁用" :value="2" />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -47,7 +47,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -57,7 +57,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -67,7 +67,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -103,26 +103,26 @@
         </template>
       </el-table-column>
       <el-table-column label="同步频率" align="center" prop="syncFrequency" width="120" />
-      <el-table-column label="状态" align="center" prop="enabled" width="80">
+      <el-table-column :label="$t('common.status')" align="center" prop="enabled" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.enabled === 1 ? 'success' : 'danger'">
             {{ scope.row.enabled === 1 ? '启用' : '禁用' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width" width="200">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
@@ -140,7 +140,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -158,24 +158,24 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务编码" prop="taskCode">
-              <el-input v-model="form.taskCode" placeholder="请输入任务编码" />
+              <el-input v-model="form.taskCode" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="任务名称" prop="taskName">
-              <el-input v-model="form.taskName" placeholder="请输入任务名称" />
+              <el-input v-model="form.taskName" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="任务类型" prop="taskType">
-              <el-input v-model="form.taskType" placeholder="请输入任务类型" />
+              <el-input v-model="form.taskType" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="同步频率" prop="syncFrequency">
-              <el-select v-model="form.syncFrequency" placeholder="请选择同步频率" style="width: 100%">
+              <el-select v-model="form.syncFrequency" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option label="每分钟" value="MINUTE" />
                 <el-option label="每小时" value="HOURLY" />
                 <el-option label="每天" value="DAILY" />
@@ -187,7 +187,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="源系统" prop="sourceSystem">
-              <el-select v-model="form.sourceSystem" placeholder="请选择源系统" style="width: 100%">
+              <el-select v-model="form.sourceSystem" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option label="MES" value="MES" />
                 <el-option label="ERP" value="ERP" />
                 <el-option label="ENV" value="ENV" />
@@ -198,7 +198,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="目标系统" prop="targetSystem">
-              <el-select v-model="form.targetSystem" placeholder="请选择目标系统" style="width: 100%">
+              <el-select v-model="form.targetSystem" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                 <el-option label="MES" value="MES" />
                 <el-option label="ERP" value="ERP" />
                 <el-option label="ENV" value="ENV" />
@@ -230,9 +230,9 @@
           <el-input v-model="form.transformRules" type="textarea" :rows="3" placeholder="JSON格式的转换规则" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-input v-model="form.description" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="状态" prop="enabled">
+        <el-form-item :label="$t('common.status')" prop="enabled">
           <el-radio-group v-model="form.enabled">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="2">禁用</el-radio>

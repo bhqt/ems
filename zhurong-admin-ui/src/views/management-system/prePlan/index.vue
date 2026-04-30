@@ -1,34 +1,34 @@
 <template>
     <div class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="预案编号" prop="number">
+        <el-form-item :label="$t('managementSystemModule.prePlanNumber')" prop="number">
           <el-input
             v-model="queryParams.number"
-            placeholder="请输入预案编号"
+            :placeholder="$t('managementSystemModule.prePlanNumber')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="站名" prop="station">
+        <el-form-item :label="$t('managementSystemModule.station')" prop="station">
           <el-input
             v-model="queryParams.station"
-            placeholder="请输入站名"
+            :placeholder="$t('managementSystemModule.station')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="设备" prop="device">
+        <el-form-item :label="$t('managementSystemModule.device')" prop="device">
           <el-input
             v-model="queryParams.device"
-            placeholder="请输入设备"
+            :placeholder="$t('managementSystemModule.device')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="编制人" prop="preparedBy">
+        <el-form-item :label="$t('managementSystemModule.preparedBy')" prop="preparedBy">
           <el-input
             v-model="queryParams.preparedBy"
-            placeholder="请输入编制人"
+            :placeholder="$t('managementSystemModule.preparedBy')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -36,14 +36,14 @@
         <!-- <el-form-item label="预案关键词" prop="keywords">
           <el-input
             v-model="queryParams.keywords"
-            placeholder="请输入预案关键词"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item> -->
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
         </el-form-item>
       </el-form>
   
@@ -56,7 +56,7 @@
             size="mini"
             @click="handleAdd"
             v-hasPermi="['system:prePlan:add']"
-          >新增</el-button>
+          >{{ $t('common.add') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -67,7 +67,7 @@
             :disabled="single"
             @click="handleUpdate"
             v-hasPermi="['system:prePlan:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -78,7 +78,7 @@
             :disabled="multiple"
             @click="handleDelete"
             v-hasPermi="['system:prePlan:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -88,7 +88,7 @@
             size="mini"
             @click="handleExport"
             v-hasPermi="['system:prePlan:export']"
-          >导出</el-button>
+          >{{ $t('common.export') }}</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
@@ -96,14 +96,14 @@
       <el-table v-loading="loading" :data="prePlanList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <!-- <el-table-column label="预案id" align="center" prop="prePlanId" v-if="true"/> -->
-        <el-table-column label="预案编号" align="center" prop="number" />
-        <el-table-column label="预案类型" align="center" prop="type" />
-        <el-table-column label="站名" align="center" prop="station" />
-        <el-table-column label="设备" align="center" prop="device" />
-        <el-table-column label="预案内容" align="center" prop="content" />
-        <el-table-column label="编制人" align="center" prop="preparedBy" />
-        <el-table-column label="预案关键词" align="center" prop="keywords" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="$t('managementSystemModule.prePlanNumber')" align="center" prop="number" />
+        <el-table-column :label="$t('managementSystemModule.prePlanType')" align="center" prop="type" />
+        <el-table-column :label="$t('managementSystemModule.station')" align="center" prop="station" />
+        <el-table-column :label="$t('managementSystemModule.device')" align="center" prop="device" />
+        <el-table-column :label="$t('managementSystemModule.prePlanContent')" align="center" prop="content" />
+        <el-table-column :label="$t('managementSystemModule.preparedBy')" align="center" prop="preparedBy" />
+        <el-table-column :label="$t('managementSystemModule.keywords')" align="center" prop="keywords" />
+        <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -111,14 +111,14 @@
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['system:prePlan:edit']"
-            >修改</el-button>
+            >{{ $t('common.edit') }}</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['system:prePlan:remove']"
-            >删除</el-button>
+            >{{ $t('common.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -134,27 +134,27 @@
       <!-- 添加或修改预案管理对话框 -->
       <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-          <el-form-item label="预案编号" prop="number">
-            <el-input v-model="form.number" placeholder="请输入预案编号" />
-          </el-form-item>
-          <el-form-item label="预案类型" prop="type">
-            <el-input v-model="form.type" placeholder="请输入类型" />
-          </el-form-item>
-          <el-form-item label="站名" prop="station">
-            <el-input v-model="form.station" placeholder="请输入站名" />
-          </el-form-item>
-          <el-form-item label="设备" prop="device">
-            <el-input v-model="form.device" placeholder="请输入设备" />
-          </el-form-item>
-          <el-form-item label="预案内容">
-            <editor v-model="form.content" :min-height="192"/>
-          </el-form-item>
-          <el-form-item label="编制人" prop="preparedBy">
-            <el-input v-model="form.preparedBy" placeholder="请输入编制人" />
-          </el-form-item>
-          <el-form-item label="预案关键词" prop="keywords">
-            <el-input v-model="form.keywords" placeholder="请输入预案关键词" />
-          </el-form-item>
+          <el-form-item :label="$t('managementSystemModule.prePlanNumber')" prop="number">
+          <el-input v-model="form.number" :placeholder="$t('managementSystemModule.prePlanNumber')" />
+        </el-form-item>
+        <el-form-item :label="$t('managementSystemModule.prePlanType')" prop="type">
+          <el-input v-model="form.type" :placeholder="$t('managementSystemModule.prePlanType')" />
+        </el-form-item>
+        <el-form-item :label="$t('managementSystemModule.station')" prop="station">
+          <el-input v-model="form.station" :placeholder="$t('managementSystemModule.station')" />
+        </el-form-item>
+        <el-form-item :label="$t('managementSystemModule.device')" prop="device">
+          <el-input v-model="form.device" :placeholder="$t('managementSystemModule.device')" />
+        </el-form-item>
+        <el-form-item :label="$t('managementSystemModule.prePlanContent')">
+          <editor v-model="form.content" :min-height="192"/>
+        </el-form-item>
+        <el-form-item :label="$t('managementSystemModule.preparedBy')" prop="preparedBy">
+          <el-input v-model="form.preparedBy" :placeholder="$t('managementSystemModule.preparedBy')" />
+        </el-form-item>
+        <el-form-item :label="$t('managementSystemModule.keywords')" prop="keywords">
+          <el-input v-model="form.keywords" :placeholder="$t('managementSystemModule.keywords')" />
+        </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>

@@ -5,10 +5,10 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                 <el-form-item v-show='true' label="任务名称" prop="patrolTaskName" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.patrolTaskName" placeholder="请输入任务名称" maxlength="200" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.patrolTaskName" :placeholder="$t('common.pleaseInput')" maxlength="200" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='true' label="巡更计划" prop="patrolPlanId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolPlanId" placeholder="请选择巡更计划" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolPlanId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_plan"
                         :key="dict.value"
@@ -18,7 +18,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更路线" prop="patrolPathId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolPathId" placeholder="请选择巡更路线" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolPathId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_path"
                         :key="dict.value"
@@ -28,7 +28,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更人员" prop="patrolUserId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolUserId" placeholder="请选择巡更人员" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolUserId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -38,16 +38,16 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="巡更日期" prop="patrolDate" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.patrolDate" type="date" value-format="yyyy-MM-dd" :picker-options="datePickerOptions" placeholder="请选择巡更日期" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.patrolDate" type="date" value-format="yyyy-MM-dd" :picker-options="datePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                 <el-form-item v-show='true' label="开始时间" prop="startTime" style="display: inline-block;width: 45%;">
-                  <el-time-picker v-model="addUpdateForm.startTime"  format="HH:mm:ss" value-format="HH:mm:ss" placeholder="请选择开始时间" clearable style="width: 100%"/>
+                  <el-time-picker v-model="addUpdateForm.startTime"  format="HH:mm:ss" value-format="HH:mm:ss" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                 <el-form-item v-show='true' label="结束时间" prop="endTime" style="display: inline-block;width: 45%;">
-                  <el-time-picker v-model="addUpdateForm.endTime"  format="HH:mm:ss" value-format="HH:mm:ss" placeholder="请选择结束时间" clearable style="width: 100%"/>
+                  <el-time-picker v-model="addUpdateForm.endTime"  format="HH:mm:ss" value-format="HH:mm:ss" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                   <el-form-item v-show='true' label="任务状态" prop="patrolTaskStatus" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolTaskStatus" placeholder="请选择任务状态" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolTaskStatus" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.patrol_task_status"
                         :key="dict.value"
@@ -56,11 +56,11 @@
                       ></el-option>
                     </el-select>
                   </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

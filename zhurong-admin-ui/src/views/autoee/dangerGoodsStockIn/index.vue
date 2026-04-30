@@ -10,19 +10,19 @@
       :inline="true"
     >
       <!-- 循环生成查询表单项 -->
-      <el-form-item class="a_query_form_item" label="入库编号" prop="id">
+      <el-form-item class="a_query_form_item" :label="$t('dangerGoodsModule.dangerStockInNo')" prop="id">
         <el-input
           clearable
-          placeholder="请输入入库编号"
+          :placeholder="$t('dangerGoodsModule.dangerStockInNo')"
           v-model="pageData.queryParams.id"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="危化品名称" prop="dangerGoodsId">
+      <el-form-item class="a_query_form_item" :label="$t('dangerGoodsModule.dangerGoodsName')" prop="dangerGoodsId">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.dangerGoodsId"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -33,19 +33,19 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="存放地点" prop="supplier">
+      <el-form-item class="a_query_form_item" :label="$t('dangerGoodsModule.storageLocation')" prop="supplier">
         <el-input
           clearable
-          placeholder="请输入存放地点"
+          :placeholder="$t('dangerGoodsModule.storageLocation')"
           v-model="pageData.queryParams.supplier"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="操作人员" prop="userId">
+      <el-form-item class="a_query_form_item" :label="$t('common.operator')" prop="userId">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.userId"
-          placeholder="请选择"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
         >
           <el-option
@@ -56,14 +56,14 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item_datetime_between" label="更新时间">
+      <el-form-item class="a_query_form_item_datetime_between" :label="$t('common.updateTime')">
         <el-date-picker
           v-model="dateRangeUpdateTime"
           type="datetimerange"
           unlink-panels
           style="width: 360px"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('common.startDate')"
+          :end-placeholder="$t('common.endDate')"
           format="yyyy-MM-dd HH:mm:ss"
           value-format="yyyy-MM-dd HH:mm:ss"
           range-separator="-"
@@ -82,60 +82,7 @@
           size="small"
           @click="handleAdd"
           v-hasPermi="['autoee:dangerGoodsStockIn:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col v-if="false" :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="small"
-          :disabled="pageData.singleSelected"
-          @click="handleUpdate"
-          v-hasPermi="['autoee:dangerGoodsStockIn:edit']"
-        >编辑</el-button>
-      </el-col>
-      <el-col v-if="false" :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-s-promotion"
-          size="small"
-          :disabled="!checkTableDataHasChanged"
-          @click="submitTableEdit"
-          v-hasPermi="['autoee:dangerGoodsStockIn:edit']"
-        >提交列表编辑</el-button>
-      </el-col>
-      <el-col v-if="false" :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="small"
-          :disabled="pageData.multipleSelected"
-          @click="handleDeleteMuti"
-          v-hasPermi="['autoee:dangerGoodsStockIn:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col v-if="false" :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="small"
-          @click="handleDeleteAllData"
-          v-hasPermi="['autoee:dangerGoodsStockIn:remove']"
-        >清空</el-button>
-      </el-col>
-      <el-col v-if="false" :span="1.5">
-        <el-button
-          type="info"
-          plain
-          icon="el-icon-upload"
-          size="small"
-          @click="handleImport"
-          v-hasPermi="['autoee:dangerGoodsStockIn:import']"
-        >导入</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -145,16 +92,16 @@
           size="small"
           @click="handleExport"
           v-hasPermi="['autoee:dangerGoodsStockIn:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <el-col :span="0.5">
         <el-divider direction="vertical" />
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
+        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">{{ $t('common.search') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="pageData.showSearchTool" @queryTable="getList()"></right-toolbar>
     </el-row>
@@ -175,59 +122,59 @@
     >
       <el-table-column type="selection" width="55" align="center"/>
 
-      <el-table-column label="入库编号" align="center" prop="id" />
-      <el-table-column v-if="true" label="危化品名称" align="center" prop="dangerGoodsId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column :label="$t('dangerGoodsModule.dangerStockInNo')" align="center" prop="id" />
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.dangerGoodsName')" align="center" prop="dangerGoodsId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.a_danger_goods_info" :value="scope.row.dangerGoodsId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="入库数量" align="center" prop="quantity" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="存放地点" align="center" prop="supplier" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="操作人员" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.dangerStockInQty')" align="center" prop="quantity" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('dangerGoodsModule.storageLocation')" align="center" prop="supplier" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('common.operator')" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.userId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="备注" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="所属部门" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.remark')" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.department')" align="center" prop="deptId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_dept" :value="scope.row.deptId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建时间" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.createTime')" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建者" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="更新者" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="更新时间" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.creator')" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.updater')" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('common.updateTime')" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="删除标志" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除者" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="删除时间" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.deleteFlag')" align="center" prop="delFlag" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleter')" align="center" prop="delBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.deleteTime')" align="center" prop="delTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.delTime) }}</span>
         </template>
       </el-table-column>
 
       <!-- 操作列 -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="true" size="small" link icon="el-icon-edit" type="text"
             @click="handleUpdate(scope.row)" v-hasPermi="['autoee:dangerGoodsStockIn:edit']"
-          >编辑
+          >{{ $t('common.edit') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-zoom-in" type="text"
             @click="handleShowDetail(scope.row)" v-hasPermi="['autoee:dangerGoodsStockIn:list']"
-          >查看
+          >{{ $t('common.view') }}
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-delete" type="text"
             @click="handleDelete(scope.row)" v-hasPermi="['autoee:dangerGoodsStockIn:remove']"
-          >删除
+          >{{ $t('common.delete') }}
           </el-button>
         </template>
       </el-table-column>

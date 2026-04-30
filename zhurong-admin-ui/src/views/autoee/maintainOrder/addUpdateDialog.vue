@@ -5,13 +5,13 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                 <el-form-item v-show='true' label="工单编号" prop="orderNo" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.orderNo" placeholder="请输入工单编号" maxlength="32" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.orderNo" :placeholder="$t('common.pleaseInput')" maxlength="32" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="问题描述" prop="description" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.description" type="textarea" :rows="3" placeholder="请输入问题描述" maxlength="250" show-word-limit/>
+                  <el-input v-model="addUpdateForm.description" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="250" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='true' label="故障类型" prop="orderFaultType" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.orderFaultType" placeholder="请选择故障类型" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.orderFaultType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.order_fault_type"
                         :key="dict.value"
@@ -21,7 +21,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="优先级" prop="orderPriority" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.orderPriority" placeholder="请选择优先级" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.orderPriority" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.order_priority"
                         :key="dict.value"
@@ -31,7 +31,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="工单状态" prop="repairOrderStatus" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.repairOrderStatus" placeholder="请选择工单状态" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.repairOrderStatus" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.repair_order_status"
                         :key="dict.value"
@@ -41,10 +41,10 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="故障位置" prop="location" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.location" placeholder="请输入故障位置" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.location" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='true' label="报修人" prop="reporterId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.reporterId" placeholder="请选择报修人" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.reporterId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -54,13 +54,13 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="报修人电话" prop="reporterContact" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.reporterContact" placeholder="请输入报修人电话" maxlength="10" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.reporterContact" :placeholder="$t('common.pleaseInput')" maxlength="10" show-word-limit clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="报修时间" prop="reportTime" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.reportTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" placeholder="请选择报修时间" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.reportTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                   <el-form-item v-show='true' label="维修人" prop="assigneeId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.assigneeId" placeholder="请选择维修人" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.assigneeId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -70,7 +70,7 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="维修结果" prop="repairResult" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.repairResult" type="textarea" :rows="3" placeholder="请输入维修结果" maxlength="100" show-word-limit/>
+                  <el-input v-model="addUpdateForm.repairResult" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="100" show-word-limit/>
                 </el-form-item>
                 <el-form-item v-show='true' label="维修图片" prop="repairImages" style="width: 90%;">
 				  <!--  ems工程：v-model绑定新上传后的值，:values绑定预览图片的值 -->
@@ -78,13 +78,13 @@
                   <!--  <image-upload v-model="addUpdateForm.repairImages" /> -->
                 </el-form-item>
                 <el-form-item v-show='true' label="完成时间" prop="completionTime" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.completionTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" placeholder="请选择完成时间" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.completionTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

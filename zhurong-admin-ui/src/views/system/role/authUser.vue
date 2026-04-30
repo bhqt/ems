@@ -1,27 +1,27 @@
 <template>
   <div class="app-container">
      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
-      <el-form-item label="用户名称" prop="userName">
+      <el-form-item :label="$t('systemModule.userName')" prop="userName">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入用户名称"
+          :placeholder="$t('systemModule.userName')"
           clearable
           style="width: 240px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机号码" prop="phonenumber">
+      <el-form-item :label="$t('systemModule.phonenumber')" prop="phonenumber">
         <el-input
           v-model="queryParams.phonenumber"
-          placeholder="请输入手机号码"
+          :placeholder="$t('systemModule.phonenumber')"
           clearable
           style="width: 240px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -34,7 +34,7 @@
           size="mini"
           @click="openSelectUser"
           v-hasPermi="['system:role:add']"
-        >添加用户</el-button>
+        >{{ $t('systemModule.addUser') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -45,7 +45,7 @@
           :disabled="multiple"
           @click="cancelAuthUserAll"
           v-hasPermi="['system:role:remove']"
-        >批量取消授权</el-button>
+        >{{ $t('systemModule.batchCancelAuth') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -54,28 +54,28 @@
           icon="el-icon-close"
           size="mini"
           @click="handleClose"
-        >关闭</el-button>
+        >{{ $t('common.close') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
-      <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
-      <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
-      <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="$t('systemModule.userName')" prop="userName" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('systemModule.nickName')" prop="nickName" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('systemModule.email')" prop="email" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('systemModule.phonenumber')" prop="phonenumber" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('common.status')" align="center" prop="status">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"

@@ -1,70 +1,70 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" :inline="true" v-show="showSearch" label-width="90px">
-      <el-form-item label="方案编号" prop="schemeCode">
-        <el-input v-model="queryParams.schemeCode" placeholder="请输入方案编号" clearable size="small" @keyup.enter="handleQuery" />
+      <el-form-item :label="$t('dispatchModule.scheme.schemeCode')" prop="schemeCode">
+        <el-input v-model="queryParams.schemeCode" :placeholder="$t('dispatchModule.scheme.placeholder.inputSchemeCode')" clearable size="small" @keyup.enter="handleQuery" />
       </el-form-item>
-      <el-form-item label="优化类型" prop="optimizationType">
-        <el-select v-model="queryParams.optimizationType" placeholder="请选择" clearable size="small">
-          <el-option label="成本最小化" :value="1" />
-          <el-option label="排放最小化" :value="2" />
-          <el-option label="多目标优化" :value="3" />
+      <el-form-item :label="$t('dispatchModule.scheme.optimizationType')" prop="optimizationType">
+        <el-select v-model="queryParams.optimizationType" :placeholder="$t('dispatchModule.scheme.placeholder.selectOptimizationType')" clearable size="small">
+          <el-option :label="$t('dispatchModule.scheme.costMinimization')" :value="1" />
+          <el-option :label="$t('dispatchModule.scheme.emissionMinimization')" :value="2" />
+          <el-option :label="$t('dispatchModule.scheme.multiObjective')" :value="3" />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择" clearable size="small">
-          <el-option label="设计中" :value="1" />
-          <el-option label="审批中" :value="2" />
-          <el-option label="已批准" :value="3" />
-          <el-option label="执行中" :value="4" />
-          <el-option label="已完成" :value="5" />
+      <el-form-item :label="$t('dispatchModule.scheme.status')" prop="status">
+        <el-select v-model="queryParams.status" :placeholder="$t('dispatchModule.scheme.placeholder.selectStatus')" clearable size="small">
+          <el-option :label="$t('dispatchModule.scheme.designing')" :value="1" />
+          <el-option :label="$t('dispatchModule.scheme.approving')" :value="2" />
+          <el-option :label="$t('dispatchModule.scheme.approved')" :value="3" />
+          <el-option :label="$t('dispatchModule.scheme.executing')" :value="4" />
+          <el-option :label="$t('dispatchModule.scheme.completed')" :value="5" />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">新增</el-button>
+        <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd">{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">修改</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate">{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete">{{ $t('common.delete') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="schemeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="方案ID" prop="schemeId" width="80" />
-      <el-table-column label="方案编号" prop="schemeCode" width="150" />
-      <el-table-column label="方案名称" prop="schemeName" :show-overflow-tooltip="true" />
-      <el-table-column label="优化类型" prop="optimizationType" width="120">
+      <el-table-column :label="$t('dispatchModule.scheme.schemeId')" prop="schemeId" width="80" />
+      <el-table-column :label="$t('dispatchModule.scheme.schemeCode')" prop="schemeCode" width="150" />
+      <el-table-column :label="$t('dispatchModule.scheme.schemeName')" prop="schemeName" :show-overflow-tooltip="true" />
+      <el-table-column :label="$t('dispatchModule.scheme.optimizationType')" prop="optimizationType" width="120">
         <template slot-scope="scope">
           <el-tag :type="getTypeTag(scope.row.optimizationType)">{{ getTypeLabel(scope.row.optimizationType) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="使用算法" prop="algorithm" width="120" />
-      <el-table-column label="目标函数值" prop="objectiveValue" width="120" />
-      <el-table-column label="状态" prop="status" width="100">
+      <el-table-column :label="$t('dispatchModule.scheme.algorithm')" prop="algorithm" width="120" />
+      <el-table-column :label="$t('dispatchModule.scheme.objectiveValue')" prop="objectiveValue" width="120" />
+      <el-table-column :label="$t('dispatchModule.scheme.status')" prop="status" width="100">
         <template slot-scope="scope">
           <el-tag :type="getStatusTag(scope.row.status)">{{ getStatusLabel(scope.row.status) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="createTime" width="160">
+      <el-table-column :label="$t('common.createTime')" prop="createTime" width="160">
         <template slot-scope="scope"><span>{{ parseTime(scope.row.createTime) }}</span></template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="200">
+      <el-table-column :label="$t('common.operation')" align="center" width="200">
         <template slot-scope="scope">
-          <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
-          <el-button size="mini" type="text" icon="el-icon-caret-right" @click="handleExecute(scope.row)" v-if="scope.row.status === 3">执行</el-button>
-          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">{{ $t('common.detail') }}</el-button>
+          <el-button size="mini" type="text" icon="el-icon-caret-right" @click="handleExecute(scope.row)" v-if="scope.row.status === 3">{{ $t('dispatchModule.scheme.execute') }}</el-button>
+          <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)">{{ $t('common.edit') }}</el-button>
+          <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -75,82 +75,82 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="方案编号" prop="schemeCode">
-              <el-input v-model="form.schemeCode" placeholder="请输入方案编号" />
+            <el-form-item :label="$t('dispatchModule.scheme.schemeCode')" prop="schemeCode">
+              <el-input v-model="form.schemeCode" :placeholder="$t('dispatchModule.scheme.placeholder.inputSchemeCode')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="方案名称" prop="schemeName">
-              <el-input v-model="form.schemeName" placeholder="请输入方案名称" />
+            <el-form-item :label="$t('dispatchModule.scheme.schemeName')" prop="schemeName">
+              <el-input v-model="form.schemeName" :placeholder="$t('dispatchModule.scheme.placeholder.inputSchemeName')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="优化类型" prop="optimizationType">
-              <el-select v-model="form.optimizationType" placeholder="请选择" style="width: 100%">
-                <el-option label="成本最小化" :value="1" />
-                <el-option label="排放最小化" :value="2" />
-                <el-option label="多目标优化" :value="3" />
+            <el-form-item :label="$t('dispatchModule.scheme.optimizationType')" prop="optimizationType">
+              <el-select v-model="form.optimizationType" :placeholder="$t('dispatchModule.scheme.placeholder.selectOptimizationType')" style="width: 100%">
+                <el-option :label="$t('dispatchModule.scheme.costMinimization')" :value="1" />
+                <el-option :label="$t('dispatchModule.scheme.emissionMinimization')" :value="2" />
+                <el-option :label="$t('dispatchModule.scheme.multiObjective')" :value="3" />
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="使用算法" prop="algorithm">
-              <el-select v-model="form.algorithm" placeholder="请选择" style="width: 100%">
-                <el-option label="线性规划(LP)" value="LP" />
-                <el-option label="混合整数规划(MILP)" value="MILP" />
-                <el-option label="遗传算法(GA)" value="GA" />
-                <el-option label="粒子群优化(PSO)" value="PSO" />
+            <el-form-item :label="$t('dispatchModule.scheme.algorithm')" prop="algorithm">
+              <el-select v-model="form.algorithm" :placeholder="$t('dispatchModule.scheme.placeholder.selectAlgorithm')" style="width: 100%">
+                <el-option :label="$t('dispatchModule.scheme.linearProgramming')" value="LP" />
+                <el-option :label="$t('dispatchModule.scheme.milp')" value="MILP" />
+                <el-option :label="$t('dispatchModule.scheme.ga')" value="GA" />
+                <el-option :label="$t('dispatchModule.scheme.pso')" value="PSO" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="约束条件" prop="constraintsText">
-          <el-input v-model="form.constraintsText" type="textarea" :rows="3" placeholder="请输入约束条件" />
+        <el-form-item :label="$t('dispatchModule.scheme.constraintsText')" prop="constraintsText">
+          <el-input v-model="form.constraintsText" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="优化结果" prop="resultText">
-          <el-input v-model="form.resultText" type="textarea" :rows="3" placeholder="请输入优化结果" />
+        <el-form-item :label="$t('dispatchModule.scheme.resultText')" prop="resultText">
+          <el-input v-model="form.resultText" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="目标函数值" prop="objectiveValue">
+            <el-form-item :label="$t('dispatchModule.scheme.objectiveValue')" prop="objectiveValue">
               <el-input-number v-model="form.objectiveValue" :precision="2" style="width: 100%" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="form.status" placeholder="请选择" style="width: 100%">
-                <el-option label="设计中" :value="1" />
-                <el-option label="审批中" :value="2" />
-                <el-option label="已批准" :value="3" />
-                <el-option label="执行中" :value="4" />
-                <el-option label="已完成" :value="5" />
+            <el-form-item :label="$t('dispatchModule.scheme.status')" prop="status">
+              <el-select v-model="form.status" :placeholder="$t('dispatchModule.scheme.placeholder.selectStatus')" style="width: 100%">
+                <el-option :label="$t('dispatchModule.scheme.designing')" :value="1" />
+                <el-option :label="$t('dispatchModule.scheme.approving')" :value="2" />
+                <el-option :label="$t('dispatchModule.scheme.approved')" :value="3" />
+                <el-option :label="$t('dispatchModule.scheme.executing')" :value="4" />
+                <el-option :label="$t('dispatchModule.scheme.completed')" :value="5" />
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title="方案详情" :visible.sync="detailOpen" width="700px" append-to-body>
+    <el-dialog :title="$t('dispatchModule.scheme.detail')" :visible.sync="detailOpen" width="700px" append-to-body>
       <el-descriptions :column="2" border v-if="detailData">
-        <el-descriptions-item label="方案编号">{{ detailData.schemeCode }}</el-descriptions-item>
-        <el-descriptions-item label="方案名称">{{ detailData.schemeName }}</el-descriptions-item>
-        <el-descriptions-item label="优化类型">{{ getTypeLabel(detailData.optimizationType) }}</el-descriptions-item>
-        <el-descriptions-item label="使用算法">{{ detailData.algorithm }}</el-descriptions-item>
-        <el-descriptions-item label="目标函数值">{{ detailData.objectiveValue }}</el-descriptions-item>
-        <el-descriptions-item label="状态">
+        <el-descriptions-item :label="$t('dispatchModule.scheme.schemeCode')">{{ detailData.schemeCode }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.schemeName')">{{ detailData.schemeName }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.optimizationType')">{{ getTypeLabel(detailData.optimizationType) }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.algorithm')">{{ detailData.algorithm }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.objectiveValue')">{{ detailData.objectiveValue }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.status')">
           <el-tag :type="getStatusTag(detailData.status)">{{ getStatusLabel(detailData.status) }}</el-tag>
         </el-descriptions-item>
-        <el-descriptions-item label="约束条件" :span="2">{{ detailData.constraintsText }}</el-descriptions-item>
-        <el-descriptions-item label="优化结果" :span="2">{{ detailData.resultText }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.constraintsText')" :span="2">{{ detailData.constraintsText }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('dispatchModule.scheme.resultText')" :span="2">{{ detailData.resultText }}</el-descriptions-item>
       </el-descriptions>
-      <div slot="footer"><el-button @click="detailOpen = false">关 闭</el-button></div>
+      <div slot="footer"><el-button @click="detailOpen = false">{{ $t('button.close') }}</el-button></div>
     </el-dialog>
   </div>
 </template>

@@ -1,26 +1,26 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="制度编码" prop="regulationCode">
+      <el-form-item :label="$t('managementSystemModule.regulationCode')" prop="regulationCode">
         <el-input
           v-model="queryParams.regulationCode"
-          placeholder="请输入制度编码"
+          :placeholder="$t('managementSystemModule.regulationCode')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="制度名称" prop="regulationName">
+      <el-form-item :label="$t('managementSystemModule.regulationName')" prop="regulationName">
         <el-input
           v-model="queryParams.regulationName"
-          placeholder="请输入制度名称"
+          :placeholder="$t('managementSystemModule.regulationName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="制度描述" prop="regulationDescribe">
+      <el-form-item :label="$t('managementSystemModule.regulationDescribe')" prop="regulationDescribe">
         <el-input
           v-model="queryParams.regulationDescribe"
-          placeholder="请输入制度描述"
+          :placeholder="$t('managementSystemModule.regulationDescribe')"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -28,7 +28,7 @@
 <!--      <el-form-item label="制度文件" prop="docOssId">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.docOssId"-->
-<!--          placeholder="请输入制度文件"-->
+<!--          :placeholder="$t('common.pleaseInput')"-->
 <!--          clearable-->
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
@@ -38,12 +38,12 @@
                         v-model="queryParams.uploadTime"
                         type="date"
                         value-format="yyyy-MM-dd"
-                        placeholder="请选择上传时间">
+                        :placeholder="$t('common.pleaseSelect')">
         </el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -56,7 +56,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:regulation:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -67,7 +67,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:regulation:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -78,7 +78,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:regulation:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -88,7 +88,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:regulation:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -98,17 +98,17 @@
       <el-table-column type="index" width="55" align="center" />
 <!--      <el-table-column label="主键" align="center" prop="regulationId" v-if="true"/>-->
       <el-table-column label="制度编码" align="center" prop="regulationCode" />
-      <el-table-column label="制度名称" align="center" prop="regulationName" />
-      <el-table-column label="制度类型" align="center" prop="regulationType" />
-      <el-table-column label="制度描述" align="center" prop="regulationDescribe" />
-<!--      <el-table-column label="制度文件" align="center" prop="docOssId" />-->
-      <el-table-column label="上传时间" align="center" prop="uploadTime" width="180">
+      <el-table-column :label="$t('managementSystemModule.regulationCode')" align="center" prop="regulationCode" />
+      <el-table-column :label="$t('managementSystemModule.regulationName')" align="center" prop="regulationName" />
+      <el-table-column :label="$t('managementSystemModule.regulationType')" align="center" prop="regulationType" />
+      <el-table-column :label="$t('managementSystemModule.regulationDescribe')" align="center" prop="regulationDescribe" />
+      <el-table-column :label="$t('managementSystemModule.uploadTime')" align="center" prop="uploadTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.uploadTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -116,14 +116,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:regulation:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:regulation:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -140,19 +140,19 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="制度编码" prop="regulationCode">
-          <el-input v-model="form.regulationCode" placeholder="请输入制度编码" />
+          <el-input v-model="form.regulationCode" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="制度名称" prop="regulationName">
-          <el-input v-model="form.regulationName" placeholder="请输入制度名称" />
+          <el-input v-model="form.regulationName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="制度类型" prop="regulationType">
-          <el-input v-model="form.regulationType" placeholder="请输入制度类型" />
+          <el-input v-model="form.regulationType" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="制度描述" prop="regulationDescribe">
-          <el-input v-model="form.regulationDescribe" placeholder="请输入制度描述" />
+          <el-input v-model="form.regulationDescribe" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
 <!--        <el-form-item label="制度文件" prop="docOssId">-->
-<!--          <el-input v-model="form.docOssId" placeholder="请输入制度文件" />-->
+<!--          <el-input v-model="form.docOssId" :placeholder="$t('common.pleaseInput')" />-->
 <!--        </el-form-item>-->
         <el-form-item label="制度文件" prop="docOssId">
           <fileUpload v-model="form.docOssId"/>
@@ -162,11 +162,11 @@
                           v-model="form.uploadTime"
                           type="datetime"
                           value-format="yyyy-MM-dd HH:mm:ss"
-                          placeholder="请选择上传时间">
+                          :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

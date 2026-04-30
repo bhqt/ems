@@ -20,7 +20,7 @@
                 @select="areaChange"
                 :clearable="false"
               />
-              <!-- <el-select v-model="queryParams.address" placeholder="请选择">
+              <!-- <el-select v-model="queryParams.address" :placeholder="$t('common.pleaseSelect')">
                 <el-option
                   v-for="item in energyType"
                   :key="item.value"

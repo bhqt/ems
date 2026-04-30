@@ -5,7 +5,7 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                   <el-form-item v-show='true' label="入库编号" prop="dangerGoodsStockInId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.dangerGoodsStockInId" placeholder="请选择入库编号" style="width: 100%" @change="handleStockInChange" :disabled="addOrUpdate === 'update'">
+                    <el-select clearable v-model="addUpdateForm.dangerGoodsStockInId" :placeholder="$t('common.pleaseSelect')" style="width: 100%" @change="handleStockInChange" :disabled="addOrUpdate === 'update'">
                       <el-option
                         v-for="dict in dict.type.a_danger_goods_stock_in"
                         :key="dict.value"
@@ -15,7 +15,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="危化品名称" prop="dangerGoodsId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.dangerGoodsId" placeholder="请选择危化品名称" style="width: 100%" disabled>
+                    <el-select clearable v-model="addUpdateForm.dangerGoodsId" :placeholder="$t('common.pleaseSelect')" style="width: 100%" disabled>
                       <el-option
                         v-for="dict in dict.type.a_danger_goods_info"
                         :key="dict.value"
@@ -25,16 +25,16 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="出库数量" prop="quantity" style="display: inline-block;width: 45%;">
-                    <el-input v-model="addUpdateForm.quantity" placeholder="请输入整数" type="number" step="1" clearable/>
+                    <el-input v-model="addUpdateForm.quantity" :placeholder="$t('common.pleaseInput')" type="number" step="1" clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="出库原因" prop="reason" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.reason" type="textarea" :rows="3" placeholder="请输入出库原因" maxlength="300" show-word-limit/>
+                  <el-input v-model="addUpdateForm.reason" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="操作人员" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择操作人员" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

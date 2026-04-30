@@ -52,7 +52,7 @@
       <div class="data-select">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
           <el-form-item :label="$t('carbonAssetsModule.energyType')" prop="type">
-            <el-select v-model="queryParams.type" placeholder="请选择">
+            <el-select v-model="queryParams.type" :placeholder="$t('common.pleaseSelect')">
               <el-option
                 v-for="item in dict.type.energy_type"
                 :key="item.value"

@@ -5,7 +5,7 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                   <el-form-item v-show='true' label="巡更计划" prop="patrolPlanId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolPlanId" placeholder="请选择巡更计划" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolPlanId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_plan"
                         :key="dict.value"
@@ -15,7 +15,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更路线" prop="patrolPathId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolPathId" placeholder="请选择巡更路线" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolPathId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_path"
                         :key="dict.value"
@@ -25,7 +25,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更点位" prop="patrolPointId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolPointId" placeholder="请选择巡更点位" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolPointId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_point"
                         :key="dict.value"
@@ -35,7 +35,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更人员" prop="patrolUserId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolUserId" placeholder="请选择巡更人员" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolUserId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"
@@ -45,7 +45,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="巡更任务" prop="patrolTaskId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolTaskId" placeholder="请选择巡更任务" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolTaskId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.a_patrol_task"
                         :key="dict.value"
@@ -55,13 +55,13 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="点位顺序" prop="pointOrder" style="display: inline-block;width: 45%;">
-                    <el-input v-model="addUpdateForm.pointOrder" placeholder="请输入整数" type="number" step="1" clearable/>
+                    <el-input v-model="addUpdateForm.pointOrder" :placeholder="$t('common.pleaseInput')" type="number" step="1" clearable/>
                 </el-form-item>
                 <el-form-item v-show='true' label="点位巡更时间" prop="arriveTime" style="display: inline-block;width: 45%;">
-                  <el-date-picker v-model="addUpdateForm.arriveTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" placeholder="请选择点位巡更时间" clearable style="width: 100%"/>
+                  <el-date-picker v-model="addUpdateForm.arriveTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" :picker-options="dateTimePickerOptions" :placeholder="$t('common.pleaseSelect')" clearable style="width: 100%"/>
                 </el-form-item>
                   <el-form-item v-show='true' label="巡更结果" prop="patrolResult" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.patrolResult" placeholder="请选择巡更结果" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.patrolResult" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.patrol_result"
                         :key="dict.value"
@@ -71,13 +71,13 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="结果描述" prop="resultDesc" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.resultDesc" type="textarea" :rows="3" placeholder="请输入结果描述" maxlength="300" show-word-limit/>
+                  <el-input v-model="addUpdateForm.resultDesc" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
-                <el-form-item v-show='true' label="备注" prop="remark" style="display: inline-block;width: 90%;">
-                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" placeholder="请输入备注" maxlength="300" show-word-limit/>
+                <el-form-item v-show='true' :label="$t('common.remark')" prop="remark" style="display: inline-block;width: 90%;">
+                  <el-input v-model="addUpdateForm.remark" type="textarea" :rows="3" :placeholder="$t('common.pleaseInput')" maxlength="300" show-word-limit/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

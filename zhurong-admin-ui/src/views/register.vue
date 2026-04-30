@@ -24,7 +24,7 @@
           v-model="registerForm.confirmPassword"
           type="password"
           auto-complete="off"
-          placeholder="确认密码"
+          :placeholder="$t('common.confirm')"
           @keyup.enter.native="handleRegister"
           class="unchanged"
         >

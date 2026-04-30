@@ -4,7 +4,7 @@
       <!-- <el-form-item label="归属商户" prop="merchantId">
           <el-input
             v-model="queryParams.merchantId"
-            placeholder="请输入归属商户"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -21,7 +21,7 @@
       <!-- <el-form-item label="电站地址" prop="address">
           <el-input
             v-model="queryParams.address"
-            placeholder="请输入电站地址"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -29,7 +29,7 @@
       <!-- <el-form-item label="电站活动" prop="activity">
           <el-input
             v-model="queryParams.activity"
-            placeholder="请输入电站活动"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />

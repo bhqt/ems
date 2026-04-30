@@ -1,41 +1,41 @@
 <template>
   <!-- 授权用户 -->
-  <el-dialog title="选择用户" :visible.sync="visible" width="800px" top="5vh" append-to-body>
+  <el-dialog :title="$t('systemModule.selectUser')" :visible.sync="visible" width="800px" top="5vh" append-to-body>
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true">
-      <el-form-item label="用户名称" prop="userName">
+      <el-form-item :label="$t('systemModule.userName')" prop="userName">
         <el-input
           v-model="queryParams.userName"
-          placeholder="请输入用户名称"
+          :placeholder="$t('systemModule.userName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机号码" prop="phonenumber">
+      <el-form-item :label="$t('systemModule.phonenumber')" prop="phonenumber">
         <el-input
           v-model="queryParams.phonenumber"
-          placeholder="请输入手机号码"
+          :placeholder="$t('systemModule.phonenumber')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
     <el-row>
       <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange" height="260px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
-        <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
-        <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
-        <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
-        <el-table-column label="状态" align="center" prop="status">
+        <el-table-column :label="$t('systemModule.userName')" prop="userName" :show-overflow-tooltip="true" />
+        <el-table-column :label="$t('systemModule.nickName')" prop="nickName" :show-overflow-tooltip="true" />
+        <el-table-column :label="$t('systemModule.email')" prop="email" :show-overflow-tooltip="true" />
+        <el-table-column :label="$t('systemModule.phonenumber')" prop="phonenumber" :show-overflow-tooltip="true" />
+        <el-table-column :label="$t('common.status')" align="center" prop="status">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
@@ -50,8 +50,8 @@
       />
     </el-row>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="handleSelectUser">确 定</el-button>
-      <el-button @click="visible = false">取 消</el-button>
+      <el-button type="primary" @click="handleSelectUser">{{ $t('common.confirm') }}</el-button>
+      <el-button @click="visible = false">{{ $t('common.cancel') }}</el-button>
     </div>
   </el-dialog>
 </template>

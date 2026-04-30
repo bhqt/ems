@@ -152,13 +152,13 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="参数名称" prop="configName">
-          <el-input v-model="form.configName" placeholder="请输入参数名称" />
+          <el-input v-model="form.configName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="参数键名" prop="configKey">
-          <el-input v-model="form.configKey" placeholder="请输入参数键名" />
+          <el-input v-model="form.configKey" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item v-if="form.configId != 2 && form.configId != 3" label="参数键值" prop="configValue">
-          <el-input v-model="form.configValue" placeholder="请输入参数键值" />
+          <el-input v-model="form.configValue" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <!-- 平台logo -->
         <el-form-item v-if="form.configId == 2" label="参数键值" prop="configValue">

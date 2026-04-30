@@ -2,8 +2,8 @@
   <div class="app-container bg-container" v-loading="loading">
     <div class="chart-select">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" :rules="rules">
-        <el-form-item label="分类能耗" prop="energyType">
-          <el-select v-model="queryParams.energyType" placeholder="请选择" @change="energyTypeChange">
+        <el-form-item :label="$t('energyAnalysisModule.categoryEnergy')" prop="energyType">
+          <el-select v-model="queryParams.energyType" :placeholder="$t('common.pleaseSelect')" @change="energyTypeChange">
             <el-option
               v-for="item in dict.type.energy_type"
               :key="item.value"
@@ -13,22 +13,22 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="起止时间" prop="dateRange">
+        <el-form-item :label="$t('energyAnalysisModule.dateRange')" prop="dateRange">
           <el-date-picker
             v-model="queryParams.dateRange"
             style="width: 300px"
             value-format="yyyy-MM-dd HH:mm:ss"
             type="daterange"
             range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
+            :start-placeholder="$t('common.startDate')"
+            :end-placeholder="$t('common.endDate')"
             :default-time="['00:00:00', '23:59:59']"
             @change="getTimeRange"
           ></el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="getTopologyList"
-            >查询</el-button
+            >{{ $t('common.search') }}</el-button
           >
         </el-form-item>
       </el-form>

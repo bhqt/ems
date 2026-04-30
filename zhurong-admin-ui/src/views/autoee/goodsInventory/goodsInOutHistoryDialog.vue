@@ -28,7 +28,7 @@
               <dict-tag :options="dict.type.sys_user" :value="scope.row.userId" />
             </template>
           </el-table-column>
-          <el-table-column prop="updateTime" label="更新时间" align="center">
+          <el-table-column prop="updateTime" :label="$t('common.updateTime')" align="center">
             <template slot-scope="scope">
               <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
             </template>
@@ -68,7 +68,7 @@
               <dict-tag :options="dict.type.sys_user" :value="scope.row.userId" />
             </template>
           </el-table-column>
-          <el-table-column prop="updateTime" label="更新时间" align="center">
+          <el-table-column prop="updateTime" :label="$t('common.updateTime')" align="center">
             <template slot-scope="scope">
               <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
             </template>
@@ -84,7 +84,7 @@
       </el-tab-pane>
     </el-tabs>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="cancel">关闭</el-button>
+      <el-button @click="cancel">{{ $t('common.close') }}</el-button>
     </div>
   </el-dialog>
 </template>

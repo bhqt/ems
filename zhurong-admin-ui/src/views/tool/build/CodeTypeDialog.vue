@@ -31,19 +31,15 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item v-if="showFileName" label="文件名" prop="fileName">
-              <el-input v-model="formData.fileName" placeholder="请输入文件名" clearable />
+              <el-input v-model="formData.fileName" :placeholder="$t('common.pleaseInput')" clearable />
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
 
       <div slot="footer">
-        <el-button @click="close">
-          取消
-        </el-button>
-        <el-button type="primary" @click="handleConfirm">
-          确定
-        </el-button>
+        <el-button @click="close">{{ $t('common.cancel') }}</el-button>
+        <el-button type="primary" @click="handleConfirm">{{ $t('common.confirm') }}</el-button>
       </div>
     </el-dialog>
   </div>

@@ -8,26 +8,26 @@
       v-show="showSearch"
       label-width="68px"
     >
-      <el-form-item label="工单编号" prop="orderNo">
+      <el-form-item :label="$t('maintenanceModule.orderNo')" prop="orderNo">
         <el-input
           v-model="queryParams.orderNo"
-          placeholder="请输入工单编号"
+          :placeholder="$t('maintenanceModule.orderNo')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="项目名称" prop="projectName">
+      <el-form-item :label="$t('maintenanceModule.projectName')" prop="projectName">
         <el-input
           v-model="queryParams.projectName"
-          placeholder="请输入项目名称"
+          :placeholder="$t('maintenanceModule.projectName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="工单状态" prop="orderStatus">
+      <el-form-item :label="$t('maintenanceModule.orderStatus')" prop="orderStatus">
         <el-select
           v-model="queryParams.orderStatus"
-          placeholder="请选择状态"
+          :placeholder="$t('maintenanceModule.orderStatus')"
           clearable
           @keyup.enter.native="handleQuery"
         >
@@ -46,10 +46,10 @@
           icon="el-icon-search"
           size="mini"
           @click="handleQuery"
-          >查询</el-button
+          >{{ $t('common.search') }}</el-button
         >
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
-          >重置</el-button
+          >{{ $t('common.reset') }}</el-button
         >
       </el-form-item>
     </el-form>
@@ -75,7 +75,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:order:edit']"
-          >编辑</el-button
+          >{{ $t('common.edit') }}</el-button
         >
       </el-col> -->
       <el-col :span="1.5">
@@ -87,7 +87,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:order:remove']"
-          >删除</el-button
+          >{{ $t('common.delete') }}</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -98,7 +98,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:order:export']"
-          >导出</el-button
+          >{{ $t('common.export') }}</el-button
         >
       </el-col>
       <right-toolbar
@@ -145,7 +145,7 @@
       </el-table-column>
       <el-table-column label="工单备注" align="center" prop="orderRemark" width="200" show-overflow-tooltip/>
       <el-table-column
-        label="操作"
+        :label="$t('common.operation')"
         align="center"
         class-name="small-padding"
         width="180"
@@ -158,7 +158,7 @@
             icon="el-icon-view"
             @click="handleEdit(scope.row)"
             v-hasPermi="['system:order:query']"
-            >详情</el-button
+            >{{ $t('common.detail') }}</el-button
           >
           <el-button
             size="mini"
@@ -175,7 +175,7 @@
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:order:remove']"
-            >删除</el-button
+            >{{ $t('common.delete') }}</el-button
           >
         </template>
       </el-table-column>
@@ -242,7 +242,7 @@
         </el-form>
       </div>
       <div class="drawer-footer" style="padding: 20px;">
-        <el-button type="default" size="small" @click="cancel" icon="el-icon-close">关闭</el-button>
+        <el-button type="default" size="small" @click="cancel" icon="el-icon-close">{{ $t('common.close') }}</el-button>
         <el-button v-if="!disabled" type="primary" size="small" @click="submitForm" icon="el-icon-edit-outline" :loading="buttonLoading">完成</el-button>
       </div>
     </el-drawer>

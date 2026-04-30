@@ -4,7 +4,7 @@
       <el-form-item label="模板名称" prop="templateName">
         <el-input
           v-model="queryParams.templateName"
-          placeholder="请输入模板名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 240px"
           @keyup.enter.native="handleQuery"
@@ -13,7 +13,7 @@
       <el-form-item label="模板类型" prop="templateType">
         <el-select
           v-model="queryParams.templateType"
-          placeholder="请选择模板类型"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
           style="width: 160px"
         >
@@ -25,10 +25,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item :label="$t('common.status')" prop="status">
         <el-select
           v-model="queryParams.status"
-          placeholder="请选择状态"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
           style="width: 100px"
         >
@@ -37,8 +37,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -51,7 +51,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:report:template:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +62,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:report:template:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -73,7 +73,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:report:template:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -83,7 +83,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:report:template:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
     </el-row>
@@ -98,7 +98,7 @@
         </template>
       </el-table-column>
       <el-table-column label="模板描述" align="center" prop="templateDesc" />
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="$t('common.status')" align="center" prop="status">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.status"
@@ -109,8 +109,8 @@
         </template>
       </el-table-column>
       <el-table-column label="排序" align="center" prop="orderNum" width="80" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -118,14 +118,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:report:template:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row.templateId)"
             v-hasPermi="['system:report:template:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -142,10 +142,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="模板名称" prop="templateName">
-          <el-input v-model="form.templateName" placeholder="请输入模板名称" />
+          <el-input v-model="form.templateName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="模板类型" prop="templateType">
-          <el-select v-model="form.templateType" placeholder="请选择模板类型">
+          <el-select v-model="form.templateType" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="item in templateTypeOptions"
               :key="item.value"
@@ -155,15 +155,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="模板描述" prop="templateDesc">
-          <el-input v-model="form.templateDesc" placeholder="请输入模板描述" type="textarea" rows="3" />
+          <el-input v-model="form.templateDesc" :placeholder="$t('common.pleaseInput')" type="textarea" rows="3" />
         </el-form-item>
         <el-form-item label="模板内容" prop="templateContent">
-          <el-input v-model="form.templateContent" placeholder="请输入模板内容" type="textarea" rows="5" />
+          <el-input v-model="form.templateContent" :placeholder="$t('common.pleaseInput')" type="textarea" rows="5" />
         </el-form-item>
         <el-form-item label="排序" prop="orderNum">
           <el-input-number v-model="form.orderNum" :min="0" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="$t('common.status')" prop="status">
           <el-switch v-model="form.status" active-value="0" inactive-value="1" />
         </el-form-item>
       </el-form>

@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="状态" clearable style="width: 240px">
+      <el-form-item :label="$t('common.status')" prop="status">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.status')" clearable style="width: 240px">
           <el-option v-for="dict in dict.type.sys_normal_disable" :key="dict.value" :label="dict.label"
             :value="dict.value" />
         </el-select>
@@ -12,7 +12,7 @@
             v-model="queryParams.startDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择开始时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="endDate">
@@ -20,13 +20,13 @@
             v-model="queryParams.endDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择结束时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item> -->
       <!-- <el-form-item label="单价" prop="unitPrice">
           <el-input
             v-model="queryParams.unitPrice"
-            placeholder="请输入单价"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -34,7 +34,7 @@
       <el-form-item label="尖峰平谷" prop="periodSwitch">
         <!-- <el-input
             v-model="queryParams.periodSwitch"
-            placeholder="请输入尖峰平谷"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           /> -->
@@ -46,7 +46,7 @@
       <!-- <el-form-item label="尖时单价" prop="sharpPrice">
           <el-input
             v-model="queryParams.sharpPrice"
-            placeholder="请输入尖时单价"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -54,7 +54,7 @@
         <el-form-item label="峰时单价" prop="peekPrice">
           <el-input
             v-model="queryParams.peekPrice"
-            placeholder="请输入峰时单价"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -62,7 +62,7 @@
         <el-form-item label="平时单价" prop="ordinaryPrice">
           <el-input
             v-model="queryParams.ordinaryPrice"
-            placeholder="请输入平时单价"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -70,7 +70,7 @@
         <el-form-item label="谷时单价" prop="valleyPrice">
           <el-input
             v-model="queryParams.valleyPrice"
-            placeholder="请输入谷时单价"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -78,7 +78,7 @@
       <el-form-item label="阶梯计费" prop="stepSwitch">
         <!-- <el-input
             v-model="queryParams.stepSwitch"
-            placeholder="请输入阶梯计费"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           /> -->
@@ -88,27 +88,27 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button type="primary" plain icon="el-icon-plus" size="mini" @click="handleAdd"
-          v-hasPermi="['system:charging:add']">新增</el-button>
+          v-hasPermi="['system:charging:add']">{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleUpdate"
-          v-hasPermi="['system:charging:edit']">修改</el-button>
+          v-hasPermi="['system:charging:edit']">{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
-          v-hasPermi="['system:charging:remove']">删除</el-button>
+          v-hasPermi="['system:charging:remove']">{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button type="warning" plain icon="el-icon-download" size="mini" @click="handleExport"
-          v-hasPermi="['system:charging:export']">导出</el-button>
+          v-hasPermi="['system:charging:export']">{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -146,19 +146,19 @@
           <span>{{ parseTime(scope.row.endDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status">
+      <el-table-column :label="$t('common.status')" align="center" prop="status">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.status" active-value="0" inactive-value="1"
             @change="handleStatusChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:charging:edit']">修改</el-button>
+            v-hasPermi="['system:charging:edit']">{{ $t('common.edit') }}</el-button>
           <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-            v-hasPermi="['system:charging:remove']">删除</el-button>
+            v-hasPermi="['system:charging:remove']">{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -170,103 +170,103 @@
     <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择">
+          <el-select v-model="form.type" :placeholder="$t('common.pleaseSelect')">
             <el-option v-for="item in dict.type.energy_type" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开始时间" prop="startDate">
           <el-date-picker clearable v-model="form.startDate" @change="changeStart" type="date" value-format="yyyy-MM-dd 00:00:00"
-            placeholder="请选择开始时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="endDate">
           <el-date-picker clearable v-model="form.endDate" @change="changeEnd" type="date" value-format="yyyy-MM-dd 23:59:59"
-            placeholder="请选择结束时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="单价" prop="unitPrice" v-if="form.periodSwitch == '1' || form.periodSwitch == null">
-          <el-input-number v-model="form.unitPrice" :min="0" :precision="2" placeholder="请输入单价"></el-input-number>
+          <el-input-number v-model="form.unitPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')"></el-input-number>
         </el-form-item>
         <el-form-item label="尖峰平谷" prop="periodSwitch">
           <el-switch v-model="form.periodSwitch" active-value="0" inactive-value="1"></el-switch>
-          <!-- <el-input v-model="form.periodSwitch" placeholder="请输入尖峰平谷开关" /> -->
+          <!-- <el-input v-model="form.periodSwitch" :placeholder="$t('common.pleaseInput')" /> -->
         </el-form-item>
         <el-row>
           <el-col :span="12">
             <el-form-item label="尖时单价" prop="sharpPrice" v-if="form.periodSwitch == '0'">
-              <el-input-number v-model="form.sharpPrice" :min="0" :precision="2" placeholder="请输入尖时单价" />
+              <el-input-number v-model="form.sharpPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="峰时单价" prop="peekPrice" v-if="form.periodSwitch == '0'">
-              <el-input-number v-model="form.peekPrice" :min="0" :precision="2" placeholder="请输入峰时单价" />
+              <el-input-number v-model="form.peekPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="平时单价" prop="ordinaryPrice" v-if="form.periodSwitch == '0'">
-              <el-input-number v-model="form.ordinaryPrice" :min="0" :precision="2" placeholder="请输入平时单价" />
+              <el-input-number v-model="form.ordinaryPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="谷时单价" prop="valleyPrice" v-if="form.periodSwitch == '0'">
-              <el-input-number v-model="form.valleyPrice" :precision="2" placeholder="请输入谷时单价" :min="0" />
+              <el-input-number v-model="form.valleyPrice" :precision="2" :placeholder="$t('common.pleaseInput')" :min="0" />
             </el-form-item>
           </el-col>
         </el-row>
         <!-- <el-form-item label="尖时单价" prop="sharpPrice" v-if="form.periodSwitch == '0'">
-          <el-input-number v-model="form.sharpPrice" :min="0" :precision="2" placeholder="请输入尖时单价" />
+          <el-input-number v-model="form.sharpPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="峰时单价" prop="peekPrice" v-if="form.periodSwitch == '0'">
-          <el-input-number v-model="form.peekPrice" :min="0" :precision="2" placeholder="请输入峰时单价" />
+          <el-input-number v-model="form.peekPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="平时单价" prop="ordinaryPrice" v-if="form.periodSwitch == '0'">
-          <el-input-number v-model="form.ordinaryPrice" :min="0" :precision="2" placeholder="请输入平时单价" />
+          <el-input-number v-model="form.ordinaryPrice" :min="0" :precision="2" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="谷时单价" prop="valleyPrice" v-if="form.periodSwitch == '0'">
-          <el-input-number v-model="form.valleyPrice" :precision="2" placeholder="请输入谷时单价" :min="0" />
+          <el-input-number v-model="form.valleyPrice" :precision="2" :placeholder="$t('common.pleaseInput')" :min="0" />
         </el-form-item> -->
         <el-form-item label="阶梯计费" prop="stepSwitch">
-          <!-- <el-input v-model="form.stepSwitch" placeholder="请输入阶梯计费开关" /> -->
+          <!-- <el-input v-model="form.stepSwitch" :placeholder="$t('common.pleaseInput')" /> -->
           <el-switch v-model="form.stepSwitch" active-value="0" inactive-value="1"></el-switch>
         </el-form-item>
         <div v-if="form.stepSwitch == '0'">
           <el-button type="primary" icon="el-icon-plus" size="mini" style="margin-bottom: 8px;" @click="addParam"
-            v-hasPermi="['system:chargingStep:add']">新增</el-button>
+            v-hasPermi="['system:chargingStep:add']">{{ $t('common.add') }}</el-button>
           <div>
             <el-table v-loading="paramLoading" :data="paramList" @row-click="rowClick">
               <el-table-column label="阶梯" align="center" type="index" width="50"></el-table-column>
               <el-table-column label="开始用量" prop="startStep" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.startStep" placeholder="请输入" size="mini" :controls="false"
+                  <el-input-number v-model="scope.row.startStep" :placeholder="$t('common.pleaseInput')" size="mini" :controls="false"
                     :disabled="true" :precision="2" style="width: 100%;"></el-input-number>
                 </template>
               </el-table-column>
               <el-table-column label="结束用量" prop="endStep" align="center">
                 <template slot-scope="scope">
                   <el-input v-model="scope.row.endStep" @input="endStepChange" @change="endStepFinalChange"
-                    placeholder="请输入" size="mini" :controls="false" :precision="2" style="width: 100%;"></el-input>
+                    :placeholder="$t('common.pleaseInput')" size="mini" :controls="false" :precision="2" style="width: 100%;"></el-input>
                 </template>
               </el-table-column>
               <el-table-column label="差价(元)" prop="priceDifference" align="center">
                 <template slot-scope="scope">
-                  <el-input-number v-model="scope.row.priceDifference" placeholder="请输入" size="mini" :controls="false"
+                  <el-input-number v-model="scope.row.priceDifference" :placeholder="$t('common.pleaseInput')" size="mini" :controls="false"
                     :precision="2" style="width: 100%;"></el-input-number>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
                 <template slot-scope="scope">
                   <el-button size="mini" type="text" icon="el-icon-delete" v-show="scope.$index + 1 < paramList.length"
-                    @click="delectParam(scope.row)" v-hasPermi="['system:chargingStep:remove']">删除</el-button>
+                    @click="delectParam(scope.row)" v-hasPermi="['system:chargingStep:remove']">{{ $t('common.delete') }}</el-button>
                 </template>
               </el-table-column>
             </el-table>
           </div>
         </div>
-        <!-- <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        <!-- <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">

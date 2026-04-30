@@ -4,7 +4,7 @@
         <!-- <el-form-item label="计划编号" prop="number">
           <el-input
             v-model="queryParams.number"
-            placeholder="请输入计划编号"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -12,15 +12,15 @@
         <!-- <el-form-item label="计划周期" prop="cycle">
           <el-input
             v-model="queryParams.cycle"
-            placeholder="请输入计划周期"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item> -->
-        <el-form-item label="站所" prop="station">
+        <el-form-item :label="$t('maintenanceModule.station')" prop="station">
           <el-input
             v-model="queryParams.station"
-            placeholder="请输入站所"
+            :placeholder="$t('maintenanceModule.station')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -28,15 +28,15 @@
         <!-- <el-form-item label="是否超时(0是，1不是)" prop="isTimeout">
           <el-input
             v-model="queryParams.isTimeout"
-            placeholder="请输入是否超时(0是，1不是)"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item> -->
-        <el-form-item label="计划名称" prop="name">
+        <el-form-item :label="$t('maintenanceModule.planName')" prop="name">
           <el-input
             v-model="queryParams.name"
-            placeholder="请输入计划名称"
+            :placeholder="$t('maintenanceModule.planName')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -44,7 +44,7 @@
         <!-- <el-form-item label="计划来源" prop="source">
           <el-input
             v-model="queryParams.source"
-            placeholder="请输入计划来源"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -54,7 +54,7 @@
             v-model="queryParams.startTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择开始时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="结束时间" prop="endTime">
@@ -62,13 +62,13 @@
             v-model="queryParams.endTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择结束时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item> -->
         <!-- <el-form-item label="一级提醒" prop="firstReminder">
           <el-input
             v-model="queryParams.firstReminder"
-            placeholder="请输入一级提醒"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -76,7 +76,7 @@
         <el-form-item label="二级提醒" prop="secondReminder">
           <el-input
             v-model="queryParams.secondReminder"
-            placeholder="请输入二级提醒"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -84,7 +84,7 @@
         <!-- <el-form-item label="开工执行人" prop="operator">
           <el-input
             v-model="queryParams.operator"
-            placeholder="请输入开工执行人"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -94,13 +94,13 @@
             v-model="queryParams.commencementTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择开工时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="归结执行人" prop="terminator">
           <el-input
             v-model="queryParams.terminator"
-            placeholder="请输入归结执行人"
+            :placeholder="$t('common.pleaseInput')"
             clearable
             @keyup.enter.native="handleQuery"
           />
@@ -110,28 +110,28 @@
             v-model="queryParams.resolutionTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择归结时间">
+            :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item> -->
-        <el-form-item label="编制人" prop="preparedBy">
+        <el-form-item :label="$t('maintenanceModule.preparedBy')" prop="preparedBy">
           <el-input
             v-model="queryParams.preparedBy"
-            placeholder="请输入编制人"
+            :placeholder="$t('maintenanceModule.preparedBy')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="负责人" prop="head">
+        <el-form-item :label="$t('maintenanceModule.head')" prop="head">
           <el-input
             v-model="queryParams.head"
-            placeholder="请输入负责人"
+            :placeholder="$t('maintenanceModule.head')"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
         </el-form-item>
       </el-form>
   
@@ -144,7 +144,7 @@
             size="mini"
             @click="handleAdd"
             v-hasPermi="['system:schedule:add']"
-          >新增</el-button>
+          >{{ $t('common.add') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -155,7 +155,7 @@
             :disabled="single"
             @click="handleUpdate"
             v-hasPermi="['system:schedule:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -166,7 +166,7 @@
             :disabled="multiple"
             @click="handleDelete"
             v-hasPermi="['system:schedule:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </el-col>
         <el-col :span="1.5">
           <el-button
@@ -176,7 +176,7 @@
             size="mini"
             @click="handleExport"
             v-hasPermi="['system:schedule:export']"
-          >导出</el-button>
+          >{{ $t('common.export') }}</el-button>
         </el-col>
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
@@ -188,7 +188,7 @@
         <el-table-column label="类型" align="center" prop="type" />
         <el-table-column label="计划周期" align="center" prop="cycle" />
         <el-table-column label="站所" align="center" prop="station" />
-        <el-table-column label="状态" align="center" prop="status" />
+        <el-table-column :label="$t('common.status')" align="center" prop="status" />
         <el-table-column label="超时" align="center" prop="isTimeout" />
         <el-table-column label="计划名称" align="center" prop="name" />
         <!-- <el-table-column label="计划来源" align="center" prop="source" />
@@ -221,7 +221,7 @@
         <!-- <el-table-column label="编制人" align="center" prop="preparedBy" /> -->
         <el-table-column label="负责人" align="center" prop="head" />
         <el-table-column label="注意事项" align="center" prop="remark" />
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+        <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
           <template slot-scope="scope">
             <el-button
               size="mini"
@@ -229,14 +229,14 @@
               icon="el-icon-edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['system:schedule:edit']"
-            >修改</el-button>
+            >{{ $t('common.edit') }}</el-button>
             <el-button
               size="mini"
               type="text"
               icon="el-icon-delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['system:schedule:remove']"
-            >删除</el-button>
+            >{{ $t('common.delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -253,25 +253,25 @@
       <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
         <el-form ref="form" :model="form" :rules="rules" label-width="80px">
           <el-form-item label="计划编号" prop="number">
-            <el-input v-model="form.number" placeholder="请输入计划编号" />
+            <el-input v-model="form.number" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="类型" prop="type">
-            <el-input v-model="form.type" placeholder="请输入计划类型" />
+            <el-input v-model="form.type" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="计划周期" prop="cycle">
-            <el-input v-model="form.cycle" placeholder="请输入计划周期" />
+            <el-input v-model="form.cycle" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="站所" prop="station">
-            <el-input v-model="form.station" placeholder="请输入站所" />
+            <el-input v-model="form.station" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <!-- <el-form-item label="是否超时" prop="isTimeout">
-            <el-input v-model="form.isTimeout" placeholder="请输入是否超时" />
+            <el-input v-model="form.isTimeout" :placeholder="$t('common.pleaseInput')" />
           </el-form-item> -->
           <el-form-item label="计划名称" prop="name">
-            <el-input v-model="form.name" placeholder="请输入计划名称" />
+            <el-input v-model="form.name" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="计划来源" prop="source">
-            <el-input v-model="form.source" placeholder="请输入计划来源" />
+            <el-input v-model="form.source" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="计划内容">
             <editor v-model="form.content" :min-height="192"/>
@@ -281,7 +281,7 @@
               v-model="form.startTime"
               type="datetime"
               value-format="yyyy-MM-dd HH:mm:ss"
-              placeholder="请选择开始时间">
+              :placeholder="$t('common.pleaseSelect')">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="结束时间" prop="endTime">
@@ -289,7 +289,7 @@
               v-model="form.endTime"
               type="datetime"
               value-format="yyyy-MM-dd HH:mm:ss"
-              placeholder="请选择结束时间">
+              :placeholder="$t('common.pleaseSelect')">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="一级提醒(天)" prop="firstReminder">
@@ -299,38 +299,38 @@
             <el-input-number v-model="form.secondReminder" controls-position="right" :min="0" />
           </el-form-item>
           <el-form-item label="开工人" prop="operator">
-            <el-input v-model="form.operator" placeholder="请输入开工人" />
+            <el-input v-model="form.operator" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="开工时间" prop="commencementTime">
             <el-date-picker clearable
               v-model="form.commencementTime"
               type="datetime"
               value-format="yyyy-MM-dd HH:mm:ss"
-              placeholder="请选择开工时间">
+              :placeholder="$t('common.pleaseSelect')">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="归结人" prop="terminator">
-            <el-input v-model="form.terminator" placeholder="请输入归结人" />
+            <el-input v-model="form.terminator" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="归结时间" prop="resolutionTime">
             <el-date-picker clearable
               v-model="form.resolutionTime"
               type="datetime"
               value-format="yyyy-MM-dd HH:mm:ss"
-              placeholder="请选择归结时间">
+              :placeholder="$t('common.pleaseSelect')">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="归结内容">
             <editor v-model="form.resolutionContent" :min-height="192"/>
           </el-form-item>
           <el-form-item label="编制人" prop="preparedBy">
-            <el-input v-model="form.preparedBy" placeholder="请输入编制人" />
+            <el-input v-model="form.preparedBy" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="负责人" prop="head">
-            <el-input v-model="form.head" placeholder="请输入负责人" />
+            <el-input v-model="form.head" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
           <el-form-item label="注意事项" prop="remark">
-            <el-input v-model="form.remark" placeholder="请输入注意事项" />
+            <el-input v-model="form.remark" :placeholder="$t('common.pleaseInput')" />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">

@@ -5,10 +5,10 @@
        <!-- form中el-form-item加上display: inline-block;控制一行两列、一行一列 -->
       <el-form ref="addUpdateFormRef"  :model="addUpdateForm" :rules="addUpdateFormRules" label-width="150px" style="padding-right: 30px" :scroll-to-error="true">
                 <el-form-item v-show='true' label="物品名称" prop="goodsName" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.goodsName" placeholder="请输入物品名称" maxlength="50" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.goodsName" :placeholder="$t('common.pleaseInput')" maxlength="50" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='true' label="物品类型" prop="goodsType" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.goodsType" placeholder="请选择物品类型" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.goodsType" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.goods_type"
                         :key="dict.value"
@@ -18,7 +18,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item v-show='true' label="物品状态" prop="goodsStatus" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.goodsStatus" placeholder="请选择物品状态" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.goodsStatus" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.goods_status"
                         :key="dict.value"
@@ -28,10 +28,10 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="规格型号" prop="specification" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.specification" placeholder="请输入规格型号" maxlength="100" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.specification" :placeholder="$t('common.pleaseInput')" maxlength="100" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='true' label="单位" prop="goodsUnit" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.goodsUnit" placeholder="请选择单位" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.goodsUnit" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.goods_unit"
                         :key="dict.value"
@@ -41,10 +41,10 @@
                     </el-select>
                   </el-form-item>
                 <el-form-item v-show='true' label="存储位置" prop="storageLocation" style="display: inline-block;width: 45%;">
-                      <el-input v-model="addUpdateForm.storageLocation" placeholder="请输入存储位置" maxlength="200" show-word-limit clearable/>
+                      <el-input v-model="addUpdateForm.storageLocation" :placeholder="$t('common.pleaseInput')" maxlength="200" show-word-limit clearable/>
                 </el-form-item>
                   <el-form-item v-show='false' label="所属用户" prop="userId" style="display: inline-block;width: 45%;">
-                    <el-select clearable v-model="addUpdateForm.userId" placeholder="请选择所属用户" style="width: 100%">
+                    <el-select clearable v-model="addUpdateForm.userId" :placeholder="$t('common.pleaseSelect')" style="width: 100%">
                       <el-option
                         v-for="dict in dict.type.sys_user"
                         :key="dict.value"

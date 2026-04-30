@@ -22,9 +22,9 @@ xxl.job:
   # 执行器开关
   enabled: true
   # 调度中心地址：如调度中心集群部署存在多个地址则用逗号分隔。
-  admin-addresses: http://localhost:9110/xxl-job-admin
+  admin-addresses: http://zhurong-ems-xxl-job-admin:8080/xxl-job-admin
   # 执行器通讯TOKEN：非空时启用
-  access-token: xxl-job
+  access-token: default_token
   executor:
     # 执行器AppName：执行器心跳注册分组依据；为空则关闭自动注册
     appname: xxl-job-executor

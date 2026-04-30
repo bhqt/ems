@@ -1,34 +1,34 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="文件名" prop="fileName">
+      <el-form-item :label="$t('ossModule.fileName')" prop="fileName">
         <el-input
           v-model="queryParams.fileName"
-          placeholder="请输入文件名"
+          :placeholder="$t('ossModule.fileName')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="原名" prop="originalName">
+      <el-form-item :label="$t('ossModule.originalName')" prop="originalName">
         <el-input
           v-model="queryParams.originalName"
-          placeholder="请输入原名"
+          :placeholder="$t('ossModule.originalName')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="文件后缀" prop="fileSuffix">
+      <el-form-item :label="$t('ossModule.fileSuffix')" prop="fileSuffix">
         <el-input
           v-model="queryParams.fileSuffix"
-          placeholder="请输入文件后缀"
+          :placeholder="$t('ossModule.fileSuffix')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item :label="$t('common.createTime')">
         <el-date-picker
           v-model="daterangeCreateTime"
           size="small"
@@ -36,32 +36,32 @@
           value-format="yyyy-MM-dd HH:mm:ss"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('common.startDate')"
+          :end-placeholder="$t('common.endDate')"
           :default-time="['00:00:00', '23:59:59']"
         ></el-date-picker>
       </el-form-item>
-      <el-form-item label="上传人" prop="createBy">
+      <el-form-item :label="$t('ossModule.createBy')" prop="createBy">
         <el-input
           v-model="queryParams.createBy"
-          placeholder="请输入上传人"
+          :placeholder="$t('ossModule.createBy')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="服务商" prop="service">
+      <el-form-item :label="$t('ossModule.service')" prop="service">
         <el-input
           v-model="queryParams.service"
-          placeholder="请输入服务商"
+          :placeholder="$t('ossModule.service')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -74,7 +74,7 @@
           size="mini"
           @click="handleFile"
           v-hasPermi="['system:oss:upload']"
-        >上传文件</el-button>
+        >{{ $t('ossModule.uploadFile') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -84,7 +84,7 @@
           size="mini"
           @click="handleImage"
           v-hasPermi="['system:oss:upload']"
-        >上传图片</el-button>
+        >{{ $t('ossModule.uploadImage') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -95,7 +95,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:oss:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -124,11 +124,11 @@
               @header-click="handleHeaderCLick"
               v-if="showTable">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="对象存储主键" align="center" prop="ossId" v-if="false"/>
-      <el-table-column label="文件名" align="center" prop="fileName" />
-      <el-table-column label="原名" align="center" prop="originalName" />
-      <el-table-column label="文件后缀" align="center" prop="fileSuffix" />
-      <el-table-column label="文件展示" align="center" prop="url">
+      <el-table-column :label="$t('ossModule.ossId')" align="center" prop="ossId" v-if="false"/>
+      <el-table-column :label="$t('ossModule.fileName')" align="center" prop="fileName" />
+      <el-table-column :label="$t('ossModule.originalName')" align="center" prop="originalName" />
+      <el-table-column :label="$t('ossModule.fileSuffix')" align="center" prop="fileSuffix" />
+      <el-table-column :label="$t('ossModule.filePreview')" align="center" prop="url">
         <template slot-scope="scope">
           <ImagePreview
             v-if="previewListResource && checkFileSuffix(scope.row.fileSuffix)"
@@ -139,16 +139,16 @@
                 v-if="!checkFileSuffix(scope.row.fileSuffix) || !previewListResource"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180"
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180"
                        sortable="custom">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="上传人" align="center" prop="createBy" />
-      <el-table-column label="服务商" align="center" prop="service"
+      <el-table-column :label="$t('ossModule.createBy')" align="center" prop="createBy" />
+      <el-table-column :label="$t('ossModule.service')" align="center" prop="service"
                        sortable="custom"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -156,14 +156,14 @@
             icon="el-icon-edit"
             @click="handleDownload(scope.row)"
             v-hasPermi="['system:oss:download']"
-          >下载</el-button>
+          >{{ $t('common.download') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:oss:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>

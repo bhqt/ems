@@ -1,44 +1,44 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="数据源" prop="dataName">
+      <el-form-item :label="$t('toolModule.dataSource')" prop="dataName">
         <el-input
           v-model="queryParams.dataName"
-          placeholder="请输入数据源名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="表名称" prop="tableName">
+      <el-form-item :label="$t('toolModule.tableName')" prop="tableName">
         <el-input
           v-model="queryParams.tableName"
-          placeholder="请输入表名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="表描述" prop="tableComment">
+      <el-form-item :label="$t('toolModule.tableComment')" prop="tableComment">
         <el-input
           v-model="queryParams.tableComment"
-          placeholder="请输入表描述"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item :label="$t('common.createTime')">
         <el-date-picker
           v-model="dateRange"
           style="width: 240px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('common.startDate')"
+          :end-placeholder="$t('common.endDate')"
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -51,7 +51,7 @@
           size="mini"
           @click="handleGenTable"
           v-hasPermi="['tool:gen:code']"
-        >生成</el-button>
+        >{{ $t('toolModule.generate') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -61,7 +61,7 @@
           size="mini"
           @click="openImportTable"
           v-hasPermi="['tool:gen:import']"
-        >导入</el-button>
+        >{{ $t('common.import') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -72,7 +72,7 @@
           :disabled="single"
           @click="handleEditTable"
           v-hasPermi="['tool:gen:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -83,42 +83,42 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['tool:gen:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55"></el-table-column>
-      <el-table-column label="序号" type="index" width="50" align="center">
+      <el-table-column :label="$t('toolModule.index')" type="index" width="50" align="center">
         <template slot-scope="scope">
           <span>{{(queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="表名称"
+        :label="$t('toolModule.tableName')"
         align="center"
         prop="tableName"
         :show-overflow-tooltip="true"
         width="120"
       />
       <el-table-column
-        label="表描述"
+        :label="$t('toolModule.tableComment')"
         align="center"
         prop="tableComment"
         :show-overflow-tooltip="true"
         width="120"
       />
       <el-table-column
-        label="实体"
+        :label="$t('toolModule.entity')"
         align="center"
         prop="className"
         :show-overflow-tooltip="true"
         width="120"
       />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="160" />
+      <el-table-column :label="$t('common.updateTime')" align="center" prop="updateTime" width="160" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             type="text"
@@ -126,35 +126,35 @@
             icon="el-icon-view"
             @click="handlePreview(scope.row)"
             v-hasPermi="['tool:gen:preview']"
-          >预览</el-button>
+          >{{ $t('toolModule.preview') }}</el-button>
           <el-button
             type="text"
             size="small"
             icon="el-icon-edit"
             @click="handleEditTable(scope.row)"
             v-hasPermi="['tool:gen:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             type="text"
             size="small"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['tool:gen:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
           <el-button
             type="text"
             size="small"
             icon="el-icon-refresh"
             @click="handleSynchDb(scope.row)"
             v-hasPermi="['tool:gen:edit']"
-          >同步</el-button>
+          >{{ $t('toolModule.sync') }}</el-button>
           <el-button
             type="text"
             size="small"
             icon="el-icon-download"
             @click="handleGenTable(scope.row)"
             v-hasPermi="['tool:gen:code']"
-          >生成代码</el-button>
+          >{{ $t('toolModule.generateCode') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -174,7 +174,7 @@
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :key="key"
         >
-          <el-link :underline="false" icon="el-icon-document-copy" v-clipboard:copy="value" v-clipboard:success="clipboardSuccess" style="float:right">复制</el-link>
+          <el-link :underline="false" icon="el-icon-document-copy" v-clipboard:copy="value" v-clipboard:success="clipboardSuccess" style="float:right">{{ $t('toolModule.copy') }}</el-link>
           <pre><code class="hljs" v-html="highlightedCode(value, key)"></code></pre>
         </el-tab-pane>
       </el-tabs>

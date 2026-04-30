@@ -13,21 +13,21 @@
       <el-form-item label="桶名称" prop="bucketName">
         <el-input
           v-model="queryParams.bucketName"
-          placeholder="请输入桶名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="是否默认" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable size="small">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable size="small">
           <el-option key="0" label="是" value="0"/>
           <el-option key="1" label="否" value="1"/>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -40,7 +40,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:oss:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -51,7 +51,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:oss:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -62,7 +62,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:oss:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -93,7 +93,7 @@
           ></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -101,14 +101,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:oss:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:oss:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -125,25 +125,25 @@
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="配置key" prop="configKey">
-          <el-input v-model="form.configKey" placeholder="请输入配置key" />
+          <el-input v-model="form.configKey" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="访问站点" prop="endpoint">
-          <el-input v-model="form.endpoint" placeholder="请输入访问站点" />
+          <el-input v-model="form.endpoint" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="自定义域名" prop="domain">
-          <el-input v-model="form.domain" placeholder="请输入自定义域名" />
+          <el-input v-model="form.domain" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="accessKey" prop="accessKey">
-          <el-input v-model="form.accessKey" placeholder="请输入accessKey" />
+          <el-input v-model="form.accessKey" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="secretKey" prop="secretKey">
-          <el-input v-model="form.secretKey" placeholder="请输入秘钥" show-password />
+          <el-input v-model="form.secretKey" :placeholder="$t('common.pleaseInput')" show-password />
         </el-form-item>
         <el-form-item label="桶名称" prop="bucketName">
-          <el-input v-model="form.bucketName" placeholder="请输入桶名称" />
+          <el-input v-model="form.bucketName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="前缀" prop="prefix">
-          <el-input v-model="form.prefix" placeholder="请输入前缀" />
+          <el-input v-model="form.prefix" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="是否HTTPS">
           <el-radio-group v-model="form.isHttps">
@@ -162,10 +162,10 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="域" prop="region">
-          <el-input v-model="form.region" placeholder="请输入域" />
+          <el-input v-model="form.region" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

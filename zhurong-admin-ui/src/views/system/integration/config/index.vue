@@ -4,7 +4,7 @@
       <el-form-item label="系统编码" prop="systemCode">
         <el-input
           v-model="queryParams.systemCode"
-          placeholder="请输入系统编码"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 200px"
           @keyup.enter.native="handleQuery"
@@ -13,21 +13,21 @@
       <el-form-item label="系统名称" prop="systemName">
         <el-input
           v-model="queryParams.systemName"
-          placeholder="请输入系统名称"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           style="width: 200px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable style="width: 120px">
+      <el-form-item :label="$t('common.status')" prop="status">
+        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable style="width: 120px">
           <el-option label="启用" :value="1" />
           <el-option label="禁用" :value="2" />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -39,7 +39,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -49,7 +49,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -59,7 +59,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -75,26 +75,26 @@
           {{ scope.row.timeout ? scope.row.timeout + 'ms' : '-' }}
         </template>
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status" width="80">
+      <el-table-column :label="$t('common.status')" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">
             {{ scope.row.status === 1 ? '启用' : '禁用' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width" width="180">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
@@ -106,7 +106,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -122,30 +122,30 @@
     <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="系统编码" prop="systemCode">
-          <el-input v-model="form.systemCode" placeholder="请输入系统编码（如MES、ERP、ENV、FIRE）" />
+          <el-input v-model="form.systemCode" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="系统名称" prop="systemName">
-          <el-input v-model="form.systemName" placeholder="请输入系统名称" />
+          <el-input v-model="form.systemName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="连接地址" prop="connectionUrl">
-          <el-input v-model="form.connectionUrl" placeholder="请输入系统API地址" />
+          <el-input v-model="form.connectionUrl" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="form.username" placeholder="请输入用户名" />
+          <el-input v-model="form.username" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" type="password" placeholder="请输入密码" show-password />
+          <el-input v-model="form.password" type="password" :placeholder="$t('common.pleaseInput')" show-password />
         </el-form-item>
         <el-form-item label="API密钥" prop="apiKey">
-          <el-input v-model="form.apiKey" placeholder="请输入API密钥" />
+          <el-input v-model="form.apiKey" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="超时时间" prop="timeout">
           <el-input-number v-model="form.timeout" :min="1000" :max="60000" placeholder="毫秒" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="form.description" type="textarea" placeholder="请输入描述" />
+          <el-input v-model="form.description" type="textarea" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="状态" prop="status">
+        <el-form-item :label="$t('common.status')" prop="status">
           <el-radio-group v-model="form.status">
             <el-radio :label="1">启用</el-radio>
             <el-radio :label="2">禁用</el-radio>

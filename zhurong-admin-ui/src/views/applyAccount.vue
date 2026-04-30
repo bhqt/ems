@@ -18,22 +18,22 @@
           <div v-if="isShow" style="text-align:center;">信息已提交成功，我们会尽快与您联系。</div>
           <el-form v-else ref="form" :model="form" :rules="rules" style="margin-top: 24px;">
             <el-form-item prop="name">
-              <el-input v-model="form.name" type="text" auto-complete="off" placeholder="请输入您的姓名" class="unchanged">
+              <el-input v-model="form.name" type="text" auto-complete="off" :placeholder="$t('common.pleaseInput')" class="unchanged">
                 <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
               </el-input>
             </el-form-item>
             <el-form-item prop="phone">
-              <el-input v-model="form.phone" type="text" auto-complete="off" placeholder="请输入您的手机号" class="unchanged">
+              <el-input v-model="form.phone" type="text" auto-complete="off" :placeholder="$t('common.pleaseInput')" class="unchanged">
                 <svg-icon slot="prefix" icon-class="phone" class="el-input__icon input-icon" />
               </el-input>
             </el-form-item>
             <el-form-item prop="email">
-              <el-input v-model="form.email" type="text" auto-complete="off" placeholder="请输入邮箱" class="unchanged">
+              <el-input v-model="form.email" type="text" auto-complete="off" :placeholder="$t('common.pleaseInput')" class="unchanged">
                 <svg-icon slot="prefix" icon-class="email" class="el-input__icon input-icon" />
               </el-input>
             </el-form-item>
             <el-form-item prop="corporateName">
-              <el-input v-model="form.corporateName" type="text" auto-complete="off" placeholder="请输入公司名称" class="unchanged">
+              <el-input v-model="form.corporateName" type="text" auto-complete="off" :placeholder="$t('common.pleaseInput')" class="unchanged">
                 <svg-icon slot="prefix" icon-class="chart" class="el-input__icon input-icon" />
               </el-input>
             </el-form-item>

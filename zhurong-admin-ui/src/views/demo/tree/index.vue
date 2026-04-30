@@ -4,13 +4,13 @@
       <el-form-item label="树节点名" prop="treeName">
         <el-input
           v-model="queryParams.treeName"
-          placeholder="请输入树节点名"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item :label="$t('common.createTime')">
         <el-date-picker
           v-model="daterangeCreateTime"
           size="small"
@@ -24,8 +24,8 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -38,7 +38,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['demo:tree:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -64,12 +64,12 @@
       <el-table-column label="部门id" align="center" prop="deptId" />
       <el-table-column label="用户id" align="center" prop="userId" />
       <el-table-column label="树节点名" align="center" prop="treeName" />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+      <el-table-column :label="$t('common.createTime')" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
             size="mini"
@@ -77,21 +77,21 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['demo:tree:edit']"
-          >编辑</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-plus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['demo:tree:add']"
-          >新增</el-button>
+          >{{ $t('common.add') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['demo:tree:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -100,16 +100,16 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="父id" prop="parentId">
-          <treeselect v-model="form.parentId" :options="treeOptions" :normalizer="normalizer" placeholder="请选择父id" />
+          <treeselect v-model="form.parentId" :options="treeOptions" :normalizer="normalizer" :placeholder="$t('common.pleaseSelect')" />
         </el-form-item>
         <el-form-item label="部门id" prop="deptId">
-          <el-input v-model="form.deptId" placeholder="请输入部门id" />
+          <el-input v-model="form.deptId" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="用户id" prop="userId">
-          <el-input v-model="form.userId" placeholder="请输入用户id" />
+          <el-input v-model="form.userId" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="树节点名" prop="treeName">
-          <el-input v-model="form.treeName" placeholder="请输入树节点名" />
+          <el-input v-model="form.treeName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

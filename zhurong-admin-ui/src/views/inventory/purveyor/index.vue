@@ -1,24 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="90px">
-      <el-form-item label="供应商编号" prop="purveyorCode">
+      <el-form-item :label="$t('inventoryModule.purveyor.purveyorCode')" prop="purveyorCode">
         <el-input
           v-model="queryParams.purveyorCode"
-          placeholder="请输入供应商编号"
+          :placeholder="$t('inventoryModule.purveyor.placeholder.inputPurveyorCode')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="供应商名称" prop="purveyorName">
+      <el-form-item :label="$t('inventoryModule.purveyor.purveyorName')" prop="purveyorName">
         <el-input
           v-model="queryParams.purveyorName"
-          placeholder="请输入供应商名称"
+          :placeholder="$t('inventoryModule.purveyor.placeholder.inputPurveyorName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="供应商性质" prop="nature">
-        <el-select v-model="queryParams.nature" placeholder="请选择">
+      <el-form-item :label="$t('inventoryModule.purveyor.nature')" prop="nature">
+        <el-select v-model="queryParams.nature" :placeholder="$t('inventoryModule.purveyor.placeholder.selectNature')">
           <el-option
             v-for="dict in dict.type.purveyor_nature"
             :key="dict.id"
@@ -26,8 +26,8 @@
             :value="dict.value"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="供货类型" prop="supplyType">
-        <el-select v-model="queryParams.supplyType" placeholder="请选择">
+      <el-form-item :label="$t('inventoryModule.purveyor.supplyType')" prop="supplyType">
+        <el-select v-model="queryParams.supplyType" :placeholder="$t('inventoryModule.purveyor.placeholder.selectSupplyType')">
           <el-option v-for="dict in dict.type.purveyor_supply_type"
             :key="dict.id"
             :label="dict.label"
@@ -37,14 +37,14 @@
       <!-- <el-form-item label="联系人姓名" prop="contractName">
         <el-input
           v-model="queryParams.contractName"
-          placeholder="请输入联系人姓名"
+          :placeholder="$t('common.pleaseInput')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item> -->
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -57,7 +57,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:purveyor:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -68,7 +68,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:purveyor:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -79,7 +79,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:purveyor:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -89,7 +89,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:purveyor:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -97,9 +97,9 @@
     <el-table v-loading="loading" :data="purveyorList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <!-- <el-table-column label="主键" align="center" prop="purveyorId" v-if="true"/> -->
-      <el-table-column label="供应商编号" align="center" prop="purveyorCode" width="200px"/>
-      <el-table-column label="供应商名称" align="center" prop="purveyorName" />
-      <el-table-column label="供应商性质" align="center" prop="nature" width="200">
+      <el-table-column :label="$t('inventoryModule.purveyor.purveyorCode')" align="center" prop="purveyorCode" width="200px"/>
+      <el-table-column :label="$t('inventoryModule.purveyor.purveyorName')" align="center" prop="purveyorName" />
+      <el-table-column :label="$t('inventoryModule.purveyor.nature')" align="center" prop="nature" width="200">
         <template slot-scope="scope">
           <div class="table-item-tag">
             <!-- <dict-tag v-for="item in scope.row.nature" :key="item" :options="dict.type.purveyor_nature" :value="item"/> -->
@@ -107,20 +107,20 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="供货类型" align="center" prop="supplyType" width="200">
+      <el-table-column :label="$t('inventoryModule.purveyor.supplyType')" align="center" prop="supplyType" width="200">
         <template slot-scope="scope">
           <div class="table-item-tag">
             <el-tag v-for="item in scope.row.supplyType" :key="item" type="primary" style="margin-right:4px;">{{handleTag(dict.type.purveyor_supply_type, item)}}</el-tag>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="联系人姓名" align="center" prop="contractName" />
-      <el-table-column label="联系人职位" align="center" prop="contractPost" />
-      <el-table-column label="联系人电话" align="center" prop="contractPhone" />
-      <el-table-column label="联系人邮箱" align="center" prop="contractEmail" />
-      <el-table-column label="供应商地址" align="center" prop="address" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding" fixed="right" width="150">
+      <el-table-column :label="$t('inventoryModule.purveyor.contractName')" align="center" prop="contractName" />
+      <el-table-column :label="$t('inventoryModule.purveyor.contractPost')" align="center" prop="contractPost" />
+      <el-table-column :label="$t('inventoryModule.purveyor.contractPhone')" align="center" prop="contractPhone" />
+      <el-table-column :label="$t('inventoryModule.purveyor.contractEmail')" align="center" prop="contractEmail" />
+      <el-table-column :label="$t('inventoryModule.purveyor.address')" align="center" prop="address" />
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding" fixed="right" width="150">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -128,14 +128,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:purveyor:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:purveyor:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -153,20 +153,20 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="供应商编号" prop="purveyorCode">
-              <el-input v-model="form.purveyorCode" placeholder="请输入供应商编号" />
+            <el-form-item :label="$t('inventoryModule.purveyor.purveyorCode')" prop="purveyorCode">
+              <el-input v-model="form.purveyorCode" :placeholder="$t('inventoryModule.purveyor.placeholder.inputPurveyorCode')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="供应商名称" prop="purveyorName">
-              <el-input v-model="form.purveyorName" placeholder="请输入供应商名称" />
+            <el-form-item :label="$t('inventoryModule.purveyor.purveyorName')" prop="purveyorName">
+              <el-input v-model="form.purveyorName" :placeholder="$t('inventoryModule.purveyor.placeholder.inputPurveyorName')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="供应商性质" prop="nature">
-              <el-select v-model="form.nature" multiple  placeholder="请选择">
+            <el-form-item :label="$t('inventoryModule.purveyor.nature')" prop="nature">
+              <el-select v-model="form.nature" multiple  :placeholder="$t('inventoryModule.purveyor.placeholder.selectNature')">
                 <el-option
                   v-for="dict in dict.type.purveyor_nature"
                   :key="dict.id"
@@ -176,8 +176,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="供货类型" prop="supplyType">
-              <el-select v-model="form.supplyType" multiple placeholder="请选择">
+            <el-form-item :label="$t('inventoryModule.purveyor.supplyType')" prop="supplyType">
+              <el-select v-model="form.supplyType" multiple :placeholder="$t('inventoryModule.purveyor.placeholder.selectSupplyType')">
                 <el-option v-for="dict in dict.type.purveyor_supply_type"
                   :key="dict.id"
                   :label="dict.label"
@@ -188,46 +188,46 @@
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="联系人姓名" prop="contractName">
-              <el-input v-model="form.contractName" placeholder="请输入联系人姓名" />
+            <el-form-item :label="$t('inventoryModule.purveyor.contractName')" prop="contractName">
+              <el-input v-model="form.contractName" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系人职位" prop="contractPost">
-              <el-input v-model="form.contractPost" placeholder="请输入联系人职位" />
+            <el-form-item :label="$t('inventoryModule.purveyor.contractPost')" prop="contractPost">
+              <el-input v-model="form.contractPost" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="12">
-            <el-form-item label="联系人电话" prop="contractPhone">
-              <el-input v-model="form.contractPhone" placeholder="请输入联系人电话" />
+            <el-form-item :label="$t('inventoryModule.purveyor.contractPhone')" prop="contractPhone">
+              <el-input v-model="form.contractPhone" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="联系人邮箱" prop="contractEmail">
-              <el-input v-model="form.contractEmail" placeholder="请输入联系人邮箱" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="12">
-          <el-col :span="24">
-            <el-form-item label="供应商地址" prop="address">
-              <el-input v-model="form.address" placeholder="请输入供应商地址" />
+            <el-form-item :label="$t('inventoryModule.purveyor.contractEmail')" prop="contractEmail">
+              <el-input v-model="form.contractEmail" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="12">
           <el-col :span="24">
-            <el-form-item label="备注" prop="remark">
-              <el-input type="textarea" v-model="form.remark" placeholder="请输入备注" />
+            <el-form-item :label="$t('inventoryModule.purveyor.address')" prop="address">
+              <el-input v-model="form.address" :placeholder="$t('common.pleaseInput')" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="12">
+          <el-col :span="24">
+            <el-form-item :label="$t('common.remark')" prop="remark">
+              <el-input type="textarea" v-model="form.remark" :placeholder="$t('common.pleaseInput')" />
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

@@ -1,41 +1,41 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="事件名称" prop="eventName">
+      <el-form-item :label="$t('managementSystemModule.eventName')" prop="eventName">
         <el-input
           v-model="queryParams.eventName"
-          placeholder="请输入事件名称"
+          :placeholder="$t('managementSystemModule.eventName')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="触发时间" prop="touchTime">
+      <el-form-item :label="$t('managementSystemModule.touchTime')" prop="touchTime">
         <el-date-picker clearable
                         v-model="queryParams.touchTime"
                         type="date"
                         value-format="yyyy-MM-dd"
-                        placeholder="请选择触发时间">
+                        :placeholder="$t('managementSystemModule.touchTime')">
         </el-date-picker>
       </el-form-item>
 <!--      <el-form-item label="处理结果" prop="handleResult">-->
 <!--        <el-input-->
 <!--          v-model="queryParams.handleResult"-->
-<!--          placeholder="请输入处理结果"-->
+<!--          :placeholder="$t('common.pleaseInput')"-->
 <!--          clearable-->
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
 <!--      </el-form-item>-->
-      <el-form-item label="处理人" prop="handlePerson">
+      <el-form-item :label="$t('managementSystemModule.handlePerson')" prop="handlePerson">
         <el-input
           v-model="queryParams.handlePerson"
-          placeholder="请输入处理人"
+          :placeholder="$t('managementSystemModule.handlePerson')"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">{{ $t('common.search') }}</el-button>
+        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-form-item>
     </el-form>
 
@@ -48,7 +48,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:process:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -59,7 +59,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:process:edit']"
-        >修改</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -70,7 +70,7 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:process:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -80,7 +80,7 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:process:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -89,17 +89,17 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column type="index" width="55" align="center" />
 <!--      <el-table-column label="主键" align="center" prop="processId" v-if="true"/>-->
-      <el-table-column label="事件名称" align="center" prop="eventName" />
-      <el-table-column label="事件类型" align="center" prop="eventType" />
-      <el-table-column label="触发时间" align="center" prop="touchTime" width="180">
+      <el-table-column :label="$t('managementSystemModule.eventName')" align="center" prop="eventName" />
+      <el-table-column :label="$t('managementSystemModule.eventType')" align="center" prop="eventType" />
+      <el-table-column :label="$t('managementSystemModule.touchTime')" align="center" prop="touchTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.touchTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="处理结果" align="center" prop="handleResult" />
-      <el-table-column label="处理人" align="center" prop="handlePerson" />
-      <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('managementSystemModule.handleResult')" align="center" prop="handleResult" />
+      <el-table-column :label="$t('managementSystemModule.handlePerson')" align="center" prop="handlePerson" />
+      <el-table-column :label="$t('common.remark')" align="center" prop="remark" />
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -107,14 +107,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:process:edit']"
-          >修改</el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:process:remove']"
-          >删除</el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -130,33 +130,33 @@
     <!-- 添加或修改流程管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="事件名称" prop="eventName">
-          <el-input v-model="form.eventName" placeholder="请输入事件名称" />
+        <el-form-item :label="$t('managementSystemModule.eventName')" prop="eventName">
+          <el-input v-model="form.eventName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="事件类型" prop="eventType">
-          <el-input v-model="form.eventType" placeholder="请输入事件类型" />
+        <el-form-item :label="$t('managementSystemModule.eventType')" prop="eventType">
+          <el-input v-model="form.eventType" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="触发时间" prop="touchTime">
+        <el-form-item :label="$t('managementSystemModule.touchTime')" prop="touchTime">
           <el-date-picker clearable
                           v-model="form.touchTime"
                           type="datetime"
                           value-format="yyyy-MM-dd HH:mm:ss"
-                          placeholder="请选择触发时间">
+                          :placeholder="$t('common.pleaseSelect')">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="处理结果" prop="handleResult">
-          <el-input v-model="form.handleResult" placeholder="请输入处理结果" />
+        <el-form-item :label="$t('managementSystemModule.handleResult')" prop="handleResult">
+          <el-input v-model="form.handleResult" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="处理人" prop="handlePerson">
-          <el-input v-model="form.handlePerson" placeholder="请输入处理人" />
+        <el-form-item :label="$t('managementSystemModule.handlePerson')" prop="handlePerson">
+          <el-input v-model="form.handlePerson" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
+        <el-form-item :label="$t('common.remark')" prop="remark">
+          <el-input v-model="form.remark" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button :loading="buttonLoading" type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button :loading="buttonLoading" type="primary" @click="submitForm">{{ $t('button.submit') }}</el-button>
+        <el-button @click="cancel">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
   </div>

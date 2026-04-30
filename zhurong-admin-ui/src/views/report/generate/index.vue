@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="模板类型" prop="templateType">
+      <el-form-item :label="$t('reportModule.templateType')" prop="templateType">
         <el-select
           v-model="queryParams.templateType"
-          placeholder="请选择模板类型"
+          :placeholder="$t('common.pleaseSelect')"
           clearable
           style="width: 160px"
           @change="handleTemplateTypeChange"
@@ -17,10 +17,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="模板名称" prop="templateId">
+      <el-form-item :label="$t('reportModule.templateName')" prop="templateId">
         <el-select
           v-model="queryParams.templateId"
-          placeholder="请选择模板"
+          :placeholder="$t('common.pleaseSelect')"
           style="width: 240px"
         >
           <el-option
@@ -31,8 +31,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="能源类型" prop="energyType">
-        <el-select v-model="queryParams.energyType" placeholder="请选择" style="width: 120px">
+      <el-form-item :label="$t('reportModule.energyType')" prop="energyType">
+        <el-select v-model="queryParams.energyType" :placeholder="$t('common.pleaseSelect')" style="width: 120px">
           <el-option
             v-for="item in dict.type.energy_type"
             :key="item.value"
@@ -42,24 +42,24 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="日期类型" prop="dateType">
-        <el-select v-model="queryParams.dateType" placeholder="请选择" style="width: 120px">
-          <el-option label="日" value="date" />
-          <el-option label="周" value="week" />
-          <el-option label="月" value="month" />
-          <el-option label="年" value="year" />
-          <el-option label="自定义" value="daterange" />
+      <el-form-item :label="$t('reportModule.dateType')" prop="dateType">
+        <el-select v-model="queryParams.dateType" :placeholder="$t('common.pleaseSelect')" style="width: 120px">
+          <el-option :label="$t('reportModule.day')" value="date" />
+          <el-option :label="$t('reportModule.week')" value="week" />
+          <el-option :label="$t('reportModule.month')" value="month" />
+          <el-option :label="$t('reportModule.year')" value="year" />
+          <el-option :label="$t('reportModule.custom')" value="daterange" />
         </el-select>
       </el-form-item>
-      <el-form-item label="时间范围">
+      <el-form-item :label="$t('reportModule.dateRange')">
         <el-date-picker
           v-model="dateRange"
           style="width: 300px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
+          :start-placeholder="$t('common.startDate')"
+          :end-placeholder="$t('common.endDate')"
         ></el-date-picker>
       </el-form-item>
     </el-form>
@@ -72,7 +72,7 @@
           icon="el-icon-view"
           size="mini"
           @click="previewReport"
-        >预览报表</el-button>
+        >{{ $t('reportModule.previewReport') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -81,7 +81,7 @@
           icon="el-icon-document"
           size="mini"
           @click="generateReport"
-        >生成报表</el-button>
+        >{{ $t('reportModule.generateReport') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -90,7 +90,7 @@
           icon="el-icon-download"
           size="mini"
           @click="exportExcel"
-        >导出Excel</el-button>
+        >{{ $t('reportModule.exportExcel') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -99,7 +99,7 @@
           icon="el-icon-download"
           size="mini"
           @click="exportPdf"
-        >导出PDF</el-button>
+        >{{ $t('reportModule.exportPdf') }}</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getTemplateList" />
     </el-row>
@@ -127,10 +127,10 @@
     <el-dialog :title="'生成报表'" :visible.sync="open" width="600px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="报表名称" prop="reportName">
-          <el-input v-model="form.reportName" placeholder="请输入报表名称" />
+          <el-input v-model="form.reportName" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
         <el-form-item label="模板类型" prop="templateType">
-          <el-select v-model="form.templateType" placeholder="请选择模板类型">
+          <el-select v-model="form.templateType" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="item in templateTypeOptions"
               :key="item.value"
@@ -140,7 +140,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="模板名称" prop="templateId">
-          <el-select v-model="form.templateId" placeholder="请选择模板">
+          <el-select v-model="form.templateId" :placeholder="$t('common.pleaseSelect')">
             <el-option
               v-for="item in templateList"
               :key="item.templateId"

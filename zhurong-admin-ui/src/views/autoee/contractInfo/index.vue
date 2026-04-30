@@ -10,43 +10,43 @@
       :inline="true"
     >
       <!-- 循环生成查询表单项 -->
-      <el-form-item class="a_query_form_item" label="合同编号(新)" prop="contractNoNew">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.contractNoNew')" prop="contractNoNew">
         <el-input
           clearable
-          placeholder="请输入合同编号(新)"
+          :placeholder="$t('contractInfoModule.placeholder.inputContractNoNew')"
           v-model="pageData.queryParams.contractNoNew"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="续签编号(老)" prop="contractNoOld">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.contractNoOld')" prop="contractNoOld">
         <el-input
           clearable
-          placeholder="请输入续签编号(老)"
+          :placeholder="$t('contractInfoModule.placeholder.inputContractNoOld')"
           v-model="pageData.queryParams.contractNoOld"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="所属客户" prop="belongCustomer">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.belongCustomer')" prop="belongCustomer">
         <el-input
           clearable
-          placeholder="请输入所属客户"
+          :placeholder="$t('contractInfoModule.placeholder.inputBelongCustomer')"
           v-model="pageData.queryParams.belongCustomer"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="客户方联系人" prop="customerContact">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.customerContact')" prop="customerContact">
         <el-input
           clearable
-          placeholder="请输入客户方联系人"
+          :placeholder="$t('contractInfoModule.placeholder.inputCustomerContact')"
           v-model="pageData.queryParams.customerContact"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="合同类型" prop="contractType">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.contractType')" prop="contractType">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.contractType"
-          placeholder="请选择"
+          :placeholder="$t('contractInfoModule.placeholder.selectContractType')"
           clearable
         >
           <el-option
@@ -57,11 +57,11 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="合同子类型" prop="contractSubtype">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.contractSubtype')" prop="contractSubtype">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.contractSubtype"
-          placeholder="请选择"
+          :placeholder="$t('contractInfoModule.placeholder.selectContractSubtype')"
           clearable
         >
           <el-option
@@ -72,10 +72,10 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" label="业务员" prop="salesmanId">
+      <el-form-item class="a_query_form_item" :label="$t('contractInfoModule.salesmanId')" prop="salesmanId">
         <el-input
           clearable
-          placeholder="请输入业务员"
+          :placeholder="$t('contractInfoModule.placeholder.inputSalesmanId')"
           v-model="pageData.queryParams.salesmanId"
           @keyup.enter.native="handleQuery"
         />
@@ -92,7 +92,7 @@
           size="small"
           @click="handleAdd"
           v-hasPermi="['autoee:contractInfo:add']"
-        >新增</el-button>
+        >{{ $t('common.add') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -103,7 +103,7 @@
           :disabled="pageData.singleSelected"
           @click="handleUpdate"
           v-hasPermi="['autoee:contractInfo:edit']"
-        >编辑</el-button>
+        >{{ $t('common.edit') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -114,7 +114,7 @@
           :disabled="!checkTableDataHasChanged"
           @click="submitTableEdit"
           v-hasPermi="['autoee:contractInfo:edit']"
-        >提交列表编辑</el-button>
+        >{{ $t('common.submitEdit') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -125,7 +125,7 @@
           :disabled="pageData.multipleSelected"
           @click="handleDeleteMuti"
           v-hasPermi="['autoee:contractInfo:remove']"
-        >删除</el-button>
+        >{{ $t('common.delete') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button
@@ -145,7 +145,7 @@
           size="small"
           @click="handleImport"
           v-hasPermi="['autoee:contractInfo:import']"
-        >导入</el-button>
+        >{{ $t('common.import') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -155,16 +155,16 @@
           size="small"
           @click="handleExport"
           v-hasPermi="['autoee:contractInfo:export']"
-        >导出</el-button>
+        >{{ $t('common.export') }}</el-button>
       </el-col>
       <el-col :span="0.5">
         <el-divider direction="vertical" />
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">重置</el-button>
+        <el-button v-if="true" icon="el-icon-refresh" size="small" @click="resetQuery">{{ $t('common.reset') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
-        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" size="small" @click="handleQuery">{{ $t('common.search') }}</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="pageData.showSearchTool" @queryTable="getList()"></right-toolbar>
     </el-row>
@@ -186,27 +186,27 @@
       <el-table-column type="selection" width="55" align="center"/>
 
       <!-- <el-table-column label="主键ID" align="center" prop="id" /> -->
-      <el-table-column v-if="true" label="合同编号(新)" align="center" prop="contractNoNew" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="续签编号(老)" align="center" prop="contractNoOld" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="所属客户" align="center" prop="belongCustomer" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="客户方联系人" align="center" prop="customerContact" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="合同类型" align="center" prop="contractType" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('contractInfoModule.contractNoNew')" align="center" prop="contractNoNew" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.contractNoOld')" align="center" prop="contractNoOld" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.belongCustomer')" align="center" prop="belongCustomer" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.customerContact')" align="center" prop="customerContact" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.contractType')" align="center" prop="contractType" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.contract_type" :value="scope.row.contractType"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="true" label="合同子类型" align="center" prop="contractSubtype" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('contractInfoModule.contractSubtype')" align="center" prop="contractSubtype" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.contract_subtype" :value="scope.row.contractSubtype"/>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="签约公司" align="center" prop="signCompany" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="业务员" align="center" prop="salesmanId" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="技术支持" align="center" prop="techSupport" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="报价单号" align="center" prop="quoteNo" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="合同总价" align="center" prop="contractTotal" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="false" label="已收金额" align="center" prop="receivedAmount" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="签约日期" align="center" prop="signDate" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('contractInfoModule.signCompany')" align="center" prop="signCompany" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.salesmanId')" align="center" prop="salesmanId" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('contractInfoModule.techSupport')" align="center" prop="techSupport" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('contractInfoModule.quoteNo')" align="center" prop="quoteNo" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.contractTotal')" align="center" prop="contractTotal" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('contractInfoModule.receivedAmount')" align="center" prop="receivedAmount" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="true" :label="$t('contractInfoModule.signDate')" align="center" prop="signDate" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDate(scope.row.signDate) }}</span>
         </template>
@@ -218,7 +218,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="备注" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
+      <el-table-column v-if="false" :label="$t('common.remark')" align="center" prop="remark" :show-overflow-tooltip="true" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column v-if="false" label="所属用户" align="center" prop="userId" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_user" :value="scope.row.userId" />
@@ -229,14 +229,14 @@
           <dict-tag :options="dict.type.sys_dept" :value="scope.row.deptId" />
         </template>
       </el-table-column>
-      <el-table-column v-if="false" label="创建时间" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="false" :label="$t('common.createTime')" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column v-if="false" label="创建者" align="center" prop="createBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
       <el-table-column v-if="false" label="更新者" align="center" prop="updateBy" sortable="custom" :sort-orders="['descending', 'ascending']"/>
-      <el-table-column v-if="true" label="更新时间" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
+      <el-table-column v-if="true" :label="$t('common.updateTime')" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']">
         <template slot-scope="scope">
           <span>{{ $common.formatDateTime(scope.row.updateTime) }}</span>
         </template>
@@ -250,20 +250,18 @@
       </el-table-column>
 
       <!-- 操作列 -->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button v-if="true" size="small" link icon="el-icon-edit" type="text"
             @click="handleUpdate(scope.row)" v-hasPermi="['autoee:contractInfo:edit']"
-          >编辑
-          </el-button>
+          >{{ $t('common.edit') }}</el-button>
           <el-button v-if="true" size="small" link icon="el-icon-zoom-in" type="text"
             @click="handleShowDetail(scope.row)" v-hasPermi="['autoee:contractInfo:list']"
           >查看
           </el-button>
           <el-button v-if="true" size="small" link icon="el-icon-delete" type="text"
             @click="handleDelete(scope.row)" v-hasPermi="['autoee:contractInfo:remove']"
-          >删除
-          </el-button>
+          >{{ $t('common.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>

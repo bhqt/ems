@@ -62,7 +62,7 @@
             <el-date-picker v-model="trendQuery.endDate" type="date" placeholder="选择结束日期" value-format="yyyy-MM-dd" size="small" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" size="mini" @click="getTrendData">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="getTrendData">{{ $t('common.search') }}</el-button>
           </el-form-item>
         </el-form>
         <el-row :gutter="20">
