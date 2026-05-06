@@ -1,0 +1,87 @@
+# 消息模板配置
+# 用于生成符合后端解析逻辑的 MQTT 消息
+
+templates:
+  # 电压数据模板
+  voltage:
+    topic: "electric/voltage"
+    description: "电压数据模板"
+    data_pattern:
+      clientId: "device_{id:03d}"
+      value: "random(215.0, 225.0, 2)"
+      createTime: "auto"
+  
+  # 电流数据模板
+  current:
+    topic: "electric/current"
+    description: "电流数据模板"
+    data_pattern:
+      clientId: "device_{id:03d}"
+      value: "random(0.0, 10.0, 2)"
+      createTime: "auto"
+  
+  # 功率数据模板
+  power:
+    topic: "electric/power"
+    description: "功率数据模板"
+    data_pattern:
+      clientId: "device_{id:03d}"
+      value: "random(100.0, 5000.0, 2)"
+      createTime: "auto"
+  
+  # 电能数据模板
+  consumption:
+    topic: "electric/consumption"
+    description: "电能数据模板"
+    data_pattern:
+      clientId: "device_{id:03d}"
+      value: "random(0.0, 1000.0, 2)"
+      createTime: "auto"
+  
+  # 水表数据模板（数组格式）
+  water:
+    topic: "water/consumption"
+    description: "水表数据模板（数组格式）"
+    data_pattern:
+      clientId: "water_{id:03d}"
+      value: "random(0.0, 500.0, 2)"
+      createTime: "auto"
+    is_array: true
+    array_size: "random(1, 5)"  # 数组大小 1-5
+  
+  # 电表综合数据模板
+  emsCarson:
+    topic: "electric/emsCarson"
+    description: "电表综合数据模板"
+    data_pattern:
+      clientId: "emsCarson_{id:03d}"
+      Ua: "random(215.0, 225.0, 1)"
+      Ub: "random(215.0, 225.0, 1)"
+      Uc: "random(215.0, 225.0, 1)"
+      Ia: "random(0.0, 10.0, 2)"
+      Ib: "random(0.0, 10.0, 2)"
+      Ic: "random(0.0, 10.0, 2)"
+      P: "random(100.0, 5000.0, 2)"
+      Q: "random(50.0, 500.0, 2)"
+      S: "random(150.0, 5500.0, 2)"
+      PF: "random(0.85, 0.99, 2)"
+      F: "random(49.5, 50.5, 2)"
+      createTime: "auto"
+  
+  # 电表所有数据模板（数组格式）
+  all_devices:
+    topic: "electric/all"
+    description: "电表所有数据模板（数组格式）"
+    is_array: true
+    array_items:
+      - deviceType: "electric/voltage"
+        value_pattern: "random(215.0, 225.0, 2)"
+      - deviceType: "electric/current"
+        value_pattern: "random(0.0, 10.0, 2)"
+      - deviceType: "electric/power"
+        value_pattern: "random(100.0, 5000.0, 2)"
+      - deviceType: "electric/consumption"
+        value_pattern: "random(0.0, 1000.0, 2)"
+    data_pattern:
+      clientId: "device_{id:03d}"
+      createTime: "auto"

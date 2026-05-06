@@ -156,7 +156,61 @@ jdbc:TAOS-RS://localhost:6041/energy?user=energy&password=difyai123456&timezone=
 
 ---
 
-### 2.6 后端服务 (Spring Boot)
+### 2.6 XXL-Job 分布式任务调度平台
+
+| 配置项 | 值 |
+|:---|:---|
+| **容器名称** | zhurong-ems-xxl-job-admin |
+| **镜像版本** | zhurong-ems/xxl-job:4.6.0 |
+| **主机端口** | 9110 |
+| **容器端口** | 9100 |
+| **数据库名** | xxl_job |
+| **数据库用户** | root |
+| **数据库密码** | root |
+| **时区** | Asia/Shanghai |
+| **数据卷** | zhurong-ems-xxljob-logs |
+| **日志目录** | ./logs/xxljob:/zhurong-ems/xxljob/logs |
+| **健康检查** | wget -qO- http://localhost:9100/xxl-job-admin/actuator/health |
+| **检查间隔** | 30s |
+| **启动等待** | 60s |
+
+**访问地址**: `http://localhost:9110/xxl-job-admin`
+
+**登录信息**:
+- 默认账号：`admin`
+- 默认密码：`123456`
+
+**环境配置**:
+```yaml
+数据源配置:
+  URL: jdbc:mysql://zhurong-ems-mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+  Username: root
+  Password: root
+
+日志配置:
+  容器日志路径：/zhurong-ems/xxljob/logs
+  数据卷日志路径：/data/applogs
+```
+
+**核心功能**:
+- 任务管理：创建、编辑、删除调度任务
+- 执行器管理：自动注册执行器实例
+- 运行报表：查看任务执行统计和日志
+- 告警监控：任务失败告警通知
+- GLUE 模式：支持在线编辑和版本管理
+
+**数据库表结构**:
+- `xxl_job_info`: 任务配置信息表
+- `xxl_job_log`: 任务执行日志表
+- `xxl_job_log_report`: 任务日志统计报表
+- `xxl_job_logglue`: 任务 GLUE 版本记录
+- `xxl_job_registry`: 执行器注册表
+- `xxl_job_group`: 执行器分组表
+- `xxl_job_user`: 系统用户表
+
+---
+
+### 2.7 后端服务 (Spring Boot)
 
 | 配置项 | 值 |
 |:---|:---|
@@ -207,11 +261,17 @@ TDengine:
   URL: jdbc:TAOS-RS://zhurong-ems-tdengine:6041/energy
   Username: energy
   Password: difyai123456
+
+**访问地址**: `http://localhost:9110/xxl-job-admin`
+
+**登录信息**:
+- 默认账号：`admin`
+- 默认密码：`123456`
 ```
 
 ---
 
-### 2.7 前端服务 (Nginx)
+### 2.8 前端服务 (Nginx)
 
 | 配置项 | 值 |
 |:---|:---|
@@ -248,6 +308,13 @@ zhurong-ems-backend → zhurong-ems-rabbitmq:5672
 zhurong-ems-backend → zhurong-ems-emqx:1883
 zhurong-ems-backend → zhurong-ems-tdengine:6041
 zhurong-ems-frontend → zhurong-ems-backend:8088
+zhurong-ems-xxl-job-admin → zhurong-ems-mysql:3306
+```
+
+**注意**: XXL-Job 需要连接到 `zhurong-ems-network` 网络才能访问 MySQL 数据库。如果 XXL-Job 容器单独启动，需要执行以下命令将其加入网络：
+
+```bash
+docker network connect zhurong-ems-network zhurong-ems-xxl-job-admin
 ```
 
 ---
@@ -267,6 +334,7 @@ zhurong-ems-frontend → zhurong-ems-backend:8088
 | zhurong-ems-backend-logs | 后端日志 | /zhurong-ems/server/logs |
 | zhurong-ems-backend-temp | 后端临时文件 | /zhurong-ems/server/temp |
 | zhurong-ems-frontend-logs | Nginx 日志 | /var/log/nginx |
+| zhurong-ems-xxljob-logs | XXL-Job 日志 | /data/applogs |
 
 ---
 
@@ -304,21 +372,39 @@ docker-compose -f docker-compose.full.yml up -d zhurong-ems-backend
 # 重启后端服务
 docker-compose -f docker-compose.full.yml restart zhurong-ems-backend
 
+# 重启 XXL-Job 服务
+docker-compose -f docker-compose-54.yml restart zhurong-ems-xxl-job
+
 # 强制重新创建容器
 docker-compose -f docker-compose.full.yml up -d --force-recreate zhurong-ems-backend
 ```
 
-### 5.4 停止服务
+### 5.4 XXL-Job 特殊配置
+
+XXL-Job 需要连接到 `zhurong-ems-network` 网络才能访问 MySQL 数据库。如果 XXL-Job 容器未自动加入网络，需要手动连接：
+
+```bash
+# 将 XXL-Job 容器加入 zhurong-ems-network 网络
+docker network connect zhurong-ems-network zhurong-ems-xxl-job-admin
+
+# 验证网络连接
+docker inspect zhurong-ems-xxl-job-admin --format '{{json .NetworkSettings.Networks}}'
+```
+
+### 5.5 停止服务
 
 ```bash
 # 停止所有服务
 docker-compose -f docker-compose.full.yml down
 
+# 停止 XXL-Job 服务
+docker-compose -f docker-compose-54.yml stop zhurong-ems-xxl-job
+
 # 停止单个服务
 docker-compose -f docker-compose.full.yml stop zhurong-ems-backend
 ```
 
-### 5.5 查看日志
+### 5.6 查看日志
 
 ```bash
 # 查看所有服务日志
@@ -329,6 +415,12 @@ docker-compose -f docker-compose.full.yml logs -f zhurong-ems-backend
 
 # 查看 TDengine 日志
 docker-compose -f docker-compose.full.yml logs -f zhurong-ems-tdengine
+
+# 查看 XXL-Job 日志
+docker-compose -f docker-compose-54.yml logs -f zhurong-ems-xxl-job
+
+# 查看 XXL-Job 最近 100 行日志
+docker logs --tail 100 zhurong-ems-xxl-job-admin
 ```
 
 ---
@@ -342,6 +434,7 @@ docker-compose -f docker-compose.full.yml logs -f zhurong-ems-tdengine
 | RabbitMQ | rabbitmq-diagnostics ping | 10s | 5s | 5 |
 | EMQX | /opt/emqx/bin/emqx_ctl status | 10s | 5s | 5 |
 | TDengine | taos -u root -s 'show databases;' | 10s | 5s | 5 |
+| XXL-Job | wget -qO- http://localhost:9100/xxl-job-admin/actuator/health | 30s | 10s | 3 |
 | Backend | curl -f http://localhost:8088/autoee-iot-ems/actuator/health | 30s | 10s | 3 |
 | Frontend | curl -f http://localhost | 30s | 10s | 3 |
 
@@ -362,6 +455,7 @@ docker-compose -f docker-compose.full.yml logs -f zhurong-ems-tdengine
 | EMQX | 8083 | 8083 | TCP | WebSocket/SSL |
 | TDengine | 6030 | 6030 | TCP | 原生客户端 |
 | TDengine | 6041 | 6041 | TCP | RESTful API |
+| XXL-Job | 9110 | 9100 | TCP | 调度中心管理界面 |
 | Backend | 1088 | 8088 | TCP | API 服务 |
 | Frontend | 3080 | 80 | TCP | Web 界面 |
 
@@ -403,6 +497,26 @@ docker exec -it zhurong-ems-mysql mysql -uroot -proot
 docker exec -it zhurong-ems-redis redis-cli -a difyai123456
 docker exec -it zhurong-ems-tdengine taos -u energy -pdifyai123456
 ```
+
+### 8.5 XXL-Job 无法连接 MySQL
+
+如果 XXL-Job 容器启动后无法连接 MySQL，通常是因为容器未加入正确的网络：
+
+```bash
+# 检查 XXL-Job 容器连接的网络
+docker inspect zhurong-ems-xxl-job-admin --format '{{json .NetworkSettings.Networks}}'
+
+# 如果没有连接到 zhurong-ems-network，执行以下命令
+docker network connect zhurong-ems-network zhurong-ems-xxl-job-admin
+
+# 重启 XXL-Job 容器
+docker restart zhurong-ems-xxl-job-admin
+
+# 查看日志确认连接成功
+docker logs --tail 50 zhurong-ems-xxl-job-admin
+```
+
+**验证成功标志**: 日志中出现 `HikariCP - Start completed` 且健康检查状态变为 `healthy`
 
 ---
 
@@ -483,6 +597,7 @@ docker exec zhurong-ems-tdengine taosdump -u root -p difyai123456 energy
 | RabbitMQ | 3.12 | - |
 | EMQX | 5.3.2 | - |
 | TDengine | 3.2.0.0 | - |
+| XXL-Job | 4.6.0 | - |
 | Spring Boot | 2.7.9 | - |
 | Java | 17 | - |
 | Deep-EMS | 4.6.0 | - |

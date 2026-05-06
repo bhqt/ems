@@ -1,0 +1,44 @@
+mqtt:
+  # MQTT Broker 连接配置
+  host: "tcp://192.168.1.100:1883"  # 修改为实际的 MQTT Broker 地址
+  username: "admin"                   # 用户名
+  password: "public"                  # 密码
+  client_id: "mqtt-simulator-${HOSTNAME}"  # 客户端 ID，支持环境变量
+  timeout: 120                        # 连接超时时间（秒）
+  keepalive: 360                      # 心跳间隔（秒）
+  qos: 0                              # 默认 QoS 级别 (0, 1, 2)
+  retain: false                       # 是否保留消息
+
+logging:
+  # 日志配置
+  level: "INFO"                       # 日志级别：DEBUG, INFO, WARNING, ERROR
+  file: "logs/mqtt_simulator.log"     # 日志文件路径
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  max_size: "10MB"                    # 单个日志文件最大大小
+  backup_count: 5                     # 保留的日志文件数量
+
+stress_test:
+  # 压力测试默认配置
+  default_scenario: "light"           # 默认测试场景
+  scenarios:
+    light:
+      devices: 10                     # 设备数量
+      frequency: 1                    # 发送频率（消息/秒）
+      duration: 60                    # 测试持续时间（秒）
+      message_type: "voltage"         # 消息类型
+    medium:
+      devices: 100
+      frequency: 5
+      duration: 300
+      message_type: "voltage"
+    heavy:
+      devices: 1000
+      frequency: 10
+      duration: 600
+      message_type: "mixed"
+
+report:
+  # 报告生成配置
+  output_dir: "output"                # 报告输出目录
+  formats: ["md", "json"]             # 默认报告格式
+  include_charts: false               # 是否包含图表（需要额外依赖）

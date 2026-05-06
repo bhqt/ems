@@ -138,6 +138,34 @@ services:
       timeout: 5s
       retries: 5
 
+  # ========== XXL-Job 分布式任务调度中心 ==========
+
+  zhurong-ems-xxl-job:
+    image: zhurong-ems/xxl-job:4.6.0
+    container_name: zhurong-ems-xxl-job-admin
+    restart: unless-stopped
+    ports:
+      - "9110:9100"
+    environment:
+      TZ: Asia/Shanghai
+      SPRING_DATASOURCE_URL: jdbc:mysql://zhurong-ems-mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    volumes:
+      - ./logs/xxljob:/zhurong-ems/xxljob/logs
+      - zhurong-ems-xxljob-logs:/data/applogs
+    networks:
+      - zhurong-ems-network
+    depends_on:
+      zhurong-ems-mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:9100/xxl-job-admin/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
   # ========== 后端服务 ==========
 
   zhurong-ems-backend:
@@ -258,3 +286,5 @@ volumes:
     name: zhurong-ems-backend-temp
   zhurong-ems-frontend-logs:
     name: zhurong-ems-frontend-logs
+  zhurong-ems-xxljob-logs:
+    name: zhurong-ems-xxljob-logs
