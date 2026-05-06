@@ -20,9 +20,9 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - zhurong-ems-rabbitmq-data:/var/lib/rabbitmq
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-rabbitmq-data:/var/lib/rabbitmq
     networks:
-      - zhurong-ems-network
+      - legal-network
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
@@ -53,11 +53,11 @@ services:
       - "8081:8081"     # WebSocket 端口
       - "8083:8083"     # WebSocket/SSL 端口
     volumes:
-      - zhurong-ems-emqx-data:/opt/emqx/data
-      - zhurong-ems-emqx-log:/opt/emqx/log
-      - zhurong-ems-emqx-plugins:/opt/emqx/plugins
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-emqx-data:/opt/emqx/data
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-emqx-log:/opt/emqx/log
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-emqx-plugins:/opt/emqx/plugins
     networks:
-      - zhurong-ems-network
+      - legal-network
     healthcheck:
       test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
       interval: 10s
@@ -79,16 +79,30 @@ services:
       - "6030:6030"   # TDengine 原生客户端连接端口
       - "6041:6041"   # RESTful API 端口
     volumes:
-      - zhurong-ems-tdengine-data:/var/lib/taos
-      - zhurong-ems-tdengine-log:/var/log/taos
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-tdengine-data:/var/lib/taos
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-tdengine-log:/var/log/taos
     networks:
-      - zhurong-ems-network
+      - legal-network
     healthcheck:
       test: ["CMD-SHELL", "taos -u root -s 'show databases;' > /dev/null 2>&1"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  # Spring Boot Admin 监控（推荐）- 使用社区维护的镜像
+  # zhurong-ems-sba:
+  #   image: codecentric/spring-boot-admin:3.0.0
+  #   container_name: zhurong-ems-sba
+  #   restart: unless-stopped
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: admin
+  #     SPRING_BOOT_ADMIN_ADMIN_USERNAME: admin
+  #     SPRING_BOOT_ADMIN_ADMIN_PASSWORD: zhurong123
+  #     TZ: Asia/Shanghai
+  #   ports:
+  #     - "9090:8080"
+  #   networks:
+  #     - legal-network
   # ========== 后端服务（已升级 TDengine 配置）==========
 
   zhurong-ems-backend:
@@ -131,10 +145,10 @@ services:
       JAVA_OPTS: -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.ClassLoader=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED
       TZ: Asia/Shanghai
     volumes:
-      - zhurong-ems-backend-logs:/zhurong-ems/server/logs
-      - zhurong-ems-backend-temp:/zhurong-ems/server/temp
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-backend-logs:/zhurong-ems/server/logs
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-backend-temp:/zhurong-ems/server/temp
     networks:
-      - zhurong-ems-network
+      - legal-network
     depends_on:
       zhurong-ems-rabbitmq:
         condition: service_healthy
@@ -161,9 +175,9 @@ services:
       VUE_APP_API_BASE_URL: http://zhurong-ems-backend:8088/autoee-iot-ems
       TZ: Asia/Shanghai
     volumes:
-      - zhurong-ems-frontend-logs:/var/log/nginx
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-frontend-logs:/var/log/nginx
     networks:
-      - zhurong-ems-network
+      - legal-network
     depends_on:
       zhurong-ems-backend:
         condition: service_healthy
@@ -187,10 +201,10 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     volumes:
-      - ./logs/xxljob:/zhurong-ems/xxljob/logs
-      - zhurong-ems-xxljob-logs:/data/applogs
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-xxljob-logs/logs/xxljob:/zhurong-ems/xxljob/logs
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-xxljob-logs:/data/applogs
     networks:
-      - zhurong-ems-network
+      - legal-network
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:9100/xxl-job-admin/actuator/health || exit 1"]
       interval: 30s
@@ -212,41 +226,20 @@ services:
       SPRING_BOOT_ADMIN_ADMIN_PASSWORD: zhurong123
       TZ: Asia/Shanghai
     volumes:
-      - zhurong-ems-monitor-logs:/cp-portal/monitor/logs
+      - /home/inspur/xuhz/docker/dockerdata/zhurong-ems-monitor-logs:/cp-portal/monitor/logs
     networks:
-      - zhurong-ems-network
+      - legal-network
 
-# ================================
-# 数据卷
-# ================================
-volumes:
-  zhurong-ems-emqx-data:
-    driver: local
-  zhurong-ems-emqx-log:
-    driver: local
-  zhurong-ems-emqx-plugins:
-    driver: local
-  zhurong-ems-rabbitmq-data:
-    driver: local
-  zhurong-ems-tdengine-data:
-    driver: local
-  zhurong-ems-tdengine-log:
-    driver: local
-  zhurong-ems-backend-logs:
-    driver: local
-  zhurong-ems-backend-temp:
-    driver: local
-  zhurong-ems-frontend-logs:
-    driver: local
-  zhurong-ems-xxljob-logs:
-    driver: local
-  zhurong-ems-monitor-logs:
-    driver: local
+ 
 
 # ================================
 # 网络
 # ================================
+# 网络 - 必须与现有系统一致
 networks:
-  zhurong-ems-network:
-    name: zhurong-ems-network
+  legal-network:
     driver: bridge
+    name: legal-network
+  ssrf_proxy_network:
+    driver: bridge
+    internal: true

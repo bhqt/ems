@@ -125,7 +125,12 @@ services:
       TAOS_PASS: difyai123456
       TZ: Asia/Shanghai
     ports:
-      - "6030:6030"   # TDengine 原生客户端连接端口
+      - "6030:6030"   # TDengine 原生zhurong-ems-tdengine:
+  image: tdengine/tdengine:3.2.0.0
+  volumes:
+    - zhurong-ems-tdengine-data:/var/lib/taos
+    - zhurong-ems-tdengine-log:/var/log/taos
+    - ./docker/tdengine/init.sql:/docker-entrypoint-initdb.d/init.sql:ro  # 添加这行客户端连接端口
       - "6041:6041"   # RESTful API 端口
     volumes:
       - zhurong-ems-tdengine-data:/var/lib/taos
@@ -165,6 +170,23 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
+
+
+  # Spring Boot Admin 监控（推荐）- 使用社区维护的镜像
+  zhurong-ems-sba:
+    image: codecentric/spring-boot-admin:3.0.0
+    container_name: zhurong-ems-sba
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: admin
+      SPRING_BOOT_ADMIN_ADMIN_USERNAME: admin
+      SPRING_BOOT_ADMIN_ADMIN_PASSWORD: zhurong123
+      TZ: Asia/Shanghai
+    ports:
+      - "9090:8080"
+    networks:
+      - zhurong-ems-network
+
 
   # ========== 后端服务 ==========
 
