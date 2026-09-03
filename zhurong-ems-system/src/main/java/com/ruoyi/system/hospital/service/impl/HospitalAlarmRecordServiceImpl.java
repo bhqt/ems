@@ -28,12 +28,38 @@ public class HospitalAlarmRecordServiceImpl implements IHospitalAlarmRecordServi
     @Override
     public List<HospitalAlarmRecordVo> queryList(HospitalAlarmRecordBo bo) {
         List<HospitalAlarmRecordVo> list = baseMapper.selectHospitalAlarmRecordList(
-            bo.getDeviceId(), bo.getAlarmType(), bo.getStatus(), bo.getLevel());
+            bo.getDeviceId(), bo.getAlarmType(), bo.getStatus(), bo.getHandleStatus(), bo.getLevel());
         // 兜底截断，避免无条件查询返回过大
         if (list != null && list.size() > 500) {
             return list.subList(0, 500);
         }
         return list;
+    }
+
+    @Override
+    public Boolean confirm(Long id, String handleBy) {
+        HospitalAlarmRecord record = baseMapper.selectById(id);
+        if (record == null || HospitalConstants.ALARM_STATUS_CLOSED.equals(record.getStatus())) {
+            return false;
+        }
+        HospitalAlarmRecord update = new HospitalAlarmRecord();
+        update.setId(id);
+        update.setHandleStatus(HospitalConstants.ALARM_HANDLE_CONFIRMED);
+        update.setConfirmBy(StringUtils.isBlank(handleBy) ? "admin" : handleBy);
+        update.setConfirmTime(new Date());
+        return baseMapper.updateById(update) > 0;
+    }
+
+    @Override
+    public Boolean process(Long id, String handleBy) {
+        HospitalAlarmRecord record = baseMapper.selectById(id);
+        if (record == null || HospitalConstants.ALARM_STATUS_CLOSED.equals(record.getStatus())) {
+            return false;
+        }
+        HospitalAlarmRecord update = new HospitalAlarmRecord();
+        update.setId(id);
+        update.setHandleStatus(HospitalConstants.ALARM_HANDLE_PROCESSING);
+        return baseMapper.updateById(update) > 0;
     }
 
     @Override
@@ -48,11 +74,23 @@ public class HospitalAlarmRecordServiceImpl implements IHospitalAlarmRecordServi
         HospitalAlarmRecord update = new HospitalAlarmRecord();
         update.setId(id);
         update.setStatus(HospitalConstants.ALARM_STATUS_CLOSED);
+        update.setHandleStatus(HospitalConstants.ALARM_HANDLE_DONE);
         update.setEndTime(new Date());
         update.setHandleBy(StringUtils.isBlank(handleBy) ? "admin" : handleBy);
         update.setHandleTime(new Date());
         update.setHandleRemark(handleRemark);
         return baseMapper.updateById(update) > 0;
+    }
+
+    @Override
+    public Boolean doAction(String action, Long id, String handleRemark, String handleBy) {
+        if ("confirm".equalsIgnoreCase(action)) {
+            return confirm(id, handleBy);
+        } else if ("process".equalsIgnoreCase(action)) {
+            return process(id, handleBy);
+        } else {
+            return handle(id, handleRemark, handleBy);
+        }
     }
 
     /**

@@ -38,4 +38,16 @@ public interface HospitalEnergyMapper {
     List<Map<String, Object>> selectHourlyPower(@Param("deviceIds") List<Long> deviceIds,
                                                 @Param("start") Date start,
                                                 @Param("end") Date end);
+
+    /**
+     * 按分项汇总周期统计（用电量=累计电量 max-min，平均功率，设备数）
+     */
+    List<Map<String, Object>> selectCategoryStats(@Param("start") Date start,
+                                                  @Param("end") Date end);
+
+    /**
+     * 按分项 + 天聚合趋势（各分项日用电量）
+     */
+    List<Map<String, Object>> selectCategoryDailyTrend(@Param("start") Date start,
+                                                       @Param("end") Date end);
 }

@@ -10,12 +10,15 @@ import com.ruoyi.system.hospital.domain.HospitalAlarmRecord;
 import com.ruoyi.system.hospital.domain.HospitalDevice;
 import com.ruoyi.system.hospital.energy.HospitalDeviceRankVo;
 import com.ruoyi.system.hospital.energy.HospitalEfficiencyVo;
+import com.ruoyi.system.hospital.energy.HospitalEnergyCategoryVo;
 import com.ruoyi.system.hospital.energy.HospitalEnergyOverviewVo;
 import com.ruoyi.system.hospital.energy.HospitalEnergyTrendVo;
 import com.ruoyi.system.hospital.energy.HospitalSuggestionVo;
 import com.ruoyi.system.hospital.mapper.HospitalAlarmRecordMapper;
 import com.ruoyi.system.hospital.mapper.HospitalDeviceMapper;
+import com.ruoyi.system.hospital.mapper.HospitalDeviceWorkloadMapper;
 import com.ruoyi.system.hospital.mapper.HospitalEnergyMapper;
+import com.ruoyi.system.hospital.service.IHospitalDataScopeService;
 import com.ruoyi.system.hospital.service.IHospitalEnergyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,8 +30,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 医院能耗分析与决策支持 Service 实现
@@ -44,8 +49,10 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
 
     private final HospitalEnergyMapper energyMapper;
     private final HospitalDeviceMapper deviceMapper;
+    private final HospitalDeviceWorkloadMapper workloadMapper;
     private final HospitalAlarmRecordMapper alarmRecordMapper;
     private final HospitalIotProperties iotProperties;
+    private final IHospitalDataScopeService dataScopeService;
 
     /**
      * 待机浪费建议阈值：待机占比超过 30%
@@ -107,7 +114,7 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
     @Override
     public List<HospitalEnergyTrendVo> trend(Long deviceId, String granularity, String startTime, String endTime) {
         Date[] range = parseRange(startTime, endTime);
-        List<Long> ids = deviceId == null ? null : Collections.singletonList(deviceId);
+        List<Long> ids = deviceId == null ? deviceIdsByType(null) : Collections.singletonList(deviceId);
         List<HospitalEnergyTrendVo> result = new ArrayList<>();
         if ("HOUR".equalsIgnoreCase(granularity)) {
             List<Map<String, Object>> rows = energyMapper.selectHourlyPower(ids, range[0], range[1]);
@@ -134,7 +141,7 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
     @Override
     public List<HospitalDeviceRankVo> rank(String startTime, String endTime, Integer limit) {
         Date[] range = parseRange(startTime, endTime);
-        List<Map<String, Object>> rows = energyMapper.selectDeviceStats(null, range[0], range[1]);
+        List<Map<String, Object>> rows = energyMapper.selectDeviceStats(deviceIdsByType(null), range[0], range[1]);
         List<HospitalDeviceRankVo> result = new ArrayList<>(rows.size());
         for (Map<String, Object> row : rows) {
             BigDecimal kwh = toDecimal(row.get("kwh"));
@@ -158,7 +165,7 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
     @Override
     public List<HospitalEfficiencyVo> efficiency(String startTime, String endTime) {
         Date[] range = parseRange(startTime, endTime);
-        List<Map<String, Object>> rows = energyMapper.selectDeviceStats(null, range[0], range[1]);
+        List<Map<String, Object>> rows = energyMapper.selectDeviceStats(deviceIdsByType(null), range[0], range[1]);
         // 同类设备平均功率（横向对标）
         Map<String, BigDecimal> typeAvg = new HashMap<>(16);
         Map<String, Integer> typeCnt = new HashMap<>(16);
@@ -176,6 +183,14 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
         }
 
         List<HospitalEfficiencyVo> result = new ArrayList<>(rows.size());
+        // 周期工作量（单位工作量能效）
+        Map<Long, BigDecimal> workloadMap = new HashMap<>(64);
+        List<Map<String, Object>> wl = workloadMapper.sumWorkloadByDevice(deviceIdsByType(null), range[0], range[1]);
+        if (CollUtil.isNotEmpty(wl)) {
+            for (Map<String, Object> row : wl) {
+                workloadMap.put(toLong(row.get("deviceId")), toDecimal(row.get("workload")));
+            }
+        }
         for (Map<String, Object> row : rows) {
             HospitalEfficiencyVo vo = new HospitalEfficiencyVo();
             vo.setDeviceId(toLong(row.get("deviceId")));
@@ -184,6 +199,15 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
             vo.setDeviceType(str(row.get("deviceType")));
             vo.setKwh(toDecimal(row.get("kwh")));
             vo.setAvgPower(toDecimal(row.get("avgPower")));
+            Long devId = vo.getDeviceId();
+            if (devId != null && workloadMap.containsKey(devId)) {
+                BigDecimal workload = workloadMap.get(devId);
+                vo.setWorkload(workload);
+                BigDecimal kwh = vo.getKwh();
+                if (workload != null && workload.compareTo(BigDecimal.ZERO) > 0 && kwh != null) {
+                    vo.setUnitEnergy(kwh.divide(workload, 2, RoundingMode.HALF_UP));
+                }
+            }
             long run = toLong(row.get("runPoints"), 0L);
             long standby = toLong(row.get("standbyPoints"), 0L);
             if (run + standby > 0) {
@@ -244,7 +268,7 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
         }
 
         // 2. 高耗能时段：小时平均功率 Top3 中超过日均 1.3 倍的时段
-        List<Map<String, Object>> hourly = energyMapper.selectHourlyPower(null, range[0], range[1]);
+        List<Map<String, Object>> hourly = energyMapper.selectHourlyPower(deviceIdsByType(null), range[0], range[1]);
         if (CollUtil.isNotEmpty(hourly)) {
             BigDecimal total = BigDecimal.ZERO;
             int cnt = 0;
@@ -306,6 +330,55 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
 
     // ---------- helpers ----------
 
+    @Override
+    public List<HospitalEnergyCategoryVo> categorySummary(String startTime, String endTime) {
+        Date[] range = parseRange(startTime, endTime);
+        List<Map<String, Object>> rows = energyMapper.selectCategoryStats(range[0], range[1]);
+        List<HospitalEnergyCategoryVo> result = new ArrayList<>(rows.size());
+        for (Map<String, Object> row : rows) {
+            HospitalEnergyCategoryVo vo = new HospitalEnergyCategoryVo();
+            vo.setCategory(str(row.get("category")));
+            vo.setCategoryName(categoryName(str(row.get("category"))));
+            vo.setKwh(toDecimal(row.get("kwh")));
+            vo.setAvgPower(toDecimal(row.get("avgPower")));
+            vo.setDeviceCount(toInt(row.get("deviceCount")));
+            result.add(vo);
+        }
+        return result;
+    }
+
+    @Override
+    public Map<String, Map<String, BigDecimal>> categoryTrend(String startTime, String endTime) {
+        Date[] range = parseRange(startTime, endTime);
+        List<Map<String, Object>> rows = energyMapper.selectCategoryDailyTrend(range[0], range[1]);
+        Map<String, Map<String, BigDecimal>> result = new LinkedHashMap<>();
+        for (Map<String, Object> row : rows) {
+            String day = str(row.get("day"));
+            String category = str(row.get("category"));
+            result.computeIfAbsent(day, k -> new HashMap<>())
+                .put(category, toDecimal(row.get("kwh")));
+        }
+        return result;
+    }
+
+    private String categoryName(String category) {
+        if (StrUtil.isBlank(category)) {
+            return "其他";
+        }
+        switch (category) {
+            case "LIGHTING":
+                return "照明";
+            case "AIRCOND":
+                return "空调";
+            case "MEDICAL":
+                return "医疗设备";
+            case "POWER":
+                return "动力";
+            default:
+                return "其他";
+        }
+    }
+
     private Date[] parseRange(String startTime, String endTime) {
         Date end = StrUtil.isBlank(endTime) ? new Date() : DateUtil.parse(endTime);
         Date start = StrUtil.isBlank(startTime) ? DateUtil.offsetDay(end, -7) : DateUtil.parse(startTime);
@@ -318,11 +391,15 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
     }
 
     private List<Long> deviceIdsByType(String deviceType) {
-        if (StrUtil.isBlank(deviceType)) {
+        // 多院区数据权限：解析当前用户可访问院区，过滤设备
+        Set<String> areas = dataScopeService.resolveAccessibleAreas();
+        if (StrUtil.isBlank(deviceType) && CollUtil.isEmpty(areas)) {
             return null;
         }
-        List<HospitalDevice> list = deviceMapper.selectList(
-            new LambdaQueryWrapper<HospitalDevice>().eq(HospitalDevice::getDeviceType, deviceType));
+        LambdaQueryWrapper<HospitalDevice> lqw = new LambdaQueryWrapper<HospitalDevice>()
+            .eq(StrUtil.isNotBlank(deviceType), HospitalDevice::getDeviceType, deviceType)
+            .in(CollUtil.isNotEmpty(areas), HospitalDevice::getAreaId, areas);
+        List<HospitalDevice> list = deviceMapper.selectList(lqw);
         List<Long> ids = new ArrayList<>(list.size());
         for (HospitalDevice d : list) {
             ids.add(d.getId());

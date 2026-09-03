@@ -32,6 +32,10 @@ public class HospitalDeviceVo extends BaseEntity {
     @ExcelProperty(value = "设备类型")
     private String deviceType;
 
+    /** 分项（LIGHTING/AIRCOND/MEDICAL/POWER/OTHER） */
+    @ExcelProperty(value = "分项")
+    private String projectCategory;
+
     /** 设备型号 */
     @ExcelProperty(value = "设备型号")
     private String model;

@@ -34,6 +34,9 @@ public class HospitalDeviceBo extends BaseEntity {
     @NotBlank(message = "设备类型不能为空", groups = {AddGroup.class, EditGroup.class})
     private String deviceType;
 
+    /** 分项（LIGHTING/AIRCOND/MEDICAL/POWER/OTHER） */
+    private String projectCategory;
+
     /** 设备型号 */
     private String model;
 

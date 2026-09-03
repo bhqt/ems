@@ -176,6 +176,25 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item :label="$t('hospital.areaName')" prop="areaId">
+          <el-select v-model="form.areaId" :placeholder="$t('common.pleaseSelect')" clearable style="width:100%">
+            <el-option
+              v-for="area in areaOptions"
+              :key="area.value"
+              :label="area.label"
+              :value="area.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('hospital.projectCategory')" prop="projectCategory">
+          <el-select v-model="form.projectCategory" :placeholder="$t('common.pleaseSelect')" clearable style="width:100%">
+            <el-option :label="$t('hospital.categoryLighting')" value="LIGHTING" />
+            <el-option :label="$t('hospital.categoryAircond')" value="AIRCOND" />
+            <el-option :label="$t('hospital.categoryMedical')" value="MEDICAL" />
+            <el-option :label="$t('hospital.categoryPower')" value="POWER" />
+            <el-option :label="$t('hospital.categoryOther')" value="OTHER" />
+          </el-select>
+        </el-form-item>
         <el-form-item :label="$t('hospital.model')" prop="model">
           <el-input v-model="form.model" :placeholder="$t('common.pleaseInput')" />
         </el-form-item>
@@ -254,6 +273,7 @@
 
 <script>
 import { listDevice, getDevice, delDevice, addDevice, updateDevice, bindIotDevice, listDeviceData } from "@/api/hospital/device";
+import { getAreaOptions } from "@/api/hospital/area";
 
 export default {
   name: "HospitalDevice",
@@ -306,6 +326,8 @@ export default {
         { value: '1', label: this.$t('hospital.statusDisabled') },
         { value: '2', label: this.$t('hospital.statusOffline') }
       ],
+      // 院区选项
+      areaOptions: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -333,6 +355,9 @@ export default {
   },
   created() {
     this.getList();
+    getAreaOptions({}).then(response => {
+      this.areaOptions = (response.data || []).map(a => ({ value: a.id, label: a.areaName }));
+    }).catch(() => {});
   },
   methods: {
     /** 查询设备列表 */
@@ -371,6 +396,8 @@ export default {
         model: undefined,
         manufacturer: undefined,
         iotDeviceId: undefined,
+        areaId: undefined,
+        projectCategory: undefined,
         status: "0",
         remark: undefined
       };

@@ -64,6 +64,27 @@
           <div class="module-desc">{{ $t('hospital.efficiencyManageDesc') }}</div>
         </el-card>
       </el-col>
+      <el-col :xs="24" :sm="12" :md="8">
+        <el-card shadow="hover" class="module-card" @click.native="go('/hospital/area')">
+          <div class="module-icon hospital-icon-area"></div>
+          <div class="module-title">{{ $t('hospital.areaManage') }}</div>
+          <div class="module-desc">{{ $t('hospital.areaManageDesc') }}</div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="8">
+        <el-card shadow="hover" class="module-card" @click.native="go('/hospital/workload')">
+          <div class="module-icon hospital-icon-workload"></div>
+          <div class="module-title">{{ $t('hospital.workloadManage') }}</div>
+          <div class="module-desc">{{ $t('hospital.workloadManageDesc') }}</div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="8">
+        <el-card shadow="hover" class="module-card" @click.native="go('/hospital/bigScreen')">
+          <div class="module-icon hospital-icon-screen"></div>
+          <div class="module-title">{{ $t('hospital.screenManage') }}</div>
+          <div class="module-desc">{{ $t('hospital.screenManageDesc') }}</div>
+        </el-card>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -147,6 +168,15 @@ export default {
 }
 .hospital-icon-efficiency {
   background: linear-gradient(135deg, #2563eb, #60a5fa);
+}
+.hospital-icon-area {
+  background: linear-gradient(135deg, #0891b2, #22d3ee);
+}
+.hospital-icon-workload {
+  background: linear-gradient(135deg, #7c3aed, #a78bfa);
+}
+.hospital-icon-screen {
+  background: linear-gradient(135deg, #ea580c, #fb923c);
 }
 .module-title {
   font-size: 16px;

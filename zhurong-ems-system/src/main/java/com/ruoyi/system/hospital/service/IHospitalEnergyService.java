@@ -2,11 +2,13 @@ package com.ruoyi.system.hospital.service;
 
 import com.ruoyi.system.hospital.energy.HospitalDeviceRankVo;
 import com.ruoyi.system.hospital.energy.HospitalEfficiencyVo;
+import com.ruoyi.system.hospital.energy.HospitalEnergyCategoryVo;
 import com.ruoyi.system.hospital.energy.HospitalEnergyOverviewVo;
 import com.ruoyi.system.hospital.energy.HospitalEnergyTrendVo;
 import com.ruoyi.system.hospital.energy.HospitalSuggestionVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 医院能耗分析与决策支持 Service
@@ -64,4 +66,22 @@ public interface IHospitalEnergyService {
      * @return 建议清单
      */
     List<HospitalSuggestionVo> suggestions(String startTime, String endTime);
+
+    /**
+     * 分项能耗汇总（照明/空调/医疗设备/动力等）
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return 分项汇总
+     */
+    List<HospitalEnergyCategoryVo> categorySummary(String startTime, String endTime);
+
+    /**
+     * 分项能耗按天趋势
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return map: day -> (category -> kwh)
+     */
+    Map<String, Map<String, java.math.BigDecimal>> categoryTrend(String startTime, String endTime);
 }

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="90px">
       <el-form-item :label="$t('hospital.alarmType')" prop="alarmType">
@@ -7,10 +7,12 @@
           <el-option :label="$t('hospital.offlineAlarm')" value="OFFLINE" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="$t('hospital.handleStatus')" prop="status">
-        <el-select v-model="queryParams.status" :placeholder="$t('common.pleaseSelect')" clearable>
-          <el-option :label="$t('hospital.pending')" value="0" />
-          <el-option :label="$t('hospital.closed')" value="1" />
+      <el-form-item :label="$t('hospital.handleStatus')" prop="handleStatus">
+        <el-select v-model="queryParams.handleStatus" :placeholder="$t('common.pleaseSelect')" clearable>
+          <el-option :label="$t('hospital.hsNone')" value="0" />
+          <el-option :label="$t('hospital.hsConfirmed')" value="1" />
+          <el-option :label="$t('hospital.hsProcessing')" value="2" />
+          <el-option :label="$t('hospital.hsDone')" value="3" />
         </el-select>
       </el-form-item>
       <el-form-item :label="$t('hospital.level')" prop="level">
@@ -26,10 +28,6 @@
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
     <el-table v-loading="loading" :data="recordList">
       <el-table-column :label="$t('hospital.deviceName')" align="center" prop="deviceName" width="140" />
       <el-table-column :label="$t('hospital.alarmType')" align="center" prop="alarmType" width="100">
@@ -39,42 +37,61 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('hospital.level')" align="center" prop="level" width="90">
+      <el-table-column :label="$t('hospital.level')" align="center" width="120">
         <template slot-scope="scope">
-          <el-tag :type="levelTagType(scope.row.level)" size="mini">{{ levelLabel(scope.row.level) }}</el-tag>
+          <el-tag :type="levelTagType(scope.row.escalateLevel != null ? scope.row.escalateLevel : scope.row.level)" size="mini">
+            {{ levelLabel(scope.row.escalateLevel != null ? scope.row.escalateLevel : scope.row.level) }}
+            <span v-if="scope.row.escalateCount > 0">({{ $t('hospital.escalated') }}×{{ scope.row.escalateCount }})</span>
+          </el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('hospital.alarmContent')" align="center" prop="content" :show-overflow-tooltip="true" />
       <el-table-column :label="$t('hospital.alarmVal')" align="center" prop="alarmVal" width="110" />
-      <el-table-column :label="$t('hospital.handleStatus')" align="center" prop="status" width="100">
+      <el-table-column :label="$t('hospital.handleStatus')" align="center" width="100">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status === '0' ? 'danger' : 'success'" size="mini">
-            {{ scope.row.status === '0' ? $t('hospital.pending') : $t('hospital.closed') }}
-          </el-tag>
+          <el-tag :type="handleStatusTagType(scope.row.handleStatus)" size="mini">{{ handleStatusLabel(scope.row.handleStatus) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('hospital.startTime')" align="center" prop="startTime" width="170">
+      <el-table-column :label="$t('hospital.startTime')" align="center" prop="startTime" width="160">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.startTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.operate')" align="center" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.operate')" align="center" class-name="small-padding fixed-width" width="210">
         <template slot-scope="scope">
-          <el-button
-            v-if="scope.row.status === '0'"
-            size="mini"
-            type="text"
-            icon="el-icon-check"
-            @click="handleRecord(scope.row)"
-            v-hasPermi="['hospital:alarmRecord:handle']"
-          >{{ $t('hospital.handle') }}</el-button>
+          <template v-if="String(scope.row.handleStatus) !== '3'">
+            <el-button
+              v-if="String(scope.row.handleStatus) === '0'"
+              size="mini"
+              type="text"
+              icon="el-icon-check"
+              @click="handleAction(scope.row, 'confirm')"
+              v-hasPermi="['hospital:alarmRecord:handle']"
+            >{{ $t('hospital.confirm') }}</el-button>
+            <el-button
+              v-if="String(scope.row.handleStatus) === '1'"
+              size="mini"
+              type="text"
+              icon="el-icon-setting"
+              @click="handleAction(scope.row, 'process')"
+              v-hasPermi="['hospital:alarmRecord:handle']"
+            >{{ $t('hospital.process') }}</el-button>
+            <el-button
+              v-if="String(scope.row.handleStatus) === '2'"
+              size="mini"
+              type="text"
+              icon="el-icon-finished"
+              @click="handleAction(scope.row, 'done')"
+              v-hasPermi="['hospital:alarmRecord:handle']"
+            >{{ $t('hospital.handle') }}</el-button>
+          </template>
           <span v-else>{{ scope.row.handleBy || '-' }}</span>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 处理报警对话框 -->
-    <el-dialog :title="$t('hospital.handle')" :visible.sync="open" width="480px" append-to-body>
+    <!-- 报警处理对话框 -->
+    <el-dialog :title="actionTitle" :visible.sync="open" width="480px" append-to-body>
       <el-form ref="form" :model="form" label-width="100px">
         <el-form-item :label="$t('hospital.alarmContent')">
           <span>{{ form.content }}</span>
@@ -84,7 +101,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitHandle">{{ $t('button.submit') }}</el-button>
+        <el-button type="primary" @click="submitAction">{{ $t('button.submit') }}</el-button>
         <el-button @click="open = false">{{ $t('button.cancel') }}</el-button>
       </div>
     </el-dialog>
@@ -92,7 +109,7 @@
 </template>
 
 <script>
-import { listAlarmRecord, handleAlarmRecord } from "@/api/hospital/alarm";
+import { listAlarmRecord, actionAlarmRecord } from "@/api/hospital/alarm";
 
 export default {
   name: "HospitalAlarmRecord",
@@ -103,13 +120,18 @@ export default {
       recordList: [],
       open: false,
       form: {},
+      currentAction: 'done',
       queryParams: {
-        deviceId: undefined,
         alarmType: undefined,
-        status: '0',
+        handleStatus: undefined,
         level: undefined
       }
     };
+  },
+  computed: {
+    actionTitle() {
+      return this.$t('hospital.action_' + this.currentAction)
+    }
   },
   created() {
     this.getList();
@@ -123,6 +145,20 @@ export default {
       }).catch(() => {
         this.loading = false;
       });
+    },
+    handleStatusLabel(s) {
+      s = String(s)
+      const map = {
+        '0': this.$t('hospital.hsNone'),
+        '1': this.$t('hospital.hsConfirmed'),
+        '2': this.$t('hospital.hsProcessing'),
+        '3': this.$t('hospital.hsDone')
+      };
+      return map[s] || '-';
+    },
+    handleStatusTagType(s) {
+      const map = { '0': 'danger', '1': 'warning', '2': 'primary', '3': 'success' };
+      return map[String(s)] || 'info';
     },
     levelLabel(level) {
       const map = { '0': this.$t('hospital.levelNormal'), '1': this.$t('hospital.levelSerious'), '2': this.$t('hospital.levelUrgent') };
@@ -139,12 +175,13 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    handleRecord(row) {
+    handleAction(row, action) {
       this.form = { id: row.id, content: row.content, handleRemark: undefined };
+      this.currentAction = action;
       this.open = true;
     },
-    submitHandle() {
-      handleAlarmRecord(this.form.id, this.form.handleRemark).then(response => {
+    submitAction() {
+      actionAlarmRecord(this.form.id, this.currentAction, this.form.handleRemark).then(response => {
         this.$modal.msgSuccess(this.$t('message.editSuccess'));
         this.open = false;
         this.getList();

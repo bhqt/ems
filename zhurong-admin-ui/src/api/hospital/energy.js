@@ -44,3 +44,21 @@ export function getSuggestions(query) {
     params: query
   })
 }
+
+// 分项能耗汇总（照明/空调/医疗设备/动力等）
+export function getEnergyCategory(query) {
+  return request({
+    url: '/hospital/energy/category',
+    method: 'get',
+    params: query
+  })
+}
+
+// 分项能耗按天趋势
+export function getEnergyCategoryTrend(query) {
+  return request({
+    url: '/hospital/energy/categoryTrend',
+    method: 'get',
+    params: query
+  })
+}

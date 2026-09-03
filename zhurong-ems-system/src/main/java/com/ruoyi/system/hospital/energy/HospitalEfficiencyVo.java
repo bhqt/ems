@@ -45,6 +45,14 @@ public class HospitalEfficiencyVo implements Serializable {
     @ExcelProperty(value = "待机占比(%)")
     private BigDecimal standbyRatio;
 
+    /** 周期工作量（检查台次） */
+    @ExcelProperty(value = "工作量")
+    private BigDecimal workload;
+
+    /** 单位工作量能耗（kWh/单位工作量，有工作量时计算） */
+    @ExcelProperty(value = "单位能耗(kWh/台)")
+    private BigDecimal unitEnergy;
+
     /** 能效评分（0-100，无数据为 null） */
     @ExcelProperty(value = "能效评分")
     private BigDecimal score;

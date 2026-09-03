@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.hospital.mapper.HospitalDeviceWorkloadMapper">
+
+    <resultMap type="com.ruoyi.system.hospital.vo.HospitalDeviceWorkloadVo" id="HospitalDeviceWorkloadResult">
+        <id property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="deviceCode" column="device_code"/>
+        <result property="workloadCount" column="workload_count"/>
+        <result property="statDate" column="stat_date"/>
+    </resultMap>
+
+    <select id="selectHospitalDeviceWorkloadList" resultMap="HospitalDeviceWorkloadResult">
+        select hw.id,
+               hw.device_id,
+               hd.device_name,
+               hd.device_code,
+               hw.workload_count,
+               hw.stat_date
+        from hospital_device_workload hw
+        left join hospital_device hd on hw.device_id = hd.id
+        <where>
+            <if test="deviceId != null">
+                AND hw.device_id = #{deviceId}
+            </if>
+            <if test="begin != null">
+                AND hw.stat_date &gt;= DATE(#{begin})
+            </if>
+            <if test="end != null">
+                AND hw.stat_date &lt;= DATE(#{end})
+            </if>
+        </where>
+        order by hw.stat_date desc, hw.id desc
+    </select>
+
+    <!-- 按设备汇总周期内工作量 -->
+    <select id="sumWorkloadByDevice" resultType="java.util.Map">
+        select device_id as deviceId, sum(workload_count) as workload
+        from hospital_device_workload
+        <where>
+            <if test="deviceIds != null and deviceIds.size() > 0">
+                and device_id in
+                <foreach collection="deviceIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="begin != null">
+                and stat_date &gt;= DATE(#{begin})
+            </if>
+            <if test="end != null">
+                and stat_date &lt;= DATE(#{end})
+            </if>
+        </where>
+        group by device_id
+    </select>
+
+</mapper>

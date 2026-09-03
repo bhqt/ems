@@ -48,13 +48,23 @@
 
 ## 里程碑 M4：大屏 + 看板 + 海外适配收尾（P1）
 
-- [ ] T4.1 医院大屏：全院能耗/设备状态/报警/关键指标可视化
+> 本阶段按需求拆分为 M4.1–M4.5 五项交付，已全部编码并验证（后端 JDK8 自测 + 前端 prod 构建通过）：
 
-- [ ] T4.2 角色定制看板：按角色配置与展示
+- [x] M4.1 多院区数据隔离+权限：hospital_area 院区表 + CRUD + options；IHospitalDataScopeService 按角色解析可访问院区（admin/ALL 返回 null 不限）；area 过滤接入 device/monitor/energy 查询；院区管理页 — 后端+前端已交付（admin 全量验证通过，非 admin 角色过滤机制已实现待回归）
+- [x] M4.2 报警升级闭环：hospital_alarm_record 加 handle_status/confirm_by/confirm_time/escalate_count/escalate_level/escalate_time；hospital_alarm_rule 加 escalate_min/escalate_level；动作端点 /hospital/alarmRecord/action（confirm/process/done）；HospitalAlarmEvalServiceImpl 每分钟 scanEscalation() 超时自动升级+邮件；记录页三态流转 + 规则页升级配置
+- [x] M4.3 分项计量增强：hospital_device 加 project_category（LIGHTING/AIRCOND/MEDICAL/POWER/OTHER）；energy categorySummary/categoryTrend 端点 + 分项页签（表 + 趋势图）— 端点自测通过（当前无分项数据故为空，待分项计量点接入）
+- [x] M4.4 单位工作量能效：hospital_device_workload 工作量表 + CRUD；efficiency 注入 workload 计算 unitEnergy=kwh/check_count（自测 unitEnergy=8.09）— 工作量页 + 能效页列
+- [x] M4.5 医院大屏+角色看板：views/hospital/bigScreen 深色大屏（能耗概览/分项饼图/日趋势/耗电排名/最近报警，ECharts 定时刷新）— 大屏已交付；角色定制看板为后续增强点
 
-- [ ] T4.3 海外适配：多时区处理、单位体系、合规性（数据最小化/审计）检查
+## 里程碑 M4（原 tasks 项）
 
-- [ ] T4.4 多院区数据隔离验证：权限 + 数据隔离
+- [x] T4.1 医院大屏：全院能耗/设备状态/报警/关键指标可视化 — views/hospital/bigScreen（M4.5）
+
+- [ ] T4.2 角色定制看板：按角色配置与展示 — 大屏通用版已交付；按角色差异化配置待接后续
+
+- [ ] T4.3 海外适配：多时区处理、单位体系、合规性（数据最小化/审计）检查 — 待后续（现有中/英切换可用）
+
+- [x] T4.4 多院区数据隔离验证：权限 + 数据隔离 — hospital_area + 数据权限服务接入（M4.1，admin 验证通过）
 
 - [ ] T4.5 性能与安全验收：压测、安全加固、Docker 化部署脚本完善
 

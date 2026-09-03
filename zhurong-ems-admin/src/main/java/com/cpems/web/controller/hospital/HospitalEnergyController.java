@@ -8,6 +8,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.hospital.energy.HospitalDeviceRankVo;
 import com.ruoyi.system.hospital.energy.HospitalEfficiencyVo;
+import com.ruoyi.system.hospital.energy.HospitalEnergyCategoryVo;
 import com.ruoyi.system.hospital.energy.HospitalEnergyOverviewVo;
 import com.ruoyi.system.hospital.energy.HospitalEnergyTrendVo;
 import com.ruoyi.system.hospital.energy.HospitalSuggestionVo;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 医院能耗分析与决策支持
@@ -71,6 +74,28 @@ public class HospitalEnergyController extends BaseController {
         @RequestParam(required = false) String endTime,
         @RequestParam(defaultValue = "10") Integer limit) {
         return R.ok(energyService.rank(startTime, endTime, limit));
+    }
+
+    /**
+     * 分项能耗汇总（照明/空调/医疗设备/动力等）
+     */
+    @SaCheckPermission("hospital:energy:list")
+    @GetMapping("/category")
+    public R<List<HospitalEnergyCategoryVo>> category(
+        @RequestParam(required = false) String startTime,
+        @RequestParam(required = false) String endTime) {
+        return R.ok(energyService.categorySummary(startTime, endTime));
+    }
+
+    /**
+     * 分项能耗按天趋势
+     */
+    @SaCheckPermission("hospital:energy:list")
+    @GetMapping("/categoryTrend")
+    public R<Map<String, Map<String, BigDecimal>>> categoryTrend(
+        @RequestParam(required = false) String startTime,
+        @RequestParam(required = false) String endTime) {
+        return R.ok(energyService.categoryTrend(startTime, endTime));
     }
 
     /**

@@ -10,6 +10,7 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.hospital.domain.HospitalDevice;
 import com.ruoyi.system.hospital.mapper.HospitalDeviceMapper;
+import com.ruoyi.system.hospital.service.IHospitalDataScopeService;
 import com.ruoyi.system.hospital.service.IHospitalDeviceService;
 import com.ruoyi.system.hospital.bo.HospitalDeviceBo;
 import com.ruoyi.system.hospital.vo.HospitalDeviceVo;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 医院检查检验设备台账 Service 实现
@@ -29,6 +31,7 @@ import java.util.List;
 public class HospitalDeviceServiceImpl implements IHospitalDeviceService {
 
     private final HospitalDeviceMapper baseMapper;
+    private final IHospitalDataScopeService dataScopeService;
 
     @Override
     public HospitalDeviceVo queryById(Long id) {
@@ -55,10 +58,14 @@ public class HospitalDeviceServiceImpl implements IHospitalDeviceService {
         lqw.like(StringUtils.isNotBlank(bo.getDeviceName()), HospitalDevice::getDeviceName, bo.getDeviceName());
         lqw.like(StringUtils.isNotBlank(bo.getDeviceCode()), HospitalDevice::getDeviceCode, bo.getDeviceCode());
         lqw.eq(StringUtils.isNotBlank(bo.getDeviceType()), HospitalDevice::getDeviceType, bo.getDeviceType());
+        lqw.eq(StringUtils.isNotBlank(bo.getProjectCategory()), HospitalDevice::getProjectCategory, bo.getProjectCategory());
         lqw.eq(StringUtils.isNotBlank(bo.getAreaId()), HospitalDevice::getAreaId, bo.getAreaId());
         lqw.eq(StringUtils.isNotBlank(bo.getDeptId()), HospitalDevice::getDeptId, bo.getDeptId());
         lqw.eq(StringUtils.isNotBlank(bo.getIotDeviceId()), HospitalDevice::getIotDeviceId, bo.getIotDeviceId());
         lqw.eq(StringUtils.isNotBlank(bo.getStatus()), HospitalDevice::getStatus, bo.getStatus());
+        // 多院区数据权限：按当前用户可访问院区过滤
+        Set<String> areas = dataScopeService.resolveAccessibleAreas();
+        lqw.in(areas != null && !areas.isEmpty(), HospitalDevice::getAreaId, areas);
         return lqw;
     }
 

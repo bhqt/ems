@@ -239,6 +239,83 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
         }
     }
 
+    /**
+     * 报警升级闭环：每分钟扫描未处理报警，若超过规则配置的升级超时分钟数，
+     * 自动将报警级别提升至规则配置的升级目标级别并通知，形成升级闭环。
+     */
+    @Scheduled(fixedDelay = 60000)
+    public void scanEscalation() {
+        try {
+            List<HospitalAlarmRecord> openList = recordMapper.selectList(
+                new LambdaQueryWrapper<HospitalAlarmRecord>()
+                    .eq(HospitalAlarmRecord::getStatus, HospitalConstants.ALARM_STATUS_OPEN)
+                    .ne(HospitalAlarmRecord::getHandleStatus, HospitalConstants.ALARM_HANDLE_DONE));
+            if (CollUtil.isEmpty(openList)) {
+                return;
+            }
+            Map<Long, HospitalAlarmRule> ruleMap = new HashMap<>(32);
+            for (HospitalAlarmRecord r : openList) {
+                if (r.getRuleId() == null) {
+                    continue;
+                }
+                HospitalAlarmRule rule = ruleMap.computeIfAbsent(r.getRuleId(), ruleMapper::selectById);
+                if (rule == null || rule.getEscalateMin() == null || StrUtil.isBlank(rule.getEscalateLevel())) {
+                    continue;
+                }
+                Date refTime = r.getEscalateTime() != null ? r.getEscalateTime()
+                    : (r.getStartTime() != null ? r.getStartTime() : r.getCreateTime());
+                if (refTime == null) {
+                    continue;
+                }
+                long elapsed = System.currentTimeMillis() - refTime.getTime();
+                if (elapsed < rule.getEscalateMin() * 60_000L) {
+                    continue;
+                }
+                // 当前级别已不低于升级目标则无需升级
+                if (levelOf(r.getLevel()) >= levelOf(rule.getEscalateLevel())) {
+                    continue;
+                }
+                escalateRule(rule, r, rule.getEscalateLevel());
+            }
+        } catch (Exception e) {
+            log.error("[医院报警] 升级扫描异常", e);
+        }
+    }
+
+    private void escalateRule(HospitalAlarmRule rule, HospitalAlarmRecord record, String targetLevel) {
+        HospitalAlarmRecord update = new HospitalAlarmRecord();
+        update.setId(record.getId());
+        update.setLevel(targetLevel);
+        update.setEscalateLevel(targetLevel);
+        update.setEscalateCount((record.getEscalateCount() == null ? 0 : record.getEscalateCount()) + 1);
+        update.setEscalateTime(new Date());
+        recordMapper.updateById(update);
+        log.warn("[医院报警] 报警升级 device={} record={} -> level={}", record.getDeviceId(), record.getId(), targetLevel);
+        String content = "报警[" + record.getContent() + "] 超过升级时限仍未处理，已将报警级别提升为"
+            + (levelName(targetLevel)) + "，请尽快处理";
+        notifyMail(rule, content);
+    }
+
+    private int levelOf(String level) {
+        if (level == null) {
+            return 0;
+        }
+        try {
+            return Integer.parseInt(level);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+    private String levelName(String level) {
+        if ("2".equals(level)) {
+            return "紧急";
+        } else if ("1".equals(level)) {
+            return "严重";
+        }
+        return "一般";
+    }
+
     private void notifyMail(HospitalAlarmRule rule, String content) {
         if (StringUtils.isBlank(rule.getNotifyEmail())) {
             return;

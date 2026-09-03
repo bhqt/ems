@@ -69,4 +69,16 @@ public class HospitalConstants {
 
     /** 报警记录状态：已结束 */
     public static final String ALARM_STATUS_CLOSED = "1";
+
+    /** 报警处理阶段：待处理 */
+    public static final String ALARM_HANDLE_PENDING = "0";
+
+    /** 报警处理阶段：已确认 */
+    public static final String ALARM_HANDLE_CONFIRMED = "1";
+
+    /** 报警处理阶段：处理中 */
+    public static final String ALARM_HANDLE_PROCESSING = "2";
+
+    /** 报警处理阶段：已处理 */
+    public static final String ALARM_HANDLE_DONE = "3";
 }

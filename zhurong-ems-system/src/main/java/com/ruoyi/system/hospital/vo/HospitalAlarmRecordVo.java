@@ -56,6 +56,24 @@ public class HospitalAlarmRecordVo implements Serializable {
     /** 处理状态（0待处理 1已结束） */
     private String status;
 
+    /** 处理阶段（0待处理 1已确认 2处理中 3已处理） */
+    private String handleStatus;
+
+    /** 确认人 */
+    private String confirmBy;
+
+    /** 确认时间 */
+    private Date confirmTime;
+
+    /** 升级次数 */
+    private Integer escalateCount;
+
+    /** 升级后级别（0一般 1严重 2紧急） */
+    private String escalateLevel;
+
+    /** 最近升级时间 */
+    private Date escalateTime;
+
     /** 报警开始时间 */
     private Date startTime;
 

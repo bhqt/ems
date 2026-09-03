@@ -90,6 +90,14 @@
           <el-tag :type="levelTagType(scope.row.level)" size="mini">{{ levelLabel(scope.row.level) }}</el-tag>
         </template>
       </el-table-column>
+      <el-table-column :label="$t('hospital.escalation')" align="center" width="150">
+        <template slot-scope="scope">
+          <span v-if="scope.row.escalateMin != null">
+            {{ scope.row.escalateMin }}{{ $t('hospital.min') }}→{{ levelLabel(scope.row.escalateLevel) }}
+          </span>
+          <span v-else>-</span>
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('common.status')" align="center" prop="status" width="90">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === '0' ? 'success' : 'info'" size="mini">
@@ -180,6 +188,16 @@
         </el-form-item>
         <el-form-item :label="$t('hospital.notifyEmail')" prop="notifyEmail">
           <el-input v-model="form.notifyEmail" :placeholder="$t('hospital.notifyEmailPlaceholder')" />
+        </el-form-item>
+        <el-form-item :label="$t('hospital.escalateMin')" prop="escalateMin">
+          <el-input-number v-model="form.escalateMin" :min="0" :precision="0" style="width:100%" placeholder="0=不升级" />
+        </el-form-item>
+        <el-form-item :label="$t('hospital.escalateLevel')" prop="escalateLevel">
+          <el-select v-model="form.escalateLevel" :placeholder="$t('common.pleaseSelect')" style="width:100%">
+            <el-option :label="$t('hospital.levelNormal')" value="0" />
+            <el-option :label="$t('hospital.levelSerious')" value="1" />
+            <el-option :label="$t('hospital.levelUrgent')" value="2" />
+          </el-select>
         </el-form-item>
         <el-form-item :label="$t('common.status')" prop="status">
           <el-radio-group v-model="form.status">
@@ -276,6 +294,8 @@ export default {
         level: '0',
         status: '0',
         notifyEmail: undefined,
+        escalateMin: 0,
+        escalateLevel: '0',
         remark: undefined
       };
       this.resetForm("form");

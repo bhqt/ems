@@ -59,6 +59,12 @@ public class HospitalAlarmRuleVo extends BaseEntity {
     /** 通知邮箱 */
     private String notifyEmail;
 
+    /** 升级超时分钟数（该级别仍未处理则升级） */
+    private Integer escalateMin;
+
+    /** 升级目标级别（0一般 1严重 2紧急） */
+    private String escalateLevel;
+
     /** 备注 */
     private String remark;
 }

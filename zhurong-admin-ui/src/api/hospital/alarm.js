@@ -52,11 +52,11 @@ export function listAlarmRecord(query) {
   })
 }
 
-// 处理/关闭报警记录
-export function handleAlarmRecord(id, handleRemark) {
+// 报警记录操作：action=confirm / process / done
+export function actionAlarmRecord(id, action, handleRemark) {
   return request({
-    url: '/hospital/alarmRecord/handle/' + id,
+    url: '/hospital/alarmRecord/action',
     method: 'put',
-    params: { handleRemark }
+    params: { id, action, handleRemark }
   })
 }

@@ -44,14 +44,15 @@ public class HospitalAlarmRecordController extends BaseController {
     }
 
     /**
-     * 处理/关闭报警记录
+     * 报警处理阶段流转（confirm处理中/process/处理中 done完成）
      */
     @SaCheckPermission("hospital:alarmRecord:handle")
     @Log(title = "医院报警记录", businessType = BusinessType.UPDATE)
     @RepeatSubmit()
-    @PutMapping("/handle/{id}")
-    public R<Void> handle(@NotNull(message = "主键不能为空") @PathVariable Long id,
+    @PutMapping("/action")
+    public R<Void> action(@NotNull(message = "主键不能为空") @RequestParam Long id,
+                          @RequestParam(defaultValue = "done") String action,
                           @RequestParam(required = false) String handleRemark) {
-        return toAjax(alarmRecordService.handle(id, handleRemark, getUsername()));
+        return toAjax(alarmRecordService.doAction(action, id, handleRemark, getUsername()));
     }
 }

@@ -34,49 +34,78 @@
       </el-col>
     </el-row>
 
-    <el-card class="mb8" shadow="never">
-      <div slot="header"><span>{{ $t('hospital.energyOverview') }}</span></div>
-      <el-table v-loading="loading" :data="overviewList">
-        <el-table-column :label="$t('hospital.dimension')" align="center" prop="dimName" />
-        <el-table-column :label="$t('hospital.kwh')" align="center" prop="kwh" width="150" />
-        <el-table-column :label="$t('hospital.avgPower')" align="center" prop="avgPower" width="150" />
-        <el-table-column :label="$t('hospital.deviceCount')" align="center" prop="deviceCount" width="110" />
-        <el-table-column :label="$t('hospital.chainRatio')" align="center" prop="chainRatio" width="150">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.chainRatio != null" :type="scope.row.chainRatio > 0 ? 'danger' : 'success'" size="mini">
-              {{ scope.row.chainRatio > 0 ? '+' : '' }}{{ scope.row.chainRatio }}%
-            </el-tag>
-            <span v-else>-</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-card>
-
-    <el-row :gutter="12">
-      <el-col :xs="24" :md="14">
-        <el-card shadow="never">
-          <div slot="header"><span>{{ $t('hospital.energyTrend') }}</span></div>
-          <div ref="trendChart" v-loading="trendLoading" style="height:320px" />
-        </el-card>
-      </el-col>
-      <el-col :xs="24" :md="10">
-        <el-card shadow="never">
-          <div slot="header"><span>{{ $t('hospital.energyRank') }}</span></div>
-          <el-table v-loading="rankLoading" :data="rankList">
-            <el-table-column type="index" :label="$t('hospital.rankNo')" align="center" width="60" />
-            <el-table-column :label="$t('hospital.deviceName')" align="center" prop="deviceName" :show-overflow-tooltip="true" />
-            <el-table-column :label="$t('hospital.kwh')" align="center" prop="kwh" width="110" />
-            <el-table-column :label="$t('hospital.avgPower')" align="center" prop="avgPower" width="110" />
+    <el-tabs v-model="activeTab" class="mb8">
+      <el-tab-pane :label="$t('hospital.energyOverview')" name="overview">
+        <el-card class="mb8" shadow="never">
+          <el-table v-loading="loading" :data="overviewList">
+            <el-table-column :label="$t('hospital.dimension')" align="center" prop="dimName" />
+            <el-table-column :label="$t('hospital.kwh')" align="center" prop="kwh" width="150" />
+            <el-table-column :label="$t('hospital.avgPower')" align="center" prop="avgPower" width="150" />
+            <el-table-column :label="$t('hospital.deviceCount')" align="center" prop="deviceCount" width="110" />
+            <el-table-column :label="$t('hospital.chainRatio')" align="center" prop="chainRatio" width="150">
+              <template slot-scope="scope">
+                <el-tag v-if="scope.row.chainRatio != null" :type="scope.row.chainRatio > 0 ? 'danger' : 'success'" size="mini">
+                  {{ scope.row.chainRatio > 0 ? '+' : '' }}{{ scope.row.chainRatio }}%
+                </el-tag>
+                <span v-else>-</span>
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
-      </el-col>
-    </el-row>
+
+        <el-row :gutter="12">
+          <el-col :xs="24" :md="14">
+            <el-card shadow="never">
+              <div slot="header"><span>{{ $t('hospital.energyTrend') }}</span></div>
+              <div ref="trendChart" v-loading="trendLoading" style="height:320px" />
+            </el-card>
+          </el-col>
+          <el-col :xs="24" :md="10">
+            <el-card shadow="never">
+              <div slot="header"><span>{{ $t('hospital.energyRank') }}</span></div>
+              <el-table v-loading="rankLoading" :data="rankList">
+                <el-table-column type="index" :label="$t('hospital.rankNo')" align="center" width="60" />
+                <el-table-column :label="$t('hospital.deviceName')" align="center" prop="deviceName" :show-overflow-tooltip="true" />
+                <el-table-column :label="$t('hospital.kwh')" align="center" prop="kwh" width="110" />
+                <el-table-column :label="$t('hospital.avgPower')" align="center" prop="avgPower" width="110" />
+              </el-table>
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+
+      <el-tab-pane :label="$t('hospital.energyCategory')" name="category">
+        <el-row :gutter="12">
+          <el-col :xs="24" :md="12">
+            <el-card shadow="never">
+              <div slot="header"><span>{{ $t('hospital.energyCategory') }}</span></div>
+              <el-table v-loading="catLoading" :data="categoryList">
+                <el-table-column :label="$t('hospital.dimension')" align="center" prop="categoryName" />
+                <el-table-column :label="$t('hospital.kwh')" align="center" prop="kwh" width="150" />
+                <el-table-column :label="$t('hospital.percent')" align="center" prop="percent" width="110">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.percent != null">{{ scope.row.percent }}%</span>
+                    <span v-else>-</span>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-card>
+          </el-col>
+          <el-col :xs="24" :md="12">
+            <el-card shadow="never">
+              <div slot="header"><span>{{ $t('hospital.energyCategoryTrend') }}</span></div>
+              <div ref="catChart" v-loading="catLoading" style="height:360px" />
+            </el-card>
+          </el-col>
+        </el-row>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts'
-import { getEnergyOverview, getEnergyTrend, getEnergyRank } from '@/api/hospital/energy'
+import { getEnergyOverview, getEnergyTrend, getEnergyRank, getEnergyCategory, getEnergyCategoryTrend } from '@/api/hospital/energy'
 
 export default {
   name: 'HospitalEnergy',
@@ -85,10 +114,14 @@ export default {
       loading: true,
       trendLoading: false,
       rankLoading: false,
+      catLoading: false,
       showSearch: true,
       overviewList: [],
       rankList: [],
+      categoryList: [],
       trendChart: null,
+      catChart: null,
+      activeTab: 'overview',
       dateRange: [],
       queryParams: {
         level: 'AREA',
@@ -120,6 +153,7 @@ export default {
   },
   mounted() {
     this.trendChart = echarts.init(this.$refs.trendChart)
+    this.catChart = echarts.init(this.$refs.catChart)
     window.addEventListener('resize', this.resizeChart)
   },
   beforeDestroy() {
@@ -127,6 +161,10 @@ export default {
     if (this.trendChart) {
       this.trendChart.dispose()
       this.trendChart = null
+    }
+    if (this.catChart) {
+      this.catChart.dispose()
+      this.catChart = null
     }
   },
   methods: {
@@ -148,6 +186,8 @@ export default {
       this.getOverview()
       this.getTrend()
       this.getRank()
+      this.getCategory()
+      this.getCategoryTrend()
     },
     resetQuery() {
       this.resetForm('queryForm')
@@ -157,6 +197,9 @@ export default {
     resizeChart() {
       if (this.trendChart) {
         this.trendChart.resize()
+      }
+      if (this.catChart) {
+        this.catChart.resize()
       }
     },
     getOverview() {
@@ -185,6 +228,50 @@ export default {
       }).catch(() => {
         this.rankLoading = false
       })
+    },
+    getCategory() {
+      this.catLoading = true
+      getEnergyCategory({ startTime: this.queryParams.startTime, endTime: this.queryParams.endTime }).then(response => {
+        this.categoryList = response.data || []
+        this.catLoading = false
+      }).catch(() => {
+        this.catLoading = false
+      })
+    },
+    getCategoryTrend() {
+      getEnergyCategoryTrend({ startTime: this.queryParams.startTime, endTime: this.queryParams.endTime }).then(response => {
+        this.renderCatChart(response.data || {})
+      }).catch(() => {})
+    },
+    renderCatChart(map) {
+      if (!this.catChart) {
+        return
+      }
+      const names = Object.keys(map || {})
+      const dates = []
+      names.forEach(n => {
+        const byDate = map[n] || {}
+        Object.keys(byDate).forEach(d => {
+          if (dates.indexOf(d) === -1) {
+            dates.push(d)
+          }
+        })
+      })
+      dates.sort()
+      const series = names.map(n => ({
+        name: n,
+        type: 'line',
+        smooth: true,
+        data: dates.map(d => (map[n][d] != null ? map[n][d] : 0))
+      }))
+      this.catChart.setOption({
+        tooltip: { trigger: 'axis' },
+        legend: { data: names },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: dates },
+        yAxis: { type: 'value', name: 'kWh' },
+        series
+      }, true)
     },
     renderTrend(list) {
       if (!this.trendChart) {

@@ -31,6 +31,9 @@ public class HospitalDevice extends BaseEntity {
     /** 设备类型（CT/MRI/DR/US/LAB/DSA/OTHER） */
     private String deviceType;
 
+    /** 分项（LIGHTING/AIRCOND/MEDICAL/POWER/OTHER） */
+    private String projectCategory;
+
     /** 设备型号 */
     private String model;
 

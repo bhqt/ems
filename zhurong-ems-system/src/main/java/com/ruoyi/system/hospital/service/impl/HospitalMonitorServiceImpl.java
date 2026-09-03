@@ -9,6 +9,7 @@ import com.ruoyi.system.hospital.domain.HospitalDeviceData;
 import com.ruoyi.system.hospital.mapper.HospitalAlarmRecordMapper;
 import com.ruoyi.system.hospital.mapper.HospitalDeviceDataMapper;
 import com.ruoyi.system.hospital.mapper.HospitalDeviceMapper;
+import com.ruoyi.system.hospital.service.IHospitalDataScopeService;
 import com.ruoyi.system.hospital.service.IHospitalMonitorService;
 import com.ruoyi.system.hospital.vo.HospitalDeviceDataVo;
 import com.ruoyi.system.hospital.vo.HospitalDeviceRealtimeVo;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 医院设备实时监测 Service 实现
@@ -35,11 +37,14 @@ public class HospitalMonitorServiceImpl implements IHospitalMonitorService {
     private final HospitalDeviceDataMapper deviceDataMapper;
     private final HospitalAlarmRecordMapper alarmRecordMapper;
     private final HospitalIotProperties iotProperties;
+    private final IHospitalDataScopeService dataScopeService;
 
     @Override
     public List<HospitalDeviceRealtimeVo> queryOverview(String deviceType, String keyword) {
+        Set<String> areas = dataScopeService.resolveAccessibleAreas();
         LambdaQueryWrapper<HospitalDevice> lqw = new LambdaQueryWrapper<HospitalDevice>()
             .eq(deviceType != null && !deviceType.isEmpty(), HospitalDevice::getDeviceType, deviceType)
+            .in(CollUtil.isNotEmpty(areas), HospitalDevice::getAreaId, areas)
             .and(keyword != null && !keyword.isEmpty(),
                 w -> w.like(HospitalDevice::getDeviceName, keyword).or().like(HospitalDevice::getDeviceCode, keyword))
             .orderByDesc(HospitalDevice::getCreateTime);

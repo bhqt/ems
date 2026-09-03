@@ -50,6 +50,18 @@
         <el-table-column :label="$t('hospital.deviceType')" align="center" prop="deviceType" width="90" />
         <el-table-column :label="$t('hospital.kwh')" align="center" prop="kwh" width="120" />
         <el-table-column :label="$t('hospital.avgPower')" align="center" prop="avgPower" width="120" />
+        <el-table-column :label="$t('hospital.workloadCount')" align="center" prop="workload" width="110">
+          <template slot-scope="scope">
+            <span v-if="scope.row.workload != null">{{ scope.row.workload }}</span>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
+        <el-table-column :label="$t('hospital.unitEnergy')" align="center" prop="unitEnergy" width="130">
+          <template slot-scope="scope">
+            <span v-if="scope.row.unitEnergy != null">{{ scope.row.unitEnergy }} kWh/次</span>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('hospital.standbyRatio')" align="center" prop="standbyRatio" width="120">
           <template slot-scope="scope">
             <span v-if="scope.row.standbyRatio != null">{{ scope.row.standbyRatio }}%</span>

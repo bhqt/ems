@@ -63,6 +63,44 @@
         order by d.day
     </select>
 
+    <!-- 按分项（照明/空调/医疗设备/动力等）汇总周期统计 -->
+    <select id="selectCategoryStats" resultType="java.util.Map">
+        select hd.project_category as category,
+               (max(case when hdd.metric_code = 'electricity' then hdd.metric_value end)
+                - min(case when hdd.metric_code = 'electricity' then hdd.metric_value end)) as kwh,
+               avg(case when hdd.metric_code = 'power' then hdd.metric_value end) as avgPower,
+               count(distinct hd.id) as deviceCount
+        from hospital_device hd
+        left join hospital_device_data hdd
+               on hdd.device_id = hd.id
+              and hdd.ts &gt;= #{start}
+              and hdd.ts &lt;= #{end}
+        where hd.project_category is not null and hd.project_category &lt;&gt; ''
+        group by hd.project_category
+        order by kwh desc
+    </select>
+
+    <!-- 按分项 + 天聚合趋势 -->
+    <select id="selectCategoryDailyTrend" resultType="java.util.Map">
+        select d.day as day,
+               d.category as category,
+               sum(d.dayKwh) as kwh
+        from (
+            select date(hdd.ts) as day,
+                   hd.project_category as category,
+                   (max(case when hdd.metric_code = 'electricity' then hdd.metric_value end)
+                    - min(case when hdd.metric_code = 'electricity' then hdd.metric_value end)) as dayKwh
+            from hospital_device_data hdd
+            join hospital_device hd on hdd.device_id = hd.id
+            where hd.project_category is not null and hd.project_category &lt;&gt; ''
+              and hdd.ts &gt;= #{start}
+              and hdd.ts &lt;= #{end}
+            group by date(hdd.ts), hd.project_category, hdd.device_id
+        ) d
+        group by d.day, d.category
+        order by d.day, d.category
+    </select>
+
     <!-- 按小时聚合平均功率（0-23） -->
     <select id="selectHourlyPower" resultType="java.util.Map">
         select hour(hdd.ts) as hour,
