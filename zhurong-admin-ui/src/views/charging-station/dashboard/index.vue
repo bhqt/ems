@@ -113,7 +113,7 @@
           <el-card class="box-card" shadow="never">
             <div class="card-title">{{ $t('dashboard.last7DaysAmount') }}</div>
             <div style="height: calc(100% - 30px);">
-              <StationLineVue height="100%" yName="{{ $t('dashboard.unitYuan') }}" :seriesName="$t('dashboard.amount')" :chartData="lineDataFour" itemColor="#c7a428"/>
+              <StationLineVue height="100%" :yName="$t('dashboard.unitYuan')" :seriesName="$t('dashboard.amount')" :chartData="lineDataFour" itemColor="#c7a428"/>
             </div>
           </el-card>
         </el-col>

@@ -1,0 +1,97 @@
+# ======================================================
+# 本地研发(dev)调试配置 - 接入 D:\code\shared-infra 共享中间件
+# ------------------------------------------------------
+# 使用方式(IntelliJ IDEA Run Config)：
+#   Active profiles: local
+#   Program arguments: --spring.profiles.active=local
+# 说明：本文件自包含全部中间件连接，指向本机 shared-infra 映射端口，
+#       不依赖 deep-ems0/application.yml(容器覆盖层)与 docker-compose 服务名。
+# 原生产部署脚本(docker-compose-54.yml / docker-compose.full.yml)不受影响。
+# ======================================================
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    dynamic:
+      # 性能分析插件(本地调试关闭)
+      p6spy: false
+      # 默认数据源
+      primary: master
+      # 严格模式
+      strict: true
+      datasource:
+        # 主库数据源 -> shared-mysql (autoee_ems 已导入)
+        master:
+          type: ${spring.datasource.type}
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+          username: root
+          password: 123456
+        # TDengine 时序库 -> shared-tdengine (REST 6041, 库 energy)
+        td:
+          enabled: true
+          driverClassName: com.taosdata.jdbc.rs.RestfulDriver
+          url: jdbc:TAOS-RS://localhost:6041/energy?user=root&password=taosdata&timezone=Asia/Shanghai
+          username: root
+          password: taosdata
+      hikari:
+        maxPoolSize: 20
+        minIdle: 10
+        connectionTimeout: 30000
+        validationTimeout: 5000
+        idleTimeout: 600000
+        maxLifetime: 1800000
+        connectionTestQuery: SELECT 1
+        keepaliveTime: 30000
+
+  redis:
+    # shared-redis (db 13, 有密码 difyai123456)
+    host: localhost
+    port: 6379
+    database: 13
+    password: difyai123456
+    timeout: 10s
+    ssl: false
+
+  rabbitmq:
+    # shared-rabbitmq
+    host: localhost
+    port: 5672
+    username: rabbitmq
+    password: rabbitmqpassword
+    virtual-host: admin_vhost
+    publisher-confirm-type: correlated
+    publisher-returns: true
+
+# MQTT -> shared-emqx (admin/public)
+mqtt:
+  host: tcp://localhost:1883
+  username: admin
+  password: public
+  clientId: zhurong-ems-local-client
+  qos: 1
+  timeout: 120
+  keepalive: 360
+
+# xxl-job: shared-infra 不含调度中心，本地调试关闭执行器自动注册。
+# 若需联调调度任务，请先运行 xxl-job-admin 并放开 admin-addresses 与 enabled。
+xxl.job:
+  enabled: false
+  admin-addresses: http://localhost:8080/xxl-job-admin
+  access-token: default_token
+  executor:
+    appname: xxl-job-executor
+    port: 9101
+    logpath: ./logs/xxl-job
+    logretentiondays: 30
+
+# 本地无监控中心(SBA)，关闭客户端注册
+spring.boot.admin.client:
+  enabled: false
+
+--- # redisson (跟随 spring.redis, 显式声明以防孤连)
+redisson:
+  singleServerConfig:
+    address: redis://localhost:6379
+    database: 13
+    password: difyai123456

@@ -1,0 +1,15 @@
+# 临时：只读挂载原 zhurong-ems-mysql-data 卷，导出数据到 shared-infra（不映射宿主机端口）
+# 用途：将原 ems 数据库(autoee_ems / xxl_job) dump 出来，供 shared-mysql 导入
+# 用后：docker compose -f .dev/ems-mysql-export.yml down （保留原卷）
+services:
+  ems-mysql-export:
+    image: mysql:8.0
+    container_name: zhurong-ems-mysql-export
+    restart: "no"
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    volumes:
+      - zhurong-ems-mysql-data:/var/lib/mysql
+      - ./.dev/dumps:/dumps
+volumes:
+  zhurong-ems-mysql-data:
+    external: true
