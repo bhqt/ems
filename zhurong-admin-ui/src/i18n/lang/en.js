@@ -2465,6 +2465,25 @@ export default {
     escalation: 'Escalation',
     escalateMin: 'Escalate After (min)',
     escalateLevel: 'Escalate Level',
-    min: 'min'
+    min: 'min',
+    dashTitle: 'Role Dashboard',
+    dashSub: 'Dynamically show data modules based on the current user\'s role and permissions',
+    currentRole: 'Current Role',
+    roleAdmin: 'Super Admin',
+    roleAreaAdmin: 'Campus Admin',
+    roleEnergyAdmin: 'Energy Admin',
+    roleDeviceAdmin: 'Device Admin',
+    roleCommon: 'Common User',
+    dashOverview: 'Campus Energy Overview',
+    dashAreaCompare: 'Campus Comparison',
+    dashDeviceStatus: 'Device Status',
+    dashCategory: 'Energy Category',
+    dashTrend: 'Energy Trend',
+    dashRank: 'Device Rank',
+    dashEfficiency: 'Unit Energy Efficiency',
+    dashAlarm: 'Recent Alarms',
+    deviceOnline: 'Online',
+    deviceFault: 'Fault',
+    viewMore: 'View More'
   }
 }

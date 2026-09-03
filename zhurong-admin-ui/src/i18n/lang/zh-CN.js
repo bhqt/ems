@@ -2822,6 +2822,25 @@ export default {
     escalation: '升级策略',
     escalateMin: '升级超时(分钟)',
     escalateLevel: '升级级别',
-    min: '分钟'
+    min: '分钟',
+    dashTitle: '角色定制看板',
+    dashSub: '依据当前用户角色与权限动态呈现所关注的数据模块',
+    currentRole: '当前角色',
+    roleAdmin: '超级管理员',
+    roleAreaAdmin: '院区管理员',
+    roleEnergyAdmin: '能源管理员',
+    roleDeviceAdmin: '设备管理员',
+    roleCommon: '普通用户',
+    dashOverview: '全院能耗概览',
+    dashAreaCompare: '院区能耗对比',
+    dashDeviceStatus: '设备运行状态',
+    dashCategory: '分项能耗构成',
+    dashTrend: '能耗趋势',
+    dashRank: '设备耗电排名',
+    dashEfficiency: '单位工作量能效',
+    dashAlarm: '最近报警',
+    deviceOnline: '在线设备',
+    deviceFault: '故障设备',
+    viewMore: '查看更多'
   }
 }
