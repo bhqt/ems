@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.hospital.mapper.HospitalEnergyMapper">
+
+    <!-- 按设备聚合周期统计：用电量取累计电量 max-min，功率取 avg/max，运行状态取点数 -->
+    <select id="selectDeviceStats" resultType="java.util.Map">
+        select hd.id as deviceId,
+               hd.device_name as deviceName,
+               hd.device_code as deviceCode,
+               hd.device_type as deviceType,
+               hd.area_id as areaId,
+               hd.dept_id as deptId,
+               (max(case when hdd.metric_code = 'electricity' then hdd.metric_value end)
+                - min(case when hdd.metric_code = 'electricity' then hdd.metric_value end)) as kwh,
+               avg(case when hdd.metric_code = 'power' then hdd.metric_value end) as avgPower,
+               max(case when hdd.metric_code = 'power' then hdd.metric_value end) as maxPower,
+               sum(case when hdd.metric_code = 'run_status'
+                   and (hdd.metric_value = 1 or hdd.metric_str in ('1')) then 1 else 0 end) as runPoints,
+               sum(case when hdd.metric_code = 'run_status'
+                   and (hdd.metric_value = 0 or hdd.metric_str in ('0')) then 1 else 0 end) as standbyPoints,
+               count(hdd.id) as totalPoints
+        from hospital_device hd
+        left join hospital_device_data hdd
+               on hdd.device_id = hd.id
+              and hdd.ts &gt;= #{start}
+              and hdd.ts &lt;= #{end}
+        <where>
+            <if test="deviceIds != null and deviceIds.size() > 0">
+                AND hd.id in
+                <foreach collection="deviceIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        group by hd.id, hd.device_name, hd.device_code, hd.device_type, hd.area_id, hd.dept_id
+    </select>
+
+    <!-- 按天聚合：日电量为各设备日增量之和，功率为日平均 -->
+    <select id="selectDailyTrend" resultType="java.util.Map">
+        select d.day as day,
+               sum(d.dayKwh) as kwh,
+               avg(d.dayAvgPower) as avgPower
+        from (
+            select date(hdd.ts) as day,
+                   hdd.device_id as deviceId,
+                   (max(case when hdd.metric_code = 'electricity' then hdd.metric_value end)
+                    - min(case when hdd.metric_code = 'electricity' then hdd.metric_value end)) as dayKwh,
+                   avg(case when hdd.metric_code = 'power' then hdd.metric_value end) as dayAvgPower
+            from hospital_device_data hdd
+            where hdd.ts &gt;= #{start}
+              and hdd.ts &lt;= #{end}
+              <if test="deviceIds != null and deviceIds.size() > 0">
+                  AND hdd.device_id in
+                  <foreach collection="deviceIds" item="id" open="(" separator="," close=")">
+                      #{id}
+                  </foreach>
+              </if>
+            group by date(hdd.ts), hdd.device_id
+        ) d
+        group by d.day
+        order by d.day
+    </select>
+
+    <!-- 按小时聚合平均功率（0-23） -->
+    <select id="selectHourlyPower" resultType="java.util.Map">
+        select hour(hdd.ts) as hour,
+               avg(hdd.metric_value) as avgPower
+        from hospital_device_data hdd
+        where hdd.metric_code = 'power'
+          and hdd.metric_value is not null
+          and hdd.ts &gt;= #{start}
+          and hdd.ts &lt;= #{end}
+          <if test="deviceIds != null and deviceIds.size() > 0">
+              AND hdd.device_id in
+              <foreach collection="deviceIds" item="id" open="(" separator="," close=")">
+                  #{id}
+              </foreach>
+          </if>
+        group by hour(hdd.ts)
+        order by hour(hdd.ts)
+    </select>
+
+</mapper>

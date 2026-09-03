@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.hospital.mapper.HospitalAlarmRecordMapper">
+
+    <resultMap type="com.ruoyi.system.hospital.vo.HospitalAlarmRecordVo" id="HospitalAlarmRecordResult">
+        <id property="id" column="id"/>
+        <result property="ruleId" column="rule_id"/>
+        <result property="ruleName" column="rule_name"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="deviceCode" column="device_code"/>
+        <result property="metricCode" column="metric_code"/>
+        <result property="alarmType" column="alarm_type"/>
+        <result property="level" column="level"/>
+        <result property="alarmVal" column="alarm_val"/>
+        <result property="content" column="content"/>
+        <result property="status" column="status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="handleBy" column="handle_by"/>
+        <result property="handleTime" column="handle_time"/>
+        <result property="handleRemark" column="handle_remark"/>
+    </resultMap>
+
+    <select id="selectHospitalAlarmRecordList" resultMap="HospitalAlarmRecordResult">
+        select har.id,
+               har.rule_id,
+               hrule.rule_name,
+               har.device_id,
+               hd.device_name,
+               hd.device_code,
+               har.metric_code,
+               har.alarm_type,
+               har.level,
+               har.alarm_val,
+               har.content,
+               har.status,
+               har.start_time,
+               har.end_time,
+               har.handle_by,
+               har.handle_time,
+               har.handle_remark
+        from hospital_alarm_record har
+        left join hospital_device hd on har.device_id = hd.id
+        left join hospital_alarm_rule hrule on har.rule_id = hrule.id
+        <where>
+            <if test="deviceId != null">
+                AND har.device_id = #{deviceId}
+            </if>
+            <if test="alarmType != null and alarmType != ''">
+                AND har.alarm_type = #{alarmType}
+            </if>
+            <if test="status != null and status != ''">
+                AND har.status = #{status}
+            </if>
+            <if test="level != null and level != ''">
+                AND har.level = #{level}
+            </if>
+        </where>
+        order by har.start_time desc, har.id desc
+    </select>
+
+</mapper>

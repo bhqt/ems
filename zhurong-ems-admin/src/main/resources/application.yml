@@ -152,6 +152,26 @@ security:
     # actuator 监控配置
     - /actuator
     - /actuator/**
+    # 医院 IOT 回调（外部 IOT 平台调用，无需登录）
+    - /hospital/callback/**
+
+# 医院智慧能源 - IOT 回调接入配置
+hospital:
+  iot:
+    # 回调鉴权 token（IOT 平台请求头 X-IOT-Token 携带，需一致）
+    auth-token: hospital-iot-2026
+    # IP 白名单（逗号/分号分隔，为空表示不限制；生产建议配置 IOT 平台出口 IP）
+    ip-whitelist:
+    # 是否校验签名（默认关闭；开启需同时配置 sign-secret）
+    sign-enabled: false
+    # 签名密钥（请求头 X-IOT-Sign = hex(HMAC_SHA256(secret, timestamp + "\n" + msgId))）
+    sign-secret:
+    # 监测页离线判定阈值（分钟）：设备无数据超过该时长视为离线
+    monitor-offline-minutes: 30
+    # RabbitMQ 交换机 / 队列 / 路由键
+    exchange: hospital.topic.exchange
+    queue: hospital.device.data.queue
+    routing-key: hospital.device.data
 
 # MyBatisPlus配置
 # https://baomidou.com/config/

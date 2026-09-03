@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.hospital.mapper.HospitalDeviceDataMapper">
+
+    <resultMap type="com.ruoyi.system.hospital.vo.HospitalDeviceDataVo" id="HospitalDeviceDataResult">
+        <id property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="deviceCode" column="device_code"/>
+        <result property="metricCode" column="metric_code"/>
+        <result property="metricName" column="metric_name"/>
+        <result property="unit" column="unit"/>
+        <result property="metricValue" column="metric_value"/>
+        <result property="metricStr" column="metric_str"/>
+        <result property="ts" column="ts"/>
+        <result property="quality" column="quality"/>
+    </resultMap>
+
+    <select id="selectHospitalDeviceDataList" resultMap="HospitalDeviceDataResult">
+        select hdd.id,
+               hdd.device_id,
+               hd.device_name,
+               hd.device_code,
+               hdd.metric_code,
+               hm.metric_name,
+               hm.unit,
+               hdd.metric_value,
+               hdd.metric_str,
+               hdd.ts,
+               hdd.quality
+        from hospital_device_data hdd
+        left join hospital_device hd on hdd.device_id = hd.id
+        left join hospital_metric_def hm on hdd.metric_code = hm.metric_code
+        <where>
+            <if test="deviceId != null">
+                AND hdd.device_id = #{deviceId}
+            </if>
+            <if test="metricCode != null and metricCode != ''">
+                AND hdd.metric_code = #{metricCode}
+            </if>
+        </where>
+        order by hdd.ts desc
+        <if test="limit != null">
+            limit #{limit}
+        </if>
+    </select>
+
+    <select id="selectLatestByDeviceIds" resultType="com.ruoyi.system.hospital.domain.HospitalDeviceData">
+        select hdd.id,
+               hdd.device_id,
+               hdd.metric_code,
+               hdd.metric_value,
+               hdd.metric_str,
+               hdd.ts,
+               hdd.quality,
+               hdd.receive_time
+        from hospital_device_data hdd
+        inner join (
+            select device_id, metric_code, max(ts) as max_ts
+            from hospital_device_data
+            <where>
+                <if test="deviceIds != null and deviceIds.size() > 0">
+                    AND device_id in
+                    <foreach collection="deviceIds" item="id" open="(" separator="," close=")">
+                        #{id}
+                    </foreach>
+                </if>
+            </where>
+            group by device_id, metric_code
+        ) m on hdd.device_id = m.device_id
+           and hdd.metric_code = m.metric_code
+           and hdd.ts = m.max_ts
+    </select>
+
+    <select id="selectMaxTsByDeviceIds" resultType="java.util.Map">
+        select device_id as deviceId, max(ts) as maxTs
+        from hospital_device_data
+        <where>
+            <if test="deviceIds != null and deviceIds.size() > 0">
+                AND device_id in
+                <foreach collection="deviceIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        group by device_id
+    </select>
+
+</mapper>

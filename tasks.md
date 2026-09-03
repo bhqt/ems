@@ -6,45 +6,45 @@
 
 ## 里程碑 M1：项目骨架 + 数据接入 + 设备台账（P0）
 
-- [ ] T1.1 新建医院系统前端工程（或独立前端目录），配置医院 UI 主题基础
+- [x] T1.1 新建医院系统前端工程（或独立前端目录），配置医院 UI 主题基础 — 复用 zhurong-admin-ui/views/hospital/（4 页面）+ api/hospital/ + 中/英 i18n，不另起独立工程
 
-- [ ] T1.2 后端回调接入层：回调 Controller、鉴权拦截器（Token/签名/IP）、报文解析器
+- [x] T1.2 后端回调接入层：回调 Controller、鉴权拦截器（Token/签名/IP）、报文解析器 — HospitalCallbackController + IotCallbackAuthService（Token 比对 + IP 白名单 + HMAC_SHA256 签名，均配置化）+ IotDataParserImpl
 
-- [ ] T1.3 标准数据结构定义：设备指标模型、数据点模型（deviceId/metric/value/ts/quality）
+- [x] T1.3 标准数据结构定义：设备指标模型、数据点模型（deviceId/metric/value/ts/quality）— StandardDataPoint + IotCallbackRequest
 
-- [ ] T1.4 数据标准化与 MQ 投递：解析后投递 RabbitMQ，失败重试队列
+- [x] T1.4 数据标准化与 MQ 投递：解析后投递 RabbitMQ，失败重试队列 — hospital.topic.exchange + 死信转重试队列（最大 3 次）
 
-- [ ] T1.5 数据消费与落库：MySQL 业务表 + TDengine 时序表（可开关）
+- [x] T1.5 数据消费与落库：MySQL 业务表 + TDengine 时序表（可开关）— HospitalDeviceDataConsumer（TD 失败不阻断主链路）
 
-- [ ] T1.6 回调日志与监控：回调记录、失败统计、异常日志
+- [x] T1.6 回调日志与监控：回调记录、失败统计、异常日志 — hospital_callback_log + 回调日志列表页（统计大盘待 M2 增强）
 
-- [ ] T1.7 设备台账模块：检查检验设备档案 CRUD + IOT 设备绑定管理
+- [x] T1.7 设备台账模块：检查检验设备档案 CRUD + IOT 设备绑定管理 — 含 device_code / iot_device_id 唯一性校验
 
-- [ ] T1.8 数据库脚本：新增表结构（设备台账、指标定义、回调日志、设备绑定等）
+- [x] T1.8 数据库脚本：新增表结构（设备台账、指标定义、回调日志、设备绑定等）— hospital_init.sql + hospital_init_tdengine.sql + hospital_menu.sql
 
 ## 里程碑 M2：医院 UI + 设备监测 + 报警（P0）
 
-- [ ] T2.1 医院风格 UI 主题（配色/布局/组件样式）落地
+- [x] T2.1 医院风格 UI 主题（配色/布局/组件样式）落地 — 医院首页模块卡片 + 监测页医院蓝渐变（深色大屏主题待 M4）
 
-- [ ] T2.2 国际化框架：中/英语言包、切换机制、菜单与业务文案国际化
+- [x] T2.2 国际化框架：中/英语言包、切换机制、菜单与业务文案国际化 — LangSelect 切换已存在，hospital 中/英词条补齐监测+报警（动态菜单名/多时区待 M4）
 
-- [ ] T2.3 设备监测页面：设备列表、运行状态、能耗实时展示
+- [x] T2.3 设备监测页面：设备列表、运行状态、能耗实时展示 — views/hospital/monitor（在线/运行/功率/电量/未处理报警，30s 自动刷新，趋势对话框）
 
-- [ ] T2.4 设备报警：报警规则配置、触发引擎、报警记录与通知（对接现有报警能力改造）
+- [x] T2.4 设备报警：报警规则配置、触发引擎、报警记录与通知（对接现有报警能力改造）— 独立 hospital_alarm_rule/record 表（与旧 alarm 链路隔离）；阈值引擎随落库触发 + 离线 5 分钟扫描 + 邮件通知；规则/记录两页面
 
-- [ ] T2.5 后端监测接口：设备状态/能耗查询 API（聚合 TDengine 数据）
+- [x] T2.5 后端监测接口：设备状态/能耗查询 API（聚合 TDengine 数据）— GET /hospital/monitor/overview（聚合 MySQL 最新点 + 在离线判定）与 /trend（TDengine 聚合待 M3 按分析需求增强）
 
 ## 里程碑 M3：能耗分析 + 能效评估 + 节能建议（P1）
 
-- [ ] T3.1 全院能耗概览与多级钻取（院区/楼宇/科室/设备）
+- [x] T3.1 全院能耗概览与多级钻取（院区/楼宇/科室/设备）— GET /hospital/energy/overview，AREA/DEPT/DEVICE 三级（楼宇归并到科室，台账无楼宇字段），附环比 — views/hospital/energy（ECharts 趋势图 + 排名表）
 
-- [ ] T3.2 分区/分项分析：分区维度、分项维度、同比环比/趋势/排名
+- [x] T3.2 分区/分项分析：分区维度、分项维度、同比环比/趋势/排名 — 分区（院区/科室）+ 设备排名 + 日/小时趋势 + 环比；分项（照明/空调/医疗设备/动力）需分项计量点，待有分项数据后增强
 
-- [ ] T3.3 设备能效评估：单位工作量能耗、待机占比、运行效率模型与计算
+- [x] T3.3 设备能效评估：单位工作量能耗、待机占比、运行效率模型与计算 — 待机占比 + 平均功率 + 同类对标 + 评分等级（单位工作量需检查量数据对接，暂用功率对标代替）
 
-- [ ] T3.4 节能建议引擎：待机浪费/高耗能时段/异常设备识别，建议清单生成与导出
+- [x] T3.4 节能建议引擎：待机浪费/高耗能时段/异常设备识别，建议清单生成与导出 — 三规则引擎 + Excel 导出
 
-- [ ] T3.5 分析报告：周期报告生成与导出（对接现有报表能力）
+- [x] T3.5 分析报告：周期报告生成与导出（对接现有报表能力）— 节能建议清单 + 能效评估 Excel 导出（复用 ExcelUtil/EasyExcel），views/hospital/efficiency
 
 ## 里程碑 M4：大屏 + 看板 + 海外适配收尾（P1）
 
