@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ChargingPileMapper">
+
+    <resultMap type="com.ruoyi.system.domain.vo.ChargingPileVo" id="ChargingPileResult">
+        <id property="pileId" column="pile_id"/>
+        <result property="encoding" column="encoding"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="merchantId" column="merchant_id"/>
+        <result property="merchantName" column="merchant_name"/>
+        <result property="stationId" column="station_id"/>
+        <result property="stationName" column="station_name"/>
+        <result property="brand" column="brand"/>
+        <result property="model" column="model"/>
+        <result property="status" column="status"/>
+        <result property="workStatus" column="work_status"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="totalCount" column="total_count"/>
+        <result property="normalCount" column="normal_count"/>
+        <result property="disabledCount" column="disabled_count"/>
+        <result property="onlineCount" column="online_count"/>
+    </resultMap>
+
+    <sql id="selectChargingPileVo">
+        select p.pile_id,
+               p.encoding,
+               p.type,
+               p.name,
+               p.merchant_id,
+               p.merchant_name,
+               p.station_id,
+               p.station_name,
+               p.brand,
+               p.model,
+               p.status,
+               p.work_status,
+               p.remark,
+               p.create_time,
+               p.create_by,
+               p.update_time,
+               p.update_by
+        from charging_pile p
+    </sql>
+
+    <select id="selectChargingPileViewList" resultMap="ChargingPileResult">
+        <include refid="selectChargingPileVo"/>
+        <where>
+            p.del_flag = '0'
+            <if test="name != null and name != ''">
+                AND p.name like concat('%', #{name}, '%')
+            </if>
+            <if test="encoding != null and encoding != ''">
+                AND p.encoding like concat('%', #{encoding}, '%')
+            </if>
+            <if test="brand != null and brand != ''">
+                AND p.brand like concat('%', #{brand}, '%')
+            </if>
+            <if test="model != null and model != ''">
+                AND p.model like concat('%', #{model}, '%')
+            </if>
+            <if test="stationId != null">
+                AND p.station_id = #{stationId}
+            </if>
+            <if test="status != null and status != ''">
+                AND p.status = #{status}
+            </if>
+            <if test="workStatus != null and workStatus != ''">
+                AND p.work_status = #{workStatus}
+            </if>
+        </where>
+        order by p.create_time desc
+    </select>
+
+    <select id="selectChargingPileViewById" parameterType="Long" resultMap="ChargingPileResult">
+        <include refid="selectChargingPileVo"/>
+        where p.pile_id = #{pileId}
+          and p.del_flag = '0'
+    </select>
+
+    <select id="selectChargingPileStatistics" resultMap="ChargingPileResult">
+        select
+            (select count(*) from charging_pile p where p.del_flag = '0') as total_count,
+            (select count(*) from charging_pile p where p.del_flag = '0' and p.status = '0') as normal_count,
+            (select count(*) from charging_pile p where p.del_flag = '0' and p.status = '1') as disabled_count,
+            (select count(*) from charging_pile p where p.del_flag = '0' and p.work_status = '1') as online_count
+        from dual
+    </select>
+
+</mapper>

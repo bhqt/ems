@@ -3,7 +3,7 @@ zhurong-ems:
   # 名称
   name: zhurong-ems
   # 版本
-  version: ${zhurong-ems.version}
+  version: 4.6.0
   # 版权年份
   copyrightYear: 2025
   # 实例演示开关
@@ -16,10 +16,10 @@ zhurong-ems:
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8088
+  port: 8080
   servlet:
     # 应用的访问路径
-    context-path: /autoee-iot-ems
+    context-path: /
   # undertow 配置
   undertow:
     # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
@@ -49,7 +49,7 @@ captcha:
 # 日志配置
 logging:
   level:
-    com.zhurong-ems: @logging.level@
+    com.zhurong-ems: debug
     org.springframework: warn
   config: classpath:logback.xml
 
@@ -73,7 +73,7 @@ spring:
     basename: i18n/messages
   profiles:
     active: dev
-#    active: @profiles.active@
+#    active: dev
   # 文件上传
   servlet:
     multipart:
@@ -86,6 +86,12 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  # 字符编码配置
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
   mvc:
     format:
       date-time: yyyy-MM-dd HH:mm:ss
@@ -197,7 +203,7 @@ mybatis-plus:
     # 更详细的日志输出 会有性能损耗 org.apache.ibatis.logging.stdout.StdOutImpl
     # 关闭日志记录 (可单纯使用 p6spy 分析) org.apache.ibatis.logging.nologging.NoLoggingImpl
     # 默认日志输出 org.apache.ibatis.logging.slf4j.Slf4jImpl
-    logImpl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     # 是否打印 Logo banner
     banner: true
@@ -239,7 +245,7 @@ swagger:
     # 描述
     description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...'
     # 版本
-    version: '版本号: ${zhurong-ems.version}'
+    version: '版本号: 4.6.0'
     # 作者信息
     contact:
       name: cpems

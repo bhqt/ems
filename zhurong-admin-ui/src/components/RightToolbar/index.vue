@@ -33,6 +33,13 @@ export default {
     };
   },
   computed: {
+    style() {
+      const ret = {};
+      if (this.gutter) {
+        ret.marginRight = `${this.gutter / 2}px`;
+      }
+      return ret;
+    },
     title() {
       return this.$t('rightToolbar.showHideTitle')
     }
@@ -53,15 +60,6 @@ export default {
       type: Number,
       default: 10,
     },
-  },
-  computed: {
-    style() {
-      const ret = {};
-      if (this.gutter) {
-        ret.marginRight = `${this.gutter / 2}px`;
-      }
-      return ret;
-    }
   },
   created() {
     // 显隐列初始默认隐藏列

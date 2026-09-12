@@ -1,0 +1,248 @@
+// =============================================================================
+// 设计令牌 - 导出为 CSS Variables
+// =============================================================================
+
+:root {
+  // ============ 色板 ============
+  // 主色调
+  --zhurong-color-primary: #1677ff;
+  --zhurong-color-primary-hover: #4096ff;
+  --zhurong-color-primary-active: #0958d9;
+  --zhurong-color-primary-bg: #e6f7ff;
+  --zhurong-color-primary-border: #91d5ff;
+
+  // 成功色
+  --zhurong-color-success: #52c41a;
+  --zhurong-color-success-hover: #73d13d;
+  --zhurong-color-success-active: #389e0d;
+  --zhurong-color-success-bg: #f6ffed;
+  --zhurong-color-success-border: #b7eb8f;
+
+  // 警告色
+  --zhurong-color-warning: #faad14;
+  --zhurong-color-warning-hover: #ffc53d;
+  --zhurong-color-warning-active: #d48806;
+  --zhurong-color-warning-bg: #fffbe6;
+  --zhurong-color-warning-border: #ffe58f;
+
+  // 错误色
+  --zhurong-color-error: #ff4d4f;
+  --zhurong-color-error-hover: #ff7875;
+  --zhurong-color-error-active: #d9363e;
+  --zhurong-color-error-bg: #fff1f0;
+  --zhurong-color-error-border: #ffa39e;
+
+  // 信息色
+  --zhurong-color-info: #1677ff;
+  --zhurong-color-info-hover: #4096ff;
+  --zhurong-color-info-active: #0958d9;
+  --zhurong-color-info-bg: #e6f7ff;
+  --zhurong-color-info-border: #91d5ff;
+
+  // 中性色 - 文本
+  --zhurong-color-text: rgba(0, 0, 0, 0.85);
+  --zhurong-color-text-heading: rgba(0, 0, 0, 0.85);
+  --zhurong-color-text-secondary: rgba(0, 0, 0, 0.45);
+  --zhurong-color-text-tertiary: rgba(0, 0, 0, 0.25);
+  --zhurong-color-text-quaternary: rgba(0, 0, 0, 0.15);
+  --zhurong-color-text-inverse: #fff;
+
+  // 中性色 - 背景
+  --zhurong-color-bg-layout: #f0f2f5;
+  --zhurong-color-bg-container: #fff;
+  --zhurong-color-bg-elevated: #fff;
+  --zhurong-color-bg-hover: #fafafa;
+  --zhurong-color-bg-active: #f5f5f5;
+  --zhurong-color-bg-mask: rgba(0, 0, 0, 0.45);
+
+  // 中性色 - 边框
+  --zhurong-color-border: #d9d9d9;
+  --zhurong-color-border-hover: #bfbfbf;
+  --zhurong-color-border-active: #8c8c8c;
+  --zhurong-color-border-secondary: #f0f0f0;
+
+  // 中性色 - 灰度
+  --zhurong-color-gray-50: #fafafa;
+  --zhurong-color-gray-100: #f5f5f5;
+  --zhurong-color-gray-200: #f0f0f0;
+  --zhurong-color-gray-300: #d9d9d9;
+  --zhurong-color-gray-400: #bfbfbf;
+  --zhurong-color-gray-500: #999;
+  --zhurong-color-gray-600: #8c8c8c;
+  --zhurong-color-gray-700: #737373;
+  --zhurong-color-gray-800: #595959;
+  --zhurong-color-gray-900: #434343;
+  --zhurong-color-gray-950: #262626;
+
+  // ============ 字体 ============
+  --zhurong-font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --zhurong-font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  --zhurong-font-size: 14px;
+  --zhurong-font-size-sm: 12px;
+  --zhurong-font-size-lg: 16px;
+  --zhurong-font-size-xl: 20px;
+  --zhurong-font-size-2xl: 24px;
+  --zhurong-font-size-3xl: 30px;
+  --zhurong-font-size-4xl: 36px;
+
+  --zhurong-line-height: 1.5715;
+  --zhurong-line-height-sm: 1.5;
+  --zhurong-line-height-lg: 1.5;
+
+  --zhurong-font-weight-normal: 400;
+  --zhurong-font-weight-medium: 500;
+  --zhurong-font-weight-semibold: 600;
+  --zhurong-font-weight-bold: 700;
+
+  // ============ 间距 ============
+  --zhurong-spacing-xs: 4px;
+  --zhurong-spacing-sm: 8px;
+  --zhurong-spacing-md: 16px;
+  --zhurong-spacing-lg: 24px;
+  --zhurong-spacing-xl: 32px;
+  --zhurong-spacing-2xl: 48px;
+  --zhurong-spacing-3xl: 64px;
+
+  // ============ 圆角 ============
+  --zhurong-border-radius: 6px;
+  --zhurong-border-radius-sm: 4px;
+  --zhurong-border-radius-lg: 8px;
+  --zhurong-border-radius-xl: 12px;
+  --zhurong-border-radius-2xl: 16px;
+  --zhurong-border-radius-full: 9999px;
+
+  // ============ 阴影 ============
+  --zhurong-box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  --zhurong-box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --zhurong-box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --zhurong-box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --zhurong-box-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+  // ============ 控件尺寸 ============
+  --zhurong-control-height: 40px;
+  --zhurong-control-height-sm: 32px;
+  --zhurong-control-height-lg: 48px;
+  --zhurong-control-padding-horizontal: 12px;
+  --zhurong-control-padding-horizontal-sm: 8px;
+  --zhurong-control-padding-horizontal-lg: 16px;
+
+  // ============ 过渡动画 ============
+  --zhurong-transition-fast: 0.1s;
+  --zhurong-transition-base: 0.2s;
+  --zhurong-transition-slow: 0.3s;
+  --zhurong-transition-slower: 0.5s;
+
+  --zhurong-ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --zhurong-ease-in: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --zhurong-ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --zhurong-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  // ============ 层级 ============
+  --zhurong-z-index-dropdown: 1000;
+  --zhurong-z-index-sticky: 1020;
+  --zhurong-z-index-fixed: 1030;
+  --zhurong-z-index-modal-backdrop: 1040;
+  --zhurong-z-index-modal: 1050;
+  --zhurong-z-index-popover: 1060;
+  --zhurong-z-index-tooltip: 1070;
+  --zhurong-z-index-toast: 1080;
+
+  // ============ 布局 ============
+  --zhurong-header-height: 60px;
+  --zhurong-sider-width: 260px;
+  --zhurong-sider-collapsed-width: 80px;
+  --zhurong-footer-height: 48px;
+
+  // ============ 响应式断点 ============
+  --zhurong-breakpoint-xs: 480px;
+  --zhurong-breakpoint-sm: 640px;
+  --zhurong-breakpoint-md: 768px;
+  --zhurong-breakpoint-lg: 1024px;
+  --zhurong-breakpoint-xl: 1280px;
+  --zhurong-breakpoint-2xl: 1536px;
+  --zhurong-breakpoint-3xl: 1920px;
+}
+
+// =============================================================================
+// 暗色模式
+// =============================================================================
+.dark {
+  --zhurong-color-text: rgba(255, 255, 255, 0.85);
+  --zhurong-color-text-heading: rgba(255, 255, 255, 0.85);
+  --zhurong-color-text-secondary: rgba(255, 255, 255, 0.65);
+  --zhurong-color-text-tertiary: rgba(255, 255, 255, 0.45);
+  --zhurong-color-text-quaternary: rgba(255, 255, 255, 0.25);
+  --zhurong-color-text-inverse: rgba(0, 0, 0, 0.85);
+
+  --zhurong-color-bg-layout: #141414;
+  --zhurong-color-bg-container: #1f1f1f;
+  --zhurong-color-bg-elevated: #262626;
+  --zhurong-color-bg-hover: #262626;
+  --zhurong-color-bg-active: #333;
+  --zhurong-color-bg-mask: rgba(0, 0, 0, 0.65);
+
+  --zhurong-color-border: #434343;
+  --zhurong-color-border-hover: #595959;
+  --zhurong-color-border-active: #737373;
+  --zhurong-color-border-secondary: #303030;
+
+  --zhurong-color-primary-bg: #111b2f;
+  --zhurong-color-primary-border: #1a3b6e;
+  --zhurong-color-success-bg: #13230a;
+  --zhurong-color-success-border: #2a4a0d;
+  --zhurong-color-warning-bg: #2b1e00;
+  --zhurong-color-warning-border: #5c3c00;
+  --zhurong-color-error-bg: #2b0e0e;
+  --zhurong-color-error-border: #5c0d0d;
+  --zhurong-color-info-bg: #111b2f;
+  --zhurong-color-info-border: #1a3b6e;
+}
+
+// =============================================================================
+// 医院主题
+// =============================================================================
+[data-theme='hospital'] {
+  --zhurong-color-primary: #00B96B;
+  --zhurong-color-primary-hover: #00D47A;
+  --zhurong-color-primary-active: #00A05D;
+  --zhurong-color-primary-bg: #E8F7F0;
+  --zhurong-color-primary-border: #A5E8C8;
+
+  --zhurong-color-success: #00B96B;
+  --zhurong-color-success-hover: #00D47A;
+  --zhurong-color-success-active: #00A05D;
+  --zhurong-color-success-bg: #E8F7F0;
+  --zhurong-color-success-border: #A5E8C8;
+
+  --zhurong-color-info: #1890FF;
+  --zhurong-color-info-hover: #40A9FF;
+  --zhurong-color-info-active: #096DD9;
+  --zhurong-color-info-bg: #E6F4FF;
+  --zhurong-color-info-border: #91D5FF;
+
+  --zhurong-color-bg-layout: #F0F5FA;
+  --zhurong-color-bg-container: #FFFFFF;
+  --zhurong-color-border: #D9E2EF;
+  --zhurong-color-border-hover: #C0CCDA;
+  --zhurong-color-text: #1F1F1F;
+  --zhurong-color-text-secondary: #595959;
+
+  --zhurong-font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+}
+
+[data-theme='hospital'].dark {
+  --zhurong-color-primary: #00D47A;
+  --zhurong-color-primary-hover: #00E885;
+  --zhurong-color-primary-active: #00B96B;
+  --zhurong-color-primary-bg: #0A2A1A;
+  --zhurong-color-primary-border: #006B3E;
+
+  --zhurong-color-bg-layout: #0D1A14;
+  --zhurong-color-bg-container: #14281E;
+  --zhurong-color-bg-elevated: #1A3828;
+  --zhurong-color-border: #2A4A3A;
+  --zhurong-color-border-hover: #3A604A;
+  --zhurong-color-text: #E8F5ED;
+  --zhurong-color-text-secondary: #99C9B0;
+}

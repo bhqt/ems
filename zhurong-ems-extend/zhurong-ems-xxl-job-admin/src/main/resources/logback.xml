@@ -23,6 +23,7 @@
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
+            <charset>utf-8</charset>
         </encoder>
     </appender>
 

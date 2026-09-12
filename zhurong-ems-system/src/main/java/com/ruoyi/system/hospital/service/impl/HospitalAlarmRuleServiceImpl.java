@@ -119,7 +119,7 @@ public class HospitalAlarmRuleServiceImpl implements IHospitalAlarmRuleService {
             if (StringUtils.isBlank(bo.getMetricCode())) {
                 throw new ServiceException("阈值规则必须配置指标编码");
             }
-            if (StringUtils.isBlank(bo.getCondition())) {
+            if (StringUtils.isBlank(bo.getRuleCondition())) {
                 throw new ServiceException("阈值规则必须配置比较条件");
             }
             if (bo.getThresholdValue() == null) {

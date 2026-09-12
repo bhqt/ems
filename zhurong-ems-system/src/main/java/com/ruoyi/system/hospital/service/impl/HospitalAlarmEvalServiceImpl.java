@@ -70,7 +70,7 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
                     if (!StrUtil.equals(rule.getMetricCode(), p.getMetricCode())) {
                         continue;
                     }
-                    if (hitCondition(rule.getCondition(), p.getValue(), rule.getThresholdValue())) {
+                    if (hitCondition(rule.getRuleCondition(), p.getValue(), rule.getThresholdValue())) {
                         fireThreshold(rule, p);
                     }
                 }
@@ -179,10 +179,10 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
         record.setDeviceId(p.getDeviceId());
         record.setMetricCode(p.getMetricCode());
         record.setAlarmType(HospitalConstants.ALARM_TYPE_OVERLOAD);
-        record.setLevel(rule.getLevel());
+        record.setAlarmLevel(rule.getAlarmLevel());
         record.setAlarmVal(p.getValue());
         record.setContent("设备指标 " + p.getMetricCode() + " 当前值 " + p.getValue()
-            + " 触发规则[" + rule.getRuleName() + "]（" + rule.getCondition() + " " + rule.getThresholdValue() + "）");
+            + " 触发规则[" + rule.getRuleName() + "]（" + rule.getRuleCondition() + " " + rule.getThresholdValue() + "）");
         record.setStatus(HospitalConstants.ALARM_STATUS_OPEN);
         record.setStartTime(new Date());
         record.setCreateTime(new Date());
@@ -204,7 +204,7 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
         record.setRuleId(rule.getId());
         record.setDeviceId(device.getId());
         record.setAlarmType(HospitalConstants.ALARM_TYPE_OFFLINE);
-        record.setLevel(rule.getLevel());
+        record.setAlarmLevel(rule.getAlarmLevel());
         record.setContent("设备[" + device.getDeviceName() + "]超过 " + rule.getOfflineTimeoutMin()
             + " 分钟无数据（最近：" + (lastTs == null ? "无" : lastTs) + "），判定离线");
         record.setStatus(HospitalConstants.ALARM_STATUS_OPEN);
@@ -272,7 +272,7 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
                     continue;
                 }
                 // 当前级别已不低于升级目标则无需升级
-                if (levelOf(r.getLevel()) >= levelOf(rule.getEscalateLevel())) {
+                if (levelOf(r.getAlarmLevel()) >= levelOf(rule.getEscalateLevel())) {
                     continue;
                 }
                 escalateRule(rule, r, rule.getEscalateLevel());
@@ -285,7 +285,7 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
     private void escalateRule(HospitalAlarmRule rule, HospitalAlarmRecord record, String targetLevel) {
         HospitalAlarmRecord update = new HospitalAlarmRecord();
         update.setId(record.getId());
-        update.setLevel(targetLevel);
+        update.setAlarmLevel(targetLevel);
         update.setEscalateLevel(targetLevel);
         update.setEscalateCount((record.getEscalateCount() == null ? 0 : record.getEscalateCount()) + 1);
         update.setEscalateTime(new Date());

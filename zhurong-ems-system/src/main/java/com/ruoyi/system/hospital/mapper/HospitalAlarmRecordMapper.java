@@ -21,12 +21,12 @@ public interface HospitalAlarmRecordMapper extends BaseMapperPlus<HospitalAlarmR
      * @param alarmType    报警类型
      * @param status       处理状态
      * @param handleStatus 处理阶段
-     * @param level        报警级别
+     * @param alarmLevel   报警级别
      * @return 报警记录列表
      */
     List<HospitalAlarmRecordVo> selectHospitalAlarmRecordList(@Param("deviceId") Long deviceId,
-                                                             @Param("alarmType") String alarmType,
-                                                             @Param("status") String status,
-                                                             @Param("handleStatus") String handleStatus,
-                                                             @Param("level") String level);
+                                                              @Param("alarmType") String alarmType,
+                                                              @Param("status") String status,
+                                                              @Param("handleStatus") String handleStatus,
+                                                              @Param("alarmLevel") String alarmLevel);
 }

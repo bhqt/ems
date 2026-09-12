@@ -25,4 +25,4 @@ VALUES (1979000000000000121, '工作量查询', 1979000000000000102, 1, '', NULL
 
 -- 3. 医院大屏（M4.5）
 INSERT INTO sys_menu (menu_id, menu_name, parent_id, order_num, path, component, is_frame, is_cache, menu_type, visible, status, perms, icon, create_by, create_time, remark)
-VALUES (1979000000000000103, '医院大屏', 1979000000000000001, 12, 'bigScreen', 'hospital/bigScreen/index', 1, 0, 'C', '0', '0', 'hospital:screen:list', 'monitor', 'admin', NOW(), '医院能源智慧大屏/看板');
+VALUES (1979000000000000103, '医院大屏', 1979000000000000001, 12, 'screen', 'hospital/bigScreen/index', 1, 0, 'C', '0', '0', 'hospital:screen:list', 'monitor', 'admin', NOW(), '医院能源智慧大屏/看板');

@@ -27,13 +27,6 @@ spring:
           url: jdbc:mysql://localhost:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
           username: root
           password: 123456
-        # TDengine 时序库 -> shared-tdengine (REST 6041, 库 energy)
-        td:
-          enabled: true
-          driverClassName: com.taosdata.jdbc.rs.RestfulDriver
-          url: jdbc:TAOS-RS://localhost:6041/energy?user=root&password=taosdata&timezone=Asia/Shanghai
-          username: root
-          password: taosdata
       hikari:
         maxPoolSize: 20
         minIdle: 10

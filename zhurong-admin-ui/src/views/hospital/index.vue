@@ -79,7 +79,7 @@
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="12" :md="8">
-        <el-card shadow="hover" class="module-card" @click.native="go('/hospital/bigScreen')">
+        <el-card shadow="hover" class="module-card" @click.native="go('/hospital/screen')">
           <div class="module-icon hospital-icon-screen"></div>
           <div class="module-title">{{ $t('hospital.screenManage') }}</div>
           <div class="module-desc">{{ $t('hospital.screenManageDesc') }}</div>

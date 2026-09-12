@@ -37,14 +37,14 @@ export default {
     sysTitle() {
       return process.env.VUE_APP_TITLE || this.$t('common.systemTitle')
     },
-    // logo() {
-    //   return this.$store.getters.logoInfo.sysLogo
-    // }
+    logo() {
+      return this.$store.getters.logoInfo && this.$store.getters.logoInfo.sysLogo
+    }
   },
   data() {
     return {
-      // title: '祝融能源管理系统',
-      // logo: logoImg
+      logoImg: logo,
+      title: '祝融能源管理系统'
     }
   },
 }

@@ -1,7 +1,13 @@
 package com.cpems.web.controller.newenergy;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.PvStation;
 import com.ruoyi.system.service.IPvStationService;
@@ -28,12 +34,19 @@ public class PvStationController extends BaseController {
     private final IPvStationService pvStationService;
 
     /**
-     * 查询光伏电站列表
+     * 查询光伏电站列表（分页，与前端 rows/total 约定对齐）
      */
     @GetMapping("/list")
-    public R<List<PvStation>> list(PvStation pvStation) {
-        List<PvStation> list = pvStationService.list();
-        return R.ok(list);
+    public TableDataInfo<PvStation> list(PvStation pvStation, PageQuery pageQuery) {
+        LambdaQueryWrapper<PvStation> lqw = Wrappers.lambdaQuery();
+        lqw.like(StringUtils.isNotBlank(pvStation.getStationName()), PvStation::getStationName, pvStation.getStationName());
+        lqw.like(StringUtils.isNotBlank(pvStation.getStationCode()), PvStation::getStationCode, pvStation.getStationCode());
+        lqw.eq(StringUtils.isNotBlank(pvStation.getStationType()), PvStation::getStationType, pvStation.getStationType());
+        lqw.eq(pvStation.getAreaId() != null, PvStation::getAreaId, pvStation.getAreaId());
+        lqw.eq(StringUtils.isNotBlank(pvStation.getStatus()), PvStation::getStatus, pvStation.getStatus());
+        lqw.orderByDesc(PvStation::getId);
+        Page<PvStation> page = pvStationService.page(pageQuery.build(), lqw);
+        return TableDataInfo.build(page);
     }
 
     /**

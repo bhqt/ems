@@ -81,13 +81,13 @@
       <el-table-column :label="$t('hospital.metricCode')" align="center" prop="metricCode" width="110" />
       <el-table-column :label="$t('hospital.thresholdValue')" align="center" width="150">
         <template slot-scope="scope">
-          <span v-if="scope.row.ruleType === 'THRESHOLD'">{{ scope.row.condition }} {{ scope.row.thresholdValue }}</span>
+          <span v-if="scope.row.ruleType === 'THRESHOLD'">{{ scope.row.ruleCondition }} {{ scope.row.thresholdValue }}</span>
           <span v-else>{{ scope.row.offlineTimeoutMin }}min</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('hospital.level')" align="center" prop="level" width="90">
+      <el-table-column :label="$t('hospital.level')" align="center" prop="alarmLevel" width="90">
         <template slot-scope="scope">
-          <el-tag :type="levelTagType(scope.row.level)" size="mini">{{ levelLabel(scope.row.level) }}</el-tag>
+          <el-tag :type="levelTagType(scope.row.alarmLevel)" size="mini">{{ levelLabel(scope.row.alarmLevel) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column :label="$t('hospital.escalation')" align="center" width="150">
@@ -164,8 +164,8 @@
             <el-option label="temperature" value="temperature" />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="form.ruleType === 'THRESHOLD'" :label="$t('hospital.condition')" prop="condition">
-          <el-select v-model="form.condition" :placeholder="$t('common.pleaseSelect')" style="width:100%">
+        <el-form-item v-if="form.ruleType === 'THRESHOLD'" :label="$t('hospital.condition')" prop="ruleCondition">
+          <el-select v-model="form.ruleCondition" :placeholder="$t('common.pleaseSelect')" style="width:100%">
             <el-option :label="$t('hospital.conditionG')" value="G" />
             <el-option :label="$t('hospital.conditionGE')" value="GE" />
             <el-option :label="$t('hospital.conditionL')" value="L" />
@@ -179,8 +179,8 @@
         <el-form-item v-if="form.ruleType === 'OFFLINE'" :label="$t('hospital.offlineTimeoutMin')" prop="offlineTimeoutMin">
           <el-input-number v-model="form.offlineTimeoutMin" :min="1" :precision="0" style="width:100%" />
         </el-form-item>
-        <el-form-item :label="$t('hospital.level')" prop="level">
-          <el-select v-model="form.level" :placeholder="$t('common.pleaseSelect')" style="width:100%">
+        <el-form-item :label="$t('hospital.level')" prop="alarmLevel">
+          <el-select v-model="form.alarmLevel" :placeholder="$t('common.pleaseSelect')" style="width:100%">
             <el-option :label="$t('hospital.levelNormal')" value="0" />
             <el-option :label="$t('hospital.levelSerious')" value="1" />
             <el-option :label="$t('hospital.levelUrgent')" value="2" />
@@ -288,10 +288,10 @@ export default {
         deviceType: undefined,
         metricCode: undefined,
         ruleType: 'THRESHOLD',
-        condition: 'G',
+        ruleCondition: 'G',
         thresholdValue: undefined,
         offlineTimeoutMin: 30,
-        level: '0',
+        alarmLevel: '0',
         status: '0',
         notifyEmail: undefined,
         escalateMin: 0,

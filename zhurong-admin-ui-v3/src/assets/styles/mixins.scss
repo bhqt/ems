@@ -1,0 +1,485 @@
+// =============================================================================
+// SCSS Mixins
+// =============================================================================
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    display: table;
+    clear: both;
+    content: '';
+  }
+}
+
+// 省略号
+@mixin ellipsis($lines: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
+// 单行省略
+@mixin ellipsis-1 {
+  @include ellipsis(1);
+}
+
+// 多行省略
+@mixin ellipsis-2 {
+  @include ellipsis(2);
+}
+
+@mixin ellipsis-3 {
+  @include ellipsis(3);
+}
+
+// Flex 布局快捷方式
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-col-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin flex-start {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+@mixin flex-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+// 绝对定位居中
+@mixin absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 绝对定位全屏
+@mixin absolute-full {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+// 固定定位全屏
+@mixin fixed-full {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--zhurong-z-index-fixed);
+}
+
+// 响应式断点
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == xs {
+    @media (max-width: 479px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == sm {
+    @media (min-width: 480px) and (max-width: 767px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == md {
+    @media (min-width: 768px) and (max-width: 1023px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == lg {
+    @media (min-width: 1024px) and (max-width: 1279px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == xl {
+    @media (min-width: 1280px) and (max-width: 1535px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == 2xl {
+    @media (min-width: 1536px) and (max-width: 1919px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == 3xl {
+    @media (min-width: 1920px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == mobile {
+    @media (max-width: 767px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == tablet {
+    @media (min-width: 768px) and (max-width: 1023px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == desktop {
+    @media (min-width: 1024px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == wide {
+    @media (min-width: 1280px) {
+      @content;
+    }
+  }
+  @else if $breakpoint == ultra-wide {
+    @media (min-width: 1920px) {
+      @content;
+    }
+  }
+}
+
+// 字体大小快捷方式
+@mixin text-xs {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@mixin text-sm {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@mixin text-base {
+  font-size: 14px;
+  line-height: 1.5715;
+}
+
+@mixin text-lg {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@mixin text-xl {
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+@mixin text-2xl {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+@mixin text-3xl {
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+// 标题样式
+@mixin heading-1 {
+  @include text-3xl;
+  font-weight: var(--zhurong-font-weight-bold);
+  color: var(--zhurong-color-text-heading);
+}
+
+@mixin heading-2 {
+  @include text-2xl;
+  font-weight: var(--zhurong-font-weight-bold);
+  color: var(--zhurong-color-text-heading);
+}
+
+@mixin heading-3 {
+  @include text-xl;
+  font-weight: var(--zhurong-font-weight-semibold);
+  color: var(--zhurong-color-text-heading);
+}
+
+@mixin heading-4 {
+  @include text-lg;
+  font-weight: var(--zhurong-font-weight-semibold);
+  color: var(--zhurong-color-text-heading);
+}
+
+// 卡片阴影
+@mixin card-shadow {
+  box-shadow: var(--zhurong-box-shadow);
+}
+
+@mixin card-shadow-hover {
+  box-shadow: var(--zhurong-box-shadow-md);
+  transition: box-shadow var(--zhurong-transition-base) var(--zhurong-ease-out);
+  &:hover {
+    box-shadow: var(--zhurong-box-shadow-lg);
+  }
+}
+
+// 按钮变体
+@mixin button-variant($bg, $color, $border: $bg, $hover-bg: null, $active-bg: null) {
+  background-color: $bg;
+  color: $color;
+  border-color: $border;
+
+  &:hover:not(:disabled) {
+    background-color: $hover-bg or lighten($bg, 10%);
+    border-color: $hover-bg or lighten($border, 10%);
+    color: $color;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $active-bg or darken($bg, 10%);
+    border-color: $active-bg or darken($border, 10%);
+    color: $color;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// 表单控件基础样式
+@mixin form-control-base {
+  width: 100%;
+  height: var(--zhurong-control-height);
+  padding: 0 var(--zhurong-control-padding-horizontal);
+  font-size: var(--zhurong-font-size);
+  line-height: var(--zhurong-line-height);
+  color: var(--zhurong-color-text);
+  background-color: var(--zhurong-color-bg-container);
+  border: 1px solid var(--zhurong-color-border);
+  border-radius: var(--zhurong-border-radius);
+  transition: all var(--zhurong-transition-base) var(--zhurong-ease-out);
+
+  &:hover {
+    border-color: var(--zhurong-color-border-hover);
+  }
+
+  &:focus,
+  &.focused {
+    outline: none;
+    border-color: var(--zhurong-color-primary);
+    box-shadow: 0 0 0 2px var(--zhurong-color-primary-bg);
+  }
+
+  &::placeholder {
+    color: var(--zhurong-color-text-quaternary);
+  }
+
+  &:disabled {
+    background-color: var(--zhurong-color-bg-active);
+    color: var(--zhurong-color-text-tertiary);
+    cursor: not-allowed;
+    opacity: 1;
+  }
+
+  &[readonly] {
+    background-color: var(--zhurong-color-bg-active);
+    cursor: default;
+  }
+}
+
+// 表单控件小尺寸
+@mixin form-control-sm {
+  height: var(--zhurong-control-height-sm);
+  padding: 0 var(--zhurong-control-padding-horizontal-sm);
+  font-size: var(--zhurong-font-size-sm);
+}
+
+// 表单控件大尺寸
+@mixin form-control-lg {
+  height: var(--zhurong-control-height-lg);
+  padding: 0 var(--zhurong-control-padding-horizontal-lg);
+  font-size: var(--zhurong-font-size-lg);
+}
+
+// 表格行悬停
+@mixin table-row-hover {
+  transition: background var(--zhurong-transition-fast);
+
+  &:hover {
+    background-color: var(--zhurong-color-bg-hover);
+  }
+}
+
+// 滚动条样式
+@mixin scrollbar-thin {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--zhurong-color-border);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--zhurong-color-border-hover);
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+// 硬件加速
+@mixin hardware-acceleration {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+
+// 禁止选择
+@mixin user-select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+// 允许选择
+@mixin user-select-auto {
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}
+
+// 视觉隐藏（但可被屏幕阅读器读取）
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// 容器查询支持
+@mixin container-query($name, $query) {
+  @supports (container-type: inline-size) {
+    @container #{$name} (#{$query}) {
+      @content;
+    }
+  }
+}
+
+// 网格布局快捷方式
+@mixin grid($columns: 1, $gap: var(--zhurong-spacing-md)) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+@mixin grid-auto-fit($min-width: 200px, $gap: var(--zhurong-spacing-md)) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+@mixin grid-auto-fill($min-width: 200px, $gap: var(--zhurong-spacing-md)) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax($min-width, 1fr));
+  gap: $gap;
+}
+
+// 过渡动画
+@mixin transition($properties: all, $duration: var(--zhurong-transition-base), $easing: var(--zhurong-ease-out)) {
+  transition: $properties $duration $easing;
+}
+
+// 关键帧动画
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// 媒体查询：打印
+@mixin print {
+  @media print {
+    @content;
+  }
+}
+
+// 媒体查询：高对比度
+@mixin high-contrast {
+  @media (prefers-contrast: high) {
+    @content;
+  }
+}
+
+// 媒体查询：减少动画
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// 媒体查询：深色模式
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+// RTL 支持
+@mixin rtl {
+  [dir='rtl'] & {
+    @content;
+  }
+}
+
+// 焦点可见样式
+@mixin focus-visible {
+  &:focus-visible {
+    outline: 2px solid var(--zhurong-color-primary);
+    outline-offset: 2px;
+  }
+}
+
+// 玻璃态效果
+@mixin glass($blur: 8px, $opacity: 0.8) {
+  backdrop-filter: blur($blur);
+  -webkit-backdrop-filter: blur($blur);
+  background-color: rgba(255, 255, 255, $opacity);
+
+  .dark & {
+    background-color: rgba(20, 20, 20, $opacity);
+  }
+}
+
+// 渐变文本
+@mixin gradient-text($colors...) {
+  background: linear-gradient(135deg, $colors);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}

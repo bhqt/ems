@@ -36,7 +36,7 @@ public class HospitalAlarmRecord implements Serializable {
     private String alarmType;
 
     /** 报警级别（0一般 1严重 2紧急） */
-    private String level;
+    private String alarmLevel;
 
     /** 触发时的指标值 */
     private BigDecimal alarmVal;

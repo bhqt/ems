@@ -27,7 +27,7 @@ public class HospitalAlarmRecordBo implements Serializable {
     private String handleStatus;
 
     /** 报警级别（0一般 1严重 2紧急） */
-    private String level;
+    private String alarmLevel;
 
     /** 处理说明（处理/关闭时填写） */
     private String handleRemark;

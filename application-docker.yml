@@ -66,6 +66,14 @@ mybatis-plus:
       id-type: auto
       table-underline: true
 
+# 字符编码配置
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
 # Redisson配置
 redisson:
   keyPrefix:

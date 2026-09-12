@@ -34,6 +34,16 @@ export default {
           rel: 'noopener'
         }
       }
+      const path = typeof to === 'string' ? to : (to.path || '')
+      if (path.indexOf('screen') !== -1) {
+        return {
+          href: 'javascript:void(0)',
+          onClick: (e) => {
+            e.preventDefault()
+            window.open('/hospital/screen', '_blank')
+          }
+        }
+      }
       return {
         to: to
       }

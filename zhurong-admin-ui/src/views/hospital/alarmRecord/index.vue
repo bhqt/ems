@@ -15,8 +15,8 @@
           <el-option :label="$t('hospital.hsDone')" value="3" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="$t('hospital.level')" prop="level">
-        <el-select v-model="queryParams.level" :placeholder="$t('common.pleaseSelect')" clearable>
+      <el-form-item :label="$t('hospital.level')" prop="alarmLevel">
+        <el-select v-model="queryParams.alarmLevel" :placeholder="$t('common.pleaseSelect')" clearable>
           <el-option :label="$t('hospital.levelNormal')" value="0" />
           <el-option :label="$t('hospital.levelSerious')" value="1" />
           <el-option :label="$t('hospital.levelUrgent')" value="2" />
@@ -39,8 +39,8 @@
       </el-table-column>
       <el-table-column :label="$t('hospital.level')" align="center" width="120">
         <template slot-scope="scope">
-          <el-tag :type="levelTagType(scope.row.escalateLevel != null ? scope.row.escalateLevel : scope.row.level)" size="mini">
-            {{ levelLabel(scope.row.escalateLevel != null ? scope.row.escalateLevel : scope.row.level) }}
+          <el-tag :type="levelTagType(scope.row.escalateLevel != null ? scope.row.escalateLevel : scope.row.alarmLevel)" size="mini">
+            {{ levelLabel(scope.row.escalateLevel != null ? scope.row.escalateLevel : scope.row.alarmLevel) }}
             <span v-if="scope.row.escalateCount > 0">({{ $t('hospital.escalated') }}×{{ scope.row.escalateCount }})</span>
           </el-tag>
         </template>
@@ -124,7 +124,7 @@ export default {
       queryParams: {
         alarmType: undefined,
         handleStatus: undefined,
-        level: undefined
+        alarmLevel: undefined
       }
     };
   },

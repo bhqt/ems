@@ -98,5 +98,24 @@ public class ChargingPileVo {
     @ExcelProperty(value = "备注")
     private String remark;
 
+    /**
+     * 充电桩总数(统计用)
+     */
+    private Long totalCount;
+
+    /**
+     * 正常状态数量(统计用)
+     */
+    private Long normalCount;
+
+    /**
+     * 停用状态数量(统计用)
+     */
+    private Long disabledCount;
+
+    /**
+     * 在线数量(统计用)
+     */
+    private Long onlineCount;
 
 }

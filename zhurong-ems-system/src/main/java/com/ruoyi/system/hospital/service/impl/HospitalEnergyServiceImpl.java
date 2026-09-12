@@ -73,7 +73,10 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
         List<Map<String, Object>> prev = energyMapper.selectDeviceStats(ids, prevStart, prevEnd);
         Map<String, BigDecimal> prevKwh = new HashMap<>(64);
         for (Map<String, Object> row : prev) {
-            prevKwh.put(dimKey(level, row), toDecimal(row.get("kwh")));
+            String key = dimKey(level, row);
+            BigDecimal p = toDecimal(row.get("kwh"));
+            if (p == null) p = BigDecimal.ZERO;
+            prevKwh.merge(key, p, BigDecimal::add);
         }
 
         Map<String, HospitalEnergyOverviewVo> grouped = new HashMap<>(32);
@@ -91,6 +94,8 @@ public class HospitalEnergyServiceImpl implements IHospitalEnergyService {
             }
             BigDecimal kwh = toDecimal(row.get("kwh"));
             BigDecimal avg = toDecimal(row.get("avgPower"));
+            if (kwh == null) kwh = BigDecimal.ZERO;
+            if (avg == null) avg = BigDecimal.ZERO;
             vo.setKwh(vo.getKwh().add(kwh));
             // 平均功率取设备均值再平均（设备量纲一致，可比）
             int n = vo.getDeviceCount();

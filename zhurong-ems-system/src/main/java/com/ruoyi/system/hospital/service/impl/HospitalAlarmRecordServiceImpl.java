@@ -28,7 +28,7 @@ public class HospitalAlarmRecordServiceImpl implements IHospitalAlarmRecordServi
     @Override
     public List<HospitalAlarmRecordVo> queryList(HospitalAlarmRecordBo bo) {
         List<HospitalAlarmRecordVo> list = baseMapper.selectHospitalAlarmRecordList(
-            bo.getDeviceId(), bo.getAlarmType(), bo.getStatus(), bo.getHandleStatus(), bo.getLevel());
+            bo.getDeviceId(), bo.getAlarmType(), bo.getStatus(), bo.getHandleStatus(), bo.getAlarmLevel());
         // 兜底截断，避免无条件查询返回过大
         if (list != null && list.size() > 500) {
             return list.subList(0, 500);

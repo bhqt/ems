@@ -41,7 +41,7 @@ public class HospitalAlarmRuleBo extends BaseEntity {
     private String ruleType;
 
     /** 比较条件（G/E/L/GE/LE） */
-    private String condition;
+    private String ruleCondition;
 
     /** 阈值 */
     private BigDecimal thresholdValue;
@@ -50,7 +50,7 @@ public class HospitalAlarmRuleBo extends BaseEntity {
     private Integer offlineTimeoutMin;
 
     /** 报警级别（0一般 1严重 2紧急） */
-    private String level;
+    private String alarmLevel;
 
     /** 是否启用（0启用 1停用） */
     private String status;

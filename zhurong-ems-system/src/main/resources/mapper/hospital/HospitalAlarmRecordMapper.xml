@@ -13,7 +13,7 @@
         <result property="deviceCode" column="device_code"/>
         <result property="metricCode" column="metric_code"/>
         <result property="alarmType" column="alarm_type"/>
-        <result property="level" column="level"/>
+        <result property="alarmLevel" column="alarm_level"/>
         <result property="alarmVal" column="alarm_val"/>
         <result property="content" column="content"/>
         <result property="status" column="status"/>
@@ -39,7 +39,7 @@
                hd.device_code,
                har.metric_code,
                har.alarm_type,
-               har.level,
+               har.alarm_level,
                har.alarm_val,
                har.content,
                har.status,
@@ -70,8 +70,8 @@
             <if test="handleStatus != null and handleStatus != ''">
                 AND har.handle_status = #{handleStatus}
             </if>
-            <if test="level != null and level != ''">
-                AND har.level = #{level}
+            <if test="alarmLevel != null and alarmLevel != ''">
+                AND har.alarm_level = #{alarmLevel}
             </if>
         </where>
         order by har.start_time desc, har.id desc

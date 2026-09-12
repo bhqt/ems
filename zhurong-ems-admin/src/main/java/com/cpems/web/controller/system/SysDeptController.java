@@ -2,6 +2,7 @@ package com.cpems.web.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.tree.Tree;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -51,6 +52,15 @@ public class SysDeptController extends BaseController {
         depts.removeIf(d -> d.getDeptId().equals(deptId)
             || StringUtils.splitList(d.getAncestors()).contains(Convert.toStr(deptId)));
         return R.ok(depts);
+    }
+
+    /**
+     * 获取部门下拉树列表
+     */
+    @GetMapping("/treeselect")
+    public R<List<Tree<Long>>> treeselect(SysDept dept) {
+        List<SysDept> depts = deptService.selectDeptList(dept);
+        return R.ok(deptService.buildDeptTreeSelect(depts));
     }
 
     /**

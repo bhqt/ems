@@ -199,9 +199,7 @@ public class SysLoginService {
     }
 
     private SysUser loadUserByUsername(String username) {
-        SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
-            .select(SysUser::getUserName, SysUser::getStatus)
-            .eq(SysUser::getUserName, username));
+        SysUser user = userMapper.selectUserByUserName(username);
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
             throw new UserException("user.not.exists", username);
@@ -209,13 +207,11 @@ public class SysLoginService {
             log.info("登录用户：{} 已被停用.", username);
             throw new UserException("user.blocked", username);
         }
-        return userMapper.selectUserByUserName(username);
+        return user;
     }
 
     private SysUser loadUserByPhonenumber(String phonenumber) {
-        SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
-            .select(SysUser::getPhonenumber, SysUser::getStatus)
-            .eq(SysUser::getPhonenumber, phonenumber));
+        SysUser user = userMapper.selectUserByPhonenumber(phonenumber);
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", phonenumber);
             throw new UserException("user.not.exists", phonenumber);
@@ -223,7 +219,7 @@ public class SysLoginService {
             log.info("登录用户：{} 已被停用.", phonenumber);
             throw new UserException("user.blocked", phonenumber);
         }
-        return userMapper.selectUserByPhonenumber(phonenumber);
+        return user;
     }
 
     private SysUser loadUserByOpenid(String openid) {
@@ -288,7 +284,8 @@ public class SysLoginService {
             throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
         }
 
-        if (supplier.get()) {
+        boolean checkResult = supplier.get();
+        if (checkResult) {
             // 是否第一次
             errorNumber = ObjectUtil.isNull(errorNumber) ? 1 : errorNumber + 1;
             // 达到规定错误次数 则锁定登录

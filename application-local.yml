@@ -1,0 +1,26 @@
+# 本地开发环境配置 - 连接 Docker 中间件（localhost）
+spring:
+  datasource:
+    dynamic:
+      datasource:
+        master:
+          url: jdbc:mysql://localhost:3306/autoee_ems?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8&autoReconnect=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+          username: root
+          password: "123456"
+        td:
+          enabled: false
+  redis:
+    host: localhost
+    port: 6379
+    password: difyai123456
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rabbitmq
+    password: rabbitmqpassword
+    virtual-host: admin_vhost
+
+mqtt:
+  host: tcp://localhost:1883
+  username: admin
+  password: public
