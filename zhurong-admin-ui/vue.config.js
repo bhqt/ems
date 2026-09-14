@@ -8,7 +8,7 @@ function resolve(dir) {
 const CompressionPlugin = require('compression-webpack-plugin')
 
 // const name = this.$store.getters.logoInfo.browserLogo // 网页标题
-const name = process.env.VUE_APP_TITLE || '智碳能源管理系统' // 网页标题
+const name = process.env.VUE_APP_TITLE || '智慧能源监控平台' // 网页标题
 
 const port = process.env.port || process.env.npm_config_port || 9029 // 端口
 

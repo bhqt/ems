@@ -1,7 +1,7 @@
 <template>
   <div class="login-mobile" v-if="isMobile">
     <div class="top-logo-mobile">
-      <!-- <h2 style="font-weight: 700;">祝融能源管理系统</h2> -->
+      <!-- <h2 style="font-weight: 700;">智慧能源监控平台</h2> -->
       <h2 style="font-weight: 700;">{{ sysTitle }}</h2>
       <!-- <img src="../assets/logo/logo-heng.png" style="height: 50px;"> -->
     </div>
@@ -156,8 +156,14 @@ export default {
   },
   computed: {
     sysTitle: function () {
-      return this.$store.getters.logoInfo?.sysTitle || '智碳能源管理系统'
-      // return process.env.VUE_APP_TITLE || '祝融能源管理系统'
+      // 登录页 Logo 标题：与 store/app.js 的 getLogoInfo 兜底逻辑保持一致，
+      // 避免后端 sys_config 残留旧值（如「祝融能源管理系统」/「智碳能源管理系统」）导致标题错误。
+      const backendSysTitle = this.$store.getters.logoInfo?.sysTitle
+      const DEFAULT_SYS_TITLE = '智慧能源监控平台'
+      return (backendSysTitle && backendSysTitle !== '祝融能源管理系统' && backendSysTitle !== '智碳能源管理系统')
+        ? backendSysTitle
+        : DEFAULT_SYS_TITLE
+      // return process.env.VUE_APP_TITLE || '智慧能源监控平台'
     },
     logoShow() {
       return this.$store.getters.logoInfo.loginLogo

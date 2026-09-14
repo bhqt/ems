@@ -37,6 +37,9 @@ const permission = {
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
           const sidebarRoutes = filterAsyncRouter(sdata)
+          // 医院大屏是独立全屏页面（constantRoutes 中已定义，菜单通过新标签页打开），
+          // 需要从注入 Layout 的动态路由中剔除，避免同路径路由被覆盖
+          stripFullScreenRoutes(rdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
           const asyncRoutes = filterDynamicRoutes(dynamicRoutes);
           rewriteRoutes.push({ path: '*', redirect: '/404', hidden: true })
@@ -48,6 +51,25 @@ const permission = {
           resolve(rewriteRoutes)
         })
       })
+    }
+  }
+}
+
+// 独立全屏页面（不套 Layout、不注入动态路由，侧边栏以新标签页打开）
+const FULL_SCREEN_PATHS = ['/hospital/screen']
+
+function stripFullScreenRoutes(routes, parentPath = '') {
+  for (let i = routes.length - 1; i >= 0; i--) {
+    const route = routes[i]
+    const fullPath = route.path && route.path.charAt(0) === '/'
+      ? route.path
+      : parentPath.replace(/\/$/, '') + '/' + route.path
+    if (FULL_SCREEN_PATHS.indexOf(fullPath) !== -1) {
+      routes.splice(i, 1)
+      continue
+    }
+    if (route.children && route.children.length) {
+      stripFullScreenRoutes(route.children, fullPath)
     }
   }
 }

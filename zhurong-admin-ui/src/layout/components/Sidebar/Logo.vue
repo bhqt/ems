@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       logoImg: logo,
-      title: '祝融能源管理系统'
+      title: '能碳一体化管控平台'
     }
   },
 }

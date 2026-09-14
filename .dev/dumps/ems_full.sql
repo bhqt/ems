@@ -3941,7 +3941,7 @@ CREATE TABLE `sys_config` (
 
 LOCK TABLES `sys_config` WRITE;
 /*!40000 ALTER TABLE `sys_config` DISABLE KEYS */;
-INSERT INTO `sys_config` VALUES (1,'平台名称','sys.title','祝融能源管理系统','Y','admin','2023-10-20 15:59:32','EMSUser','2024-09-18 18:49:12',NULL),(6,'登录注册页面显示图标开关','sys.login.logo.show','false','Y','admin','2023-10-23 10:16:25','admin','2023-10-23 16:02:39','true：开启，false：关闭'),(7,'主框架页-默认皮肤样式名称','sys.index.skinName','skin-yellow','Y','admin','2023-03-21 06:28:59','EMSUser','2024-09-18 18:48:05','蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow'),(8,'用户管理-账号初始密码','sys.user.initPassword','123456','Y','admin','2023-03-21 06:28:59','',NULL,'初始化密码 123456'),(9,'平台默认主题','sys.index.theme','theme-light','Y','admin','2023-03-21 06:28:59','EMSUser','2024-09-18 18:48:18','深色主题：theme-dark，浅色主题：theme-light'),(10,'账号自助-验证码开关','sys.account.captchaEnabled','false','Y','admin','2023-03-21 06:28:59','admin','2025-09-08 09:14:00','是否开启验证码功能（true开启，false关闭）'),(11,'账号自助-是否开启用户注册功能','sys.account.registerUser','false','Y','admin','2023-03-21 06:28:59','admin','2023-10-23 09:47:26','是否开启注册用户功能（true开启，false关闭）'),(12,'OSS预览列表资源开关','sys.oss.previewListResource','true','Y','admin','2023-03-21 06:28:59','admin','2023-11-01 13:26:22','true:开启, false:关闭'),(1719625067154726913,'尖时段','sys.sharp','10:00:00~12:00:00, 14:00:00~16:00:00','Y','admin','2023-11-01 15:59:00','admin','2023-11-02 11:21:49',NULL),(1719625322847887361,'峰时段','sys.peek','08:00:00~10:00:00, 16:00:00~18:00:00','Y','admin','2023-11-01 16:00:01','admin','2023-11-02 11:21:59',NULL),(1719625583549046786,'平时段','sys.ordinary','06:00:00~08:00:00, 12:00:00~14:00:00, 18:00:00~22:00:00','Y','admin','2023-11-01 16:01:03','admin','2023-11-02 11:22:18',NULL),(1719625930040500225,'谷时段','sys.valley','22:00:00~23:59:59,00:00:00~06:00:00','Y','admin','2023-11-01 16:02:25','admin','2023-11-01 16:02:25',NULL);
+INSERT INTO `sys_config` VALUES (1,'平台名称','sys.title','智慧能源管理系统','Y','admin','2023-10-20 15:59:32','EMSUser','2024-09-18 18:49:12',NULL),(6,'登录注册页面显示图标开关','sys.login.logo.show','false','Y','admin','2023-10-23 10:16:25','admin','2023-10-23 16:02:39','true：开启，false：关闭'),(7,'主框架页-默认皮肤样式名称','sys.index.skinName','skin-yellow','Y','admin','2023-03-21 06:28:59','EMSUser','2024-09-18 18:48:05','蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow'),(8,'用户管理-账号初始密码','sys.user.initPassword','123456','Y','admin','2023-03-21 06:28:59','',NULL,'初始化密码 123456'),(9,'平台默认主题','sys.index.theme','theme-light','Y','admin','2023-03-21 06:28:59','EMSUser','2024-09-18 18:48:18','深色主题：theme-dark，浅色主题：theme-light'),(10,'账号自助-验证码开关','sys.account.captchaEnabled','false','Y','admin','2023-03-21 06:28:59','admin','2025-09-08 09:14:00','是否开启验证码功能（true开启，false关闭）'),(11,'账号自助-是否开启用户注册功能','sys.account.registerUser','false','Y','admin','2023-03-21 06:28:59','admin','2023-10-23 09:47:26','是否开启注册用户功能（true开启，false关闭）'),(12,'OSS预览列表资源开关','sys.oss.previewListResource','true','Y','admin','2023-03-21 06:28:59','admin','2023-11-01 13:26:22','true:开启, false:关闭'),(1719625067154726913,'尖时段','sys.sharp','10:00:00~12:00:00, 14:00:00~16:00:00','Y','admin','2023-11-01 15:59:00','admin','2023-11-02 11:21:49',NULL),(1719625322847887361,'峰时段','sys.peek','08:00:00~10:00:00, 16:00:00~18:00:00','Y','admin','2023-11-01 16:00:01','admin','2023-11-02 11:21:59',NULL),(1719625583549046786,'平时段','sys.ordinary','06:00:00~08:00:00, 12:00:00~14:00:00, 18:00:00~22:00:00','Y','admin','2023-11-01 16:01:03','admin','2023-11-02 11:22:18',NULL),(1719625930040500225,'谷时段','sys.valley','22:00:00~23:59:59,00:00:00~06:00:00','Y','admin','2023-11-01 16:02:25','admin','2023-11-01 16:02:25',NULL);
 /*!40000 ALTER TABLE `sys_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -4927,7 +4927,7 @@ DROP TABLE IF EXISTS `v_device_status_statistics`;
 /*!50001 DROP VIEW IF EXISTS `v_device_status_statistics`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `v_device_status_statistics` AS SELECT 
+/*!50001 CREATE VIEW `v_device_status_statistics` AS SELECT
  1 AS `device_type`,
  1 AS `total_count`,
  1 AS `online_count`,
@@ -4944,7 +4944,7 @@ DROP TABLE IF EXISTS `v_energy_balance_statistics`;
 /*!50001 DROP VIEW IF EXISTS `v_energy_balance_statistics`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `v_energy_balance_statistics` AS SELECT 
+/*!50001 CREATE VIEW `v_energy_balance_statistics` AS SELECT
  1 AS `energy_medium`,
  1 AS `balance_date`,
  1 AS `avg_balance_rate`,
@@ -4960,7 +4960,7 @@ DROP TABLE IF EXISTS `v_meter_status_statistics`;
 /*!50001 DROP VIEW IF EXISTS `v_meter_status_statistics`*/;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
-/*!50001 CREATE VIEW `v_meter_status_statistics` AS SELECT 
+/*!50001 CREATE VIEW `v_meter_status_statistics` AS SELECT
  1 AS `meter_type`,
  1 AS `total_count`,
  1 AS `normal_count`,

@@ -144,6 +144,12 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    // 医院智慧能源大屏（独立全屏页面，通过侧边栏菜单在新标签页打开）
+    path: '/hospital/screen',
+    component: () => import('@/views/hospital/bigScreen/index'),
+    hidden: true
+  },
+  {
     path: '/applyAccount',
     component: () => import('@/views/applyAccount'),
     hidden: true

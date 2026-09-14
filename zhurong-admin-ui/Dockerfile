@@ -10,7 +10,7 @@ WORKDIR /build
 # 可以通过 --build-arg VUE_APP_BASE_API=/dev-api/ 来覆盖
 ARG VUE_APP_BASE_API=/autoee-iot-ems/
 ARG VUE_APP_CONTEXT_PATH=/
-ARG VUE_APP_TITLE=智碳能源管理系统
+ARG VUE_APP_TITLE=智慧能源监控平台
 
 # 设置为环境变量（构建时使用）
 ENV VUE_APP_BASE_API=${VUE_APP_BASE_API}

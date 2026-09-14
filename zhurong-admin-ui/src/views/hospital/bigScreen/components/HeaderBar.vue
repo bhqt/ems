@@ -28,8 +28,8 @@
 export default {
   name: 'HeaderBar',
   props: {
-    title: { type: String, default: '医院智慧能源监控平台' },
-    subtitle: { type: String, default: '祝融能源 · Smart Hospital Energy Management' }
+    title: { type: String, default: '智慧能源监控平台' },
+    subtitle: { type: String, default: '智慧能源监控平台 · Smart Hospital Energy Management' }
   },
   data() {
     return {

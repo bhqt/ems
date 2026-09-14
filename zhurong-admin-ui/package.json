@@ -1,7 +1,7 @@
 {
   "name": "zhurong-ems",
   "version": "1.4.5",
-  "description": "智碳能源管理系统",
+  "description": "智慧能源监控平台",
   "author": "LionLi",
   "license": "MIT",
   "scripts": {

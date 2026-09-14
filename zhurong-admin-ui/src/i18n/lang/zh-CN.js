@@ -74,7 +74,7 @@ export default {
     fail: '不合格',
     completed: '已完成',
     inProgress: '进行中',
-    systemTitle: '智碳能源管理系统',
+    systemTitle: '智慧能源监控平台',
     // 导航栏
     profile: '个人中心',
     layoutSetting: '布局设置',
@@ -125,7 +125,7 @@ export default {
 
   // 登录页
   login: {
-    title: '祝融能源管理系统',
+    title: '智慧能源管理系统',
     username: '用户名',
     password: '密码',
     captcha: '验证码',

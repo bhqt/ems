@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-- **项目名称**: Deep-EMS (祝融能源管理系统)
+- **项目名称**: Deep-EMS (智慧能源管理系统)
 - **版本**: 4.6.0
 - **技术栈**: Spring Boot 2.7.9 + MyBatis-Plus + Vue 2 + Element UI
 - **JDK 要求**: JDK 1.8（**强制要求**，不兼容 JDK 17+）
@@ -102,3 +102,15 @@ zhurong-admin-ui/           # Vue 2 前端
 - 数据库名: `autoee_ems`
 - 地址: `localhost:3306`（本地）/ `shared-mysql:3306`（Docker）
 - 用户: `root` / 密码: `123456`
+
+## Redis 配置
+
+- 地址: `localhost:6379`
+- 密码: `difyai123456`
+
+> 注意: Docker 中的 `shared-redis` 容器必须带 `--requirepass difyai123456` 启动，否则后端认证会报错。
+
+## 登录账号
+
+- 用户名: `admin`
+- 密码: `123456`
