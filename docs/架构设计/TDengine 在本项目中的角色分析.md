@@ -208,4 +208,4 @@ td:
 | 第一阶段基础建设详细设计.md | `docs/第一阶段基础建设详细设计.md` | 设计文档中的 Schema |
 | docker-compose.yml | `docker-compose.yml` | Docker 编排（已注释 TDengine） |
 | docker-compose.yml | `docs/部署指南/docker-compose.yml` | 部署文档中的 Docker（TDengine 激活） |
-| Deep-EMS 系统中间件清单.md | `docs/部署指南/Deep-EMS 系统中间件清单.md` | 中间件清单 |
+| 系统中间件清单.md | `docs/部署指南/系统中间件清单.md` | 中间件清单 |

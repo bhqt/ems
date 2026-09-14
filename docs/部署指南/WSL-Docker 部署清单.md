@@ -1,4 +1,4 @@
-# Deep-EMS WSL Docker 部署清单
+# WSL Docker 部署清单
 
 **文档版本**: V1.0  
 **创建日期**: 2026-04-30  
@@ -600,9 +600,9 @@ docker exec zhurong-ems-tdengine taosdump -u root -p difyai123456 energy
 | XXL-Job | 4.6.0 | - |
 | Spring Boot | 2.7.9 | - |
 | Java | 17 | - |
-| Deep-EMS | 4.6.0 | - |
+| | 4.6.0 | - |
 
 ---
 
-**文档维护**: Deep-EMS 团队  
+**文档维护**: 团队  
 **最后更新**: 2026-04-30

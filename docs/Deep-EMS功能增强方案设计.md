@@ -64,14 +64,14 @@
 
 ### 2.3 当前Deep-EMS能力评估
 
-| 能力类别 | Deep-EMS | MyEMS | cp-ems-ruoyi | Super-ERP-MES | 覆盖度 |
+| 能力类别 | | MyEMS | cp-ems-ruoyi | Super-ERP-MES | 覆盖度 |
 |---------|---------|-------|-------------|--------------|--------|
-| 能源监控 | ✅ 100% | ✅ 100% | ⚠️ 75% | ❌ 0% | Deep-EMS |
-| 能源分析 | ✅ 100% | ✅ 100% | ⚠️ 70% | ❌ 0% | Deep-EMS |
-| 碳排放管理 | ✅ 100% | ✅ 100% | ❌ 10% | ❌ 0% | Deep-EMS |
-| 设备管理 | ✅ 100% | ✅ 100% | ⚠️ 80% | ❌ 0% | Deep-EMS |
-| 报警管理 | ✅ 100% | ✅ 100% | ⚠️ 75% | ❌ 0% | Deep-EMS |
-| 运维管理 | ✅ 100% | ⚠️ 80% | ⚠️ 70% | ❌ 0% | Deep-EMS |
+| 能源监控 | ✅ 100% | ✅ 100% | ⚠️ 75% | ❌ 0% | |
+| 能源分析 | ✅ 100% | ✅ 100% | ⚠️ 70% | ❌ 0% | |
+| 碳排放管理 | ✅ 100% | ✅ 100% | ❌ 10% | ❌ 0% | |
+| 设备管理 | ✅ 100% | ✅ 100% | ⚠️ 80% | ❌ 0% | |
+| 报警管理 | ✅ 100% | ✅ 100% | ⚠️ 75% | ❌ 0% | |
+| 运维管理 | ✅ 100% | ⚠️ 80% | ⚠️ 70% | ❌ 0% | |
 | 新能源管理 | ❌ 0% | ✅ 100% | ❌ 0% | ❌ 0% | MyEMS |
 | 调度优化 | ❌ 0% | ⚠️ 30% | ❌ 0% | ❌ 0% | MyEMS部分 |
 | 生产管理 | ❌ 0% | ❌ 0% | ❌ 0% | ✅ 95% | Super-ERP-MES |
@@ -1149,7 +1149,7 @@ Web服务器：Nginx
 
 | 术语 | 说明 |
 |-----|------|
-| Deep-EMS | 智慧能源管理系统，基于Ruoyi框架开发 |
+| | 智慧能源管理系统，基于Ruoyi框架开发 |
 | MyEMS | 能源管理系统，基于Python开发 |
 | cp-ems-ruoyi | 开源能源管理系统，基于若依框架开发 |
 | Super-ERP-MES | ERP+MES生产管理系统 |
@@ -1160,9 +1160,9 @@ Web服务器：Nginx
 
 ### 10.2 参考文档
 
-1. [Deep-EMS README.md](file:///d:/code/gitcp/inspur-ems/deep-ems/README.md)
-2. [Deep-EMS 项目完整度评估报告.md](file:///d:/code/gitcp/inspur-ems/deep-ems/docs/项目完整度评估报告.md)
-3. [Deep-EMS 系统功能清单.md](file:///d:/code/gitcp/inspur-ems/deep-ems/docs/系统功能清单.md)
+1. [README.md](file:///d:/code/gitcp/inspur-ems/deep-ems/README.md)
+2. [项目完整度评估报告.md](file:///d:/code/gitcp/inspur-ems/deep-ems/docs/项目完整度评估报告.md)
+3. [系统功能清单.md](file:///d:/code/gitcp/inspur-ems/deep-ems/docs/系统功能清单.md)
 4. [MyEMS README.md](file:///d:/code/gitcp/inspur-ems/myems/README.md)
 5. [cp-ems-ruoyi README.md](file:///d:/code/gitcp/inspur-ems/cp-ems-ruoyi/README.md)
 6. [Super-ERP-MES README.md](file:///d:/code/gitcp/inspur-ems/super-erp-mes/README.md)

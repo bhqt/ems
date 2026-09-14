@@ -1,4 +1,4 @@
-# Deep-EMS Docker 构建脚本
+# Docker 构建脚本
 # 用于构建所有服务的 Docker 镜像
 
 param(
@@ -119,7 +119,7 @@ function Clean-Cache {
 
 # 主流程
 Write-Host "`n========================================" -ForegroundColor Magenta
-Write-Host "  Deep-EMS Docker 镜像构建工具" -ForegroundColor Magenta
+Write-Host "  Docker 镜像构建工具" -ForegroundColor Magenta
 Write-Host "========================================`n" -ForegroundColor Magenta
 
 # 如果没有指定任何选项，显示帮助

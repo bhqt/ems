@@ -160,7 +160,7 @@ SPRING_DATASOURCE_DYNAMIC_DATASOURCE_TD_PASSWORD: difyai123456
 
 ```yaml
 # =============================================
-# Deep-EMS 部署配置 (192.168.8.54 服务器)
+# 部署配置 (192.168.8.54 服务器)
 # 复用已有的 MySQL (legal-mysql) 和 Redis (shared-redis)
 # 新增/升级 RabbitMQ、Backend、Frontend、XXL-Job、Monitor、TDengine
 # =============================================
@@ -492,4 +492,4 @@ docker exec zhurong-ems-tdengine taos -u root -s 'show databases;'
 
 **文档版本**: v1.0
 **创建日期**: 2026-04-30
-**项目名称**: Deep-EMS 54 服务器环境升级
+**项目名称**: 54 服务器环境升级

@@ -1,4 +1,4 @@
-# Deep-EMS WSL 部署容器清单
+# WSL 部署容器清单
 
 > 部署时间: 2026-04-28  
 > 配置文件: `docker-compose.full.yml`  

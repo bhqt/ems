@@ -1,6 +1,6 @@
-# Deep-EMS 待新建容器清单
+# 待新建容器清单
 
-> 基于现有服务器容器情况，对比 Deep-EMS 系统中间件需求，列出需要新建的容器。
+> 基于现有服务器容器情况，对比 系统中间件需求，列出需要新建的容器。
 
 ---
 
@@ -12,8 +12,8 @@
 | - | ------ | -------- | ---- |
 | 1 | legal-mysql | mysql:8.0.42 | 可复用于 Deep-EMS（版本接近8.0.35），需创建独立数据库 |
 | 2 | shared-redis | redis:6-alpine | 可复用于 Deep-EMS（版本接近7.2.3），需配置独立DB |
-| 3 | legal-minio | minio/minio:RELEASE.2024-11-07T00-52-20Z | 可复用于 Deep-EMS OSS模块 |
-| 4 | legal-nginx | nginx:latest | 可作为 Deep-EMS 反向代理入口 |
+| 3 | legal-minio | minio/minio:RELEASE.2024-11-07T00-52-20Z | 可复用于 OSS模块 |
+| 4 | legal-nginx | nginx:latest | 可作为 反向代理入口 |
 
 ### 缺失容器（需新建）
 
@@ -104,7 +104,7 @@
 ## 四、数据库创建（如复用已有MySQL）
 
 ```sql
--- Deep-EMS 业务数据库
+-- 业务数据库
 CREATE DATABASE zhurong_ems DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL PRIVILEGES ON zhurong_ems.* TO 'zhurong'@'%' IDENTIFIED BY 'zhurong123';
 
@@ -184,7 +184,7 @@ GRANT ALL PRIVILEGES ON xxl_job.* TO 'zhurong'@'%' IDENTIFIED BY 'zhurong123';
 3. **第三步**：启动 EMQX
 4. **第四步**：启动 TDengine（如需要）
 5. **第五步**：启动 Spring Boot Admin
-6. **第六步**：启动 Deep-EMS 后端服务
+6. **第六步**：启动 后端服务
 7. **最后**：配置 Nginx 反向代理
 
 ---

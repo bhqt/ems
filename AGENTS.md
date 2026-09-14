@@ -1,8 +1,8 @@
-# AGENTS.md - Deep-EMS 项目开发指南
+# AGENTS.md - 项目开发指南
 
 ## 项目概述
 
-- **项目名称**: Deep-EMS (智慧能源管理系统)
+- **项目名称**: (智慧能源管理系统)
 - **版本**: 4.6.0
 - **技术栈**: Spring Boot 2.7.9 + MyBatis-Plus + Vue 2 + Element UI
 - **JDK 要求**: JDK 1.8（**强制要求**，不兼容 JDK 17+）

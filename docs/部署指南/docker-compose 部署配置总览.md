@@ -1,6 +1,6 @@
 # docker-compose 部署配置总览
 
-> 本文档全面梳理 Deep-EMS 所有 Docker 编排文件、与 `D:\code\shared-infra` 共享中间件的关系，以及各部署场景的差异。
+> 本文档全面梳理 所有 Docker 编排文件、与 `D:\code\shared-infra` 共享中间件的关系，以及各部署场景的差异。
 
 ***
 
@@ -66,7 +66,7 @@
 
 ***
 
-## 三、Deep-EMS 与 shared-infra 的整合关系
+## 三、与 shared-infra 的整合关系
 
 ### 3.1 整合架构图
 
@@ -211,7 +211,7 @@ mqtt:
 
 ## 五、启动命令速查
 
-### 5.1 Deep-EMS 项目
+### 5.1 项目
 
 ```bash
 # 本地 WSL 全量部署
@@ -253,7 +253,7 @@ docker compose ps
 
 | 网络名 | 所属 compose | 驱动 | 用途 |
 |--------|-------------|------|------|
-| `zhurong-ems-network` | deep-ems0 全量文件 | bridge | Deep-EMS 内部服务通信 |
+| `zhurong-ems-network` | deep-ems0 全量文件 | bridge | 内部服务通信 |
 | `legal-network` | docker-compose-54.yml | bridge | 生产服务器外部服务通信 |
 | `shared-infra` | D:\code\shared-infra | bridge | 共享中间件层，跨项目共用 |
 
@@ -268,7 +268,7 @@ docker compose ps
 | [EMS接入共享中间件本地研发联调经验.md](./EMS接入共享中间件本地研发联调经验.md) | 接入 shared-infra 的详细步骤和避坑指南 |
 | [dockercompose说明.md](./dockercompose说明.md) | docker-compose.full.yml 与 docker-compose-54.yml 差异对比 |
 | [WSL-Docker 部署清单.md](./WSL-Docker 部署清单.md) | 各容器详细配置、端口、健康检查汇总 |
-| [Deep-EMS 系统中间件清单.md](./Deep-EMS 系统中间件清单.md) | 全部中间件版本、用途、依赖关系 |
+| [系统中间件清单.md](./系统中间件清单.md) | 全部中间件版本、用途、依赖关系 |
 | [TDengine 手动初始化操作手册.md](./TDengine 手动初始化操作手册.md) | TDengine 数据库初始化步骤 |
 | [打包部署常见问题.md](./打包部署常见问题.md) | 部署过程中的常见问题及解决方案 |
 | [打包操作说明.md](./打包操作说明.md) | 镜像构建与打包流程 |
