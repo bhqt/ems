@@ -107,7 +107,7 @@
       <el-table-column :label="$t('cameraModule.cameraKey')" align="center" prop="cameraKey" width="180" show-overflow-tooltip/>
       <el-table-column :label="$t('cameraModule.cameraSecret')" align="center" prop="cameraSecret" width="180" show-overflow-tooltip/>
       <el-table-column :label="$t('cameraModule.cameraLocation')" align="center" >
-        <template slot-scope="scope">{{scope.row.area.itemName}}</template>
+        <template slot-scope="scope">{{ scope.row.area ? scope.row.area.itemName : '' }}</template>
       </el-table-column>
       <el-table-column :label="$t('common.operation')" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
