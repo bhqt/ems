@@ -2047,6 +2047,9 @@ export default {
     lastYearEnergy: 'Прошлый год',
     trend: 'Тенденция',
     area: 'Область',
+    categoryEnergy: 'Категория энергии',
+    year: 'Год',
+    selectYear: 'Выберите год',
     energyType: 'Тип энергии'
   },
   itemizedAnalysisModule: {

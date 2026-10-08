@@ -2259,6 +2259,9 @@ export default {
     lastYearEnergy: '去年同期',
     trend: '趋势',
     area: '区域',
+    categoryEnergy: '分类能耗',
+    year: '年份',
+    selectYear: '选择年份',
     energyType: '能源类型'
   },
   itemizedAnalysisModule: {

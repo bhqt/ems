@@ -2047,6 +2047,9 @@ export default {
     lastYearEnergy: 'Tahun Lalu',
     trend: 'Tren',
     area: 'Area',
+    categoryEnergy: 'Kategori Energi',
+    year: 'Tahun',
+    selectYear: 'Pilih Tahun',
     energyType: 'Tipe Energi'
   },
   itemizedAnalysisModule: {

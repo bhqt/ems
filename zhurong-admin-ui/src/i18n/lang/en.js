@@ -2057,6 +2057,9 @@ export default {
     lastYearEnergy: 'Last Year',
     trend: 'Trend',
     area: 'Area',
+    categoryEnergy: 'Category Energy',
+    year: 'Year',
+    selectYear: 'Select Year',
     energyType: 'Energy Type'
   },
   itemizedAnalysisModule: {
