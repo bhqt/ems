@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="hdr-center">
-      <span class="cn">智</span><span class="cn">碳</span><span class="cn">示</span>
+      <span class="cn">态</span><span class="cn">势</span><span class="cn">感</span><span class="cn">知</span>
     </div>
     <div class="hdr-right">
       <div class="clock">

@@ -44,6 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 .kpi-card {
+  position: relative;
   display: flex;
   align-items: center;
   height: 100%;

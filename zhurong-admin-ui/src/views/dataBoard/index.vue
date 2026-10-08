@@ -135,7 +135,7 @@ import { Lightning, Dashboard, Cycle } from "@icon-park/vue";
 import moment from "moment";
 import { getAllStatus } from '@/api/system/equipmentInfo'
 import { listHistory } from '@/api/system/alarmHistory'
-import { topologyTreeSelect } from '@/api/system/itemTopology'
+import { listItemTopology, topologyTreeSelect } from '@/api/system/itemTopology'
 import { getChainData, getDailyP, getDayTrend, getConsumptionStatistics } from '@/api/system/energy'
 export default {
   name: "dataBoard",
@@ -202,31 +202,26 @@ export default {
     },
     // 获取区域拓扑（递归寻找首个绑定了设备的建筑节点）
     getAreaList() {
-      return topologyTreeSelect().then((res) => {
-        if (!res.data || res.data.length === 0) {
-          this.areaId = 1;
-          return;
-        }
-        // 优先选择首个 deviceId 非空的节点（叶子建筑）
-        const findAreaWithDevice = (nodes) => {
-          for (const n of nodes) {
-            // item_topology 返回字段含 id; children 嵌套
-            if (n.deviceId && n.deviceId.length > 0) {
-              return n.id;
-            }
-            if (n.children && n.children.length > 0) {
-              const childId = findAreaWithDevice(n.children);
-              if (childId) return childId;
-            }
+      // 优先使用 topologyTree 拿到 ID 候选，再用 list 接口拿到 deviceId
+      return topologyTreeSelect().then((treeRes) => {
+        const firstId = (treeRes.data && treeRes.data[0] && treeRes.data[0].id) || null;
+        return listItemTopology({}).then((listRes) => {
+          const list = (listRes.data || []).filter(d => d.delFlag !== '2' && d.deviceId && d.deviceId.length > 0);
+          if (list.length > 0) {
+            // 选择 orderNum 最小且 deviceId 不空的建筑
+            list.sort((a, b) => (a.orderNum || 0) - (b.orderNum || 0));
+            this.areaId = list[0].itemId;
+            console.log('[dataBoard] selected building areaId =', this.areaId, list[0].itemName);
+            return;
           }
-          return null;
-        };
-        const id = findAreaWithDevice(res.data);
-        this.areaId = id || res.data[0].id;
-        console.log('[dataBoard] selected areaId =', this.areaId);
+          // 兜底：使用拓扑树首个 ID
+          this.areaId = firstId || 1;
+          console.warn('[dataBoard] no building with deviceId found, fallback areaId =', this.areaId);
+        });
       }).catch(err => {
-        console.warn('[dataBoard] topologyTreeSelect failed, fallback to 1', err);
-        this.areaId = 1;
+        console.warn('[dataBoard] topologyTreeSelect failed, fallback to default', err);
+        // 兜底值：直接用我们新插入的建筑（A栋-研发楼）
+        this.areaId = 8880000000000000003;
         throw err;
       });
     },

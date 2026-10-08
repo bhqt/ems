@@ -200,14 +200,16 @@ BEGIN
               WHEN h BETWEEN 18 AND 22 THEN 0.95
               ELSE 0.55 END;
         SET @id = base_id + i;
+        -- create_time 必须落在该小时的桶内：getDailyP 按 create_time 分小时，
+        -- 且边界为开区间 (h:00, h+1:00)，故取 h:00:30 而非整点或 NOW()
         INSERT INTO power_statistics
           (id, equipment_sn, energy_type, time, min, ave, max, create_by, create_time, update_by, update_time)
         VALUES
           (@id, sn_var, '0', TIMESTAMP(d, SEC_TO_TIME(h * 3600)),
-           ROUND(base_val * 0.45, 2),
+           ROUND(base_val * @ave_factor * 0.62, 2),
            ROUND(base_val * @ave_factor, 2),
-           ROUND(base_val * 1.30, 2),
-           'admin', NOW(), 'admin', NOW());
+           ROUND(base_val * LEAST(@ave_factor * 1.25, 1.60), 2),
+           'admin', TIMESTAMP(d, SEC_TO_TIME(h * 3600 + 30)), 'admin', NOW());
         SET i = i + 1;
         SET h = h + 1;
       END WHILE;

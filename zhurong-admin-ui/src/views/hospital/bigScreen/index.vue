@@ -68,7 +68,7 @@
 
       <!-- 右列 -->
       <div class="col col-right">
-        <div class="panel">
+        <div class="panel full">
           <div class="panel-title"><i class="el-icon-monitor" /> 设备运行状态</div>
           <div class="chart-area tall">
             <DeviceStatusChart :data="deviceStatusList" />
@@ -284,12 +284,14 @@ export default {
   flex-direction: column;
   padding: 12px 14px;
   box-sizing: border-box;
+  min-height: 0;
+  overflow: hidden;
   background: linear-gradient(160deg, rgba(13, 30, 58, 0.82), rgba(18, 45, 92, 0.5));
   border: 1px solid rgba(64, 158, 255, 0.22);
   box-shadow: 0 0 14px rgba(21, 64, 128, 0.2), inset 0 0 22px rgba(32, 96, 160, 0.06);
 
   &.full {
-    flex: 1;
+    flex: 1 1 0;
   }
 }
 
@@ -338,20 +340,13 @@ export default {
 
 .chart-area {
   width: 100%;
+  flex: 1 1 auto;
   min-height: 0;
-
-  &.tall {
-    height: 100%;
-  }
+  overflow: hidden;
 }
 
 .chart-panel {
   flex: 1;
-}
-
-.grow {
-  flex: 1;
-  min-height: 0;
 }
 
 .row-two {
@@ -376,6 +371,9 @@ export default {
   flex-direction: column;
   gap: 10px;
   padding: 4px 2px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .tip-item {

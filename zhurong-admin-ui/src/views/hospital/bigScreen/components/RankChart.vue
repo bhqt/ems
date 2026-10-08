@@ -6,9 +6,11 @@
 
 <script>
 import * as echarts from 'echarts'
+import chartResize from '../mixins/chartResize'
 
 export default {
   name: 'RankChart',
+  mixins: [chartResize],
   props: {
     data: { type: Array, default: () => [] }
   },
