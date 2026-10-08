@@ -14,7 +14,7 @@ export function listBatchRecord(query) {
 // 查询批次记录详细信息
 export function getBatchRecord(batchId) {
   return request({
-    url: '/energy/batch/getInfo/' + batchId,
+    url: '/energy/batch/info/' + batchId,
     method: 'get'
   })
 }
@@ -22,7 +22,7 @@ export function getBatchRecord(batchId) {
 // 新增批次记录
 export function addBatchRecord(data) {
   return request({
-    url: '/energy/batch/add',
+    url: '/energy/batch',
     method: 'post',
     data: data
   })
@@ -31,7 +31,7 @@ export function addBatchRecord(data) {
 // 修改批次记录
 export function updateBatchRecord(data) {
   return request({
-    url: '/energy/batch/edit',
+    url: '/energy/batch',
     method: 'put',
     data: data
   })
@@ -40,7 +40,7 @@ export function updateBatchRecord(data) {
 // 删除批次记录
 export function delBatchRecord(batchIds) {
   return request({
-    url: '/energy/batch/remove/' + batchIds,
+    url: '/energy/batch/' + batchIds,
     method: 'delete'
   })
 }
@@ -59,7 +59,7 @@ export function listBenchmarkStandard(query) {
 // 查询标杆标准详细信息
 export function getBenchmarkStandard(standardId) {
   return request({
-    url: '/energy/benchmark/getInfo/' + standardId,
+    url: '/energy/benchmark/info/' + standardId,
     method: 'get'
   })
 }
@@ -67,7 +67,7 @@ export function getBenchmarkStandard(standardId) {
 // 新增标杆标准
 export function addBenchmarkStandard(data) {
   return request({
-    url: '/energy/benchmark/add',
+    url: '/energy/benchmark',
     method: 'post',
     data: data
   })
@@ -76,7 +76,7 @@ export function addBenchmarkStandard(data) {
 // 修改标杆标准
 export function updateBenchmarkStandard(data) {
   return request({
-    url: '/energy/benchmark/edit',
+    url: '/energy/benchmark',
     method: 'put',
     data: data
   })
@@ -85,7 +85,7 @@ export function updateBenchmarkStandard(data) {
 // 删除标杆标准
 export function delBenchmarkStandard(standardIds) {
   return request({
-    url: '/energy/benchmark/remove/' + standardIds,
+    url: '/energy/benchmark/' + standardIds,
     method: 'delete'
   })
 }
@@ -104,7 +104,7 @@ export function listEnergyBalance(query) {
 // 查询能源平衡详细信息
 export function getEnergyBalance(balanceId) {
   return request({
-    url: '/energy/balance/getInfo/' + balanceId,
+    url: '/energy/balance/info/' + balanceId,
     method: 'get'
   })
 }
@@ -112,7 +112,7 @@ export function getEnergyBalance(balanceId) {
 // 新增能源平衡
 export function addEnergyBalance(data) {
   return request({
-    url: '/energy/balance/add',
+    url: '/energy/balance',
     method: 'post',
     data: data
   })
@@ -121,7 +121,7 @@ export function addEnergyBalance(data) {
 // 修改能源平衡
 export function updateEnergyBalance(data) {
   return request({
-    url: '/energy/balance/edit',
+    url: '/energy/balance',
     method: 'put',
     data: data
   })
@@ -130,7 +130,7 @@ export function updateEnergyBalance(data) {
 // 删除能源平衡
 export function delEnergyBalance(balanceIds) {
   return request({
-    url: '/energy/balance/remove/' + balanceIds,
+    url: '/energy/balance/' + balanceIds,
     method: 'delete'
   })
 }
@@ -203,7 +203,7 @@ export function getDayTrend(query) {
 // 获取月趋势
 export function getMonthTrend(query) {
   return request({
-    url: '/energy/trend/month',
+    url: '/data/energy/monthTrend',
     method: 'get',
     params: query
   })
@@ -212,7 +212,7 @@ export function getMonthTrend(query) {
 // 获取年趋势
 export function getYearTrend(query) {
   return request({
-    url: '/energy/trend/year',
+    url: '/data/energy/yearTrend',
     method: 'get',
     params: query
   })
@@ -221,7 +221,7 @@ export function getYearTrend(query) {
 // 获取环比数据
 export function getChainData(query) {
   return request({
-    url: '/energy/chain',
+    url: '/data/energy/getChain',
     method: 'get',
     params: query
   })
@@ -239,7 +239,7 @@ export function getDailyP(query) {
 // 获取日水流量
 export function getWTrendByDay(query) {
   return request({
-    url: '/energy/daily/water',
+    url: '/data/energy/getWTrendByDay',
     method: 'get',
     params: query
   })
@@ -248,7 +248,7 @@ export function getWTrendByDay(query) {
 // 获取年份分析数据
 export function getYearAnalysis(query) {
   return request({
-    url: '/energy/analysis/year',
+    url: '/data/energy/getYearAnalysis',
     method: 'get',
     params: query
   })
@@ -257,7 +257,7 @@ export function getYearAnalysis(query) {
 // 获取设备环比数据
 export function getChainByDevice(query) {
   return request({
-    url: '/energy/chain/device',
+    url: '/data/energy/getChainByDevice',
     method: 'get',
     params: query
   })
@@ -266,7 +266,7 @@ export function getChainByDevice(query) {
 // 获取月度水流量趋势
 export function getWTrendByMonth(query) {
   return request({
-    url: '/energy/trend/month',
+    url: '/data/energy/getWTrendByMonth',
     method: 'get',
     params: query
   })
@@ -275,7 +275,7 @@ export function getWTrendByMonth(query) {
 // 获取年度水流量趋势
 export function getWTrendByYear(query) {
   return request({
-    url: '/energy/trend/year',
+    url: '/data/energy/getWTrendByYear',
     method: 'get',
     params: query
   })
@@ -284,7 +284,7 @@ export function getWTrendByYear(query) {
 // 获取能源流向数据
 export function getFlowData(query) {
   return request({
-    url: '/energy/flow',
+    url: '/data/energy/getFlowData',
     method: 'get',
     params: query
   })
@@ -293,7 +293,7 @@ export function getFlowData(query) {
 // 获取能耗费用报表
 export function getConsumptionExpenseReport(query) {
   return request({
-    url: '/energy/expense/report',
+    url: '/data/energy/getConsumptionExpenseReport',
     method: 'get',
     params: query
   })
@@ -302,9 +302,9 @@ export function getConsumptionExpenseReport(query) {
 // 获取能耗损耗分析
 export function getLossAnalysis(query) {
   return request({
-    url: '/energy/loss/analysis',
-    method: 'get',
-    params: query
+    url: '/data/energy/getLossAnalysis',
+    method: 'post',
+    data: query
   })
 }
 
