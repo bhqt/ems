@@ -37,7 +37,16 @@
         </div>
       </div>
       <div class="content-middle flex-column-between">
-        <div class="content-map" id="boardMap"></div>
+        <div class="content-map">
+          <div class="map-title">
+            <span class="title-bar"></span>
+            <span>浪潮山东园区 · 智慧能源分布</span>
+            <span class="map-time">{{ nowTime }}</span>
+          </div>
+          <div class="map-body">
+            <ShandongMap3D />
+          </div>
+        </div>
         <div class="content-chart">
           <div class="box-title">{{ $t('dataBoardModule.todayEnergyTrend') }}</div>
           <div class="box-content">
@@ -121,6 +130,7 @@ import alarmInfo from "@/views/dataBoard/alarmInfo";
 import LineChart from "@/views/dataBoard/LineChart.vue";
 import barChart from "@/views/dataBoard/BarChart";
 import TrendLineChart from "@/views/dataBoard/TrendLineChart";
+import ShandongMap3D from "@/views/dataBoard/ShandongMap3D.vue";
 import { Lightning, Dashboard, Cycle } from "@icon-park/vue";
 import moment from "moment";
 import { getAllStatus } from '@/api/system/equipmentInfo'
@@ -137,7 +147,8 @@ export default {
     Cycle,
     Dashboard,
     barChart,
-    TrendLineChart
+    TrendLineChart,
+    ShandongMap3D
   },
   data() {
     return {
@@ -189,12 +200,34 @@ export default {
         this.alarmTotal = response.total;
       });
     },
-    // 获取区域拓扑
+    // 获取区域拓扑（递归寻找首个绑定了设备的建筑节点）
     getAreaList() {
-      topologyTreeSelect().then((res) => {
-        if(res.data.length>0){
-          this.areaId = res.data[0].id
+      return topologyTreeSelect().then((res) => {
+        if (!res.data || res.data.length === 0) {
+          this.areaId = 1;
+          return;
         }
+        // 优先选择首个 deviceId 非空的节点（叶子建筑）
+        const findAreaWithDevice = (nodes) => {
+          for (const n of nodes) {
+            // item_topology 返回字段含 id; children 嵌套
+            if (n.deviceId && n.deviceId.length > 0) {
+              return n.id;
+            }
+            if (n.children && n.children.length > 0) {
+              const childId = findAreaWithDevice(n.children);
+              if (childId) return childId;
+            }
+          }
+          return null;
+        };
+        const id = findAreaWithDevice(res.data);
+        this.areaId = id || res.data[0].id;
+        console.log('[dataBoard] selected areaId =', this.areaId);
+      }).catch(err => {
+        console.warn('[dataBoard] topologyTreeSelect failed, fallback to 1', err);
+        this.areaId = 1;
+        throw err;
       });
     },
     //根据能源类型查询（电/水单独数据）
@@ -359,13 +392,21 @@ export default {
     this.showWhich = this.$router.currentRoute.path == '/data-board' ? false : true;
     this.getEquipmentData();
     this.getAlarmList();
-    this.getAreaList();
-
-    this.$nextTick(() => {
-      this.getConsumption();
-      this.getEnergy(); // 初始化综合能耗数据
-      this.getDailyPData();
-    })
+    // 设备/报警与区域无关，立即触发；能耗相关需在拿到 areaId 后触发
+    this.getAreaList().then(() => {
+      this.$nextTick(() => {
+        this.getConsumption();
+        this.getEnergy(); // 初始化综合能耗数据
+        this.getDailyPData();
+      });
+    }).catch(() => {
+      // 失败时仍按原 areaId=1 渲染，避免空白
+      this.$nextTick(() => {
+        this.getConsumption();
+        this.getEnergy();
+        this.getDailyPData();
+      });
+    });
   },
   beforeDestroy() {
     this.isActive = false;
@@ -499,6 +540,41 @@ export default {
 }
 .content-map {
   height: 65%;
+  position: relative;
+  background-image: url("../../assets/images/box-bg1.png");
+  background-size: 100% 100%;
+  padding: 28px 12px 12px;
+  display: flex;
+  flex-direction: column;
+}
+.map-title {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  color: #01d1ff;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 12px;
+  letter-spacing: 1px;
+}
+.map-title .title-bar {
+  width: 6px;
+  height: 100%;
+  border-radius: 10px;
+  display: inline-block;
+  margin-right: 6px;
+  background: linear-gradient(to bottom, #00d1ff, #2869e8);
+}
+.map-title .map-time {
+  margin-left: auto;
+  font-size: 12px;
+  color: #88b7e9;
+  font-weight: normal;
+}
+.map-body {
+  flex: 1;
+  margin-top: 4px;
+  position: relative;
 }
 .content-chart {
   height: calc(35% - 12px);
@@ -574,16 +650,5 @@ export default {
   height: calc(100% - 55px);
 }
 
-/* 地图信息窗口样式修改（保留但不影响空区域） */
-#boardMap .BMap_bubble_pop {
-  background-color: rgba(28, 37, 80, 0.8) !important;
-  border: 1px solid #186dbf !important;
-}
-#boardMap .BMap_bubble_pop img {
-  display: none;
-}
-#boardMap .BMap_bubble_pop .BMap_bubble_top .BMap_bubble_title,
-#boardMap .BMap_bubble_pop .BMap_bubble_center .BMap_bubble_content {
-  color: #fff !important;
-}
+/* 地图信息窗口样式已废弃（移除原百度地图相关代码） */
 </style>
