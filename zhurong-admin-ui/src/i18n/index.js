@@ -16,23 +16,49 @@ Vue.use(VueI18n)
 // 语言包按需加载配置
 const loadedLanguages = []
 
+/**
+ * i18n 文件结构补救：因早期编辑事故，部分子模块（如 occupancyOrder / orderDetail）
+ * 在 4 个语言包中被错误提升为顶级键，导致页面通过 `chargingModule.xxx` 路径找不到翻译。
+ * 此函数在挂载到 VueI18n 之前，将这些"孤儿"顶级键代理到正确的父模块下，
+ * 既不修改 i18n 源文件，也不需要改业务页面代码。
+ */
+function applyModuleKeyAliases(lang) {
+  const aliases = {
+    occupancyOrder: 'chargingModule',
+    orderDetail: 'chargingModule'
+  }
+  for (const [orphanKey, parentKey] of Object.entries(aliases)) {
+    if (lang[orphanKey] && !lang[parentKey]) {
+      lang[parentKey] = { [orphanKey]: lang[orphanKey] }
+    } else if (lang[orphanKey] && lang[parentKey] && !lang[parentKey][orphanKey]) {
+      lang[parentKey] = { [orphanKey]: lang[orphanKey], ...lang[parentKey] }
+    }
+  }
+}
+
 // 初始包含中英文（预加载）
 const messages = {
-  'zh-CN': {
-    ...elementZhCN,
-    ...zhCN
-  },
-  'en': {
-    ...elementEn,
-    ...en
-  },
+  'zh-CN': (() => {
+    const merged = { ...elementZhCN, ...zhCN }
+    applyModuleKeyAliases(merged)
+    return merged
+  })(),
+  'en': (() => {
+    const merged = { ...elementEn, ...en }
+    applyModuleKeyAliases(merged)
+    return merged
+  })(),
   // 印尼语和俄语只有应用语言包，没有 Element UI 语言包
-  'id': {
-    ...id
-  },
-  'ru': {
-    ...ru
-  }
+  'id': (() => {
+    const merged = { ...id }
+    applyModuleKeyAliases(merged)
+    return merged
+  })(),
+  'ru': (() => {
+    const merged = { ...ru }
+    applyModuleKeyAliases(merged)
+    return merged
+  })()
 }
 
 // 标记所有语言已加载
@@ -131,6 +157,9 @@ export function loadLanguageAsync(lang) {
       ...elementLang.default,
       ...appLang.default
     }
+
+    // 同样的键路径别名补救
+    applyModuleKeyAliases(messages[lang])
 
     // 标记语言已加载
     loadedLanguages.push(lang)
