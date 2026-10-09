@@ -117,10 +117,10 @@ export function submitTableEditDangerGoodsInfo(data) {
 
 // 删除危化品信息管理
 export function deleteDangerGoodsInfoByIds(id) {
-	return request({
-		url: '/autoee/dangerGoodsInfo/deleteDangerGoodsInfoByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/dangerGoodsInfo/deleteDangerGoodsInfoByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除危化品信息管理

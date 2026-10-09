@@ -80,10 +80,10 @@
 
             <div class="panel-links">
               <router-link class="link-type" :to="'/applyAccount'" v-if="experienceShow">
-                {{ $t('login.experience') || '获取体验账号' }}
+                {{ $t('login.experience') }}
               </router-link>
               <router-link class="link-type" :to="'/register'" v-if="register">
-                {{ $t('login.register') || '立即注册' }}
+                {{ $t('login.register') }}
               </router-link>
             </div>
           </el-form>

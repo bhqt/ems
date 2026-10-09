@@ -140,7 +140,7 @@
           :disabled="multiple"
           @click="handleOpen"
           v-hasPermi="['system:pile:edit']"
-        >{{ $t('button.batchEnable') || '批量启用' }}</el-button>
+        >{{ $t('button.batchEnable') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -151,7 +151,7 @@
           :disabled="multiple"
           @click="handleClose"
           v-hasPermi="['system:pile:edit']"
-        >{{ $t('button.batchDisable') || '批量停用' }}</el-button>
+        >{{ $t('button.batchDisable') }}</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -192,7 +192,7 @@
             @change="handleStatusChange(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('chargingModule.pile.workStatus') || '工作状态'" align="center" prop="workStatus">
+      <el-table-column :label="$t('chargingModule.pile.workStatus')" align="center" prop="workStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.pile_status" :value="scope.row.workStatus" />
         </template>

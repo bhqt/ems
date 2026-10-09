@@ -117,10 +117,10 @@ export function submitTableEditMaintainOrder(data) {
 
 // 删除维修工单
 export function deleteMaintainOrderByIds(id) {
-	return request({
-		url: '/autoee/maintainOrder/deleteMaintainOrderByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/maintainOrder/deleteMaintainOrderByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除维修工单

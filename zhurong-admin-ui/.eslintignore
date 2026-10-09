@@ -1,10 +1,16 @@
 # 忽略build目录下类型为js的文件的语法检查
 build/*.js
+# 忽略dist构建产物（webpack 打包输出，含压缩代码）
+dist
 # 忽略src/assets目录下文件的语法检查
 src/assets
 # 忽略public目录下文件的语法检查
 public
-# 忽略当前目录下为js的文件的语法检查
-*.js
-# 忽略当前目录下为vue的文件的语法检查
-*.vue
+# 忽略scripts目录下的工具脚本
+scripts
+# 忽略根目录下为js的文件的语法检查
+# 注意：必须写成 /*.js 而非 *.js。gitignore 语法中不含斜杠的模式会递归匹配任意层级，
+# *.js 会连 src/ 下的所有 js 一起忽略，导致 eslint 实际检查不到任何文件。
+/*.js
+# 忽略根目录下为vue的文件的语法检查
+/*.vue

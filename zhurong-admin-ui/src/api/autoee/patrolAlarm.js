@@ -117,10 +117,10 @@ export function submitTableEditPatrolAlarm(data) {
 
 // 删除巡更报警
 export function deletePatrolAlarmByIds(id) {
-	return request({
-		url: '/autoee/patrolAlarm/deletePatrolAlarmByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/patrolAlarm/deletePatrolAlarmByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除巡更报警

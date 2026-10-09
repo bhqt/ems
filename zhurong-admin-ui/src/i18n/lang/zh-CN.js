@@ -16,6 +16,7 @@ export default {
     download: '下载',
     upload: '上传',
     operate: '操作',
+    operation: '操作',
     status: '状态',
     enable: '启用',
     disable: '禁用',
@@ -49,6 +50,7 @@ export default {
     goTo: '前往',
     page: '页',
     index: '序号',
+    detail: '详情',
     operator: '操作人员',
     creator: '创建者',
     updater: '更新者',
@@ -58,6 +60,10 @@ export default {
     deleteFlag: '删除标志',
     deleteTime: '删除时间',
     submitEdit: '提交列表编辑',
+    addSuccess: '新增成功',
+    editSuccess: '修改成功',
+    deleteSuccess: '删除成功',
+    confirmDelete: '是否确认删除？',
     clear: '清空',
     publishTime: '发布时间',
     systemBuiltIn: '系统内置',
@@ -74,6 +80,12 @@ export default {
     fail: '不合格',
     completed: '已完成',
     inProgress: '进行中',
+    query: '查询',
+    user: '用户ID',
+    dept: '部门ID',
+    createUser: '创建者',
+    updateUser: '更新者',
+    deleteUser: '删除者',
     systemTitle: '智慧能源监控平台',
     // 导航栏
     profile: '个人中心',
@@ -120,7 +132,12 @@ export default {
     showHideColumns: '显隐列',
     showHideTitle: '显示/隐藏',
     show: '显示',
-    hide: '隐藏'
+    hide: '隐藏',
+
+    // 通用表单校验
+    validate: {
+      remarkRequired: '备注不能为空'
+    }
   },
 
   // 登录页
@@ -143,7 +160,9 @@ export default {
     loginSuccess: '登录成功',
     loginError: '登录失败',
     logout: '退出登录',
-    logoutConfirm: '确定要退出登录吗？'
+    logoutConfirm: '确定要退出登录吗？',
+    experience: '获取体验账号',
+    register: '立即注册'
   },
 
   // 菜单 - 与后端返回的菜单名称对应
@@ -648,7 +667,14 @@ export default {
     selectGender: '请选择性别',
     selectStatus: '请选择状态',
     select: '请选择',
-    input: '请输入'
+    input: '请输入',
+    configKey: '请输入参数键名',
+    dictName: '请输入字典名称',
+    postCode: '请输入岗位编码',
+    roleKey: '请输入权限字符',
+    pathRequired: '请输入路由地址',
+    selectDate: '请选择日期',
+    inputIconName: '请输入图标名称'
   },
 
   // 表单验证提示
@@ -673,6 +699,7 @@ export default {
     download: '下载',
     upload: '上传',
     submit: '确 定',
+    submitEdit: '提交列表编辑',
     cancel: '取 消',
     close: '关 闭',
     save: '保 存',
@@ -700,7 +727,10 @@ export default {
     auth: '分配',
     resetPwd: '重置密码',
     authRole: '分配角色',
-    authUser: '分配用户'
+    authUser: '分配用户',
+    refreshCache: '刷新缓存',
+    batchEnable: '批量启用',
+    batchDisable: '批量禁用'
   },
 
   // 表格列标题
@@ -725,6 +755,8 @@ export default {
     postId: '岗位编号',
     postName: '岗位名称',
     postCode: '岗位编码',
+    postSort: '岗位顺序',
+    remark: '备注',
     dictId: '字典主键',
     dictName: '字典名称',
     dictType: '字典类型',
@@ -747,6 +779,7 @@ export default {
     noticeContent: '公告内容',
     loginTime: '登录时间',
     ipaddr: '登录IP',
+    loginName: '登录名称',
     loginLocation: '登录地点',
     browser: '浏览器',
     os: '操作系统',
@@ -758,6 +791,7 @@ export default {
     operName: '操作人员',
     operUrl: '请求地址',
     operIp: '操作地址',
+    operLocation: '操作地点',
     operParam: '请求参数',
     jsonResult: '返回参数',
     errorMsg: '错误消息',
@@ -906,7 +940,12 @@ export default {
     menuNameRequired: '菜单名称不能为空',
     pathRequired: '路由地址不能为空',
     noticeTitleRequired: '公告标题不能为空',
-    noticeContentRequired: '公告内容不能为空'
+    noticeContentRequired: '公告内容不能为空',
+    noticeTypeRequired: '公告类型不能为空',
+    configValueRequired: '参数键值不能为空',
+    postSortRequired: '岗位顺序不能为空',
+    typeRequired: '请选择生成类型',
+    cannotBeEmpty: '不能为空'
   },
 
   // 系统管理模块
@@ -933,7 +972,8 @@ export default {
       dataScope2: '自定义数据权限',
       dataScope3: '本部门数据权限',
       dataScope4: '本部门及以下数据权限',
-      dataScope5: '仅本人数据权限'
+      dataScope5: '仅本人数据权限',
+      authUser: '分配用户'
     },
     dept: {
       title: '部门管理',
@@ -956,10 +996,13 @@ export default {
       title: '菜单管理',
       expandAll: '展开/折叠',
       selectIcon: '选择图标',
-      directory: '目录',
-      menu: '菜单',
-      button: '按钮',
-      parentMenu: '主类目'
+    directory: '目录',
+    menu: '菜单',
+    button: '按钮',
+    parentMenu: '主类目',
+    selectParent: '选择上级菜单',
+    menuType: '菜单类型',
+    menuIcon: '菜单图标'
     },
     notice: {
       title: '通知公告',
@@ -972,8 +1015,9 @@ export default {
         detailTitle: '操作日志详细',
         operId: '操作序号',
         operModule: '操作模块',
-        operType: '操作类型',
-        operDesc: '操作描述'
+      operType: '操作类型',
+      operDesc: '操作描述',
+      operTime: '操作时间'
       },
       logininfor: {
         title: '登录日志',
@@ -994,7 +1038,10 @@ export default {
       loginName: '登录名称',
       deptName: '部门名称',
       host: '主机',
-      loginTime: '登录时间'
+      loginTime: '登录时间',
+      loginLocation: '登录地点',
+      browser: '浏览器',
+      os: '操作系统'
     },
     job: {
       title: '定时任务',
@@ -1039,7 +1086,31 @@ export default {
       clear: '清空缓存',
       clearSuccess: '清空成功',
       list: '缓存列表',
-      keyList: '键名列表'
+      keyList: '键名列表',
+      cacheInfo: '缓存信息',
+      redisVersion: 'Redis 版本',
+      runMode: '运行模式',
+      port: '端口',
+      clients: '客户端连接数',
+      runTime: '运行时长',
+      memoryUsed: '已用内存',
+      cpuUsed: 'CPU 占用',
+      memoryConfig: '内存配置',
+      aofEnabled: 'AOF 是否开启',
+      rdbStatus: 'RDB 最近保存状态',
+      keyCount: '键数量',
+      networkIO: '网络 I/O',
+      commandStats: '命令统计',
+      memoryInfo: '内存信息'
+    },
+    logininfor: {
+      title: '登录日志',
+      loginTime: '登录时间',
+      loginLocation: '登录地点',
+      browser: '浏览器',
+      os: '操作系统',
+      unlock: '解锁',
+      unlockSuccess: '解锁成功'
     }
   },
 
@@ -1135,6 +1206,7 @@ export default {
       unit: '单位',
       industry: '所属行业',
       region: '适用地区',
+      applicableRange: '适用范围',
       effectiveDate: '生效日期',
       status: '状态',
       remark: '备注',
@@ -1199,6 +1271,7 @@ export default {
       createTime: '创建时间',
       updateTime: '更新时间',
       remark: '备注',
+      activity: '站点活动',
       placeholder: {
         searchStation: '请输入充电站名称',
         searchMerchant: '请输入商户名称',
@@ -1234,6 +1307,7 @@ export default {
       encoding: '终端编码',
       name: '终端名称',
       merchantName: '商户名称',
+      merchant: '商户',
       workStatus: '工作状态',
       batchEnable: '批量启用',
       batchDisable: '批量停用',
@@ -1926,7 +2000,8 @@ export default {
       inputSecurityCode: '输入安全验证码',
       selectCommand: '选择控制指令',
       inputParams: '输入参数',
-      inputSecurityPwd: '输入安全密码'
+      inputSecurityPwd: '输入安全密码',
+      inputParamsLabel: '请输入控制参数'
     }
   },
   // 计量管理模块
@@ -1976,6 +2051,7 @@ export default {
     planAdded: '校准计划已添加',
     startExecute: '开始执行校准计划',
     planCompleted: '校准计划已执行完成',
+    remark: '备注',
     exportSuccess: '校准记录已导出',
     placeholder: {
       searchMeter: '搜索计量器具',
@@ -2196,7 +2272,8 @@ export default {
     addAlarm: '添加实时报警',
     editAlarm: '修改实时报警',
     addAlarmRule: '添加报警规则',
-    editAlarmRule: '修改报警规则'
+    editAlarmRule: '修改报警规则',
+    alarmReminder: '请选择提醒人'
   },
   analysisReportModule: {
     title: '分析报告',
@@ -2230,7 +2307,10 @@ export default {
     cameraStatus: '状态',
     cameraLocation: '安装位置',
     addCamera: '添加摄像头',
-    editCamera: '修改摄像头'
+    editCamera: '修改摄像头',
+    cameraToken: '接入Token',
+    cameraKey: '接入Key',
+    cameraSecret: '接入Secret'
   },
   carbonAssetsModule: {
     title: '碳资产管理',
@@ -2267,7 +2347,15 @@ export default {
     categoryEnergy: '分类能耗',
     year: '年份',
     selectYear: '选择年份',
-    energyType: '能源类型'
+    energyType: '能源类型',
+    date: '日期',
+    dateRange: '日期范围',
+    selectDate: '选择日期',
+    selectTime: '选择时间',
+    startTime: '开始时间',
+    dayTotal: '当日累计',
+    monthTotal: '当月累计',
+    search: '查询'
   },
   itemizedAnalysisModule: {
     title: '分项分析',
@@ -2302,11 +2390,44 @@ export default {
     actualInspectionTime: '实际巡检时间',
     inspectionResult: '巡检结果',
     orderNum: '排序编号',
+    displayOrder: '显示排序',
     rootNode: '根节点',
+    rootNodeName: '根节点名称',
+    expandCollapse: '展开/折叠',
+    parentProject: '上级项目',
+    projectType: '项目类型',
+    relatedEquipment: '关联设备',
+    projectStatus: '项目状态',
     reportType: '例报类型',
     reportCycle: '例报周期',
     pushMethod: '推送方式',
-    receiver: '接收人'
+    receiver: '接收人',
+    addTitle: '添加项目',
+    editTitle: '修改项目',
+    parentProjectRequired: '上级项目不能为空',
+    projectNameRequired: '项目名称不能为空',
+    displayOrderRequired: '显示排序不能为空',
+    emailInvalid: '请输入正确的邮箱地址',
+    phoneInvalid: '请输入正确的手机号码',
+    equipmentName: '设备名',
+    equipmentSn: '设备编号',
+    equipmentType: '设备类型',
+    equipmentModel: '设备型号',
+    inspectionStatus: '巡检状态',
+    orderNo: '工单编号',
+    orderStatus: '工单状态',
+    orderContent: '工单内容',
+    orderRemark: '工单备注',
+    responsiblePerson: '负责人',
+    assignTime: '派单时间',
+    finishTime: '完成时间',
+    createOrder: '新建工单',
+    distribute: '派单',
+    cancel: '取消工单',
+    annex: '附件',
+    station: '站点',
+    preparedBy: '编制人',
+    head: '值班负责人'
   },
   quotaModule: {
     title: '配额管理',
@@ -2508,14 +2629,19 @@ export default {
     pointName: '点位名称',
     pointLocation: '点位地点',
     pathName: '路线名称',
+    pathCode: '路线编号',
+    pathStatus: '路线状态',
     pathDesc: '路线描述',
     pathPoints: '路线点位',
     planName: '计划名称',
     planDesc: '计划描述',
     planType: '计划类型',
     planCycle: '计划周期',
+    planCycleValue: '巡更周期',
     planStartTime: '计划开始时间',
     planEndTime: '计划结束时间',
+    planStartDate: '计划开始日期',
+    planEndDate: '计划结束日期',
     planStatus: '计划状态',
     taskName: '任务名称',
     taskDesc: '任务描述',
@@ -2544,6 +2670,7 @@ export default {
     pointNameRequired: '点位名称不能为空',
     pointLocationRequired: '点位地点不能为空',
     pathNameRequired: '路线名称不能为空',
+    pathCodeRequired: '路线编号不能为空',
     planNameRequired: '计划名称不能为空',
     taskNameRequired: '任务名称不能为空',
     alarmNameRequired: '报警名称不能为空',
@@ -2849,6 +2976,34 @@ export default {
     dashAlarm: '最近报警',
     deviceOnline: '在线设备',
     deviceFault: '故障设备',
-    viewMore: '查看更多'
+    viewMore: '查看更多',
+    sort: '排序',
+    device: '设备',
+    projectCategory: '设备分类',
+    categoryLighting: '照明',
+    categoryAircond: '空调',
+    categoryMedical: '医疗',
+    categoryPower: '动力',
+    categoryOther: '其他'
+  },
+
+  // 告警分析
+  alarm: {
+    dateRange: '日期范围'
+  },
+
+  // 告警管理
+  notice: {
+    cover: '封面',
+    header: '标题',
+    headerPlaceholder: '请输入公告标题'
+  },
+
+  // 代码生成
+  tool: {
+    build: {
+      selectIcon: '选择图标',
+      noMatchLayout: '未匹配的布局：'
+    }
   }
 }

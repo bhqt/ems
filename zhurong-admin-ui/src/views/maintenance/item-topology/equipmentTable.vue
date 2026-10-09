@@ -1,13 +1,13 @@
 <template>
   <el-table class="equipment-table" :data="equipmentList" max-height="400" width="100%" :row-class-name="handleRowStyle" cell-class-name="cellStyle" @row-click="handleSelect">
-    <el-table-column prop="name" label="设备名" align="center"> </el-table-column>
-    <el-table-column prop="sn" label="设备编号" align="center"> </el-table-column>
-    <el-table-column prop="type" label="设备类型" align="center" width="80">
+    <el-table-column prop="name" :label="$t('maintenanceModule.equipmentName')" align="center"> </el-table-column>
+    <el-table-column prop="sn" :label="$t('maintenanceModule.equipmentSn')" align="center"> </el-table-column>
+    <el-table-column prop="type" :label="$t('maintenanceModule.equipmentType')" align="center" width="80">
       <template slot-scope="scope">
         <dict-tag :options="dict.type.energy_type" :value="scope.row.type"/>
       </template>
     </el-table-column>
-    <el-table-column prop="model" label="设备型号" align="center"> </el-table-column>
+    <el-table-column prop="model" :label="$t('maintenanceModule.equipmentModel')" align="center"> </el-table-column>
   </el-table>
 </template>
 

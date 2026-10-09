@@ -89,7 +89,7 @@
             <el-table-column prop="energyType" :label="$t('energyModule.benchmark.energyType')" />
             <el-table-column prop="benchmarkValue" :label="$t('energyModule.benchmark.benchmarkValue')" width="100" />
             <el-table-column prop="unit" :label="$t('energyModule.benchmark.unit')" width="80" />
-            <el-table-column prop="applicableRange" :label="$t('energyModule.benchmark.applicableRange') || '适用范围'" />
+            <el-table-column prop="applicableRange" :label="$t('energyModule.benchmark.applicableRange')" />
             <el-table-column prop="status" :label="$t('common.status')" width="100">
               <template slot-scope="scope">
                 <el-tag :type="scope.row.status === 'enabled' ? 'success' : 'danger'">

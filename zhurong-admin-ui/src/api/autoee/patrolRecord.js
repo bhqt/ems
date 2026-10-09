@@ -117,10 +117,10 @@ export function submitTableEditPatrolRecord(data) {
 
 // 删除巡更记录
 export function deletePatrolRecordByIds(id) {
-	return request({
-		url: '/autoee/patrolRecord/deletePatrolRecordByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/patrolRecord/deletePatrolRecordByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除巡更记录

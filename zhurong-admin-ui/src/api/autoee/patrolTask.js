@@ -117,10 +117,10 @@ export function submitTableEditPatrolTask(data) {
 
 // 删除巡更任务
 export function deletePatrolTaskByIds(id) {
-	return request({
-		url: '/autoee/patrolTask/deletePatrolTaskByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/patrolTask/deletePatrolTaskByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除巡更任务

@@ -111,12 +111,17 @@ export function getDefaultLang() {
 }
 
 // 创建 i18n 实例
+const isDev = process.env.NODE_ENV !== 'production'
+
 const i18n = new VueI18n({
   locale: getDefaultLang(),
   fallbackLocale: 'zh-CN',
   messages,
-  silentTranslationWarn: true, // 静默翻译警告
-  silentFallbackWarn: true // 静默回退警告
+  // 开发环境打开缺失 key 告警：否则 vue-i18n 会静默回退并直接渲染 key 路径，
+  // 导致 "英文硬编码混入中文页" 这类问题只能靠逐页反馈才能发现。
+  // 生产环境保持静默，避免控制台噪音。
+  silentTranslationWarn: !isDev,
+  silentFallbackWarn: !isDev
 })
 
 // 设置 Element UI 的国际化

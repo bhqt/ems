@@ -117,10 +117,10 @@ export function submitTableEditGoodsStockOut(data) {
 
 // 删除物品出库记录
 export function deleteGoodsStockOutByIds(id) {
-	return request({
-		url: '/autoee/goodsStockOut/deleteGoodsStockOutByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/goodsStockOut/deleteGoodsStockOutByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除物品出库记录

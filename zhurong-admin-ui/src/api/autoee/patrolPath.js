@@ -117,10 +117,10 @@ export function submitTableEditPatrolPath(data) {
 
 // 删除巡更路线
 export function deletePatrolPathByIds(id) {
-	return request({
-		url: '/autoee/patrolPath/deletePatrolPathByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/patrolPath/deletePatrolPathByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除巡更路线

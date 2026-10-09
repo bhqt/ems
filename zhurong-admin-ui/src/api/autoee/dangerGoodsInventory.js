@@ -117,10 +117,10 @@ export function submitTableEditDangerGoodsInventory(data) {
 
 // 删除危化品库存
 export function deleteDangerGoodsInventoryByIds(id) {
-	return request({
-		url: '/autoee/dangerGoodsInventory/deleteDangerGoodsInventoryByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/dangerGoodsInventory/deleteDangerGoodsInventoryByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除危化品库存

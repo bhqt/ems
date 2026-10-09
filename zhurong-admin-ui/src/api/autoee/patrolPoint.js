@@ -117,10 +117,10 @@ export function submitTableEditPatrolPoint(data) {
 
 // 删除巡更点位
 export function deletePatrolPointByIds(id) {
-	return request({
-		url: '/autoee/patrolPoint/deletePatrolPointByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/patrolPoint/deletePatrolPointByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除巡更点位

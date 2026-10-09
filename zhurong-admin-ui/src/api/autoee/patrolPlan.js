@@ -117,10 +117,10 @@ export function submitTableEditPatrolPlan(data) {
 
 // 删除巡更计划
 export function deletePatrolPlanByIds(id) {
-	return request({
-		url: '/autoee/patrolPlan/deletePatrolPlanByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/patrolPlan/deletePatrolPlanByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除巡更计划

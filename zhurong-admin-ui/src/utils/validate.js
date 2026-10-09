@@ -147,7 +147,7 @@ export function isIntegerInRange(value, minValue, maxValue) {
       // 检查转换后的数字是否为整数且在范围内
       return num >= minValue && num <= maxValue;
     } else {
-		console.log("mmmmm")
+    console.log("mmmmm")
     }
   }
 

@@ -107,8 +107,8 @@
         <el-form-item :label="$t('chargingModule.station.address')" prop="address">
           <el-input v-model="form.address" :placeholder="$t('placeholder.input') + $t('chargingModule.station.address')" />
         </el-form-item>
-        <el-form-item :label="$t('chargingModule.station.activity') || '电站活动'" prop="activity">
-          <el-input v-model="form.activity" :placeholder="$t('placeholder.input') + ($t('chargingModule.station.activity') || '电站活动')" />
+        <el-form-item :label="$t('chargingModule.station.activity')" prop="activity">
+          <el-input v-model="form.activity" :placeholder="$t('placeholder.input') + $t('chargingModule.station.activity')" />
         </el-form-item>
         <el-form-item :label="$t('common.remark')" prop="remark">
           <el-input v-model="form.remark" type="textarea" :placeholder="$t('placeholder.input') + $t('common.remark')" />

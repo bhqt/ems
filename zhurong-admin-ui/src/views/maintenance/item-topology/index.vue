@@ -154,7 +154,7 @@ import {
 } from "@/api/system/equipmentInfo";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import EquipmentTable from "@/views/maintenance/item-topology/equipmentTable"
+import EquipmentTable from "@/views/maintenance/item-topology/equipmentTable";
 
 export default {
   name: "ItemTopology",
@@ -195,25 +195,25 @@ export default {
       // 表单校验
       rules: {
         parentId: [
-          { required: true, message: "上级项目不能为空", trigger: "blur" },
+          { required: true, message: this.$t('maintenanceModule.parentProjectRequired'), trigger: "blur" },
         ],
         itemName: [
-          { required: true, message: "项目名称不能为空", trigger: "blur" },
+          { required: true, message: this.$t('maintenanceModule.projectNameRequired'), trigger: "blur" },
         ],
         orderNum: [
-          { required: true, message: "显示排序不能为空", trigger: "blur" },
+          { required: true, message: this.$t('maintenanceModule.displayOrderRequired'), trigger: "blur" },
         ],
         email: [
           {
             type: "email",
-            message: "请输入正确的邮箱地址",
+            message: this.$t('maintenanceModule.emailInvalid'),
             trigger: ["blur", "change"],
           },
         ],
         phone: [
           {
             pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
-            message: "请输入正确的手机号码",
+            message: this.$t('maintenanceModule.phoneInvalid'),
             trigger: "blur",
           },
         ],
@@ -287,7 +287,7 @@ export default {
         this.form.parentId = row.itemId;
       }
       this.open = true;
-      this.title = "添加项目";
+      this.title = this.$t('maintenanceModule.addTitle');
       listItemTopology().then((response) => {
         this.itemTopologyOptions = this.handleTree(response.data, "itemId");
       });
@@ -307,7 +307,7 @@ export default {
         this.form = response.data;
         this.$set(this.form, "deviceId", response.data.deviceId);
         this.open = true;
-        this.title = "修改项目";
+        this.title = this.$t('maintenanceModule.editTitle');
         listItemTopologyExcludeChild(row.itemId).then((response) => {
           this.itemTopologyOptions = this.handleTree(response.data, "itemId");
           if (this.itemTopologyOptions.length == 0) {
@@ -327,13 +327,13 @@ export default {
         if (valid) {
           if (this.form.itemId != undefined) {
             updateItemTopology(this.form).then((response) => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess(this.$t('common.editSuccess'));
               this.open = false;
               this.getList();
             });
           } else {
             addItemTopology(this.form).then((response) => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess(this.$t('common.addSuccess'));
               this.open = false;
               this.getList();
             });
@@ -344,13 +344,13 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       this.$modal
-        .confirm('是否确认删除？')
+        .confirm(this.$t('common.confirmDelete'))
         .then(function () {
           return delItemTopology(row.itemId);
         })
         .then(() => {
           this.getList();
-          this.$modal.msgSuccess("删除成功");
+          this.$modal.msgSuccess(this.$t('common.deleteSuccess'));
         })
         .catch(() => { });
     },

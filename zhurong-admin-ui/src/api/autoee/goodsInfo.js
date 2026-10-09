@@ -117,10 +117,10 @@ export function submitTableEditGoodsInfo(data) {
 
 // 删除物品信息管理
 export function deleteGoodsInfoByIds(id) {
-	return request({
-		url: '/autoee/goodsInfo/deleteGoodsInfoByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/goodsInfo/deleteGoodsInfoByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除物品信息管理

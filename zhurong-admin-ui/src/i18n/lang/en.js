@@ -16,6 +16,7 @@ export default {
     download: 'Download',
     upload: 'Upload',
     operate: 'Action',
+    operation: 'Action',
     status: 'Status',
     enable: 'Enable',
     disable: 'Disable',
@@ -49,6 +50,7 @@ export default {
     goTo: 'Go to',
     page: 'page',
     index: 'Index',
+    detail: 'Detail',
     operator: 'Operator',
     creator: 'Creator',
     updater: 'Updater',
@@ -58,6 +60,10 @@ export default {
     deleteFlag: 'Delete Flag',
     deleteTime: 'Delete Time',
     submitEdit: 'Submit Edit',
+    addSuccess: 'Added successfully',
+    editSuccess: 'Updated successfully',
+    deleteSuccess: 'Deleted successfully',
+    confirmDelete: 'Are you sure you want to delete?',
     clear: 'Clear',
     publishTime: 'Publish Time',
     systemBuiltIn: 'System Built-in',
@@ -71,6 +77,15 @@ export default {
     cluster: 'Cluster',
     refreshCache: 'Refresh Cache',
     selectDate: 'Select Date',
+    to: 'To',
+    pass: 'Pass',
+    fail: 'Fail',
+    query: 'Query',
+    user: 'User ID',
+    dept: 'Dept ID',
+    createUser: 'Created By',
+    updateUser: 'Updated By',
+    deleteUser: 'Deleted By',
     systemTitle: 'EMS Platform',
     // Right Toolbar
     showSearch: 'Show Search',
@@ -79,6 +94,23 @@ export default {
     showHideTitle: 'Show/Hide',
     show: 'Show',
     hide: 'Hide',
+
+    // Navbar
+    profile: 'Profile',
+    layoutSetting: 'Layout Settings',
+    logout: 'Logout',
+    refreshPage: 'Refresh Page',
+    closeCurrent: 'Close Current',
+    closeOthers: 'Close Others',
+    closeLeft: 'Close Left',
+    closeRight: 'Close Right',
+    closeAll: 'Close All',
+    saveConfig: 'Save Config',
+
+    // Common validation
+    validate: {
+      remarkRequired: 'Remark is required'
+    },
     // Cron Builder
     crontab: {
       second: 'Second',
@@ -126,7 +158,9 @@ export default {
     loginSuccess: 'Login successful',
     loginError: 'Login failed',
     logout: 'Logout',
-    logoutConfirm: 'Are you sure to logout?'
+    logoutConfirm: 'Are you sure to logout?',
+    experience: 'Get Trial Account',
+    register: 'Register Now'
   },
 
   // Menu
@@ -184,6 +218,7 @@ export default {
       current: 'Real-time Alarm',
       history: 'Alarm History',
       rule: 'Alarm Rules',
+      levelLabel: 'Alarm Level',
       level: {
         general: 'General',
         urgent: 'Urgent',
@@ -569,7 +604,14 @@ export default {
     selectGender: 'Please select gender',
     selectStatus: 'Please select status',
     select: 'Please select',
-    input: 'Please input'
+    input: 'Please input',
+    configKey: 'Please input config key',
+    dictName: 'Please input dict name',
+    postCode: 'Please input post code',
+    roleKey: 'Please input role key',
+    pathRequired: 'Please input route path',
+    selectDate: 'Please select date',
+    inputIconName: 'Please input icon name'
   },
 
   // Form Validation
@@ -594,6 +636,7 @@ export default {
     download: 'Download',
     upload: 'Upload',
     submit: 'Submit',
+    submitEdit: 'Submit Edit',
     cancel: 'Cancel',
     close: 'Close',
     save: 'Save',
@@ -621,7 +664,10 @@ export default {
     auth: 'Assign',
     resetPwd: 'Reset Password',
     authRole: 'Assign Role',
-    authUser: 'Assign User'
+    authUser: 'Assign User',
+    refreshCache: 'Refresh Cache',
+    batchEnable: 'Batch Enable',
+    batchDisable: 'Batch Disable'
   },
 
   // Table Column
@@ -647,6 +693,7 @@ export default {
     postName: 'Post Name',
     postCode: 'Post Code',
     postSort: 'Post Sort',
+    remark: 'Remark',
     dictId: 'Dict ID',
     dictName: 'Dict Name',
     dictType: 'Dict Type',
@@ -669,6 +716,7 @@ export default {
     noticeContent: 'Content',
     loginTime: 'Login Time',
     ipaddr: 'IP Address',
+    loginName: 'Login Name',
     loginLocation: 'Location',
     browser: 'Browser',
     os: 'OS',
@@ -680,6 +728,7 @@ export default {
     operName: 'Operator',
     operUrl: 'URL',
     operIp: 'IP',
+    operLocation: 'Location',
     operParam: 'Params',
     jsonResult: 'Result',
     errorMsg: 'Error',
@@ -828,7 +877,12 @@ export default {
     menuNameRequired: 'Menu name is required',
     pathRequired: 'Route path is required',
     noticeTitleRequired: 'Notice title is required',
-    noticeContentRequired: 'Notice content is required'
+    noticeContentRequired: 'Notice content is required',
+    noticeTypeRequired: 'Notice type is required',
+    configValueRequired: 'Config value is required',
+    postSortRequired: 'Post sort is required',
+    typeRequired: 'Please select a generation type',
+    cannotBeEmpty: 'Cannot be empty'
   },
 
   // System Module
@@ -855,7 +909,8 @@ export default {
       dataScope2: 'Custom data permissions',
       dataScope3: 'Department data permissions',
       dataScope4: 'Department and below permissions',
-      dataScope5: 'Only own data permissions'
+      dataScope5: 'Only own data permissions',
+      authUser: 'Assign User'
     },
     dept: {
       title: 'Department Management',
@@ -881,7 +936,10 @@ export default {
       directory: 'Directory',
       menu: 'Menu',
       button: 'Button',
-      parentMenu: 'Main Category'
+      parentMenu: 'Main Category',
+    selectParent: 'Select Parent Menu',
+    menuType: 'Menu Type',
+    menuIcon: 'Menu Icon'
     },
     notice: {
       title: 'Notice',
@@ -894,8 +952,9 @@ export default {
         detailTitle: 'Operation Log Detail',
         operId: 'Operation ID',
         operModule: 'Module',
-        operType: 'Type',
-        operDesc: 'Description'
+          operType: 'Type',
+          operDesc: 'Description',
+          operTime: 'Operation Time'
       },
       logininfor: {
         title: 'Login Log',
@@ -916,7 +975,10 @@ export default {
       loginName: 'Login Name',
       deptName: 'Department',
       host: 'Host',
-      loginTime: 'Login Time'
+      loginTime: 'Login Time',
+      loginLocation: 'Login Location',
+      browser: 'Browser',
+      os: 'OS'
     },
     job: {
       title: 'Scheduled Tasks',
@@ -960,7 +1022,31 @@ export default {
       clear: 'Clear Cache',
       clearSuccess: 'Clear successful',
       list: 'Cache List',
-      keyList: 'Key List'
+      keyList: 'Key List',
+      cacheInfo: 'Cache Info',
+      redisVersion: 'Redis Version',
+      runMode: 'Run Mode',
+      port: 'Port',
+      clients: 'Clients',
+      runTime: 'Run Time',
+      memoryUsed: 'Memory Used',
+      cpuUsed: 'CPU Used',
+      memoryConfig: 'Memory Config',
+      aofEnabled: 'AOF Enabled',
+      rdbStatus: 'RDB Last Bgsave Status',
+      keyCount: 'Key Count',
+      networkIO: 'Network I/O',
+      commandStats: 'Command Stats',
+      memoryInfo: 'Memory Info'
+    },
+    logininfor: {
+      title: 'Login Log',
+      loginTime: 'Login Time',
+      loginLocation: 'Login Location',
+      browser: 'Browser',
+      os: 'OS',
+      unlock: 'Unlock',
+      unlockSuccess: 'Unlock Success'
     }
   },
 
@@ -1019,7 +1105,13 @@ export default {
   // Energy Management Module
   energyModule: {
     title: 'Energy Management',
-    // Batch Management
+    energyType: {
+      electricity: 'Electricity',
+      water: 'Water',
+      steam: 'Steam',
+      gas: 'Gas',
+      oil: 'Fuel Oil'
+    },
     batch: {
       title: 'Batch Management',
       batchId: 'Batch ID',
@@ -1027,8 +1119,9 @@ export default {
       batchNumber: 'Batch Number',
       productionDate: 'Production Date',
       productionLine: 'Production Line',
-      energyConsumption: 'Energy Consumption',
-      unit: 'Unit',
+    energyConsumption: 'Energy Consumption',
+    expectedOutput: 'Expected Output',
+    unit: 'Unit',
       status: 'Status',
       createTime: 'Create Time',
       remark: 'Remark',
@@ -1048,6 +1141,7 @@ export default {
       industry: 'Industry',
       region: 'Region',
       effectiveDate: 'Effective Date',
+      applicableRange: 'Applicable Range',
       status: 'Status',
       remark: 'Remark',
       placeholder: {
@@ -1111,6 +1205,7 @@ export default {
       createTime: 'Create Time',
       updateTime: 'Update Time',
       remark: 'Remark',
+      activity: 'Station Activity',
       placeholder: {
         searchStation: 'Please input station name',
         searchMerchant: 'Please input merchant name',
@@ -1146,6 +1241,7 @@ export default {
       encoding: 'Terminal Code',
       name: 'Terminal Name',
       merchantName: 'Merchant Name',
+      merchant: 'Merchant',
       workStatus: 'Work Status',
       batchEnable: 'Batch Enable',
       batchDisable: 'Batch Disable',
@@ -1838,7 +1934,8 @@ export default {
       inputSecurityCode: 'Input security code',
       selectCommand: 'Select command',
       inputParams: 'Input parameters',
-      inputSecurityPwd: 'Input security password'
+      inputSecurityPwd: 'Input security password',
+      inputParamsLabel: 'Please input control parameters'
     }
   },
   // Metering Module
@@ -1888,6 +1985,7 @@ export default {
     planAdded: 'Calibration plan added',
     startExecute: 'Start executing calibration plan',
     planCompleted: 'Calibration plan completed',
+    remark: 'Remark',
     exportSuccess: 'Calibration records exported',
     placeholder: {
       searchMeter: 'Search meter',
@@ -1933,7 +2031,51 @@ export default {
     costSaving: 'Cost Saving',
     efficiencyImprovement: 'Efficiency Improvement',
     emissionReduction: 'Carbon Emission Reduction',
-    trendAnalysis: 'Trend Analysis'
+    trendAnalysis: 'Trend Analysis',
+    scheme: {
+      title: 'Optimization Scheme',
+      schemeId: 'Scheme ID',
+      schemeCode: 'Scheme Code',
+      schemeName: 'Scheme Name',
+      optimizationType: 'Optimization Type',
+      algorithm: 'Algorithm Used',
+      objectiveValue: 'Objective Value',
+      constraintsText: 'Constraints',
+      resultText: 'Optimization Result',
+      status: 'Scheme Status',
+      costMinimization: 'Cost Minimization',
+      emissionMinimization: 'Emission Minimization',
+      multiObjective: 'Multi-objective Optimization',
+      designing: 'Designing',
+      approving: 'Approving',
+      approved: 'Approved',
+      executing: 'Executing',
+      completed: 'Completed',
+      linearProgramming: 'Linear Programming (LP)',
+      milp: 'Mixed-Integer Linear Programming (MILP)',
+      ga: 'Genetic Algorithm (GA)',
+      pso: 'Particle Swarm Optimization (PSO)',
+      execute: 'Execute',
+      detail: 'Scheme Detail',
+      placeholder: {
+        inputSchemeCode: 'Please input scheme code',
+        inputSchemeName: 'Please input scheme name',
+        selectOptimizationType: 'Please select optimization type',
+        selectAlgorithm: 'Please select algorithm',
+        selectStatus: 'Please select status'
+      }
+    },
+    forecast: {
+      title: 'Load Forecast',
+      forecastType: 'Forecast Type',
+      loadType: 'Load Type',
+      shortTerm: 'Short Term',
+      mediumTerm: 'Medium Term',
+      longTerm: 'Long Term',
+      productionLoad: 'Production Load',
+      nonProductionLoad: 'Non-production Load',
+      totalLoad: 'Total Load'
+    }
   },
   toolModule: {
     title: 'System Tools',
@@ -1941,19 +2083,59 @@ export default {
     columnInfo: 'Column Information',
     genInfo: 'Generation Information',
     fieldProperties: 'Field Properties',
-    formProperties: 'Form Properties'
+    formProperties: 'Form Properties',
+    dataSource: 'Data Source',
+    tableName: 'Table Name',
+    tableComment: 'Table Comment',
+    entity: 'Entity',
+    crud: 'Single Table (CRUD)',
+    tree: 'Tree Table (CRUD)',
+    sub: 'Master-Detail Table (CRUD)',
+    fieldColumnName: 'Field Column Name',
+    fieldDescription: 'Field Description',
+    physicalType: 'Physical Type',
+    javaType: 'Java Type',
+    javaProperty: 'Java Property',
+    index: 'Index',
+    generate: 'Generate',
+    preview: 'Preview',
+    sync: 'Sync',
+    generateCode: 'Generate Code',
+    copy: 'Copy'
   },
   equipmentModule: {
     title: 'Equipment Management',
     equipmentInfo: 'Equipment Information',
     equipmentAlarm: 'Equipment Alarm',
     equipmentData: 'Equipment Data',
-    equipmentDocuments: 'Equipment Documents'
+    equipmentDocuments: 'Equipment Documents',
+    equipmentName: 'Name',
+    equipmentSn: 'Device SN',
+    equipmentModel: 'Device Model',
+    equipmentType: 'Device Type',
+    equipmentDesc: 'Device Description',
+    equipmentImage: 'Device Image',
+    equipmentQrCode: 'Device QR Code',
+    gatewayInfo: 'Gateway Information',
+    gatewayName: 'Gateway Name',
+    gatewayCode: 'Gateway Code',
+    gatewayType: 'Gateway Type',
+    gatewayStatus: 'Gateway Status',
+    gatewayIp: 'Gateway IP',
+    gatewayLocation: 'Gateway Location',
+    addGateway: 'Add Gateway',
+    editGateway: 'Edit Gateway'
   },
   dataQueryModule: {
     title: 'Data Query',
     dailyRawData: 'Daily Raw Data',
-    dailyPeakData: 'Daily Peak Data'
+    dailyPeakData: 'Daily Peak Data',
+    startTime: 'Start Time',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    chart: 'Chart',
+    data: 'Data',
+    export: 'Export'
   },
   componentsModule: {
     title: 'Components',
@@ -1994,7 +2176,8 @@ export default {
     addAlarm: 'Add Realtime Alarm',
     editAlarm: 'Edit Realtime Alarm',
     addAlarmRule: 'Add Alarm Rule',
-    editAlarmRule: 'Edit Alarm Rule'
+    editAlarmRule: 'Edit Alarm Rule',
+    alarmReminder: 'Please select notifier'
   },
   analysisReportModule: {
     title: 'Analysis Report',
@@ -2028,7 +2211,10 @@ export default {
     cameraStatus: 'Status',
     cameraLocation: 'Installation Location',
     addCamera: 'Add Camera',
-    editCamera: 'Edit Camera'
+    editCamera: 'Edit Camera',
+    cameraToken: 'Access Token',
+    cameraKey: 'Access Key',
+    cameraSecret: 'Access Secret'
   },
   carbonAssetsModule: {
     title: 'Carbon Assets Management',
@@ -2065,7 +2251,15 @@ export default {
     categoryEnergy: 'Category Energy',
     year: 'Year',
     selectYear: 'Select Year',
-    energyType: 'Energy Type'
+    energyType: 'Energy Type',
+    date: 'Date',
+    dateRange: 'Date Range',
+    selectDate: 'Select Date',
+    selectTime: 'Select Time',
+    startTime: 'Start Time',
+    dayTotal: 'Daily Total',
+    monthTotal: 'Monthly Total',
+    search: 'Search'
   },
   itemizedAnalysisModule: {
     title: 'Itemized Analysis',
@@ -2080,13 +2274,87 @@ export default {
     inspectionPlan: 'Inspection Plan',
     inspectionRecord: 'Inspection Record',
     repairOrder: 'Repair Order',
-    schedule: 'Schedule Management'
+    schedule: 'Schedule Management',
+    exampleReport: 'Sample Report',
+    myInspection: 'My Inspection',
+    myRepairOrder: 'My Order',
+    itemTopology: 'Equipment Topology',
+    dutyDate: 'Duty Date',
+    onDuty: 'Duty Personnel',
+    dutyPeriod: 'Duty Period',
+    relief: 'Relief Personnel',
+    dutyType: 'Duty Type',
+    dutyStatus: 'Duty Status',
+    dutyRemark: 'Duty Remark',
+    planName: 'Plan Name',
+    planContent: 'Plan Content',
+    projectName: 'Project Name',
+    inspector: 'Inspector',
+    planInspectionTime: 'Planned Inspection Time',
+    actualInspectionTime: 'Actual Inspection Time',
+    inspectionResult: 'Inspection Result',
+    orderNum: 'Order Number',
+    displayOrder: 'Display Order',
+    rootNode: 'Root Node',
+    rootNodeName: 'Root Node Name',
+    expandCollapse: 'Expand/Collapse',
+    parentProject: 'Parent Project',
+    projectType: 'Project Type',
+    relatedEquipment: 'Related Equipment',
+    projectStatus: 'Project Status',
+    reportType: 'Report Type',
+    reportCycle: 'Report Cycle',
+    pushMethod: 'Push Method',
+    receiver: 'Receiver',
+    addTitle: 'Add Project',
+    editTitle: 'Edit Project',
+    parentProjectRequired: 'Parent project cannot be empty',
+    projectNameRequired: 'Project name cannot be empty',
+    displayOrderRequired: 'Display order cannot be empty',
+    emailInvalid: 'Please enter a valid email address',
+    phoneInvalid: 'Please enter a valid phone number',
+    equipmentName: 'Device Name',
+    equipmentSn: 'Device SN',
+    equipmentType: 'Device Type',
+    equipmentModel: 'Device Model',
+    inspectionStatus: 'Inspection Status',
+    orderNo: 'Order No.',
+    orderStatus: 'Order Status',
+    orderContent: 'Order Content',
+    orderRemark: 'Order Remark',
+    responsiblePerson: 'Responsible Person',
+    assignTime: 'Assign Time',
+    finishTime: 'Finish Time',
+    createOrder: 'Create Order',
+    distribute: 'Assign',
+    cancel: 'Cancel Order',
+    annex: 'Attachment',
+    station: 'Station',
+    preparedBy: 'Prepared By',
+    head: 'Duty Leader'
   },
   quotaModule: {
     title: 'Quota Management',
     analysis: 'Quota Analysis',
     config: 'Quota Configuration',
-    monitor: 'Quota Monitor'
+    monitor: 'Quota Monitor',
+    quotaType: 'Quota Type',
+    quotaTime: 'Quota Period',
+    quotaObject: 'Quota Object',
+    quotaValue: 'Quota Value',
+    realEnergy: 'Actual Cumulative Energy',
+    criticalRange: 'Critical Range',
+    overLimitRange: 'Over-limit Range',
+    energyArea: 'Energy Area',
+    energySubsections: 'Energy Subsections',
+    startDate: 'Start Date',
+    endDate: 'End Date',
+    placeholder: {
+      selectQuotaType: 'Please select quota type',
+      inputQuotaValue: 'Enter quota value, e.g. 10000,20000',
+      inputCriticalRange: 'Enter critical range ratio, e.g. 0.8-0.9',
+      inputOverLimitRange: 'Enter over-limit range ratio, e.g. 0.1-0.2'
+    }
   },
   systemModule: {
     title: 'System Management',
@@ -2097,22 +2365,94 @@ export default {
     notice: 'Notice Management',
     post: 'Position Management',
     role: 'Role Management',
-    user: 'User Management'
+    user: 'User Management',
+    basicInfo: 'Basic Information',
+    roleInfo: 'Role Information',
+    roleId: 'Role ID',
+    roleName: 'Role Name',
+    roleKey: 'Permission Key',
+    userName: 'User Name',
+    nickName: 'Nickname',
+    email: 'Email',
+    phonenumber: 'Phone Number',
+    selectUser: 'Select User',
+    addUser: 'Add User',
+    batchCancelAuth: 'Batch Cancel Authorization'
   },
   digitaltwinModule: {
-    title: 'Digital Twin'
+    title: 'Digital Twin',
+    modelStructure: 'Model Structure',
+    threeDFactoryView: '3D Factory View',
+    refresh: 'Refresh',
+    demoTitle: '📌 2D Simulation Demo View',
+    workshopA: 'Workshop A',
+    powerRoom: 'Power Room',
+    boilerRoom: 'Boiler Room',
+    officeArea: 'Office Area',
+    power: 'Power',
+    heat: 'Heat',
+    energyFlow: 'Energy Flow',
+    threeDArea: '3D Area',
+    tip: 'Tip: 3D model resources are not configured yet, showing the 2D simulation view for now',
+    energyFlowMonitor: 'Energy Flow Monitoring',
+    energyType: 'Energy Type',
+    input: 'Input',
+    output: 'Output',
+    loss: 'Loss',
+    efficiency: 'Efficiency (%)',
+    twinDeviceStatus: 'Twin Device Status',
+    deviceName: 'Device Name',
+    deviceType: 'Device Type',
+    location: 'Location'
   },
   inventoryModule: {
     title: 'Inventory Management',
     attachment: 'Attachment Management',
-    purveyor: 'Supplier Management'
+    purveyor: {
+      title: 'Supplier Management',
+      purveyorCode: 'Supplier Code',
+      purveyorName: 'Supplier Name',
+      nature: 'Supplier Nature',
+      supplyType: 'Supply Type',
+      contractName: 'Contact Name',
+      contractPost: 'Contact Position',
+      contractPhone: 'Contact Phone',
+      contractEmail: 'Contact Email',
+      address: 'Supplier Address',
+      placeholder: {
+        inputPurveyorCode: 'Please input supplier code',
+        inputPurveyorName: 'Please input supplier name',
+        selectNature: 'Please select supplier nature',
+        selectSupplyType: 'Please select supply type'
+      }
+    }
   },
   managementSystemModule: {
     title: 'Management System',
     prePlan: 'PrePlan Management',
     process: 'Process Management',
     regulation: 'Regulation Management',
-    standard: 'Standard Management'
+    standard: 'Standard Management',
+    standardCode: 'Standard Code',
+    standardName: 'Standard Name',
+    standardDescribe: 'Standard Description',
+    regulationCode: 'Regulation Code',
+    regulationName: 'Regulation Name',
+    regulationDescribe: 'Regulation Description',
+    regulationType: 'Regulation Type',
+    uploadTime: 'Upload Time',
+    prePlanNumber: 'PrePlan Number',
+    prePlanType: 'PrePlan Type',
+    station: 'Station Name',
+    device: 'Device',
+    prePlanContent: 'PrePlan Content',
+    preparedBy: 'Prepared By',
+    keywords: 'PrePlan Keywords',
+    eventName: 'Event Name',
+    eventType: 'Event Type',
+    touchTime: 'Trigger Time',
+    handleResult: 'Handle Result',
+    handlePerson: 'Handler'
   },
   monitorModule: {
     title: 'System Monitor',
@@ -2128,12 +2468,47 @@ export default {
     energyStorage: 'Energy Storage',
     microGrid: 'Micro Grid',
     pvStation: 'PV Station',
-    storageBattery: 'Storage Battery'
+    storageBattery: {
+      title: 'Storage Battery',
+      id: 'Primary ID',
+      batteryName: 'Battery Pack Name',
+      batteryCode: 'Battery Pack Code',
+      storageSystem: 'Energy Storage System',
+      batteryModel: 'Battery Model',
+      ratedCapacity: 'Rated Capacity (Ah)',
+      ratedVoltage: 'Rated Voltage (V)',
+      totalCapacity: 'Total Capacity (kWh)',
+      seriesCount: 'Series Count',
+      parallelCount: 'Parallel Count',
+      status: 'Battery Status',
+      commissioningDate: 'Commissioning Date',
+      placeholder: {
+        inputBatteryName: 'Please input battery pack name',
+        inputBatteryCode: 'Please input battery pack code',
+        selectStorageSystem: 'Please select energy storage system',
+        selectStatus: 'Please select battery status',
+        inputBatteryModel: 'Please input battery model'
+      }
+    }
   },
   reportModule: {
     title: 'Report Management',
     generate: 'Report Generate',
-    template: 'Report Template'
+    template: 'Report Template',
+    templateType: 'Template Type',
+    templateName: 'Template Name',
+    energyType: 'Energy Type',
+    dateType: 'Date Type',
+    dateRange: 'Time Range',
+    day: 'Day',
+    week: 'Week',
+    month: 'Month',
+    year: 'Year',
+    custom: 'Custom',
+    previewReport: 'Preview Report',
+    generateReport: 'Generate Report',
+    exportExcel: 'Export Excel',
+    exportPdf: 'Export PDF'
   },
   patrolModule: {
     title: 'Patrol Management',
@@ -2231,6 +2606,7 @@ export default {
     goodsMinStock: 'Min Stock',
     goodsMaxStock: 'Max Stock',
     goodsDesc: 'Goods Description',
+    storageLocation: 'Storage Location',
     stockInNo: 'Stock In No.',
     stockOutNo: 'Stock Out No.',
     stockInTime: 'Stock In Time',
@@ -2492,6 +2868,77 @@ export default {
     dashAlarm: 'Recent Alarms',
     deviceOnline: 'Online',
     deviceFault: 'Fault',
-    viewMore: 'View More'
+    viewMore: 'View More',
+    sort: 'Sort',
+    device: 'Device',
+    projectCategory: 'Device Category',
+    categoryLighting: 'Lighting',
+    categoryAircond: 'Air Conditioning',
+    categoryMedical: 'Medical',
+    categoryPower: 'Power',
+    categoryOther: 'Other'
+  },
+
+  // Contract Management
+  contractInfoModule: {
+    title: 'Contract Management',
+    contractNoNew: 'Contract No. (New)',
+    contractNoOld: 'Renewal No. (Old)',
+    belongCustomer: 'Customer',
+    customerContact: 'Customer Contact',
+    contractType: 'Contract Type',
+    contractSubtype: 'Contract Subtype',
+    signCompany: 'Signing Company',
+    salesmanId: 'Salesman',
+    techSupport: 'Technical Support',
+    quoteNo: 'Quotation No.',
+    contractTotal: 'Contract Total',
+    receivedAmount: 'Received Amount',
+    signDate: 'Signing Date',
+    attachmentFiles: 'Attachments',
+    updateTime: 'Update Time',
+    placeholder: {
+      inputContractNoNew: 'Please input contract no. (new)',
+      inputContractNoOld: 'Please input renewal no. (old)',
+      inputBelongCustomer: 'Please input customer',
+      inputCustomerContact: 'Please input customer contact',
+      inputSalesmanId: 'Please input salesman',
+      selectContractType: 'Please select contract type',
+      selectContractSubtype: 'Please select contract subtype'
+    }
+  },
+
+  // Object Storage
+  ossModule: {
+    title: 'Object Storage',
+    ossId: 'Object Storage ID',
+    fileName: 'File Name',
+    originalName: 'Original Name',
+    fileSuffix: 'File Suffix',
+    filePreview: 'Preview',
+    createBy: 'Uploader',
+    service: 'Service Provider',
+    uploadFile: 'Upload File',
+    uploadImage: 'Upload Image'
+  },
+
+  // Alarm Analysis
+  alarm: {
+    dateRange: 'Date Range'
+  },
+
+  // Notice Management
+  notice: {
+    cover: 'Cover',
+    header: 'Header',
+    headerPlaceholder: 'Please input notice header'
+  },
+
+  // Code Generation
+  tool: {
+    build: {
+      selectIcon: 'Select Icon',
+      noMatchLayout: 'No matching layout: '
+    }
   }
 }

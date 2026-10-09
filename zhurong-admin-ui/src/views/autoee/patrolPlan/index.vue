@@ -48,7 +48,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" :label="$t('inspectionModule.plan.cycleType') || '巡更周期'" prop="patrolCycleType">
+      <el-form-item class="a_query_form_item" :label="$t('inspectionModule.plan.cycleType')" prop="patrolCycleType">
         <el-select
           class="a_query_form_select"
           v-model="pageData.queryParams.patrolCycleType"
@@ -63,7 +63,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item class="a_query_form_item" :label="$t('inspectionModule.plan.startTime') || '计划开始日期'">
+      <el-form-item class="a_query_form_item" :label="$t('inspectionModule.plan.startTime')">
         <el-date-picker
           clearable
           :start-placeholder="$t('common.startDate')"
@@ -77,7 +77,7 @@
           range-separator="-"
         />
       </el-form-item>
-      <el-form-item class="a_query_form_item" :label="$t('inspectionModule.plan.endTime') || '计划结束日期'">
+      <el-form-item class="a_query_form_item" :label="$t('inspectionModule.plan.endTime')">
         <el-date-picker
           clearable
           :start-placeholder="$t('common.startDate')"
@@ -140,7 +140,7 @@
           :disabled="!checkTableDataHasChanged"
           @click="submitTableEdit"
           v-hasPermi="['autoee:patrolPlan:edit']"
-        >{{ $t('button.submitEdit') || '提交列表编辑' }}</el-button>
+        >{{ $t('button.submitEdit') }}</el-button>
       </el-col>
       <el-col v-if="true" :span="1.5">
         <el-button
@@ -161,7 +161,7 @@
           size="small"
           @click="handleDeleteAllData"
           v-hasPermi="['autoee:patrolPlan:remove']"
-        >{{ $t('button.clear') || '清空' }}</el-button>
+        >{{ $t('button.clear') }}</el-button>
       </el-col>
       <el-col v-if="false" :span="1.5">
         <el-button

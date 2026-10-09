@@ -117,10 +117,10 @@ export function submitTableEditContractInfo(data) {
 
 // 删除合同信息管理
 export function deleteContractInfoByIds(id) {
-	return request({
-		url: '/autoee/contractInfo/deleteContractInfoByIds/' + id,
-		method: 'delete'
-	})
+  return request({
+    url: '/autoee/contractInfo/deleteContractInfoByIds/' + id,
+    method: 'delete'
+  })
 }
 
 // 删除合同信息管理

@@ -1,7 +1,7 @@
 import {
   isInteger,
   isIp,
-	isPhoneNo,
+  isPhoneNo,
   isNumberInRange,
   isPositiveInteger,
   isIntegerInRange,
