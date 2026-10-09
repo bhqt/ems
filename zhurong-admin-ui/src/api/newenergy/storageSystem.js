@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询储能系统列表
 export function listStorageSystem(query) {
   return request({
-    url: '/system/newenergy/storage/list',
+    url: '/system/newenergy/storageSystem/list',
     method: 'get',
     params: query
   })

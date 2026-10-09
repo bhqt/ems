@@ -1,29 +1,18 @@
 import request from '@/utils/request'
 
-// 微电网管理API
-const api = {
-  list: '/newenergy/microGrid/list',
-  info: '/newenergy/microGrid/info/',
-  add: '/newenergy/microGrid/add',
-  edit: '/newenergy/microGrid/edit',
-  remove: '/newenergy/microGrid/remove/',
-  export: '/newenergy/microGrid/export',
-  statistics: '/newenergy/microGrid/statistics'
-}
-
 // 查询微电网列表
-export function listMicroGrid(data) {
+export function listMicroGrid(query) {
   return request({
-    url: api.list,
+    url: '/system/newenergy/microgrid/list',
     method: 'get',
-    params: data
+    params: query
   })
 }
 
-// 获取微电网详情
+// 查询微电网详细
 export function getMicroGrid(id) {
   return request({
-    url: api.info + id,
+    url: '/system/newenergy/microGrid/' + id,
     method: 'get'
   })
 }
@@ -31,7 +20,7 @@ export function getMicroGrid(id) {
 // 新增微电网
 export function addMicroGrid(data) {
   return request({
-    url: api.add,
+    url: '/system/newenergy/microgrid',
     method: 'post',
     data: data
   })
@@ -40,7 +29,7 @@ export function addMicroGrid(data) {
 // 修改微电网
 export function updateMicroGrid(data) {
   return request({
-    url: api.edit,
+    url: '/system/newenergy/microgrid',
     method: 'put',
     data: data
   })
@@ -49,25 +38,24 @@ export function updateMicroGrid(data) {
 // 删除微电网
 export function deleteMicroGrid(ids) {
   return request({
-    url: api.remove + ids.join(','),
+    url: '/system/newenergy/microgrid/' + ids,
     method: 'delete'
   })
 }
 
-// 导出微电网列表
-export function exportMicroGrid(data) {
+// 导出微电网
+export function exportMicroGrid(query) {
   return request({
-    url: api.export,
+    url: '/system/newenergy/microgrid/export',
     method: 'post',
-    params: data,
-    responseType: 'blob'
+    params: query
   })
 }
 
-// 获取微电网统计信息
+// 获取微电网统计数据
 export function getMicroGridStatistics() {
   return request({
-    url: api.statistics,
+    url: '/system/newenergy/microgrid/statistics',
     method: 'get'
   })
 }

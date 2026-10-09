@@ -31,7 +31,7 @@ import java.util.Map;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/newenergy/energyStorage")
+@RequestMapping("/system/newenergy/energyStorage")
 public class EnergyStorageController extends BaseController {
 
     private final IEnergyStorageService energyStorageService;

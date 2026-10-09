@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
-// 查询储能电池组列表
+// 查询储能电池列表
 export function listStorageBattery(query) {
   return request({
-    url: '/newenergy/storageBattery/list',
+    url: '/system/newenergy/storageBattery/list',
     method: 'get',
     params: query
   })
@@ -20,7 +20,7 @@ export function getStorageBattery(id) {
 // 新增储能电池组
 export function addStorageBattery(data) {
   return request({
-    url: '/newenergy/storageBattery',
+    url: '/system/newenergy/storageBattery',
     method: 'post',
     data: data
   })
@@ -29,7 +29,7 @@ export function addStorageBattery(data) {
 // 修改储能电池组
 export function updateStorageBattery(data) {
   return request({
-    url: '/newenergy/storageBattery',
+    url: '/system/newenergy/storageBattery',
     method: 'put',
     data: data
   })
@@ -46,7 +46,7 @@ export function delStorageBattery(id) {
 // 导出储能电池组
 export function exportStorageBattery(query) {
   return request({
-    url: '/newenergy/storageBattery/export',
+    url: '/system/newenergy/storageBattery/export',
     method: 'post',
     data: query,
     responseType: 'blob'
@@ -56,7 +56,7 @@ export function exportStorageBattery(query) {
 // 更新电池组状态
 export function updateBatteryStatus(id, status) {
   return request({
-    url: '/newenergy/storageBattery/updateStatus/' + id + '/' + status,
+    url: '/system/newenergy/storageBattery/updateStatus/' + id + '/' + status,
     method: 'put'
   })
 }
@@ -64,7 +64,7 @@ export function updateBatteryStatus(id, status) {
 // 根据储能系统ID查询电池组列表
 export function getBatteriesByStorageId(storageId) {
   return request({
-    url: '/newenergy/storageBattery/byStorageId/' + storageId,
+    url: '/system/newenergy/storageBattery/byStorageId/' + storageId,
     method: 'get'
   })
 }
@@ -72,7 +72,7 @@ export function getBatteriesByStorageId(storageId) {
 // 获取电池组实时数据
 export function getBatteryRealTimeData(batteryId) {
   return request({
-    url: '/newenergy/storageBattery/realTimeData/' + batteryId,
+    url: '/system/newenergy/storageBattery/realTimeData/' + batteryId,
     method: 'get'
   })
 }
@@ -80,7 +80,7 @@ export function getBatteryRealTimeData(batteryId) {
 // 获取电池组历史数据
 export function getBatteryHistoryData(batteryId, startTime, endTime, dataType) {
   return request({
-    url: '/newenergy/storageBattery/historyData',
+    url: '/system/newenergy/storageBattery/historyData',
     method: 'get',
     params: {
       batteryId,

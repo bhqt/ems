@@ -22,7 +22,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/system/newenergy/storage")
+@RequestMapping("/system/newenergy/storageSystem")
 public class StorageSystemController extends BaseController {
 
     private final IStorageSystemService storageSystemService;

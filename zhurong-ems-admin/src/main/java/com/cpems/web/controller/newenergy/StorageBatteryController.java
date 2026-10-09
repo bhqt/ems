@@ -31,7 +31,7 @@ import java.util.Map;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/newenergy/storageBattery")
+@RequestMapping("/system/newenergy/storageBattery")
 public class StorageBatteryController extends BaseController {
 
     private final IStorageBatteryService storageBatteryService;
