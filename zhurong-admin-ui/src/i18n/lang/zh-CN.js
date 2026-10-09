@@ -595,6 +595,23 @@ export default {
       title: '光伏管理',
       standard: '作业规范',
       billing: '计费方案'
+    },
+    // 医院智慧能源
+    hospital: {
+      title: '医院智慧能源',
+      home: '医院首页',
+      device: '设备台账',
+      metric: '指标定义',
+      callbackLog: '回调日志',
+      monitor: '设备监测',
+      alarmRule: '报警规则',
+      alarmRecord: '报警记录',
+      energy: '能耗分析',
+      efficiency: '能效评估',
+      area: '院区管理',
+      workload: '工作量管理',
+      screen: '医院大屏',
+      dashboard: '角色看板'
     }
   },
 

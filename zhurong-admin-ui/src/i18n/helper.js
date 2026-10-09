@@ -344,7 +344,140 @@ const chineseToKeyMap = {
   // 能源管理
   '用能状况': 'menu.energyStatus.title',
   '用量监测': 'menu.usageMonitor.title',
-  '用能概况': 'menu.energyOverview.title'
+  '用能概况': 'menu.energyOverview.title',
+
+  // 医院智慧能源
+  '医院智慧能源': 'menu.hospital.title',
+  '医院首页': 'menu.hospital.home',
+  '设备台账': 'menu.hospital.device',
+  '指标定义': 'menu.hospital.metric',
+  '回调日志': 'menu.hospital.callbackLog',
+  '设备监测': 'menu.hospital.monitor',
+  '报警记录': 'menu.hospital.alarmRecord',
+  '能效评估': 'menu.hospital.efficiency',
+  '院区管理': 'menu.hospital.area',
+  '工作量管理': 'menu.hospital.workload',
+  '医院大屏': 'menu.hospital.screen',
+  '角色看板': 'menu.hospital.dashboard'
+}
+
+/**
+ * menu 下的所有一级命名空间
+ * 后端返回中文菜单标题时，按顺序在这些命名空间下查找同名 key。
+ */
+const menuNamespaces = [
+  'system',
+  'monitor',
+  'tool',
+  'energy',
+  'equipment',
+  'alarm',
+  'camera',
+  'charging',
+  'inspection',
+  'itemized',
+  'dataQuery',
+  'profile',
+  'control',
+  'metering',
+  'carbon',
+  'energyAnalysis',
+  'digitaltwin',
+  'inventory',
+  'managementSystem',
+  'maintenance',
+  'quota',
+  'report',
+  'newenergy',
+  'analysisReport',
+  'dataBoard',
+  'dashboard',
+  'visualization3D',
+  'business',
+  'item',
+  'operation',
+  'alarmManage',
+  'newEnergyManage',
+  'managementSystem2',
+  'carbonAnalysis',
+  'powerParam',
+  'videoConfig',
+  'realTimeView',
+  'orgManage',
+  'paramSet',
+  'fileManage',
+  'billingType',
+  'adminMonitor',
+  'jobScheduler',
+  'cacheList',
+  'usageDetect',
+  'energyConsumeTrend',
+  'energyStatus',
+  'usageMonitor',
+  'energyOverview',
+  'energyFlow',
+  'itemOverview',
+  'deviceInfo',
+  'gateway',
+  'projectTopology',
+  'chargingManage',
+  'hazardous',
+  'patrol',
+  'itemManage',
+  'chargingOperation',
+  'pvManage',
+  'hospital'
+]
+
+/**
+ * 生成某个中文菜单标题的全部候选 key
+ * @param {string} title - 后端返回的中文菜单标题
+ * @returns {string[]} 候选 key 列表
+ */
+function possibleMenuKeys(title) {
+  const keys = [`menu.${title}`]
+  for (const namespace of menuNamespaces) {
+    keys.push(`menu.${namespace}.${title}`)
+  }
+  return keys
+}
+
+/**
+ * 静默查找 key 对应的翻译
+ *
+ * 不能直接用 `i18n.t(key)` 做"试探性"翻译：vue-i18n 在 key 不存在时会打印
+ * `Value of key 'xxx' is not a string or function !` 与
+ * `Cannot translate the value of keypath 'xxx'` 两条告警。
+ * 菜单标题来自后端，中文标题无法穷举，因此这里先用 `i18n.te()`（不告警）
+ * 判断 key 是否存在，再决定是否调用 `i18n.t()`。
+ *
+ * @param {string} key - 国际化 key
+ * @returns {string} 翻译结果；不存在或不是字符串时返回空串
+ */
+function resolveMessage(key) {
+  if (!key) return ''
+
+  const locales = [i18n.locale]
+  const fallbacks = Array.isArray(i18n.fallbackLocale)
+    ? i18n.fallbackLocale
+    : [i18n.fallbackLocale]
+
+  for (const locale of fallbacks) {
+    if (locale && locales.indexOf(locale) === -1) {
+      locales.push(locale)
+    }
+  }
+
+  for (const locale of locales) {
+    if (!i18n.te(key, locale)) continue
+    const translated = i18n.t(key, locale)
+    // key 可能指向一个对象（如 menu.system），此时不能作为标题返回
+    if (typeof translated === 'string' && translated) {
+      return translated
+    }
+  }
+
+  return ''
 }
 
 /**
@@ -364,97 +497,31 @@ export function translateMenuTitle(title, fallback = '') {
 
   // 1. 如果 title 已经是国际化 key 格式（包含点号）
   if (title.includes('.')) {
-    const translated = i18n.t(title)
-    if (translated !== title) {
+    const translated = resolveMessage(title)
+    if (translated) {
       return translated
     }
   }
 
   // 2. 通过中文映射表查找对应的国际化 key
   if (chineseToKeyMap[title]) {
-    const translated = i18n.t(chineseToKeyMap[title])
-    if (translated !== chineseToKeyMap[title]) {
+    const translated = resolveMessage(chineseToKeyMap[title])
+    if (translated) {
       return translated
     }
   }
 
   // 3. 尝试在 menu 配置中查找（用于后端返回中文的情况）
-  const possibleKeys = [
-    `menu.${title}`,
-    `menu.system.${title}`,
-    `menu.monitor.${title}`,
-    `menu.tool.${title}`,
-    `menu.energy.${title}`,
-    `menu.equipment.${title}`,
-    `menu.alarm.${title}`,
-    `menu.camera.${title}`,
-    `menu.charging.${title}`,
-    `menu.inspection.${title}`,
-    `menu.itemized.${title}`,
-    `menu.dataQuery.${title}`,
-    `menu.profile.${title}`,
-    `menu.control.${title}`,
-    `menu.metering.${title}`,
-    `menu.carbon.${title}`,
-    `menu.energyAnalysis.${title}`,
-    `menu.digitaltwin.${title}`,
-    `menu.inventory.${title}`,
-    `menu.managementSystem.${title}`,
-    `menu.maintenance.${title}`,
-    `menu.quota.${title}`,
-    `menu.report.${title}`,
-    `menu.newenergy.${title}`,
-    `menu.analysisReport.${title}`,
-    `menu.dataBoard.${title}`,
-    `menu.dashboard.${title}`,
-    `menu.visualization3D.${title}`,
-    `menu.business.${title}`,
-    `menu.item.${title}`,
-    `menu.operation.${title}`,
-    `menu.alarmManage.${title}`,
-    `menu.newEnergyManage.${title}`,
-    `menu.managementSystem2.${title}`,
-    `menu.carbonAnalysis.${title}`,
-    `menu.powerParam.${title}`,
-    `menu.videoConfig.${title}`,
-    `menu.realTimeView.${title}`,
-    `menu.orgManage.${title}`,
-    `menu.paramSet.${title}`,
-    `menu.fileManage.${title}`,
-    `menu.billingType.${title}`,
-    `menu.adminMonitor.${title}`,
-    `menu.jobScheduler.${title}`,
-    `menu.cacheList.${title}`,
-    `menu.usageDetect.${title}`,
-    `menu.energyConsumeTrend.${title}`,
-    `menu.energyFlow.${title}`,
-    `menu.itemOverview.${title}`,
-    `menu.deviceInfo.${title}`,
-    `menu.gateway.${title}`,
-    `menu.projectTopology.${title}`,
-    `menu.chargingManage.${title}`,
-    `menu.hazardous.${title}`,
-    `menu.patrol.${title}`,
-    `menu.itemManage.${title}`,
-    `menu.chargingOperation.${title}`,
-    `menu.pvManage.${title}`,
-    `menu.alarmManage.${title}`,
-    `menu.energyStatus.${title}`,
-    `menu.usageMonitor.${title}`,
-    `menu.energyOverview.${title}`
-  ]
-
-  for (const key of possibleKeys) {
-    const translated = i18n.t(key)
-    if (translated !== key) {
+  for (const key of possibleMenuKeys(title)) {
+    const translated = resolveMessage(key)
+    if (translated) {
       return translated
     }
   }
 
   // 4. 尝试使用 common 中的翻译
-  const commonKey = `common.${title}`
-  const commonTranslated = i18n.t(commonKey)
-  if (commonTranslated !== commonKey) {
+  const commonTranslated = resolveMessage(`common.${title}`)
+  if (commonTranslated) {
     return commonTranslated
   }
 

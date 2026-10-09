@@ -532,6 +532,23 @@ export default {
       title: 'Manajemen PV',
       standard: 'Standar Operasi',
       billing: 'Skema Penagihan'
+    },
+    // Energi Cerdas Rumah Sakit
+    hospital: {
+      title: 'Energi Cerdas Rumah Sakit',
+      home: 'Beranda Rumah Sakit',
+      device: 'Daftar Aset Perangkat',
+      metric: 'Definisi Metrik',
+      callbackLog: 'Log Callback',
+      monitor: 'Pemantauan Perangkat',
+      alarmRule: 'Aturan Alarm',
+      alarmRecord: 'Riwayat Alarm',
+      energy: 'Analisis Konsumsi Energi',
+      efficiency: 'Evaluasi Efisiensi Energi',
+      area: 'Manajemen Area',
+      workload: 'Manajemen Beban Kerja',
+      screen: 'Layar Besar RS',
+      dashboard: 'Dasbor Sesuai Peran'
     }
   },
 

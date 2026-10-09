@@ -532,6 +532,23 @@ export default {
       title: 'PV Management',
       standard: 'Operation Standards',
       billing: 'Billing Scheme'
+    },
+    // Hospital Smart Energy
+    hospital: {
+      title: 'Hospital Smart Energy',
+      home: 'Hospital Home',
+      device: 'Device Ledger',
+      metric: 'Metric Definition',
+      callbackLog: 'Callback Logs',
+      monitor: 'Device Monitor',
+      alarmRule: 'Alarm Rules',
+      alarmRecord: 'Alarm Records',
+      energy: 'Energy Analysis',
+      efficiency: 'Efficiency Evaluation',
+      area: 'Campus Management',
+      workload: 'Workload Management',
+      screen: 'Big Screen',
+      dashboard: 'Role Dashboard'
     }
   },
 
