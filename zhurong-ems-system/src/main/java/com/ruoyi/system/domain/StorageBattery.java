@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -47,8 +48,9 @@ public class StorageBattery extends BaseEntity {
     private Long storageId;
 
     /**
-     * 储能系统名称
-     */
+     * 储能系统名称（非表字段，由 storage_id 关联 energy_storage.storage_name 填充）
+ */
+    @TableField(exist = false)
     private String storageName;
 
     /**

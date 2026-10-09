@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.StorageBatteryMapper">
+
+    <resultMap type="com.ruoyi.system.domain.vo.StorageBatteryVo" id="StorageBatteryResult">
+        <id property="id" column="id"/>
+        <result property="batteryName" column="battery_name"/>
+        <result property="batteryCode" column="battery_code"/>
+        <result property="storageId" column="storage_id"/>
+        <result property="storageName" column="storage_name"/>
+        <result property="batteryModel" column="battery_model"/>
+        <result property="ratedCapacity" column="rated_capacity"/>
+        <result property="ratedVoltage" column="rated_voltage"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectStorageBatteryVo">
+        select b.id,
+               b.battery_name,
+               b.battery_code,
+               b.storage_id,
+               s.storage_name,
+               b.model as battery_model,
+               b.capacity as rated_capacity,
+               b.voltage as rated_voltage,
+               b.status,
+               b.remark,
+               b.create_by,
+               b.create_time,
+               b.update_by,
+               b.update_time
+        from storage_battery b
+        left join energy_storage s on b.storage_id = s.id
+    </sql>
+
+    <select id="selectStorageBatteryList" parameterType="com.ruoyi.system.domain.StorageBattery"
+            resultMap="StorageBatteryResult">
+        <include refid="selectStorageBatteryVo"/>
+        <where>
+            b.del_flag = '0'
+            <if test="storageId != null">
+                AND b.storage_id = #{storageId}
+            </if>
+            <if test="batteryName != null and batteryName != ''">
+                AND b.battery_name like concat('%', #{batteryName}, '%')
+            </if>
+            <if test="batteryCode != null and batteryCode != ''">
+                AND b.battery_code = #{batteryCode}
+            </if>
+            <if test="status != null and status != ''">
+                AND b.status = #{status}
+            </if>
+        </where>
+        order by b.create_time desc
+    </select>
+
+    <select id="selectStorageBatteryById" parameterType="Long" resultMap="StorageBatteryResult">
+        <include refid="selectStorageBatteryVo"/>
+        where b.id = #{id}
+          and b.del_flag = '0'
+    </select>
+
+    <update id="updateBatteryStatus">
+        update storage_battery
+        set status = #{status},
+            update_time = now()
+        where id = #{id}
+    </update>
+
+    <select id="selectBatteriesByStorageId" parameterType="Long" resultMap="StorageBatteryResult">
+        <include refid="selectStorageBatteryVo"/>
+        where b.storage_id = #{storageId}
+          and b.del_flag = '0'
+        order by b.id asc
+    </select>
+
+    <select id="countBatteriesByStatus" resultType="int">
+        select count(*)
+        from storage_battery
+        where storage_id = #{storageId}
+          and del_flag = '0'
+        <if test="status != null and status != ''">
+            and status = #{status}
+        </if>
+    </select>
+
+</mapper>

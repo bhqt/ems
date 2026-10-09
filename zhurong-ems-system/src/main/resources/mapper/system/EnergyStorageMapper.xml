@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EnergyStorageMapper">
+
+    <resultMap type="com.ruoyi.system.domain.vo.EnergyStorageVo" id="EnergyStorageResult">
+        <id property="id" column="id"/>
+        <result property="storageName" column="storage_name"/>
+        <result property="storageCode" column="storage_code"/>
+        <result property="storageType" column="storage_type"/>
+        <result property="capacity" column="capacity"/>
+        <result property="power" column="power"/>
+        <result property="voltageLevel" column="voltage_level"/>
+        <result property="batteryType" column="battery_type"/>
+        <result property="areaId" column="area_id"/>
+        <result property="areaName" column="area_name"/>
+        <result property="address" column="address"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="commissioningDate" column="commissioning_date"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="batteryCount" column="battery_count"/>
+    </resultMap>
+
+    <sql id="selectEnergyStorageVo">
+        select s.id,
+               s.storage_name,
+               s.storage_code,
+               s.storage_type,
+               s.capacity,
+               s.power,
+               s.voltage_level,
+               s.battery_type,
+               s.area_id,
+               d.dept_name as area_name,
+               s.address,
+               s.longitude,
+               s.latitude,
+               s.commissioning_date,
+               s.status,
+               s.remark,
+               s.create_by,
+               s.create_time,
+               s.update_by,
+               s.update_time,
+               (select count(*) from storage_battery b where b.storage_id = s.id and b.del_flag = '0') as battery_count
+        from energy_storage s
+        left join sys_dept d on s.area_id = d.dept_id
+    </sql>
+
+    <select id="selectEnergyStorageList" parameterType="com.ruoyi.system.domain.EnergyStorage"
+            resultMap="EnergyStorageResult">
+        <include refid="selectEnergyStorageVo"/>
+        <where>
+            s.del_flag = '0'
+            <if test="storageName != null and storageName != ''">
+                AND s.storage_name like concat('%', #{storageName}, '%')
+            </if>
+            <if test="storageCode != null and storageCode != ''">
+                AND s.storage_code = #{storageCode}
+            </if>
+            <if test="storageType != null and storageType != ''">
+                AND s.storage_type = #{storageType}
+            </if>
+            <if test="areaId != null">
+                AND s.area_id = #{areaId}
+            </if>
+            <if test="status != null and status != ''">
+                AND s.status = #{status}
+            </if>
+        </where>
+        order by s.create_time desc
+    </select>
+
+    <select id="selectEnergyStorageById" parameterType="Long" resultMap="EnergyStorageResult">
+        <include refid="selectEnergyStorageVo"/>
+        where s.id = #{id}
+          and s.del_flag = '0'
+    </select>
+
+    <update id="updateStorageStatus">
+        update energy_storage
+        set status = #{status},
+            update_time = now()
+        where id = #{id}
+    </update>
+
+    <select id="countBatteriesByStorageId" parameterType="Long" resultType="int">
+        select count(*)
+        from storage_battery
+        where storage_id = #{storageId}
+          and del_flag = '0'
+    </select>
+
+</mapper>

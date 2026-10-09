@@ -1,22 +1,26 @@
 package com.ruoyi.system.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.domain.PageQuery;
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.system.domain.EnergyStorage;
 import com.ruoyi.system.domain.bo.EnergyStorageBo;
 import com.ruoyi.system.domain.vo.EnergyStorageVo;
 import com.ruoyi.system.mapper.EnergyStorageMapper;
 import com.ruoyi.system.mapper.StorageBatteryMapper;
+import com.ruoyi.system.mapper.SysDeptMapper;
 import com.ruoyi.system.service.IEnergyStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 储能系统Service业务层处理
@@ -30,6 +34,32 @@ public class EnergyStorageServiceImpl implements IEnergyStorageService {
 
     private final EnergyStorageMapper baseMapper;
     private final StorageBatteryMapper storageBatteryMapper;
+    private final SysDeptMapper sysDeptMapper;
+
+    /**
+     * 填充区域名称（area_id 关联 sys_dept.dept_id）
+     *
+     * @param list 储能系统集合
+     */
+    private void fillAreaName(Collection<EnergyStorageVo> list) {
+        if (CollUtil.isEmpty(list)) {
+            return;
+        }
+        Set<Long> deptIds = list.stream()
+            .map(EnergyStorageVo::getAreaId)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet());
+        if (CollUtil.isEmpty(deptIds)) {
+            return;
+        }
+        Map<Long, String> deptNameMap = sysDeptMapper.selectBatchIds(deptIds).stream()
+            .collect(Collectors.toMap(SysDept::getDeptId, SysDept::getDeptName, (a, b) -> a));
+        list.forEach(item -> {
+            if (item.getAreaId() != null) {
+                item.setAreaName(deptNameMap.get(item.getAreaId()));
+            }
+        });
+    }
 
     /**
      * 查询储能系统
@@ -59,6 +89,7 @@ public class EnergyStorageServiceImpl implements IEnergyStorageService {
     public TableDataInfo<EnergyStorageVo> queryPageList(EnergyStorageBo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<EnergyStorage> lqw = buildQueryWrapper(bo);
         Page<EnergyStorageVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        fillAreaName(result.getRecords());
         return TableDataInfo.build(result);
     }
 
@@ -71,7 +102,9 @@ public class EnergyStorageServiceImpl implements IEnergyStorageService {
     @Override
     public List<EnergyStorageVo> queryList(EnergyStorageBo bo) {
         LambdaQueryWrapper<EnergyStorage> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        List<EnergyStorageVo> list = baseMapper.selectVoList(lqw);
+        fillAreaName(list);
+        return list;
     }
 
     private LambdaQueryWrapper<EnergyStorage> buildQueryWrapper(EnergyStorageBo bo) {

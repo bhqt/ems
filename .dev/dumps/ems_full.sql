@@ -2334,10 +2334,13 @@ CREATE TABLE `energy_storage` (
   `capacity` decimal(10,2) DEFAULT '0.00' COMMENT '额定容量(kWh)',
   `power` decimal(10,2) DEFAULT '0.00' COMMENT '额定功率(kW)',
   `voltage_level` varchar(20) DEFAULT NULL COMMENT '电压等级',
+  `battery_type` varchar(50) DEFAULT NULL COMMENT '电池类型',
   `area_id` bigint DEFAULT NULL COMMENT '所属区域ID',
+  `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `longitude` decimal(10,6) DEFAULT NULL COMMENT '经度',
   `latitude` decimal(10,6) DEFAULT NULL COMMENT '纬度',
   `install_date` date DEFAULT NULL COMMENT '安装日期',
+  `commissioning_date` date DEFAULT NULL COMMENT '投运日期',
   `grid_date` date DEFAULT NULL COMMENT '并网日期',
   `design_life` int DEFAULT '10' COMMENT '设计寿命(年)',
   `manufacturer` varchar(100) DEFAULT NULL COMMENT '制造商',
@@ -2365,7 +2368,7 @@ CREATE TABLE `energy_storage` (
 
 LOCK TABLES `energy_storage` WRITE;
 /*!40000 ALTER TABLE `energy_storage` DISABLE KEYS */;
-INSERT INTO `energy_storage` VALUES (1,'一号储能系统','ES001','1',2000.00,500.00,'10kV',100,116.397400,39.909300,'2023-02-10','2023-04-01',10,'宁德时代','EnerOne','1','赵六','13800138004','锂电池储能系统','0','','2026-03-30 15:07:10','',NULL),(2,'二号储能系统','ES002','1',5000.00,1000.00,'35kV',101,116.407400,39.919300,'2023-07-15','2023-10-01',10,'比亚迪','B-Box','1','钱七','13800138005','大型储能电站','0','','2026-03-30 15:07:10','',NULL);
+INSERT INTO `energy_storage` VALUES (1,'一号储能系统','ES001','1',2000.00,500.00,'10kV',NULL,100,NULL,116.397400,39.909300,'2023-02-10',NULL,'2023-04-01',10,'宁德时代','EnerOne','1','赵六','13800138004','锂电池储能系统','0','','2026-03-30 15:07:10','',NULL),(2,'二号储能系统','ES002','1',5000.00,1000.00,'35kV',NULL,101,NULL,116.407400,39.919300,'2023-07-15',NULL,'2023-10-01',10,'比亚迪','B-Box','1','钱七','13800138005','大型储能电站','0','','2026-03-30 15:07:10','',NULL);
 /*!40000 ALTER TABLE `energy_storage` ENABLE KEYS */;
 UNLOCK TABLES;
 

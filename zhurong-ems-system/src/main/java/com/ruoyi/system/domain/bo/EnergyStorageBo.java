@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.bo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -76,6 +77,7 @@ public class EnergyStorageBo {
     /**
      * 投运日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date commissioningDate;
 
     /**

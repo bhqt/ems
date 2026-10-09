@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -62,13 +63,24 @@ public class EnergyStorage extends BaseEntity {
     private String voltageLevel;
 
     /**
+     * 电池类型
+     */
+    private String batteryType;
+
+    /**
      * 所属区域ID
      */
     private Long areaId;
 
     /**
-     * 区域名称
+     * 地址
      */
+    private String address;
+
+    /**
+     * 区域名称（非表字段，由 area_id 关联 sys_dept.dept_name 填充）
+     */
+    @TableField(exist = false)
     private String areaName;
 
     /**
@@ -85,6 +97,11 @@ public class EnergyStorage extends BaseEntity {
      * 安装日期
      */
     private Date installDate;
+
+    /**
+     * 投运日期
+     */
+    private Date commissioningDate;
 
     /**
      * 并网日期
