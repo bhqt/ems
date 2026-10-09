@@ -18,6 +18,7 @@
                 />
             </el-menu>
         </el-scrollbar>
+        <div class="sidebar-footer-card" />
     </div>
 </template>
 

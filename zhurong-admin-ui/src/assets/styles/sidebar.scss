@@ -28,6 +28,27 @@
     -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
     box-shadow: 2px 0 6px rgba(0,21,41,.35);
 
+    // 纵向 flex 布局：logo 固定、菜单区滚动、底部打底卡片固定在底部
+    display: flex;
+    flex-direction: column;
+
+    > .sidebar-logo-container {
+      flex: 0 0 auto;
+    }
+
+    > .el-scrollbar {
+      flex: 1 1 auto;
+      min-height: 0;
+      height: auto;
+    }
+
+    > .sidebar-footer-card {
+      flex: 0 0 auto;
+      height: $menu-item-height;
+      background-color: var(--base-menu-background);
+      border-top: 1px solid rgba(255, 255, 255, .12);
+    }
+
     // reset element-ui css
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
@@ -39,16 +60,6 @@
 
     .el-scrollbar__bar.is-vertical {
       right: 0px;
-    }
-
-    .el-scrollbar {
-      height: 100%;
-    }
-
-    &.has-logo {
-      .el-scrollbar {
-        height: calc(100% - 50px);
-      }
     }
 
     .is-horizontal {

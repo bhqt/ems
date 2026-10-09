@@ -45,6 +45,9 @@ $base-sub-menu-hover:#001528;
 
 $base-sidebar-width: 250px;
 
+// 菜单按钮（el-menu-item / el-submenu__title）高度，与 element-ui 默认值保持一致
+$menu-item-height: 56px;
+
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
