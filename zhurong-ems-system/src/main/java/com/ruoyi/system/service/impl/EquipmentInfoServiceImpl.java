@@ -175,8 +175,7 @@ public class EquipmentInfoServiceImpl implements IEquipmentInfoService {
 
         for (ItemTopologyVo itemTopologyVo : itemTopologyVos) {
             if (ObjectUtil.isNotEmpty(itemTopologyVo.getDeviceId())) {
-                List<String> temp = Arrays.stream(StringUtils.split(itemTopologyVo.getDeviceId(), ",")).collect(Collectors.toList());
-                deviceId.addAll(temp);
+                deviceId.addAll(StringUtils.splitList(itemTopologyVo.getDeviceId(), ","));
             }
         }
 

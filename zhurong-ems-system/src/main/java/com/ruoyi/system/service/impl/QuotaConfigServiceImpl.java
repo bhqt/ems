@@ -193,7 +193,7 @@ public class QuotaConfigServiceImpl implements IQuotaConfigService {
 
         //获取实际能耗
         ItemTopology itemTopology = itemTopologyMapper.selectById(itemId);
-        List<String> devices = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> devices = StringUtils.splitList(itemTopology == null ? null : itemTopology.getDeviceId(), ",");
         //找不到对应设备返回
         /*if (ObjectUtil.isEmpty(devices)) {
             return null;
@@ -353,7 +353,7 @@ public class QuotaConfigServiceImpl implements IQuotaConfigService {
         result.put("dosageVoList",dosageVoList);
         //获取设备列表
         ItemTopology itemTopology = itemTopologyMapper.selectById(itemId);
-        List<String> devices = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> devices = StringUtils.splitList(itemTopology == null ? null : itemTopology.getDeviceId(), ",");
         //找不到对应设备返回
         /*if (ObjectUtil.isEmpty(devices)) {
             return result;

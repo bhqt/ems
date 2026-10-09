@@ -48,10 +48,9 @@ public class ItemizeAnalysisServiceImpl implements IItemizeAnalysisService {
         if (ObjectUtil.isEmpty(topologyVoList)) {
             return result;
         }
-        List<String> deviceIds = topologyVoList.stream().map(ItemTopologyVo::getDeviceId).collect(Collectors.toList());
         List<String> deviceList = new ArrayList<>();
-        for (String device : deviceIds) {
-            deviceList.addAll(Arrays.asList(device.split(",")));
+        for (ItemTopologyVo topologyVo : topologyVoList) {
+            deviceList.addAll(StringUtils.splitList(topologyVo.getDeviceId(), ","));
         }
         //去重
         deviceList = deviceList.stream().distinct().collect(Collectors.toList());
@@ -124,7 +123,7 @@ public class ItemizeAnalysisServiceImpl implements IItemizeAnalysisService {
             itemizeVo.setItemizeName(itemTopologyVo.getItemName());
 
             //分项查询设备SN
-            List<String> deviceId = Arrays.asList(itemTopologyVo.getDeviceId().split(","));
+            List<String> deviceId = StringUtils.splitList(itemTopologyVo.getDeviceId(), ",");
             // 当日能耗
             List<EnergyStatisticsVo> nowData = nowElectricity.stream().filter(t -> deviceId.contains(t.getEquipmentSn())).collect(Collectors.toList());
             BigDecimal now = nowData.stream().map(EnergyStatisticsVo::getStatistics).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.HALF_UP);

@@ -1,6 +1,6 @@
 package com.ruoyi.system.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.core.domain.BaseEntity;
@@ -21,16 +21,18 @@ public class InspectionPlan extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** 计划ID */
-    @TableId(type = IdType.AUTO)
-    private Long planId;
+    @TableId(value = "id")
+    private Long id;
 
     /** 计划编号 */
+    @TableField(exist = false)
     private String planCode;
 
     /** 计划名称 */
     private String planName;
 
     /** 检验类型（1-来料检验，2-过程检验，3-成品检验） */
+    @TableField(exist = false)
     private String inspectionType;
 
     /** 开始日期 */
@@ -62,15 +64,5 @@ public class InspectionPlan extends BaseEntity implements Serializable {
 
     /** 设置时间 */
     private String setTime;
-
-    /** 计划ID（兼容旧代码） */
-    public Long getId() {
-        return planId;
-    }
-
-    /** 计划ID（兼容旧代码） */
-    public void setId(Long id) {
-        this.planId = id;
-    }
 
 }

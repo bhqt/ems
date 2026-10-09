@@ -19,6 +19,7 @@ import com.ruoyi.system.domain.RealtimeAlarm;
 import com.ruoyi.system.domain.bo.RealtimeAlarmBo;
 import com.ruoyi.system.mapper.RealtimeAlarmMapper;
 import com.ruoyi.system.service.IRealtimeAlarmService;
+import com.ruoyi.system.utils.DeviceIdMatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.vo.RealtimeAlarmVo;
@@ -360,8 +361,8 @@ public class RealtimeAlarmServiceImpl implements IRealtimeAlarmService {
         for (ItemTopologyVo itemTopologyVo:topologyVoList){
             RealtimeAlarmVo vo = new RealtimeAlarmVo();
             vo.setArea(itemTopologyVo.getItemName());
-            vo.setCount(current.stream().filter(e->itemTopologyVo.getDeviceId().contains(e.getEquipment())).count());
-            vo.setLastCount(last.stream().filter(e->itemTopologyVo.getDeviceId().contains(e.getEquipment())).count());
+            vo.setCount(current.stream().filter(e->DeviceIdMatcher.containsDevice(itemTopologyVo.getDeviceId(), e.getEquipment())).count());
+            vo.setLastCount(last.stream().filter(e->DeviceIdMatcher.containsDevice(itemTopologyVo.getDeviceId(), e.getEquipment())).count());
             result.add(vo);
         }
         return result;
