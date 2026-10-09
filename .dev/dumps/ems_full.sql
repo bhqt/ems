@@ -1059,22 +1059,24 @@ DROP TABLE IF EXISTS `charging_price_param`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `charging_price_param` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '参数ID',
-  `strategy_id` bigint DEFAULT NULL COMMENT '策略ID',
-  `param_type` varchar(1) DEFAULT '1' COMMENT '参数类型（1-时间段 2-功率段）',
-  `start_value` varchar(50) DEFAULT NULL COMMENT '起始值',
-  `end_value` varchar(50) DEFAULT NULL COMMENT '结束值',
-  `price` decimal(10,2) DEFAULT '0.00' COMMENT '价格(元/kWh)',
-  `service_fee` decimal(10,2) DEFAULT '0.00' COMMENT '服务费(元/kWh)',
-  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '充电价格参数ID',
+  `strategy_id` bigint DEFAULT NULL COMMENT '充电价格策略ID',
+  `start_time` varchar(50) DEFAULT NULL COMMENT '开始时间(HH:mm)',
+  `end_time` varchar(50) DEFAULT NULL COMMENT '结束时间(HH:mm)',
+  `mark` varchar(1) DEFAULT NULL COMMENT '时段标识(0尖期 1峰期 2平期 3谷期)',
+  `elec_price` decimal(10,4) DEFAULT '0.0000' COMMENT '电费单价(元)',
+  `service_price` decimal(10,4) DEFAULT '0.0000' COMMENT '服务费单价(元)',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志(0存在 2删除)',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `idx_strategy_id` (`strategy_id`),
-  KEY `idx_param_type` (`param_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='充电价格参数表';
+  KEY `idx_start_time` (`start_time`),
+  KEY `idx_mark` (`mark`),
+  KEY `idx_del_flag` (`del_flag`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='充电策略参数表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1094,25 +1096,22 @@ DROP TABLE IF EXISTS `charging_price_strategy`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `charging_price_strategy` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '策略ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '充电价格策略ID',
   `strategy_name` varchar(100) NOT NULL COMMENT '策略名称',
-  `strategy_type` varchar(1) DEFAULT '1' COMMENT '策略类型（1-分时 2-阶梯 3-固定）',
-  `start_time` time DEFAULT NULL COMMENT '开始时间',
-  `end_time` time DEFAULT NULL COMMENT '结束时间',
-  `price` decimal(10,2) DEFAULT '0.00' COMMENT '价格(元/kWh)',
-  `service_fee` decimal(10,2) DEFAULT '0.00' COMMENT '服务费(元/kWh)',
-  `min_power` decimal(10,2) DEFAULT '0.00' COMMENT '最低功率(kWh)',
-  `max_power` decimal(10,2) DEFAULT '0.00' COMMENT '最高功率(kWh)',
-  `status` varchar(1) DEFAULT '0' COMMENT '状态（0-启用 1-停用）',
-  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
-  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `station_id` bigint DEFAULT NULL COMMENT '充电站ID',
+  `station_name` varchar(100) DEFAULT NULL COMMENT '充电站名称',
+  `bill_model` varchar(1) DEFAULT '0' COMMENT '计费模式(0峰平谷模式 1时段模式)',
+  `description` varchar(500) DEFAULT NULL COMMENT '充电策略说明',
+  `status` varchar(1) DEFAULT '0' COMMENT '策略状态(0未使用 1已使用)',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志(0存在 2删除)',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_strategy_name` (`strategy_name`),
-  KEY `idx_strategy_type` (`strategy_type`),
+  KEY `idx_station_id` (`station_id`),
+  KEY `idx_bill_model` (`bill_model`),
   KEY `idx_status` (`status`),
   KEY `idx_del_flag` (`del_flag`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='充电价格策略表';
@@ -1124,7 +1123,7 @@ CREATE TABLE `charging_price_strategy` (
 
 LOCK TABLES `charging_price_strategy` WRITE;
 /*!40000 ALTER TABLE `charging_price_strategy` DISABLE KEYS */;
-INSERT INTO `charging_price_strategy` VALUES (1,'标准收费','3',NULL,NULL,1.50,0.20,0.00,0.00,'0',NULL,'0','','2026-04-13 17:21:18','',NULL),(2,'峰谷电价','1',NULL,NULL,1.80,0.20,0.00,0.00,'0',NULL,'0','','2026-04-13 17:21:18','',NULL),(3,'阶梯电价','2',NULL,NULL,1.20,0.20,0.00,0.00,'0',NULL,'0','','2026-04-13 17:21:18','',NULL);
+INSERT INTO `charging_price_strategy` VALUES (1,'标准收费',1,'东区充电站','1',NULL,'0','0','','2026-04-13 17:21:18','',NULL),(2,'峰谷电价',1,'东区充电站','0',NULL,'0','0','','2026-04-13 17:21:18','',NULL),(3,'阶梯电价',1,'东区充电站','1',NULL,'0','0','','2026-04-13 17:21:18','',NULL);
 /*!40000 ALTER TABLE `charging_price_strategy` ENABLE KEYS */;
 UNLOCK TABLES;
 
