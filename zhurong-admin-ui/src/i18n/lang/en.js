@@ -109,6 +109,11 @@ export default {
   // Login
   login: {
     title: 'Zhurong Energy Management System',
+    slogan: 'Smart Energy · Digital Control · Full-Link Collaboration',
+    welcome: 'Welcome back, please sign in to your account',
+    point1: 'Real-time energy data collection & visualization',
+    point2: 'PV · Storage · Charging pile coordinated dispatch',
+    point3: 'Load forecasting & closed-loop alarm management',
     username: 'Username',
     password: 'Password',
     captcha: 'Captcha',

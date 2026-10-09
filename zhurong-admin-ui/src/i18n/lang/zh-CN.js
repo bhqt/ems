@@ -126,6 +126,11 @@ export default {
   // 登录页
   login: {
     title: '智慧能源管理系统',
+    slogan: '智慧能源 · 数智管控 · 全域联动',
+    welcome: '欢迎回来，请登录您的账号',
+    point1: '能耗数据实时采集与可视化',
+    point2: '光伏 · 储能 · 充电桩协同调度',
+    point3: '负荷预测与异常告警闭环管理',
     username: '用户名',
     password: '密码',
     captcha: '验证码',
