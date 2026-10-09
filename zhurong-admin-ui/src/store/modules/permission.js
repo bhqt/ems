@@ -34,6 +34,9 @@ const permission = {
       return new Promise(resolve => {
         // 向后端请求路由数据
         getRouters().then(res => {
+          // 每次重新生成路由前清空去重集合，避免上一个账号遗留的 name/path 影响当前账号
+          seenRouteNames.clear()
+          seenRoutePaths.clear()
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
           const sidebarRoutes = filterAsyncRouter(sdata)
@@ -74,8 +77,30 @@ function stripFullScreenRoutes(routes, parentPath = '') {
   }
 }
 
+// 用于跨递归层级去重：vue-router 会对同名路由抛 Duplicate named routes 警告
+// 这里记录已经被加入到路由表中的 name/path，重复出现则丢弃
+const seenRouteNames = new Set()
+const seenRoutePaths = new Set()
+
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
+  const dedup = (route) => {
+    // 1) 优先按 name 去重（vue-router 对同名路由会抛 Duplicate named routes 警告）
+    // 2) 如果没有 name，再按 path 去重
+    if (route.name) {
+      if (seenRouteNames.has(route.name)) {
+        return false
+      }
+      seenRouteNames.add(route.name)
+    } else {
+      const fullPath = getFullPath(route, lastRouter)
+      if (seenRoutePaths.has(fullPath)) {
+        return false
+      }
+      seenRoutePaths.add(fullPath)
+    }
+    return true
+  }
   return asyncRouterMap.filter(route => {
     if (type && route.children) {
       route.children = filterChildren(route.children)
@@ -98,8 +123,16 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
       delete route['children']
       delete route['redirect']
     }
-    return true
+    return dedup(route)
   })
+}
+
+// 拼接父子 path，得到一个路由的完整路径
+function getFullPath(route, lastRouter) {
+  if (!route.path) return ''
+  if (route.path.charAt(0) === '/') return route.path
+  const parentPath = lastRouter && lastRouter.path ? lastRouter.path : ''
+  return (parentPath.replace(/\/$/, '') + '/' + route.path).replace(/\/+/g, '/')
 }
 
 function filterChildren(childrenMap, lastRouter = false) {
