@@ -21,6 +21,7 @@ import com.ruoyi.system.domain.EquipmentInfo;
 import com.ruoyi.system.domain.bo.ElectricityWBo;
 import com.ruoyi.system.mapper.ElectricityWMapper;
 import com.ruoyi.system.service.IElectricityWService;
+import com.ruoyi.system.utils.DeviceIdMatcher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.vo.ElectricityWVo;
@@ -155,13 +156,16 @@ public class ElectricityWServiceImpl implements IElectricityWService {
 
         for (ItemTopologyVo itemTopologyVo : itemTopologyVos) {
             if (ObjectUtil.isNotEmpty(itemTopologyVo.getDeviceId())) {
-                List<String> temp = Arrays.stream(StringUtils.split(itemTopologyVo.getDeviceId(), ",")).collect(Collectors.toList());
-                deviceId.addAll(temp);
+                deviceId.addAll(StringUtils.splitList(itemTopologyVo.getDeviceId(), ","));
             }
         }
 
         //去重
         deviceId = deviceId.stream().distinct().collect(Collectors.toList());
+
+        if (deviceId.isEmpty()) {
+            return new ArrayList<>();
+        }
 
         //找出同类型设备
         List<EquipmentInfo> equipmentInfos = equipmentInfoMapper.selectList(new LambdaQueryWrapper<EquipmentInfo>()
@@ -179,7 +183,8 @@ public class ElectricityWServiceImpl implements IElectricityWService {
 
             //根据拓扑逐层整理数据
             for (ItemTopologyVo itemTopologyVo : itemTopologyVos) {
-                List<EnergyStatistics> energyList = energyStatisticsList.stream().filter(e -> itemTopologyVo.getDeviceId().contains(e.getEquipmentSn())).collect(Collectors.toList());
+                List<EnergyStatistics> energyList = energyStatisticsList.stream()
+                    .filter(e -> DeviceIdMatcher.containsDevice(itemTopologyVo.getDeviceId(), e.getEquipmentSn())).collect(Collectors.toList());
                 BigDecimal value = BigDecimal.ZERO;
                 if (ObjectUtil.isNotEmpty(energyList)) {
                     value = energyList.stream().map(EnergyStatistics::getStatistics).reduce(BigDecimal.ZERO, BigDecimal::add)

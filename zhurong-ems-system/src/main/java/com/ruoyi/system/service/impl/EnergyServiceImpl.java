@@ -85,13 +85,19 @@ public class EnergyServiceImpl implements IEnergyService {
         //整理出所有相关设备
         for (ItemTopology itemTopology : itemTopologies) {
             if (ObjectUtil.isNotEmpty(itemTopology.getDeviceId())) {
-                List<String> temp = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
-                deviceId.addAll(temp);
+                String[] sp = StringUtils.split(itemTopology.getDeviceId(), ",");
+                if (sp != null && sp.length > 0) {
+                    deviceId.addAll(Arrays.stream(sp).collect(Collectors.toList()));
+                }
             }
         }
 
         //去重
         deviceId = deviceId.stream().distinct().collect(Collectors.toList());
+
+        if (deviceId.isEmpty()) {
+            return chainDataVos;
+        }
 
         //整理出同类型设备
         List<EquipmentInfo> equipmentInfos = equipmentInfoMapper.selectList(new LambdaQueryWrapper<EquipmentInfo>().in(EquipmentInfo::getSn, deviceId).eq(EquipmentInfo::getType, energyType));
@@ -287,10 +293,17 @@ public class EnergyServiceImpl implements IEnergyService {
 
         //找出当前楼层房间绑定的设备
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        List<String> deviceId = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+            return Collections.emptyList();
+        }
+        String[] splitArr = StringUtils.split(itemTopology.getDeviceId(), ",");
+        if (splitArr == null || splitArr.length == 0) {
+            return Collections.emptyList();
+        }
+        List<String> deviceId = Arrays.stream(splitArr).collect(Collectors.toList());
         //找不到对应设备返回
         if (ObjectUtil.isEmpty(deviceId)) {
-            return null;
+            return Collections.emptyList();
         }
         //获取选定时间年
         Date startCurrent = DateUtils.parseDate(DateUtils.parseDateToStr(year + "-01", DateUtils.getNowDate()));
@@ -364,13 +377,19 @@ public class EnergyServiceImpl implements IEnergyService {
 
         for (ItemTopologyVo itemTopologyVo : voList) {
             if (ObjectUtil.isNotEmpty(itemTopologyVo.getDeviceId())) {
-                List<String> temp = Arrays.stream(StringUtils.split(itemTopologyVo.getDeviceId(), ",")).collect(Collectors.toList());
+                String[] splitArr = StringUtils.split(itemTopologyVo.getDeviceId(), ",");
+                if (splitArr == null || splitArr.length == 0) continue;
+                List<String> temp = Arrays.stream(splitArr).collect(Collectors.toList());
                 deviceId.addAll(temp);
             }
         }
 
         //去重
         deviceId = deviceId.stream().distinct().collect(Collectors.toList());
+
+        if (deviceId.isEmpty()) {
+            return CollUtil.newArrayList();
+        }
 
         //筛选同类型设备
         List<EquipmentInfo> equipmentInfos = equipmentInfoMapper.selectList(new LambdaQueryWrapper<EquipmentInfo>().in(EquipmentInfo::getSn, deviceId).eq(EquipmentInfo::getType, bo.getEnergyType()));
@@ -386,7 +405,8 @@ public class EnergyServiceImpl implements IEnergyService {
         }
         //根据拓扑逐层计算能耗
         for (ItemTopologyVo vo : voList) {
-            List<EnergyStatistics> energyList = energyStatisticsList.stream().filter(e -> vo.getDeviceId().contains(e.getEquipmentSn())).collect(Collectors.toList());
+            List<EnergyStatistics> energyList =
+                energyStatisticsList.stream().filter(e -> DeviceIdMatcher.containsDevice(vo.getDeviceId(), e.getEquipmentSn())).collect(Collectors.toList());
             vo.setCurrentConsumption(null);
             //计算当年该月份用电量
             if (ObjectUtil.isNotEmpty(energyList)) {
@@ -427,9 +447,10 @@ public class EnergyServiceImpl implements IEnergyService {
 
     private LambdaQueryWrapper<EnergyStatistics> queryWrapper(EnergyStatisticsBo bo) {
         LambdaQueryWrapper<EnergyStatistics> lqw = new LambdaQueryWrapper<>();
-        lqw.eq(StringUtils.isNotBlank(bo.getEnergyType()), EnergyStatistics::getEnergyType, bo.getEnergyType()).in(StringUtils.isNotBlank(bo.getEquipmentSn()), EnergyStatistics::getEquipmentSn,
-            Arrays.stream(StringUtils.split(bo.getEquipmentSn(), ",")).collect(Collectors.toList())).between(StringUtils.isNotBlank(bo.getStartTime()) && StringUtils.isNotBlank(bo.getEndTime()),
-            EnergyStatistics::getTime, bo.getStartTime(), bo.getEndTime());
+        List<String> equipmentSns = StringUtils.splitList(bo.getEquipmentSn(), ",");
+        lqw.eq(StringUtils.isNotBlank(bo.getEnergyType()), EnergyStatistics::getEnergyType, bo.getEnergyType()).in(StringUtils.isNotBlank(bo.getEquipmentSn()) && ObjectUtil.isNotEmpty(equipmentSns),
+            EnergyStatistics::getEquipmentSn, equipmentSns).between(StringUtils.isNotBlank(bo.getStartTime()) && StringUtils.isNotBlank(bo.getEndTime()), EnergyStatistics::getTime, bo.getStartTime(),
+            bo.getEndTime());
         return lqw;
     }
 
@@ -460,8 +481,7 @@ public class EnergyServiceImpl implements IEnergyService {
         // 通过区域id查询设备编号
         //找出当前楼层房间绑定的设备
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
 
@@ -635,10 +655,10 @@ public class EnergyServiceImpl implements IEnergyService {
 
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
-        List<String> deviceId = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> deviceId = StringUtils.splitList(itemTopology.getDeviceId(), ",");
         if (ObjectUtil.isEmpty(deviceId)) {
             return result;
         }
@@ -839,10 +859,10 @@ public class EnergyServiceImpl implements IEnergyService {
         List<Object> result = new ArrayList<>();
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
-        List<String> deviceId = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> deviceId = StringUtils.splitList(itemTopology.getDeviceId(), ",");
 
         List<EnergyStatistics> energyStatisticsList = energyStatisticsMapper.selectList(
             new LambdaQueryWrapper<EnergyStatistics>().eq(EnergyStatistics::getEnergyType, energyType).in(EnergyStatistics::getEquipmentSn, deviceId).ge(EnergyStatistics::getTime, startTime));
@@ -879,10 +899,10 @@ public class EnergyServiceImpl implements IEnergyService {
 
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
-        List<String> deviceId = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> deviceId = StringUtils.splitList(itemTopology.getDeviceId(), ",");
 
         List<EnergyStatistics> energyStatisticsList = energyStatisticsMapper.selectList(
             new LambdaQueryWrapper<EnergyStatistics>().eq(EnergyStatistics::getEnergyType, energyType).in(EnergyStatistics::getEquipmentSn, deviceId).ge(EnergyStatistics::getTime, startTime));
@@ -925,10 +945,10 @@ public class EnergyServiceImpl implements IEnergyService {
 
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
-        List<String> deviceId = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> deviceId = StringUtils.splitList(itemTopology.getDeviceId(), ",");
 
         List<EnergyStatistics> energyStatisticsList = energyStatisticsMapper.selectList(
             new LambdaQueryWrapper<EnergyStatistics>().eq(EnergyStatistics::getEnergyType, energyType).in(EnergyStatistics::getEquipmentSn, deviceId).ge(EnergyStatistics::getTime, startTime));
@@ -1012,8 +1032,7 @@ public class EnergyServiceImpl implements IEnergyService {
         // 通过区域id查询设备编号
         //找出当前楼层房间绑定的设备
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
 
@@ -1120,9 +1139,9 @@ public class EnergyServiceImpl implements IEnergyService {
         result.put("chartData", data);
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        /*if () {
+        if (ObjectUtil.isEmpty(itemTopology)) {
             return result;
-        }*/
+        }
 
         EnergyStatisticsBo bo = new EnergyStatisticsBo();
         bo.setEnergyType(energyType);
@@ -1736,7 +1755,13 @@ public class EnergyServiceImpl implements IEnergyService {
     public BigDecimal getAccumulate(Long itemId, String quotaType, Date quotaTime) {
         BigDecimal result = BigDecimal.ZERO;
         ItemTopology itemTopology = itemTopologyMapper.selectById(itemId);
-        List<String> devices = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+            return result;
+        }
+        List<String> devices = StringUtils.splitList(itemTopology.getDeviceId(), ",");
+        if (ObjectUtil.isEmpty(devices)) {
+            return result;
+        }
         Date endTime = new Date();
         if (quotaType.equals("0")) {
             // 当月天数
@@ -1763,6 +1788,9 @@ public class EnergyServiceImpl implements IEnergyService {
 
         //找出当前所选楼层
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+            return new ArrayList<>();
+        }
         List<String> equip = StringUtils.splitList(itemTopology.getDeviceId(), ",");
 
         //整理出同类型设备
@@ -1839,6 +1867,9 @@ public class EnergyServiceImpl implements IEnergyService {
         List<PowerStatisticsVo> result = new ArrayList<>();
         //找出当前所选楼层
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+            return new ArrayList<>();
+        }
         List<String> equip = StringUtils.splitList(itemTopology.getDeviceId(), ",");
 
         //整理出同类型设备
@@ -1957,7 +1988,7 @@ public class EnergyServiceImpl implements IEnergyService {
         result.put("chartData", data);
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
 
@@ -2062,7 +2093,7 @@ public class EnergyServiceImpl implements IEnergyService {
 
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
 
@@ -2172,8 +2203,10 @@ public class EnergyServiceImpl implements IEnergyService {
         //整理出所有相关设备
         for (ItemTopology itemTopology : itemTopologys) {
             if (ObjectUtil.isNotEmpty(itemTopology.getDeviceId())) {
-                List<String> temp = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
-                deviceId.addAll(temp);
+                String[] sp = StringUtils.split(itemTopology.getDeviceId(), ",");
+                if (sp != null && sp.length > 0) {
+                    deviceId.addAll(Arrays.stream(sp).collect(Collectors.toList()));
+                }
             }
         }
 
@@ -2383,8 +2416,7 @@ public class EnergyServiceImpl implements IEnergyService {
         // 通过区域id查询设备编号
         //找出当前楼层房间绑定的设备
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
 
@@ -2430,10 +2462,10 @@ public class EnergyServiceImpl implements IEnergyService {
         List<Object> carbonResult = new ArrayList<>();
         // 通过区域id查询设备编号
         ItemTopology itemTopology = itemTopologyMapper.selectById(areaId);
-        if (ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
+        if (ObjectUtil.isEmpty(itemTopology) || ObjectUtil.isEmpty(itemTopology.getDeviceId())) {
             return result;
         }
-        List<String> deviceId = Arrays.stream(StringUtils.split(itemTopology.getDeviceId(), ",")).collect(Collectors.toList());
+        List<String> deviceId = StringUtils.splitList(itemTopology.getDeviceId(), ",");
 
         List<EnergyStatistics> energyStatisticsList =
             energyStatisticsMapper.selectList(new LambdaQueryWrapper<EnergyStatistics>().in(EnergyStatistics::getEquipmentSn, deviceId).ge(EnergyStatistics::getTime, startTime));
