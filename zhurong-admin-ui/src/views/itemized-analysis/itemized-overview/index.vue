@@ -16,7 +16,7 @@
                 :key="item.id"
                 :label="item.label"
                 :value="item.id"
-                :disabled="!item.children"
+                :disabled="!item.children || !item.children.length"
               >
               </el-option>
             </el-select>
@@ -307,11 +307,21 @@ export default {
     },
     // 获取能源分项数
     getTopologyTree() {
+      this.loading = true
       topologyTreeSelect({itemType: 'energySubsections'}).then(res => {
-        this.topologyTree = res.data[0] ? res.data[0].children : []
-        this.queryParams.itemId = this.topologyTree[0].id
-      }).then(() => {
-        this.getOverView()
+        const root = res.data && res.data.length ? res.data[0] : null
+        // 兼容后端返回树结构或扁平结构两种情况
+        this.topologyTree = root && root.children && root.children.length ? root.children : (res.data || [])
+        const first = this.topologyTree.find(item => item.children && item.children.length) || this.topologyTree[0]
+        if (!first) {
+          this.barData = []
+          this.rankingBarData = { xData: [], yData: [] }
+          return
+        }
+        this.queryParams.itemId = first.id
+        return this.getOverView()
+      }).catch(() => {
+        this.topologyTree = []
       })
     },
     // 获取分项概览数据

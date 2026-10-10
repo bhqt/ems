@@ -55,9 +55,10 @@ public class ItemizeAnalysisServiceImpl implements IItemizeAnalysisService {
         //去重
         deviceList = deviceList.stream().distinct().collect(Collectors.toList());
 
-        //当日，昨日同期
-        Date nowEndTime = DateUtils.parseDate(date);
-        Date nowStartTime = DateUtils.dateTime(DateUtils.YYYY_MM_DD, date);
+        //当日，昨日同期 - 解析日期，支持yyyy-MM-dd和yyyy-MM-dd HH:mm:ss格式
+        Date nowEndTime = parseDateSafely(date);
+        String startDate = date.substring(0, 10);
+        Date nowStartTime = DateUtils.dateTime(DateUtils.YYYY_MM_DD, startDate);
         Date nowDate = DateUtils.parseDate(DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD));
         if (DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, nowStartTime).equals(DateUtils.parseDateToStr(DateUtils.YYYY_MM_DD, nowDate))) {
             nowEndTime = DateUtils.parseDate(DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS));
@@ -145,7 +146,7 @@ public class ItemizeAnalysisServiceImpl implements IItemizeAnalysisService {
                 itemizeVo.setNowTrend(nowTrend);
             }
             //日趋势百分比
-            if (!last.equals(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP))) {
+            if (!itemizeVo.getNowTrend().toString().equals("--") && !last.equals(BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP))) {
                 itemizeVo.setNowPer(BigDecimal.valueOf(Float.parseFloat(itemizeVo.getNowTrend().toString())).divide(last, 4, RoundingMode.HALF_UP));
             } /*else {
                 itemizeVo.setNowPer(BigDecimal.ZERO);
@@ -188,7 +189,7 @@ public class ItemizeAnalysisServiceImpl implements IItemizeAnalysisService {
             BigDecimal lastYear = lastYearData.stream().map(EnergyStatisticsVo::getStatistics).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.HALF_UP);
             itemizeVo.setLastYearEnergy("--");
             if (ObjectUtil.isNotEmpty(lastYearData)) {
-                itemizeVo.setLastYearEnergy(nowYear);
+                itemizeVo.setLastYearEnergy(lastYear);
             }
             //年趋势
              itemizeVo.setYearTrend("--");
@@ -279,6 +280,24 @@ public class ItemizeAnalysisServiceImpl implements IItemizeAnalysisService {
             .in(EnergyStatistics::getEquipmentSn, deviceId)
             .between(StringUtils.isNotBlank(startTime) && StringUtils.isNotBlank(endTime), EnergyStatistics::getUpdateTime, startTime, endTime)
             .orderByDesc(EnergyStatistics::getUpdateTime);
+    }
+
+    /**
+     * 安全解析日期，支持yyyy-MM-dd和yyyy-MM-dd HH:mm:ss两种格式
+     */
+    private static Date parseDateSafely(String date) {
+        if (date == null) {
+            return null;
+        }
+        Date result = DateUtils.parseDate(date);
+        if (result != null) {
+            return result;
+        }
+        // 解析失败时，仅取日期部分(前10位)
+        if (date.length() >= 10) {
+            return DateUtils.parseDate(date.substring(0, 10));
+        }
+        return null;
     }
 
     /**
