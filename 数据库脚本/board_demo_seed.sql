@@ -3,6 +3,10 @@
 -- 生成时间: 2026-10-08
 -- 说明: 幂等脚本，可重复执行（先清理本脚本涉及的演示数据再插入）
 --       数据范围: 区域拓扑 / 设备 / 能耗 / 功率 / 报警
+--       能耗/功率时间窗: 过去 14 天 + 今天 + 预生成至 2026-11-30
+--       （11 月无 31 日，演示数据预生成到 11 月底，保证 10~11 月任一天演示都有当日数据；
+--         未来日期的数据不会被"今日"类接口查到，到期后自然展示）
+--       报警数据只落在过去/近期，避免看板"最新报警"出现未来时间
 -- 看板依赖接口:
 --   /system/itemTopology/topologyTree     -> item_topology
 --   /equipment/getAllStatus               -> equipment_info（status 0/1/2）
@@ -66,8 +70,8 @@ VALUES
   (8881000000000000015, '潍坊生产基地水表',   'WF-S-PD-001', 'LXSG-50','潍坊生产基地总水表',   NULL, NULL, '浪潮能源', '1', '0', 'admin', NOW(), 'admin', NOW());
 
 -- =====================================================
--- 3. 能耗统计（今天 + 昨天，24 小时聚合）
---    简化方案：直接拼接 720 条 INSERT，避开递归 CTE 限制
+-- 3. 能耗统计（过去 14 天 + 今天 + 预生成至 2026-11-30，24 小时聚合）
+--    简化方案：循环生成，避开递归 CTE 限制
 -- =====================================================
 DELIMITER $$
 DROP PROCEDURE IF EXISTS seed_energy_statistics $$
@@ -81,6 +85,7 @@ BEGIN
   DECLARE etype CHAR(1);
   DECLARE base_val DECIMAL(10,2);
   DECLARE done INT DEFAULT 0;
+  DECLARE end_offset INT DEFAULT 0;
   -- 15 个设备
   DECLARE cur CURSOR FOR
     SELECT sn, energy_type, base FROM (
@@ -102,14 +107,16 @@ BEGIN
     ) t;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
-  SET i = 0;
-  OPEN cur;
-  read_loop: LOOP
-    FETCH cur INTO sn_var, etype, base_val;
-    IF done = 1 THEN LEAVE read_loop; END IF;
-    SET @day_offset = 0;
-    WHILE @day_offset < 2 DO
-      SET d = DATE_SUB(DATE(NOW()), INTERVAL @day_offset DAY);
+    SET i = 0;
+    -- 预生成窗口：-14 天（历史） ~ 2026-11-30（未来演示数据）
+    SET end_offset = GREATEST(DATEDIFF(DATE('2026-11-30'), CURDATE()), 0);
+    OPEN cur;
+    read_loop: LOOP
+      FETCH cur INTO sn_var, etype, base_val;
+      IF done = 1 THEN LEAVE read_loop; END IF;
+      SET @day_offset = -14;
+      WHILE @day_offset <= end_offset DO
+        SET d = DATE_ADD(CURDATE(), INTERVAL @day_offset DAY);
       SET h = 0;
       WHILE h < 24 DO
         -- 营业曲线
@@ -155,7 +162,7 @@ CALL seed_energy_statistics();
 DROP PROCEDURE seed_energy_statistics;
 
 -- =====================================================
--- 4. 功率统计（电表 24h × 2 天，提供给 getDailyP）
+-- 4. 功率统计（电表 24h × 过去 14 天 + 预生成至 2026-11-30，提供给 getDailyP）
 -- =====================================================
 DELIMITER $$
 DROP PROCEDURE IF EXISTS seed_power_statistics $$
@@ -168,6 +175,7 @@ BEGIN
   DECLARE sn_var VARCHAR(40);
   DECLARE base_val INT;
   DECLARE done INT DEFAULT 0;
+  DECLARE end_offset INT DEFAULT 0;
   DECLARE cur CURSOR FOR
     SELECT sn, base FROM (
       SELECT 'JN-D-LD-001' AS sn,  680 AS base UNION ALL
@@ -187,9 +195,11 @@ BEGIN
   read_loop: LOOP
     FETCH cur INTO sn_var, base_val;
     IF done = 1 THEN LEAVE read_loop; END IF;
-    SET @day_offset = 0;
-    WHILE @day_offset < 2 DO
-      SET d = DATE_SUB(DATE(NOW()), INTERVAL @day_offset DAY);
+    -- 预生成窗口：-14 天（历史） ~ 2026-11-30（未来演示数据）
+    SET end_offset = GREATEST(DATEDIFF(DATE('2026-11-30'), CURDATE()), 0);
+    SET @day_offset = -14;
+    WHILE @day_offset <= end_offset DO
+      SET d = DATE_ADD(CURDATE(), INTERVAL @day_offset DAY);
       SET h = 0;
       WHILE h < 24 DO
         SET @ave_factor = CASE
@@ -224,7 +234,8 @@ CALL seed_power_statistics();
 DROP PROCEDURE seed_power_statistics;
 
 -- =====================================================
--- 5. 历史报警（今天 + 过去 7 天，每条间隔随机）
+-- 5. 历史报警（过去约 6 天，每天 3 条，模拟待处理/已结束）
+--    注意：不预生成未来时间的报警，避免看板"最新报警"出现未来时间
 -- =====================================================
 SET @ar_rn := 0;
 INSERT INTO alarm_history
@@ -236,7 +247,7 @@ SELECT
     WHEN 1 THEN '电压'
     ELSE '水压'
   END,
-  DATE_SUB(NOW(), INTERVAL (@ar_rn * 5 + ((@ar_rn * 7) MOD 30)) MINUTE),
+  DATE_SUB(NOW(), INTERVAL (FLOOR((@ar_rn - 1) / 3) * 1440 + (@ar_rn * 37) MOD 1440) MINUTE),
   CASE ((@ar_rn) % 4)
     WHEN 0 THEN '电流超过阈值 80A'
     WHEN 1 THEN '电压异常波动 220V'
@@ -264,7 +275,10 @@ SELECT
     ELSE 'WF-D-PD-001'
   END,
   ROUND(50 + @ar_rn * 7.3, 2),
-  CASE WHEN @ar_rn % 3 = 0 THEN DATE_SUB(NOW(), INTERVAL (@ar_rn * 5) MINUTE) ELSE NULL END,
+  CASE WHEN @ar_rn % 3 = 0 THEN DATE_ADD(
+         DATE_SUB(NOW(), INTERVAL (FLOOR((@ar_rn - 1) / 3) * 1440 + (@ar_rn * 37) MOD 1440) MINUTE),
+         INTERVAL (20 + (@ar_rn * 13) MOD 120) MINUTE)
+       ELSE NULL END,
   'admin', NOW(), 'admin', NOW()
 FROM (
   SELECT a.N + b.N * 10 AS n

@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-"""生成 hospital_seed_demo.sql：医院大屏演示数据（近 14 天历史 + 今日实时）"""
+"""生成 hospital_seed_demo.sql：医院大屏演示数据（近 21 天历史 + 今日实时 + 预生成未来演示数据至 2026-11-30）"""
 import datetime
 import random
 
 random.seed(20260911)
 
-START = datetime.date(2026, 8, 28)
-HIST_DAYS = 14  # 08-28 ~ 09-10 完整历史（08-28~09-03 供环比对比）
+# 相对当前日期动态生成：最近 21 天历史（含环比对比窗口），今天补实时点
+# 另预生成未来演示数据至 DEMO_END（11 月无 31 日，取 11-30），
+# 保证 10 月 ~ 11 月任一天演示时大屏都有当日数据
+HIST_DAYS = 21
+DEMO_END = datetime.date(2026, 11, 30)
+TODAY = datetime.date.today()
+START = TODAY - datetime.timedelta(days=HIST_DAYS - 1)
+END = max(DEMO_END, TODAY)
+TOTAL_DAYS = (END - START).days + 1
 
 # device: (code, name, type, category, area_id)
 devices = [
@@ -52,7 +59,7 @@ data_id = 2096100000000000001
 
 lines = []
 lines.append("-- =====================================================")
-lines.append("-- 医院智慧能源 - 大屏演示数据（近 14 天历史 + 今日实时）")
+lines.append("-- 医院智慧能源 - 大屏演示数据（近 %d 天历史 + 今日实时 + 预生成至 %s）" % (HIST_DAYS, DEMO_END))
 lines.append("-- 生成时间: %s" % datetime.datetime.now())
 lines.append("-- 说明: 可重复执行（先清空本脚本涉及的数据再插入）")
 lines.append("-- =====================================================")
@@ -61,10 +68,12 @@ lines.append("USE autoee_ems;")
 lines.append("")
 
 # ---------- 清理 ----------
+# 清理窗口放宽到 90 天，覆盖上一次运行（21 天历史窗口）留下的旧演示数据，避免残留
+clean_from = (TODAY - datetime.timedelta(days=90)).strftime("%Y-%m-%d")
 lines.append("-- 0. 清理旧演示数据（保留 CT-001 台账，清空其旧时间序列）")
-lines.append("DELETE FROM hospital_device_data WHERE ts >= '2026-08-28';")
-lines.append("DELETE FROM hospital_device_workload WHERE stat_date >= '2026-08-28';")
-lines.append("DELETE FROM hospital_alarm_record WHERE start_time >= '2026-08-28';")
+lines.append("DELETE FROM hospital_device_data WHERE ts >= '%s';" % clean_from)
+lines.append("DELETE FROM hospital_device_workload WHERE stat_date >= '%s';" % clean_from)
+lines.append("DELETE FROM hospital_alarm_record WHERE start_time >= '%s';" % clean_from)
 lines.append("DELETE FROM hospital_alarm_rule WHERE id >= 2097000000000000001;")
 lines.append("")
 
@@ -93,7 +102,7 @@ for i, (code, name, dtype, category, area) in enumerate(devices):
 lines.append("")
 
 # ---------- 时间序列数据 ----------
-lines.append("-- 2. 设备时间序列（近 7 天，每天 8 采样点 × 3 指标）")
+lines.append("-- 2. 设备时间序列（%s ~ %s，每天 8 采样点 × 3 指标，今天交给实时段）" % (START.strftime("%Y-%m-%d"), END.strftime("%Y-%m-%d")))
 # 每设备累计电量起点（保证 7 天窗口内 max-min 有增量）
 elec_start = {}
 for code, name, dtype, category, area in devices:
@@ -102,10 +111,12 @@ for code, name, dtype, category, area in devices:
 now = datetime.datetime.now()
 cnt = 0
 sql_rows = []
-# 各设备累计电量：跨 14 天持续累计，保证窗口内 max-min 合理
+# 各设备累计电量：跨整个演示窗口持续累计，保证窗口内 max-min 合理
 device_elec = dict(elec_start)
-for d in range(HIST_DAYS):
+for d in range(TOTAL_DAYS):  # 完整日（含预生成的未来演示日），今天跳过交给实时段
     day = START + datetime.timedelta(days=d)
+    if day == TODAY:
+        continue
     for code, name, dtype, category, area in devices:
         dev_id = ids[code]
         kwh_base = KWH_BASE[dtype]
@@ -149,7 +160,7 @@ for i in range(0, len(sql_rows), BATCH):
     lines.append("INSERT INTO hospital_device_data (id, device_id, metric_code, metric_value, metric_str, ts, quality, receive_time) VALUES")
     lines.append("\n".join(chunk).rstrip(",") + ";")
 
-# 今天(09-11)实时采样：每小时一个点，直到执行当前时刻，保证设备在线
+# 今天实时采样：每小时一个点，直到执行当前时刻，保证设备在线
 today_rows = []
 now = datetime.datetime.now()
 today_hours = list(range(0, now.hour + 1))
@@ -190,10 +201,10 @@ if today_rows:
 lines.append("")
 
 # ---------- 工作负载 ----------
-lines.append("-- 3. 设备工作负载（近 14 天每台每天 1 条）")
+lines.append("-- 3. 设备工作负载（%s ~ %s 每台每天 1 条）" % (START.strftime("%Y-%m-%d"), END.strftime("%Y-%m-%d")))
 wl_id = 2096200000000000001
 w = 0
-for d in range(HIST_DAYS):
+for d in range(TOTAL_DAYS):
     day = START + datetime.timedelta(days=d)
     for code, name, dtype, category, area in devices:
         dev_id = ids[code]
