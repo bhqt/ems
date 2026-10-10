@@ -334,3 +334,21 @@ export function getAllStatus(query) {
     params: query
   })
 }
+
+// 碳排分析-本月/本年碳排放环比
+export function getChain(query) {
+  return request({
+    url: '/data/carbon/getChain',
+    method: 'get',
+    params: query
+  })
+}
+
+// 碳排分析-按年查询各月碳排放
+export function getChainByYear(query) {
+  return request({
+    url: '/data/carbon/getChainByYear',
+    method: 'get',
+    params: query
+  })
+}
