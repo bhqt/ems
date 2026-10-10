@@ -140,6 +140,8 @@ export default {
       effList: [],
       alarmList: [],
       devStatList: [],
+      catData: [],
+      trendData: [],
       catChart: null,
       trendChart: null
     }
@@ -173,18 +175,20 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      if (this.canShowKey('category') && this.$refs.catChart) {
-        this.catChart = echarts.init(this.$refs.catChart)
-      }
-      if (this.canShowKey('trend') && this.$refs.trendChart) {
-        this.trendChart = echarts.init(this.$refs.trendChart)
-      }
+      this.tryRenderCharts()
+      // 路由过渡动画期间容器宽度为 0，宽度就绪后再初始化/重设尺寸
+      this.chartObserver = new ResizeObserver(() => this.tryRenderCharts())
+      const catEl = this.elOf(this.$refs.catChart)
+      const trendEl = this.elOf(this.$refs.trendChart)
+      if (catEl) this.chartObserver.observe(catEl)
+      if (trendEl) this.chartObserver.observe(trendEl)
       window.addEventListener('resize', this.resizeCharts)
     })
   },
   beforeDestroy() {
     clearInterval(this.clock)
     window.removeEventListener('resize', this.resizeCharts)
+    if (this.chartObserver) { this.chartObserver.disconnect(); this.chartObserver = null }
     if (this.catChart) { this.catChart.dispose(); this.catChart = null }
     if (this.trendChart) { this.trendChart.dispose(); this.trendChart = null }
   },
@@ -201,6 +205,23 @@ export default {
     },
     goDrill(row) {
       this.$router.push('/hospital/energy')
+    },
+    elOf(refVal) {
+      if (!refVal) return null
+      return Array.isArray(refVal) ? refVal[0] : refVal
+    },
+    // 容器宽度就绪（>0）时才 init 实例并渲染，避免 0 尺寸空图
+    tryRenderCharts() {
+      const catEl = this.elOf(this.$refs.catChart)
+      if (catEl && catEl.clientWidth > 0) {
+        if (!this.catChart) this.catChart = echarts.init(catEl)
+        if (this.catData.length) this.renderCategory(this.catData)
+      }
+      const trendEl = this.elOf(this.$refs.trendChart)
+      if (trendEl && trendEl.clientWidth > 0) {
+        if (!this.trendChart) this.trendChart = echarts.init(trendEl)
+        if (this.trendData.length) this.renderTrend(this.trendData)
+      }
     },
     moduleOf(key) {
       return MODULES.find(m => m.key === key)
@@ -234,12 +255,14 @@ export default {
       }
       if (this.canShowKey('category')) {
         getEnergyCategory({ ...this.query }).then(r => {
-          this.renderCategory(r.data || [])
+          this.catData = r.data || []
+          this.tryRenderCharts()
         }).catch(() => {})
       }
       if (this.canShowKey('trend')) {
         getEnergyTrend({ ...this.query, granularity: 'DAY' }).then(r => {
-          this.renderTrend(r.data || [])
+          this.trendData = r.data || []
+          this.tryRenderCharts()
         }).catch(() => {})
       }
       if (this.canShowKey('rank')) {
