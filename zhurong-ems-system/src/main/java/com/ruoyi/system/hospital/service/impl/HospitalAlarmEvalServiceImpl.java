@@ -22,6 +22,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -100,9 +104,9 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
             if (maxTsList != null) {
                 for (Map<String, Object> row : maxTsList) {
                     Object id = row.get("deviceId");
-                    Object ts = row.get("maxTs");
-                    if (id != null && ts instanceof Date) {
-                        lastTs.put(Long.valueOf(String.valueOf(id)), (Date) ts);
+                    Date ts = resolveMaxTs(row.get("maxTs"));
+                    if (id != null && ts != null) {
+                        lastTs.put(Long.valueOf(String.valueOf(id)), ts);
                     }
                 }
             }
@@ -123,6 +127,31 @@ public class HospitalAlarmEvalServiceImpl implements IHospitalAlarmEvalService {
         } catch (Exception e) {
             log.error("[医院报警] 离线扫描异常", e);
         }
+    }
+
+    /**
+     * max(ts) 经 resultType=Map 取出时的类型不固定：
+     * Connector/J 5.x 返回 java.util.Date/Timestamp，8.x 默认返回 LocalDateTime，
+     * 早期只按 instanceof Date 判断会导致取不到时间、设备被永久误判离线。
+     */
+    private Date resolveMaxTs(Object value) {
+        if (value instanceof Date) {
+            return (Date) value;
+        }
+        if (value instanceof LocalDateTime) {
+            return Timestamp.valueOf((LocalDateTime) value);
+        }
+        if (value instanceof LocalDate) {
+            return Date.from(((LocalDate) value).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        }
+        if (value instanceof CharSequence) {
+            try {
+                return Timestamp.valueOf(LocalDateTime.parse(value.toString().replace(' ', 'T')));
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
     }
 
     private List<HospitalDevice> targetDevices(HospitalAlarmRule rule) {
