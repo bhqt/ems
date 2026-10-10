@@ -94,6 +94,7 @@ export default {
     showHideTitle: 'Tampilkan/Sembunyikan',
     show: 'Tampilkan',
     hide: 'Sembunyikan',
+    prompt: 'Perhatian',
 
     // Bilah Navigasi
     profile: 'Profil',
@@ -321,7 +322,8 @@ export default {
     report: {
       title: 'Manajemen Laporan',
       generate: 'Hasilkan Laporan',
-      template: 'Template Laporan'
+      template: 'Template Laporan',
+      example: 'Manajemen Laporan Contoh'
     },
     newenergy: {
       title: 'Energi Baru',
@@ -549,6 +551,36 @@ export default {
       workload: 'Manajemen Beban Kerja',
       screen: 'Layar Besar RS',
       dashboard: 'Dasbor Sesuai Peran'
+    },
+
+    // Manajemen Kontrak
+    contract: {
+      title: 'Manajemen Kontrak',
+      info: 'Manajemen Informasi Kontrak'
+    },
+
+    // Manajemen Penjadwalan
+    dispatch: {
+      title: 'Manajemen Penjadwalan',
+      plan: 'Manajemen Rencana Penjadwalan'
+    },
+
+    // Persediaan - Suku Cadang & Pemasok
+    spare: {
+      parts: 'Manajemen Pustaka Suku Cadang',
+      supplier: 'Manajemen Pustaka Pemasok'
+    },
+
+    // Ekstensi Papan Data
+    board: {
+      second: 'Papan Data 2',
+      map: 'Papan Peta'
+    },
+
+    // Operasi Pengisian - Langsung
+    direct: {
+      station: 'Stasiun Tersambung Langsung',
+      pile: 'Tiang Tersambung Langsung'
     }
   },
 

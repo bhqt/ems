@@ -130,7 +130,10 @@ export default {
   },
   computed: {
     actionTitle() {
-      return this.$t('hospital.action_' + this.currentAction)
+      const key = `hospital.action_${this.currentAction}`
+      // currentAction 由 handleAction(row, action) 传入，仅可能是 confirm/process/done。
+      // 这里仍做一次存在性判断：数据异常时回退到通用文案，避免控制台刷 i18n 告警。
+      return this.$te(key) ? this.$t(key) : this.$t('common.confirm')
     }
   },
   created() {

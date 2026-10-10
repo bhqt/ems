@@ -358,7 +358,30 @@ const chineseToKeyMap = {
   '院区管理': 'menu.hospital.area',
   '工作量管理': 'menu.hospital.workload',
   '医院大屏': 'menu.hospital.screen',
-  '角色看板': 'menu.hospital.dashboard'
+  '角色看板': 'menu.hospital.dashboard',
+
+  // 合同管理
+  '合同管理': 'menu.contract.title',
+  '合同信息管理': 'menu.contract.info',
+
+  // 调度管理
+  '调度管理': 'menu.dispatch.title',
+  '调度计划管理': 'menu.dispatch.plan',
+
+  // 库存管理 - 备件与供应商
+  '备件库管理': 'menu.spare.parts',
+  '供应商库管理': 'menu.spare.supplier',
+
+  // 数据看板扩展
+  '数据看板2': 'menu.board.second',
+  '地图看板': 'menu.board.map',
+
+  // 充电桩运营 - 直连
+  '直联电站': 'menu.direct.station',
+  '直联电桩': 'menu.direct.pile',
+
+  // 报表管理 - 例报
+  '例报管理': 'menu.report.example'
 }
 
 /**
@@ -426,7 +449,12 @@ const menuNamespaces = [
   'itemManage',
   'chargingOperation',
   'pvManage',
-  'hospital'
+  'hospital',
+  'contract',
+  'dispatch',
+  'spare',
+  'board',
+  'direct'
 ]
 
 /**

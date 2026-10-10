@@ -16,13 +16,13 @@
       :disabled="disable"
     >
       <!-- 上传按钮 -->
-      <el-button size="mini" type="primary" :disabled="disable">{{ $t('upload.selectFile') }}</el-button>
+      <el-button size="mini" type="primary" :disabled="disable">{{ $t('common.upload.selectFile') }}</el-button>
       <!-- 上传提示 -->
       <div class="el-upload__tip" slot="tip" v-if="showTip">
-        {{ $t('upload.pleaseUpload') }}
-        <template v-if="fileSize"> {{ $t('upload.sizeLimit') }} <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
-        <template v-if="fileType"> {{ $t('upload.formatLimit') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
-        {{ $t('upload.fileSuffix') }}
+        {{ $t('common.upload.pleaseUpload') }}
+        <template v-if="fileSize"> {{ $t('common.upload.sizeLimit') }} <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
+        <template v-if="fileType"> {{ $t('common.upload.formatLimit') }} <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
+        {{ $t('common.upload.fileSuffix') }}
       </div>
     </el-upload>
 

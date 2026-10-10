@@ -76,7 +76,7 @@
 
         <el-divider/>
 
-        <el-button size="small" type="primary" icon="el-icon-document-add" @click="saveSetting">{{ $t('button.saveConfig') }}</el-button>
+        <el-button size="small" type="primary" icon="el-icon-document-add" @click="saveSetting">{{ $t('common.saveConfig') }}</el-button>
         <!-- <el-button size="small" plain icon="el-icon-refresh" @click="resetSetting">重置配置</el-button> -->
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-tabs type="border-card">
-      <el-tab-pane :label="$t('crontab.second')" v-if="shouldHide('second')">
+      <el-tab-pane :label="$t('common.crontab.second')" v-if="shouldHide('second')">
         <CrontabSecond
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -10,7 +10,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane :label="$t('crontab.minute')" v-if="shouldHide('min')">
+      <el-tab-pane :label="$t('common.crontab.minute')" v-if="shouldHide('min')">
         <CrontabMin
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -19,7 +19,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane :label="$t('crontab.hour')" v-if="shouldHide('hour')">
+      <el-tab-pane :label="$t('common.crontab.hour')" v-if="shouldHide('hour')">
         <CrontabHour
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -28,7 +28,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane :label="$t('crontab.day')" v-if="shouldHide('day')">
+      <el-tab-pane :label="$t('common.crontab.day')" v-if="shouldHide('day')">
         <CrontabDay
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -37,7 +37,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane :label="$t('crontab.month')" v-if="shouldHide('month')">
+      <el-tab-pane :label="$t('common.crontab.month')" v-if="shouldHide('month')">
         <CrontabMonth
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -46,7 +46,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane :label="$t('crontab.week')" v-if="shouldHide('week')">
+      <el-tab-pane :label="$t('common.crontab.week')" v-if="shouldHide('week')">
         <CrontabWeek
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -55,7 +55,7 @@
         />
       </el-tab-pane>
 
-      <el-tab-pane :label="$t('crontab.year')" v-if="shouldHide('year')">
+      <el-tab-pane :label="$t('common.crontab.year')" v-if="shouldHide('year')">
         <CrontabYear
           @update="updateCrontabValue"
           :check="checkNumber"
@@ -67,11 +67,11 @@
 
     <div class="popup-main">
       <div class="popup-result">
-        <p class="title">{{ $t('crontab.timeExpression') }}</p>
+        <p class="title">{{ $t('common.crontab.timeExpression') }}</p>
         <table>
           <thead>
             <th v-for="item of getTabTitles" width="40" :key="item">{{item}}</th>
-            <th>{{ $t('crontab.cronExpression') }}</th>
+            <th>{{ $t('common.crontab.cronExpression') }}</th>
           </thead>
           <tbody>
             <td>
@@ -347,7 +347,7 @@ export default {
       return str;
     },
     getTabTitles: function() {
-      return [this.$t('crontab.second'), this.$t('crontab.minute'), this.$t('crontab.hour'), this.$t('crontab.day'), this.$t('crontab.month'), this.$t('crontab.week'), this.$t('crontab.year')];
+      return [this.$t('common.crontab.second'), this.$t('common.crontab.minute'), this.$t('common.crontab.hour'), this.$t('common.crontab.day'), this.$t('common.crontab.month'), this.$t('common.crontab.week'), this.$t('common.crontab.year')];
     }
   },
   components: {

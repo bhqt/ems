@@ -133,6 +133,7 @@ export default {
     showHideTitle: '显示/隐藏',
     show: '显示',
     hide: '隐藏',
+    prompt: '提示',
 
     // 通用表单校验
     validate: {
@@ -345,7 +346,8 @@ export default {
     report: {
       title: '报表管理',
       generate: '报表生成',
-      template: '报表模板'
+      template: '报表模板',
+      example: '例报管理'
     },
     // 新能源
     newenergy: {
@@ -612,6 +614,36 @@ export default {
       workload: '工作量管理',
       screen: '医院大屏',
       dashboard: '角色看板'
+    },
+
+    // 合同管理
+    contract: {
+      title: '合同管理',
+      info: '合同信息管理'
+    },
+
+    // 调度管理
+    dispatch: {
+      title: '调度管理',
+      plan: '调度计划管理'
+    },
+
+    // 库存管理 - 备件与供应商
+    spare: {
+      parts: '备件库管理',
+      supplier: '供应商库管理'
+    },
+
+    // 数据看板扩展
+    board: {
+      second: '数据看板2',
+      map: '地图看板'
+    },
+
+    // 充电桩运营 - 直连
+    direct: {
+      station: '直联电站',
+      pile: '直联电桩'
     }
   },
 

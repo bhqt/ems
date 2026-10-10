@@ -1,19 +1,19 @@
 <template>
   <div class="top-right-btn" :style="style">
     <el-row>
-      <el-tooltip class="item" effect="dark" :content="showSearch ? $t('rightToolbar.hideSearch') : $t('rightToolbar.showSearch')" placement="top" v-if="search">
+      <el-tooltip class="item" effect="dark" :content="showSearch ? $t('common.hideSearch') : $t('common.showSearch')" placement="top" v-if="search">
         <el-button size="mini" circle icon="el-icon-search" @click="toggleSearch()" />
       </el-tooltip>
       <el-tooltip class="item" effect="dark" :content="$t('button.refresh')" placement="top">
         <el-button size="mini" circle icon="el-icon-refresh" @click="refresh()" />
       </el-tooltip>
-      <el-tooltip class="item" effect="dark" :content="$t('rightToolbar.showHideColumns')" placement="top" v-if="columns">
+      <el-tooltip class="item" effect="dark" :content="$t('common.showHideColumns')" placement="top" v-if="columns">
         <el-button size="mini" circle icon="el-icon-menu" @click="showColumn()" />
       </el-tooltip>
     </el-row>
     <el-dialog :title="title" :visible.sync="open" append-to-body>
       <el-transfer
-        :titles="[$t('rightToolbar.show'), $t('rightToolbar.hide')]"
+        :titles="[$t('common.show'), $t('common.hide')]"
         v-model="value"
         :data="columns"
         @change="dataChange"
@@ -41,7 +41,7 @@ export default {
       return ret;
     },
     title() {
-      return this.$t('rightToolbar.showHideTitle')
+      return this.$t('common.showHideTitle')
     }
   },
   props: {

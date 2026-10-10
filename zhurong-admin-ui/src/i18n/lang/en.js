@@ -94,7 +94,7 @@ export default {
     showHideTitle: 'Show/Hide',
     show: 'Show',
     hide: 'Hide',
-
+    prompt: 'Prompt',
     // Navbar
     profile: 'Profile',
     layoutSetting: 'Layout Settings',
@@ -321,7 +321,8 @@ export default {
     report: {
       title: 'Report Management',
       generate: 'Report Generate',
-      template: 'Report Template'
+      template: 'Report Template',
+      example: 'Example Report Management'
     },
     newenergy: {
       title: 'New Energy',
@@ -549,6 +550,36 @@ export default {
       workload: 'Workload Management',
       screen: 'Big Screen',
       dashboard: 'Role Dashboard'
+    },
+
+    // Contract Management
+    contract: {
+      title: 'Contract Management',
+      info: 'Contract Info Management'
+    },
+
+    // Dispatch Management
+    dispatch: {
+      title: 'Dispatch Management',
+      plan: 'Dispatch Plan Management'
+    },
+
+    // Inventory - Spare Parts & Supplier
+    spare: {
+      parts: 'Spare Parts Management',
+      supplier: 'Supplier Library Management'
+    },
+
+    // Data Board Extensions
+    board: {
+      second: 'Data Board 2',
+      map: 'Map Board'
+    },
+
+    // Charging Operation - Direct
+    direct: {
+      station: 'Direct-connected Station',
+      pile: 'Direct-connected Pile'
     }
   },
 
